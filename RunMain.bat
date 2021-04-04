@@ -2,6 +2,5 @@
 rem echo This is RunMain.bat.
 
 
-cd \Eric\Main\Bitcoin\Cpp
-\Eric\Main\Bitcoin\Cpp\main.exe > ExeOut.txt
-
+cd \Eric\Main\Crypto
+\Eric\Main\Crypto\main.exe > ExeOut.txt
