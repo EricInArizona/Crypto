@@ -16,6 +16,8 @@ printf( "%s", toWrite );
 }
 
 
+void FileUtil::uPrintfD( Uint32 d )
+{
+printf( "%d", d );
 
-
-
+}
