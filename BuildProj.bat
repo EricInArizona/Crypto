@@ -10,4 +10,7 @@ rem Enable all diagnostics.
 rem Command line reference:
 rem https://clang.llvm.org/docs/ClangCommandLineReference.html
 
-C:\LLVM\bin\clang++ @CommandLine.txt -o main.exe -Wall -O1 2> Build.log
+rem @CommandLine.txt
+rem Use -v to see how it gets called.
+rem C:\LLVM\bin\clang++ main.cpp MainApp.cpp Base10Number.cpp FileUtil.cpp Base10Number.cpp -o main.exe -Wall -O1 2> Build.log
+C:\LLVM\bin\clang++ *.cpp -o main.exe -Wall -O1 2> Build.log
