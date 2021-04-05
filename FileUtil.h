@@ -17,10 +17,9 @@ class FileUtil
 
   public:
   static void uPrintf( const char* toWrite );
+  static void uPrintfD( Uint32 d );
 
   };
 
 
 #endif
-
-
