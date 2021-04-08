@@ -4,12 +4,18 @@
 
 #include "MainApp.h"
 #include "FileUtil.h"
+#include "Base10Number.h"
+#include "Str.h"
+#include "Integer.h"
+
+// Make Windows objects.
+// #include <Windows.h>
 
 
 
-// int main( int argc, char* argv[] )
-
-int MainApp::mainLoop( void )
+int MainApp::mainLoop( int argc, char* argv[] )
+{
+try
 {
 if( !basicThingsAreRight())
   {
@@ -19,10 +25,45 @@ if( !basicThingsAreRight())
   return 1; // Some error code.
   }
 
+FileUtil::uPrintf(
+              "Programming by Eric Chauvin.\n" );
+
+FileUtil::uPrintf( "Version date: " );
 FileUtil::uPrintf( getVersionStr() );
 FileUtil::uPrintf( "\n" );
 
+Str oneS( "123456789" );
+Str twoS( "987654" );
+
+FileUtil::uPrintf( "Created strings.\n" );
+
+Base10Number b1( oneS );
+Base10Number b2( twoS );
+
+FileUtil::uPrintf( "Created Base 10 numbers.\n" );
+
+Integer int1;
+int1.setToOne();
+
+FileUtil::uPrintf( "Created Integer.\n" );
+
 return 0;
+}
+catch( const char* str )
+  {
+  FileUtil::uPrintf( "Exception in main loop.\n" );
+  FileUtil::uPrintf( str );
+  return 1;
+  }
+
+catch( ... )
+  {
+  const char* errorS = "An unknown exception"
+         " happened in the main loop.\n";
+
+  FileUtil::uPrintf( errorS );
+  return 1;
+  }
 }
 
 
@@ -89,5 +130,3 @@ if( sizeof( Float64 ) != 8 )
 
 return true;
 }
-
-
