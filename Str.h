@@ -22,7 +22,7 @@ class Str
     {
     return arraySize;
     }
-  Uint16 charAt( Uint32 where );
+  Uint16 uCharAt( Uint32 where );
 
 
   };
