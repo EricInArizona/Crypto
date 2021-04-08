@@ -12,7 +12,7 @@ Str::Str( const char* pStr )
 const char* sizePoint = pStr;
 
 arraySize = 0;
-for( int count = 0; count < 10000; count++ )
+for( Uint32 count = 0; count < 10000; count++ )
   {
   char c = *sizePoint;
   if( c == 0 )
@@ -23,7 +23,7 @@ for( int count = 0; count < 10000; count++ )
   }
 
 cArray = new Uint16[arraySize];
-for( int count = 0; count < arraySize; count++ )
+for( Uint32 count = 0; count < arraySize; count++ )
   {
   char c = *pStr;
   cArray[count] = c;
@@ -43,11 +43,10 @@ delete[] cArray;
 }
 
 
-Uint16 Str::charAt( Uint32 where )
+Uint16 Str::uCharAt( Uint32 where )
 {
 if( where >= arraySize )
   throw "In charAt() index out of bounds.";
 
 return cArray[where];
 }
-
