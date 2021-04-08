@@ -8,9 +8,7 @@
 MainApp mApp;
 
 
-int main( int argc, char* argv[] )
+Int32 main( Int32 argc, char* argv[] )
 {
-return mApp.mainLoop();
+return mApp.mainLoop( argc, argv );
 }
-
-
