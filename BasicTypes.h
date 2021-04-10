@@ -12,6 +12,7 @@
 
 
 typedef char Int8;
+typedef unsigned char Uint8;
 typedef unsigned char Char8;
 typedef unsigned short Char16;
 typedef short Int16;
