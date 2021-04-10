@@ -3,28 +3,21 @@
 
 
 #include "Base10Number.h"
-#include "FileUtil.h"
+#include "StIO.h"
 
 
 
 Base10Number::Base10Number( Str toSet )
 {
-FileUtil::uPrintf( "Constructor called.\n" );
 D = new Uint16[digitArraySize];
 setFromStr( toSet );
-
-FileUtil::uPrintf( "End of constructor.\n" );
 }
 
 
 
 Base10Number::~Base10Number( void )
 {
-FileUtil::uPrintf( "Destructor called.\n" );
-
 delete[] D;
-
-FileUtil::uPrintf( "End of Destructor.\n" );
 }
 
 
@@ -51,12 +44,9 @@ return (Uint16)(digit - '0');
 void Base10Number::setFromStr( Str toSet )
 {
 index = 0;
+D[0] = 0;
 
-const Int32 last = toSet.getArraySize();
-FileUtil::uPrintf( "Array size: " );
-FileUtil::uPrintfD( last );
-FileUtil::uPrintf( "\n" );
-
+const Int32 last = toSet.getSize();
 if( last < 1 )
   return;
 
@@ -90,3 +80,5 @@ if( where == 0 )
 
 index = where - 1;
 }
+
+
