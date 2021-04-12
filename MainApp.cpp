@@ -3,13 +3,12 @@
 
 
 #include "MainApp.h"
-#include "FileUtil.h"
+#include "StIO.h"
 #include "Base10Number.h"
 #include "Str.h"
 #include "Integer.h"
-
-// Make Windows objects.
-// #include <Windows.h>
+#include "FileIO.h"
+// #include "Markers.h"
 
 
 
@@ -19,40 +18,62 @@ try
 {
 if( !basicThingsAreRight())
   {
-  FileUtil::uPrintf(
+  StIO::uPrintf(
       "basicThingsAreRight() returned false.\n" );
 
   return 1; // Some error code.
   }
 
-FileUtil::uPrintf(
-              "Programming by Eric Chauvin.\n" );
 
-FileUtil::uPrintf( "Version date: " );
-FileUtil::uPrintf( getVersionStr() );
-FileUtil::uPrintf( "\n" );
+Str me( "Programming by Eric Chauvin." );
+me.print();
+StIO::putC( '\n' );
+// StIO::uPrintf( "Begin marker: >" );
+// StIO::putC( Markers::Begin );
+// StIO::putC( '<' );
+// StIO::putC( '\n' );
+
+StIO::uPrintf( "Version date: " );
+Str ver( getVersionStr() );
+ver.printLine();
+
+StIO::uPrintf( "\n" );
 
 Str oneS( "123456789" );
 Str twoS( "987654" );
 
-FileUtil::uPrintf( "Created strings.\n" );
+StIO::uPrintf( "Created strings.\n" );
 
 Base10Number b1( oneS );
 Base10Number b2( twoS );
 
-FileUtil::uPrintf( "Created Base 10 numbers.\n" );
+StIO::uPrintf( "Created Base 10 numbers.\n" );
 
 Integer int1;
 int1.setToOne();
 
-FileUtil::uPrintf( "Created Integer.\n" );
+StIO::uPrintf( "Created Integer.\n" );
+
+FileIO testFile;
+testFile.appendStr( oneS );
+
+const char* testChars = "\nHere are some test"
+    " characters in this string here.\n";
+
+Uint32 len = Str::charsLength( testChars );
+testFile.appendChars( testChars, len );
+
+const char* fileName =
+          "\\Eric\\Main\\Crypto\\TestFile.txt";
+
+testFile.writeAll( fileName );
 
 return 0;
 }
 catch( const char* str )
   {
-  FileUtil::uPrintf( "Exception in main loop.\n" );
-  FileUtil::uPrintf( str );
+  StIO::uPrintf( "Exception in main loop.\n" );
+  StIO::uPrintf( str );
   return 1;
   }
 
@@ -61,7 +82,7 @@ catch( ... )
   const char* errorS = "An unknown exception"
          " happened in the main loop.\n";
 
-  FileUtil::uPrintf( errorS );
+  StIO::uPrintf( errorS );
   return 1;
   }
 }
@@ -98,11 +119,11 @@ bool MainApp::basicThingsAreRight()
 if( sizeof( Int8 ) != 1 )
   return false;
 
-if( sizeof( Char8 ) != 1 )
-  return false;
+// if( sizeof( Char8 ) != 1 )
+  // return false;
 
-if( sizeof( Char16 ) != 2 )
-  return false;
+// if( sizeof( Char16 ) != 2 )
+  // return false;
 
 if( sizeof( Int16 ) != 2 )
   return false;
