@@ -10,11 +10,15 @@
 #define ECBasicTypes_H
 
 
+// The C and C++ standards don't specify an
+// exact bit size for types.
+// See MainApp::basicThingsAreRight().
+
 
 typedef char Int8;
 typedef unsigned char Uint8;
-typedef unsigned char Char8;
-typedef unsigned short Char16;
+// typedef unsigned char Char8;
+// typedef unsigned short Char16;
 typedef short Int16;
 typedef unsigned short Uint16;
 typedef int Int32;
