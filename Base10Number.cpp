@@ -56,7 +56,7 @@ for( Int32 count = last - 1; count >= 0; count-- )
   if( where >= digitArraySize )
     throw "Base10Number: Too big for array.";
 
-  Uint16 c = toSet.uCharAt( count );
+  Uint16 c = toSet.charAt( count );
 
   // Ignore white space, commas, non digits.
   if( (c < '0') || (c > '9'))
