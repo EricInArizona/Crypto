@@ -36,7 +36,7 @@
 class Markers
   {
   public:
-  static const Uint16 Begin = 0x2203; // 0x2700;
+  static const Uint16 Begin = 0x2700;
 
 
 
@@ -53,56 +53,6 @@ class Markers
 
     return false;
     }
-
-
-/*
-  public static StrA removeAllMarkers( StrA in )
-    {
-    if( in == null )
-      return StrA.Empty;
-
-    final int max = in.length();
-    if( max == 0 )
-      return StrA.Empty;
-
-    StrABld sBuilder = new StrABld( in.length());
-    for( int count = 0; count < max; count++ )
-      {
-      char testChar = in.charAt( count );
-      if( isMarker( testChar ))
-        continue;
-
-      sBuilder.appendChar( testChar );
-      }
-
-    return sBuilder.toStrA();
-    }
-*/
-
-
-/*
-  public static int countMarkers( StrA in )
-    {
-    if( in == null )
-      return 0;
-
-    final int max = in.length();
-    if( max == 0 )
-      return 0;
-
-    int howMany = 0;
-    for( int count = 0; count < max; count++ )
-      {
-      char testChar = in.charAt( count );
-      if( isMarker( testChar ))
-        howMany++;
-
-      }
-
-    return howMany;
-    }
-*/
-
 
   };
 
