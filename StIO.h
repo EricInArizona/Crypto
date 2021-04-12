@@ -18,7 +18,7 @@ class StIO
   public:
   static void uPrintf( const char* toWrite );
   static void uPrintfD( Uint32 d );
-  static void putC( char c );
+  static void putC( Uint16 c );
 
   };
 
