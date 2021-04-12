@@ -32,7 +32,8 @@ class Base10Number
   Uint16* D;
 
   public:
-  Base10Number( Str toSet );
+  Base10Number( Str& toSet );
+  Base10Number( const Base10Number& obj );
   ~Base10Number( void );
   Uint32 getD( Uint32 where );
 
@@ -42,7 +43,7 @@ class Base10Number
     }
 
   Uint16 convertDigit( Uint16 digit );
-  void setFromStr( Str toSet );
+  void setFromStr( Str& toSet );
 
   };
 
