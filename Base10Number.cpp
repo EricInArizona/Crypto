@@ -7,12 +7,28 @@
 
 
 
-Base10Number::Base10Number( Str toSet )
+Base10Number::Base10Number( Str& toSet )
 {
 D = new Uint16[digitArraySize];
 setFromStr( toSet );
 }
 
+
+// The copy constructor.
+Base10Number::Base10Number(
+                        const Base10Number& obj )
+{
+D = new Uint16[digitArraySize];
+
+for( Uint32 count = 0; count < digitArraySize;
+                                        count++ )
+  {
+  D[count] = obj.D[count];
+  }
+
+StIO::uPrintf(
+     "Base10Number copy constructor called.\n" );
+}
 
 
 Base10Number::~Base10Number( void )
@@ -41,7 +57,7 @@ return (Uint16)(digit - '0');
 
 
 
-void Base10Number::setFromStr( Str toSet )
+void Base10Number::setFromStr( Str& toSet )
 {
 index = 0;
 D[0] = 0;
