@@ -6,6 +6,7 @@
 #define ECStr_H
 
 
+
 #include "BasicTypes.h"
 
 
@@ -13,17 +14,21 @@ class Str
   {
   private:
   Uint32 arraySize = 0;
-  Uint16* cArray;
+  char* cArray;
 
   public:
   Str( const char* str );
+  Str( const Str& obj );
   ~Str( void );
-  inline Uint32 getArraySize()
+  inline Uint32 getSize()
     {
     return arraySize;
     }
-  Uint16 uCharAt( Uint32 where );
 
+  char charAt( Uint32 where );
+  void print();
+  void printLine();
+  static Uint32 charsLength( const char* pStr );
 
   };
 
