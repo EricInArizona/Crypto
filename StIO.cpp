@@ -4,6 +4,11 @@
 
 #include "StIO.h"
 #include <stdio.h>
+#include <wchar.h>
+
+
+// wchar_t Wide character type
+
 
 
 // extern "C" {
@@ -22,8 +27,7 @@ printf( "%d", d );
 }
 
 
-void StIO::putC( char c )
+void StIO::putC( Uint16 c )
 {
-putchar( c );
+putwchar( c );
 }
-
