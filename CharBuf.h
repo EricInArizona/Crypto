@@ -8,8 +8,8 @@
 
 // This is really a byte buffer, for just any
 // bytes in general, but a byte is called a
-// char in C++.  It doesn't mean a character
-// like an ASCII character.
+// char in C++.  It doesn't necessarily mean a
+// character like an ASCII character.
 
 
 #include "BasicTypes.h"
@@ -37,9 +37,11 @@ class CharBuf
     {
     return cArray;
     }
+  void appendChar( const char toSet );
   void appendChars( const char* fromBuf,
                               Uint32 howMany );
   void appendStr( Str& in );
+  Str getStr( void );
 
   };
 
