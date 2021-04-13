@@ -39,7 +39,7 @@ StIO::uPrintf( "CharBuf destructor called.\n" );
 void CharBuf::increaseSize( Uint32 howMuch )
 {
 arraySize = arraySize + howMuch;
-Uint16* tempArray = new Uint16[arraySize];
+char* tempArray = new char[arraySize];
 
 const Uint32 max = last;
 
@@ -53,6 +53,26 @@ for( Uint32 count = 0; count < max; count++ )
   cArray[count] = tempArray[count];
 
 delete[] tempArray;
+}
+
+
+
+Str CharBuf::getStr( void )
+{
+Str result( cArray, last );
+// It will do the copy constructor.
+return result;
+}
+
+
+
+void CharBuf::appendChar( const char toSet )
+{
+if( (last + 2) <= arraySize )
+  increaseSize( (1024 * 64) );
+
+cArray[last] = toSet;
+last++;
 }
 
 
