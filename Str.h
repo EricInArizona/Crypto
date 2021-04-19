@@ -18,6 +18,7 @@ class Str
 
   public:
   Str( const char* str );
+  Str( char ar[], Uint32 howMany );
   Str( const Str& obj );
   ~Str( void );
   inline Uint32 getSize()
