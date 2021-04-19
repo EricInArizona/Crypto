@@ -53,6 +53,30 @@ class Integer
                     0,1,2,3,4,5,6,7,8,9 };// 100
                        // 200
 
+  Uint64 scratch[digitArraySize] =
+                  { 0,1,2,3,4,5,6,7,8,9, // 10
+                    0,1,2,3,4,5,6,7,8,9, // 20
+                    0,1,2,3,4,5,6,7,8,9, // 30
+                    0,1,2,3,4,5,6,7,8,9, // 40
+                    0,1,2,3,4,5,6,7,8,9, // 50
+                    0,1,2,3,4,5,6,7,8,9, // 60
+                    0,1,2,3,4,5,6,7,8,9, // 70
+                    0,1,2,3,4,5,6,7,8,9, // 80
+                    0,1,2,3,4,5,6,7,8,9, // 90
+                    0,1,2,3,4,5,6,7,8,9, // 100
+                    // 100
+                    0,1,2,3,4,5,6,7,8,9, // 10
+                    0,1,2,3,4,5,6,7,8,9, // 20
+                    0,1,2,3,4,5,6,7,8,9, // 30
+                    0,1,2,3,4,5,6,7,8,9, // 40
+                    0,1,2,3,4,5,6,7,8,9, // 50
+                    0,1,2,3,4,5,6,7,8,9, // 60
+                    0,1,2,3,4,5,6,7,8,9, // 70
+                    0,1,2,3,4,5,6,7,8,9, // 80
+                    0,1,2,3,4,5,6,7,8,9, // 90
+                    0,1,2,3,4,5,6,7,8,9 };// 100
+                       // 200
+
   void setOneDValueFromChar( Uint64 toSet,
                 Uint32 position, Uint32 offset );
   char getOneCharFromDValue(
@@ -135,6 +159,7 @@ class Integer
 
   void setFromULong( Uint64 toSet );
   void copy( const Integer& copyFrom );
+  void copyFromP( const Integer* copyFrom );
   void copyUpTo( const Integer& copyFrom,
                                  Uint32 where );
   bool isEqualToULong( Uint64 toTest );
@@ -165,6 +190,11 @@ class Integer
                               Uint8Array& U8Ar );
   void getBigEndianByteArray(
                              Uint8Array& toGet );
+  static Uint64 mod64FromTwoULongs( Uint64 P1,
+                                 Uint64 P0,
+                                 Uint64 divisor );
+  Uint64 getMod32( Uint64 divisor );
+  Uint64 getMod64( Uint64 divisor );
 
 
 
