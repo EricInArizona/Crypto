@@ -22,7 +22,8 @@ class SPrimes
   public:
   static const Uint32 arrayLength = 1024 * 32;
   SPrimes( void );
-  SPrimes( const SPrimes& obj );
+  SPrimes( const SPrimes& in );
+  ~SPrimes( void );
   Uint64 getFirstPrimeFactor( Uint64 toTest );
   Uint64 getBiggestPrime( void );
   Uint32 getPrimeAt( Uint32 where );
