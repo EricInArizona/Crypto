@@ -12,8 +12,15 @@ makePrimeArray();
 }
 
 
+
+SPrimes::~SPrimes( void )
+{
+delete[] pArray;
+}
+
+
 // The copy constructor.
-SPrimes::SPrimes( const SPrimes& obj )
+SPrimes::SPrimes( const SPrimes& in )
 {
 throw "Copy constructor for SPrimes called.\n";
 }
