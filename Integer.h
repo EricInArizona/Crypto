@@ -15,11 +15,12 @@
 
 class Integer
   {
-  private:
-
+  public:
   // This many 32 bit integers.
   // 100 is 3,200 bits.
   static const Uint32 digitArraySize = 200;
+
+  private:
   bool isNegative = false;
   Uint32 index = 0;
 
@@ -29,53 +30,9 @@ class Integer
   // stack pointer.
 
   // It is Uint64 to hold multiplied values.
-  Uint64 D[digitArraySize] =
-                  { 0,1,2,3,4,5,6,7,8,9, // 10
-                    0,1,2,3,4,5,6,7,8,9, // 20
-                    0,1,2,3,4,5,6,7,8,9, // 30
-                    0,1,2,3,4,5,6,7,8,9, // 40
-                    0,1,2,3,4,5,6,7,8,9, // 50
-                    0,1,2,3,4,5,6,7,8,9, // 60
-                    0,1,2,3,4,5,6,7,8,9, // 70
-                    0,1,2,3,4,5,6,7,8,9, // 80
-                    0,1,2,3,4,5,6,7,8,9, // 90
-                    0,1,2,3,4,5,6,7,8,9, // 100
-                    // 100
-                    0,1,2,3,4,5,6,7,8,9, // 10
-                    0,1,2,3,4,5,6,7,8,9, // 20
-                    0,1,2,3,4,5,6,7,8,9, // 30
-                    0,1,2,3,4,5,6,7,8,9, // 40
-                    0,1,2,3,4,5,6,7,8,9, // 50
-                    0,1,2,3,4,5,6,7,8,9, // 60
-                    0,1,2,3,4,5,6,7,8,9, // 70
-                    0,1,2,3,4,5,6,7,8,9, // 80
-                    0,1,2,3,4,5,6,7,8,9, // 90
-                    0,1,2,3,4,5,6,7,8,9 };// 100
-                       // 200
-
-  Uint64 scratch[digitArraySize] =
-                  { 0,1,2,3,4,5,6,7,8,9, // 10
-                    0,1,2,3,4,5,6,7,8,9, // 20
-                    0,1,2,3,4,5,6,7,8,9, // 30
-                    0,1,2,3,4,5,6,7,8,9, // 40
-                    0,1,2,3,4,5,6,7,8,9, // 50
-                    0,1,2,3,4,5,6,7,8,9, // 60
-                    0,1,2,3,4,5,6,7,8,9, // 70
-                    0,1,2,3,4,5,6,7,8,9, // 80
-                    0,1,2,3,4,5,6,7,8,9, // 90
-                    0,1,2,3,4,5,6,7,8,9, // 100
-                    // 100
-                    0,1,2,3,4,5,6,7,8,9, // 10
-                    0,1,2,3,4,5,6,7,8,9, // 20
-                    0,1,2,3,4,5,6,7,8,9, // 30
-                    0,1,2,3,4,5,6,7,8,9, // 40
-                    0,1,2,3,4,5,6,7,8,9, // 50
-                    0,1,2,3,4,5,6,7,8,9, // 60
-                    0,1,2,3,4,5,6,7,8,9, // 70
-                    0,1,2,3,4,5,6,7,8,9, // 80
-                    0,1,2,3,4,5,6,7,8,9, // 90
-                    0,1,2,3,4,5,6,7,8,9 };// 100
-                       // 200
+  // Uint64 D[digitArraySize] = { };
+  Uint64 D[digitArraySize] = { 0,1,2 };
+  Uint64 scratch[digitArraySize] =  { 0,1,2 };
 
   void setOneDValueFromChar( Uint64 toSet,
                 Uint32 position, Uint32 offset );
@@ -122,6 +79,16 @@ class Integer
       return true;
 
     return false;
+    }
+
+  inline bool getIsNegative( void )
+    {
+    return isNegative;
+    }
+
+  inline void setIsNegative( bool setTo )
+    {
+    isNegative = setTo;
     }
 
   inline Uint32 getIndex( void )
@@ -183,9 +150,6 @@ class Integer
                              Uint32 howMany );
   bool setFromAsciiStr( Str& in );
   Str getAsciiStr( void );
-  // void setFromBigEndianByteArray(
-     //                         Uint8 inArray[],
-     //                         Uint32 howMany );
   void setFromBigEndianByteArray(
                               Uint8Array& U8Ar );
   void getBigEndianByteArray(
