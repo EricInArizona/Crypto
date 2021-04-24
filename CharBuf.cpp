@@ -16,7 +16,7 @@ StIO::uPrintf( "CharBuf constructor called.\n" );
 
 
 // The copy constructor.
-CharBuf::CharBuf( const CharBuf &obj )
+CharBuf::CharBuf( const CharBuf &in )
 {
 // Don't copy a giant buffer.
 
