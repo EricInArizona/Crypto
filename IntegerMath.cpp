@@ -1069,7 +1069,8 @@ return true;
 
 
 bool IntegerMath::isFermatPrimeForOneValue(
-                   Integer& toTest, Uint64 base )
+                                Integer& toTest,
+                                Uint64 base )
 {
 // Assume ToTest is not a small number.  (Not
 // the size of a small prime.)
@@ -1092,12 +1093,13 @@ bool IntegerMath::isFermatPrimeForOneValue(
 // 2^7 = 128.  128 - 2 = 7 * 18 (a multiple of 7.)
 
 Integer fermat1;
+Integer testFermat1;
 fermat1.copy( toTest );
 subtractULong( fermat1, 1 );
-testFermat.setFromULong( base );
+testFermat1.setFromULong( base );
 
-
-
+// ========
+return true;
 /*
  ===========
 // ModularPower( Result, Exponent, Modulus, UsePresetBaseArray )
