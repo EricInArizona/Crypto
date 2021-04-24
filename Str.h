@@ -19,17 +19,21 @@ class Str
   public:
   Str( const char* str );
   Str( char ar[], Uint32 howMany );
-  Str( const Str& obj );
+  Str( const Str& in );
+  Str( const Str& in1, const Str& in2 );
+  Str( Uint64 n );
   ~Str( void );
   inline Uint32 getSize()
     {
     return arraySize;
     }
 
+  void copy( Str& in );
   char charAt( Uint32 where );
   void print();
   void printLine();
   static Uint32 charsLength( const char* pStr );
+  void reverse( void );
 
   };
 
