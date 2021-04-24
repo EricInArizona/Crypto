@@ -33,7 +33,7 @@ return pArray[arrayLength - 1];
 
 
 
-Uint32 SPrimes::getPrimeAt( Uint32 where )
+Uint64 SPrimes::getPrimeAt( Uint32 where )
 {
 if( where >= arrayLength )
   return 0;
