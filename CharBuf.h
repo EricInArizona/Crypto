@@ -26,7 +26,7 @@ class CharBuf
 
   public:
   CharBuf( void );
-  CharBuf( const CharBuf &obj );
+  CharBuf( const CharBuf &in );
   ~CharBuf( void );
   inline Uint32 getLast( void )
     {
