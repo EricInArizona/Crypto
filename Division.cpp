@@ -457,7 +457,7 @@ while( true )
                               getIndex()) << 32;
   maxValue |= remainder.getD( remainder.
                                  getIndex() - 1 );
-  maxValue = maxValue / divideBy.getD( 
+  maxValue = maxValue / divideBy.getD(
                            divideBy.getIndex());
   testDivideBits( maxValue,
                       false,
@@ -525,7 +525,7 @@ void Division::longDivide3( Integer& toDivide,
 {
 Integer test2;
 
-Int32 testIndex = toDivide.getIndex() - 
+Int32 testIndex = toDivide.getIndex() -
                            divideBy.getIndex();
 if( testIndex < 0 )
   throw "TestIndex < 0 in Divide3.";
@@ -536,7 +536,7 @@ if( testIndex != 0 )
   {
   // Is 1 too high?
   testForDivide1.setDigitAndClear( testIndex, 1 );
-  intMath.multiplyTopOne( testForDivide1, 
+  intMath.multiplyTopOne( testForDivide1,
                                       divideBy );
   if( toDivide.paramIsGreater( testForDivide1 ))
     testIndex--;
@@ -615,7 +615,7 @@ else
   testForDivide1.copy( quotient );
   testForDivide1.setD( testIndex, maxValue );
   intMath.multiplyTop( testForDivide1, divideBy );
-  if( testForDivide1.paramIsGreaterOrEq( 
+  if( testForDivide1.paramIsGreaterOrEq(
                                       toDivide ))
     {
     // ToMatchDecCount++;
@@ -692,7 +692,7 @@ while( true )
   // There's a minimum of two full Multiply()
   // operations per digit.
   intMath.multiply( testForDivide1, divideBy );
-  if( testForDivide1.paramIsGreaterOrEq( 
+  if( testForDivide1.paramIsGreaterOrEq(
                                     toDivide ))
     {
     // Most of the time this MaxValue estimate
@@ -744,6 +744,3 @@ if( divideByKeep.paramIsGreater( remainder ))
   throw "Remainder > DivideBy longDivide3().";
 
 }
-
-
-
