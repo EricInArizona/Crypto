@@ -27,8 +27,6 @@ class IntegerMath
   Uint64 scratch[Integer::digitArraySize] =
                                       { 1,2,3 };
 
-  // ModularReduction ModReduction;
-
   void setMultiplySign( Integer& result,
                         Integer& toMul );
 
@@ -38,13 +36,12 @@ class IntegerMath
 
 
   public:
-  SPrimes sPrimes;
-
   IntegerMath( void );
   IntegerMath( const IntegerMath& obj );
   static Uint64 findULSqrRoot( Uint64 toMatch );
   Uint64 isDivisibleBySmallPrime(
-                              Integer& toTest );
+                              Integer& toTest,
+                              SPrimes& sPrimes );
   void subtractULong( Integer& result,
                                   Uint64 toSub );
   void add( Integer& result, Integer& toAdd );
@@ -71,11 +68,6 @@ class IntegerMath
                                Integer& toMul );
   bool squareRoot( Integer& fromSqr,
                             Integer& sqrRoot );
-  bool isFermatPrime( Integer& toTest,
-                                 Uint32 howMany );
-  bool isFermatPrimeForOneValue(
-                   Integer& toTest, Uint64 base );
-
 
   };
 
