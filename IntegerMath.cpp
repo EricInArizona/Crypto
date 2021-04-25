@@ -62,7 +62,8 @@ return result;
 
 
 Uint64 IntegerMath::isDivisibleBySmallPrime(
-                               Integer& toTest )
+                               Integer& toTest,
+                               SPrimes& sPrimes )
 {
 if( (toTest.getD( 0 ) & 1) == 0 )
   return 2; // It's divisible by 2.
@@ -1025,92 +1026,4 @@ for( Uint32 bitCount = 0; bitCount < 32;
   }
 
 sqrRoot.setD( testIndex, xDigit );
-}
-
-
-
-bool IntegerMath::isFermatPrime( Integer& toTest,
-                                 Uint32 howMany )
-{
-// Also see Rabin-Miller test.
-// Also see Solovay-Strassen test.
-// Use bigger primes for Fermat test because the
-// modulus can't be too small.  And also it's
-// more likely to be congruent to 1 with a very
-// small modulus.  In other words it's a lot more
-// likely to appear to be a prime when it isn't.
-// This Fermat primality test is usually
-// described as using random primes to test with,
-// and you could do it that way too.
-// A common way of doing this is to use a
-// multiple of several primes as the base, like
-// 2 * 3 * 5 * 7 = 210.
-// Halfway down the array.
-Uint32 startAt = SPrimes::arrayLength >> 1;
-
-for( Uint32 count = startAt; count <
-                   (howMany + startAt); count++ )
-  {
-  if( !isFermatPrimeForOneValue( toTest,
-                   sPrimes.getPrimeAt( count )))
-    {
-    // It is definitely not a prime.
-    return false;
-    }
-  }
-
-// It _might_ be a prime if it passed this test.
-// Increasing HowMany increases the probability
-// that it's a prime.
-return true;
-}
-
-
-
-
-bool IntegerMath::isFermatPrimeForOneValue(
-                                Integer& toTest,
-                                Uint64 base )
-{
-// Assume ToTest is not a small number.  (Not
-// the size of a small prime.)
-// Normally it would be something like a 1024
-// bit number or bigger, but I assume it's at
-// least bigger than a 32 bit number.
-// Assume this has already been checked to
-// see if it's divisible by a small prime.
-// A has to be coprime to P and it is here
-// because ToTest is not divisible by a small
-// prime.
-// Fermat's little theorem:
-// A ^ (P - 1) is congruent to 1 mod P if P
-// is a prime.
-// Or: A^P - A is congrunt to A mod P.
-// If you multiply A by itself P times then
-// divide it by P, the remainder is A.
-//  (A^P / P)
-// 5^3 = 125.  125 - 5 = 120.  A multiple of 5.
-// 2^7 = 128.  128 - 2 = 7 * 18 (a multiple of 7.)
-
-Integer fermat1;
-Integer testFermat1;
-fermat1.copy( toTest );
-subtractULong( fermat1, 1 );
-testFermat1.setFromULong( base );
-
-// ========
-return true;
-/*
- ===========
-// ModularPower( Result, Exponent, Modulus, UsePresetBaseArray )
-
-ModReduction.ModularPower( TestFermat, Fermat1, ToTest, false );
-    // if( !TestFermat.IsEqual( Fermat2 ))
-      // throw( new Exception( "!TestFermat.IsEqual( Fermat2 )." ));
-
-    if( TestFermat.IsOne())
-      return true; // It passed the test. It _might_ be a prime.
-    else
-      return false; // It is _definitely_ a composite number.
-*/
 }
