@@ -34,10 +34,12 @@ class Uint8Array
     last = 0;
     }
 
+/*
   const Uint8* getBufPoint( void )
     {
     return cArray;
     }
+*/
 
   void appendVal( const Uint8 toSet );
   void appendArray( const Uint8* fromBuf,
