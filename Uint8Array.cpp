@@ -11,8 +11,8 @@ Uint8Array::Uint8Array( void )
 arraySize = 1024 * 64;
 cArray = new Uint8[arraySize];
 
-StIO::uPrintf(
-          "Uint8Array constructor called.\n" );
+// StIO::uPrintf(
+//        "Uint8Array constructor called.\n" );
 }
 
 
@@ -34,8 +34,8 @@ Uint8Array::~Uint8Array( void )
 {
 delete[] cArray;
 
-StIO::uPrintf(
-           "Uint8Array destructor called.\n" );
+// StIO::printFS(
+   //       "Uint8Array destructor called.\n" );
 }
 
 
