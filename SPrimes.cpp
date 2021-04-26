@@ -3,12 +3,16 @@
 
 #include "SPrimes.h"
 #include "IntegerMath.h"
+#include "StIO.h"
 
 
 SPrimes::SPrimes( void )
 {
+// StIO::uPrintf( "Start SPrimes constructor.\n" );
+
 pArray = new Uint64[arrayLength];
 makePrimeArray();
+// StIO::uPrintf( "End SPrimes constructor.\n" );
 }
 
 
@@ -99,14 +103,22 @@ for( Uint64 testN = 29; ; testN += 2 )
   if( (testN % 3) == 0 )
     continue;
 
+  // Indicate if it's a Uint64.
+  // if( (testN >> 32) != 0 )
+    // StIO::printFS( "P" );
+
   // If it has no prime factors then add it.
   if( 0 == getFirstPrimeFactor( testN ))
     {
     pArray[last] = testN;
     last++;
     if( last >= arrayLength )
+      {
+      StIO::printFS( "Last prime: " );
+      StIO::printFUD( testN );
+      StIO::printFS( "\n" );
       return;
-
+      }
     }
   }
 }
