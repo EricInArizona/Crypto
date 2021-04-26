@@ -26,8 +26,8 @@ for( Uint32 count = 0; count < digitArraySize;
   D[count] = obj.D[count];
   }
 
-StIO::uPrintf(
-     "Base10Number copy constructor called.\n" );
+// StIO::printFS(
+  // "Base10Number copy constructor called.\n" );
 }
 
 
@@ -96,5 +96,3 @@ if( where == 0 )
 
 index = where - 1;
 }
-
-
