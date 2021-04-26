@@ -11,7 +11,8 @@ CharBuf::CharBuf( void )
 arraySize = 1024 * 64;
 cArray = new char[arraySize];
 
-StIO::uPrintf( "CharBuf constructor called.\n" );
+// StIO::printFS(
+//         "CharBuf constructor called.\n" );
 }
 
 
@@ -31,7 +32,8 @@ CharBuf::~CharBuf( void )
 {
 delete[] cArray;
 
-StIO::uPrintf( "CharBuf destructor called.\n" );
+// StIO::printFS(
+//           "CharBuf destructor called.\n" );
 }
 
 
