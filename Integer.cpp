@@ -660,7 +660,7 @@ for( Uint32 count = 0; count < index; count++ )
 
 bool Integer::makeRandomOdd( Uint32 setToIndex )
 {
-StIO::printFS( "Top of random.\n" );
+// StIO::printFS( "Top of random.\n" );
 
 isNegative = false;
 if( setToIndex > (digitArraySize - 3))
@@ -700,11 +700,11 @@ for( Uint32 count = 0; count <= index; count++ )
   if( (D[count] >> 32) != 0 )
     throw "(D[Count] >> 32) != 0 MakeRandom().";
 
-  StIO::printFUD( D[count] );
-  StIO::printFS( "\n" );
+  // StIO::printFUD( D[count] );
+  // StIO::printFS( "\n" );
   }
 
-StIO::printFS( "bottom of random.\n" );
+// StIO::printFS( "bottom of random.\n" );
 
 D[0] |= 1; // Make it odd.
 return true;
