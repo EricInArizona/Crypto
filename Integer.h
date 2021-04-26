@@ -145,9 +145,7 @@ class Integer
   void shiftRight( Uint32 shiftBy );
   void setDigitAndClear( Uint32 where,
                                   Uint64 toSet );
-  bool makeRandomOdd( Uint32 setToIndex,
-                             Uint8 randBytes[],
-                             Uint32 howMany );
+  bool makeRandomOdd( Uint32 setToIndex );
   bool setFromAsciiStr( Str& in );
   Str getAsciiStr( void );
   void setFromBigEndianByteArray(
