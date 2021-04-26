@@ -4,11 +4,9 @@
 
 #include "MainApp.h"
 #include "StIO.h"
-#include "Base10Number.h"
+// #include "Base10Number.h"
 #include "Str.h"
-#include "Integer.h"
-#include "FileIO.h"
-// #include "Markers.h"
+#include "RSA.h"
 
 
 
@@ -24,49 +22,17 @@ if( !basicThingsAreRight())
   return 1; // Some error code.
   }
 
-
 Str me( "Programming by Eric Chauvin." );
 me.print();
 StIO::putC( '\n' );
-// StIO::uPrintf( "Begin marker: >" );
-// StIO::putC( Markers::Begin );
-// StIO::putC( '<' );
-// StIO::putC( '\n' );
-
 StIO::uPrintf( "Version date: " );
 Str ver( getVersionStr() );
 ver.printLine();
 
-StIO::uPrintf( "\n" );
+// StIO::uPrintf( "\n" );
 
-Str oneS( "123456789" );
-Str twoS( "987654" );
-
-StIO::uPrintf( "Created strings.\n" );
-
-Base10Number b1( oneS );
-Base10Number b2( twoS );
-
-StIO::uPrintf( "Created Base 10 numbers.\n" );
-
-Integer int1;
-int1.setToOne();
-
-StIO::uPrintf( "Created Integer.\n" );
-
-FileIO testFile;
-testFile.appendStr( oneS );
-
-const char* testChars = "\nHere are some test"
-    " characters in this string here.\n";
-
-Uint32 len = Str::charsLength( testChars );
-testFile.appendChars( testChars, len );
-
-const char* fileName =
-          "\\Eric\\Main\\Crypto\\TestFile.txt";
-
-testFile.writeAll( fileName );
+RSA rsa;
+rsa.test();
 
 return 0;
 }
