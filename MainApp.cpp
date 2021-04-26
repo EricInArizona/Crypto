@@ -4,7 +4,6 @@
 
 #include "MainApp.h"
 #include "StIO.h"
-// #include "Base10Number.h"
 #include "Str.h"
 #include "RSA.h"
 
@@ -16,20 +15,18 @@ try
 {
 if( !basicThingsAreRight())
   {
-  StIO::uPrintf(
+  StIO::printFS(
       "basicThingsAreRight() returned false.\n" );
 
   return 1; // Some error code.
   }
 
 Str me( "Programming by Eric Chauvin." );
-me.print();
-StIO::putC( '\n' );
-StIO::uPrintf( "Version date: " );
+me.printLine();
+StIO::printFS( "Version date: " );
 Str ver( getVersionStr() );
 ver.printLine();
-
-// StIO::uPrintf( "\n" );
+StIO::printFS( "\n" );
 
 RSA rsa;
 rsa.test();
@@ -38,8 +35,8 @@ return 0;
 }
 catch( const char* str )
   {
-  StIO::uPrintf( "Exception in main loop.\n" );
-  StIO::uPrintf( str );
+  StIO::printFS( "Exception in main loop.\n" );
+  StIO::printFS( str );
   return 1;
   }
 
@@ -48,7 +45,7 @@ catch( ... )
   const char* errorS = "An unknown exception"
          " happened in the main loop.\n";
 
-  StIO::uPrintf( errorS );
+  StIO::printFS( errorS );
   return 1;
   }
 }
