@@ -71,7 +71,7 @@ cArray = new char[arraySize];
 for( Uint32 count = 0; count < arraySize; count++ )
   cArray[count] = in.cArray[count];
 
-StIO::uPrintf( "Str copy constructor called.\n" );
+StIO::printFS( "Str copy constructor called.\n" );
 }
 
 
