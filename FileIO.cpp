@@ -13,7 +13,8 @@
 
 FileIO::FileIO( void )
 {
-StIO::uPrintf( "FileIO constructor called.\n" );
+// StIO::printFS(
+//        "FileIO constructor called.\n" );
 }
 
 
@@ -30,7 +31,8 @@ throw showS;
 
 FileIO::~FileIO( void )
 {
-StIO::uPrintf( "FileIO destructor called.\n" );
+// StIO::printFS(
+//       "FileIO destructor called.\n" );
 }
 
 
