@@ -5,8 +5,8 @@
 #include "Integer.h"
 #include "StIO.h"
 #include "CharBuf.h"
-
-
+#include "RandomCrypto.h"
+#include "Uint8Array.h"
 
 
 Integer::Integer( void )
@@ -20,7 +20,7 @@ Integer::Integer( const Integer& obj )
 {
 copy( obj );
 
-StIO::uPrintf(
+StIO::printFS(
           "Integer copy constructor called.\n" );
 }
 
@@ -658,39 +658,41 @@ for( Uint32 count = 0; count < index; count++ )
 
 
 
-bool Integer::makeRandomOdd( Uint32 setToIndex,
-                             Uint8 randBytes[],
-                             Uint32 howMany )
+bool Integer::makeRandomOdd( Uint32 setToIndex )
 {
+StIO::printFS( "Top of random.\n" );
+
 isNegative = false;
 if( setToIndex > (digitArraySize - 3))
   throw "MakeRandomOdd index is too high.";
 
-if( (howMany & 3) != 0 )
-  throw "MakeRandomOdd not divisible by 4.";
-
 Uint32 howManyBytes = (setToIndex * 4) + 4;
-if( howMany < howManyBytes )
-  throw "MakeRandomOdd howMany < howManyBytes.";
+
+Uint8Array u8a;
+RandomCrypto::makeRandomBytes( u8a,
+                                howManyBytes );
 
 index = setToIndex;
 Uint32 where = 0;
 for( Uint32 count = 0; count <= index; count++ )
   {
-  Uint64 digit = randBytes[where];
+  Uint64 digit = u8a.valAt( where );
   digit <<= 8;
-  digit |= randBytes[where + 1];
+  digit |= u8a.valAt( where + 1 );
   digit <<= 8;
-  digit |= randBytes[where + 2];
+  digit |= u8a.valAt( where + 2 );
   digit <<= 8;
-  digit |= randBytes[where + 3];
+  digit |= u8a.valAt( where + 3 );
   D[count] = digit;
   where += 4;
   }
 
 // Make sure there isn't a zero at the top.
 if( D[index] == 0 )
-  throw "getNonZeroBytes() bytes was wrong.";
+  throw "zero at top of random bytes.";
+
+if( (D[index] >> 24) == 0 )
+  throw "zero at very top of random bytes.";
 
 // Test:
 for( Uint32 count = 0; count <= index; count++ )
@@ -698,7 +700,11 @@ for( Uint32 count = 0; count <= index; count++ )
   if( (D[count] >> 32) != 0 )
     throw "(D[Count] >> 32) != 0 MakeRandom().";
 
+  StIO::printFUD( D[count] );
+  StIO::printFS( "\n" );
   }
+
+StIO::printFS( "bottom of random.\n" );
 
 D[0] |= 1; // Make it odd.
 return true;
@@ -824,7 +830,7 @@ for( Uint32 count = 0; count <= index; count++ )
 
   }
 
-StIO::uPrintf(
+StIO::printFS(
           "Before two copy constructors.\n" );
 
 return cBuf.getStr();
@@ -1144,5 +1150,3 @@ while( true )
   where -= 2;
   }
 }
-
-
