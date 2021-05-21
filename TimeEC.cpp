@@ -9,12 +9,12 @@
 
 TimeEC::TimeEC( void )
 {
-getTime();
+setNow();
 }
 
 
 
-void TimeEC::getTime( void )
+void TimeEC::setNow( void )
 {
 time_t rawtime;
 
@@ -42,3 +42,7 @@ dayLightSavings = buf.tm_isdst;
 
 
 
+Int64 TimeEC::diffSec( TimeEC& in )
+{
+return timeSeconds - in.timeSeconds;
+}
