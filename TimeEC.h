@@ -29,7 +29,8 @@ class TimeEC
 
   public:
   TimeEC( void );
-  void getTime( void );
+  void setNow( void );
+  Int64 diffSec( TimeEC& in );
 
 
   };
