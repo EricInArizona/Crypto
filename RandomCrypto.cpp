@@ -28,9 +28,18 @@ std::mt19937 gen( rd() );
 //std::uniform_int_distribution<> dist( 1,
 //                               0xFFFFFFFF );
 
-for( Uint32 count = 0; count < howMany; count++ )
-  u8a.appendVal( (Uint8)gen());
+Uint32 gotCount = 0;
+for( Uint32 count = 0; count < 100000; count++ )
+  {
+  // dist( gen())
+  Uint8 c = (Uint8)gen();
+  if( c == 0 )
+    continue;
 
-//  u8a.appendVal( (Uint8)dist( gen()));
+  u8a.appendVal( c );
+  gotCount++;
+  if( gotCount >= howMany )
+    return;
 
+  }
 }
