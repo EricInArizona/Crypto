@@ -2,8 +2,9 @@
 
 
 // This is supposed to be cryptographically
-// random, but it probably won't be in the
-// early stages of testing.
+// random, but this is in the early stages of
+// testing.  I'm not writing a book on
+// randomness just yet.
 
 
 #ifndef ECRandomCrypto_H
