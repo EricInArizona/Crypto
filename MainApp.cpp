@@ -31,6 +31,8 @@ StIO::printFS( "\n" );
 RSA rsa;
 rsa.test();
 
+StIO::printFS( "End of main app.\n" );
+
 return 0;
 }
 catch( const char* str )
