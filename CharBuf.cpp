@@ -79,17 +79,44 @@ last++;
 
 
 
-void CharBuf::appendChars( const char* fromBuf,
-                           Uint32 howMany )
+void CharBuf::appendChars( const char* pStr )
 {
-if( ((last + 2) + howMany) <= arraySize )
+const char* sizePoint = pStr;
+Uint32 strSize = 0;
+for( Uint32 count = 0; count < 10000; count++ )
+  {
+  char c = *sizePoint;
+  if( c == 0 )
+    break;
+
+  sizePoint++;
+  strSize++;
+  }
+
+if( (arraySize + strSize + 2) <= arraySize )
+  increaseSize( strSize + (1024 * 64) );
+
+for( Uint32 count = 0; count < strSize; count++ )
+  {
+  cArray[last] = *pStr;
+  last++;
+  pStr++;
+  }
+}
+
+
+
+void CharBuf::appendCharBuf( const char* buf,
+                             const Uint32 howMany )
+{
+if( (arraySize + howMany + 2) <= arraySize )
   increaseSize( howMany + (1024 * 64) );
 
 for( Uint32 count = 0; count < howMany; count++ )
   {
-  cArray[last] = *fromBuf;
+  cArray[last] = *buf;
   last++;
-  fromBuf++;
+  buf++;
   }
 }
 
