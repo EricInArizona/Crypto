@@ -6,6 +6,7 @@
 #include "StIO.h"
 #include "Str.h"
 #include "RSA.h"
+#include "ThreadEC.h"
 
 
 
@@ -21,33 +22,47 @@ if( !basicThingsAreRight())
   return 1; // Some error code.
   }
 
-Str me( "Programming by Eric Chauvin." );
-me.printLine();
-StIO::printFS( "Version date: " );
-Str ver( getVersionStr() );
-ver.printLine();
-StIO::printFS( "\n" );
+mainIO.appendChars(
+            "Programming by Eric Chauvin.\n" );
+
+mainIO.appendChars( "Version date: " );
+mainIO.appendChars( getVersionStr() );
+mainIO.appendChars( "\n" );
 
 RSA rsa;
-rsa.test();
+rsa.test( mainIO );
 
-StIO::printFS( "End of main app.\n" );
+mainIO.appendChars( "End of main app.\n" );
+
+// mainIO.readAll( fileName );
+mainIO.writeAll(
+          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+
+ThreadEC::sleep( 1000 ); // 1 second.
 
 return 0;
 }
-catch( const char* str )
+catch( const char* in )
   {
-  StIO::printFS( "Exception in main loop.\n" );
-  StIO::printFS( str );
+  mainIO.appendChars( "Exception in main loop.\n" );
+  mainIO.appendChars( in );
+  mainIO.writeAll(
+          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+
+  ThreadEC::sleep( 1000 ); // 1 second.
   return 1;
   }
 
 catch( ... )
   {
-  const char* errorS = "An unknown exception"
+  const char* in = "An unknown exception"
          " happened in the main loop.\n";
 
-  StIO::printFS( errorS );
+  mainIO.appendChars( in );
+  mainIO.writeAll(
+          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+
+  ThreadEC::sleep( 1000 ); // 1 second.
   return 1;
   }
 }
