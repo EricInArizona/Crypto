@@ -38,8 +38,10 @@ class CharBuf
     return cArray;
     }
   void appendChar( const char toSet );
-  void appendChars( const char* fromBuf,
-                              Uint32 howMany );
+  void appendChars( const char* pStr );
+  void appendCharBuf( const char* buf,
+                      const Uint32 howMany );
+
   void appendStr( Str& in );
   Str getStr( void );
 
