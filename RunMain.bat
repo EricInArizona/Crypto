@@ -3,4 +3,5 @@ rem echo This is RunMain.bat.
 
 
 cd \Eric\Main\Crypto
-\Eric\Main\Crypto\main.exe > ExeOut.txt
+rem \Eric\Main\Crypto\main.exe > ExeOut.txt
+\Eric\Main\Crypto\main.exe
