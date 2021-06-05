@@ -23,8 +23,7 @@ class FileIO
   void readAll( const char* fileName );
   void writeAll( const char* fileName );
   void appendStr( Str& in );
-  void appendChars( const char* fromBuf,
-                              Uint32 howMany );
+  void appendChars( const char* pStr );
 
   };
 
