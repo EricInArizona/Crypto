@@ -17,7 +17,7 @@ class Str
   char* cArray;
 
   public:
-  Str( const char* str );
+  Str( const char* pStr );
   Str( char ar[], Uint32 howMany );
   Str( const Str& in );
   Str( const Str& in1, const Str& in2 );
