@@ -62,7 +62,7 @@ inFile.seekg( 0 );
 char* buffer = new char[howMany];
 inFile.read( buffer, howMany );
 
-cBuf.appendChars( buffer, howMany );
+cBuf.appendCharBuf( buffer, howMany );
 
 delete[] buffer;
 inFile.close();
@@ -78,8 +78,7 @@ cBuf.appendStr( in );
 
 
 
-void FileIO::appendChars( const char* fromBuf,
-                                 Uint32 howMany )
+void FileIO::appendChars( const char* pStr )
 {
-cBuf.appendChars( fromBuf, howMany );
+cBuf.appendChars( pStr );
 }
