@@ -12,6 +12,10 @@
 
 int MainApp::mainLoop( int argc, char* argv[] )
 {
+Uint32 delay = 500; // milliseconds.
+const char* outFile =
+             "\\Eric\\Main\\Crypto\\ExeOut.txt";
+
 try
 {
 if( !basicThingsAreRight())
@@ -35,10 +39,9 @@ rsa.test( mainIO );
 mainIO.appendChars( "End of main app.\n" );
 
 // mainIO.readAll( fileName );
-mainIO.writeAll(
-          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+mainIO.writeAll( outFile );
 
-ThreadEC::sleep( 1000 ); // 1 second.
+ThreadEC::sleep( delay );
 
 return 0;
 }
@@ -46,10 +49,9 @@ catch( const char* in )
   {
   mainIO.appendChars( "Exception in main loop.\n" );
   mainIO.appendChars( in );
-  mainIO.writeAll(
-          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+  mainIO.writeAll( outFile );
 
-  ThreadEC::sleep( 1000 ); // 1 second.
+  ThreadEC::sleep( delay );
   return 1;
   }
 
@@ -59,10 +61,9 @@ catch( ... )
          " happened in the main loop.\n";
 
   mainIO.appendChars( in );
-  mainIO.writeAll(
-          "\\Eric\\Main\\Crypto\\ExeOut.txt" );
+  mainIO.writeAll( outFile );
 
-  ThreadEC::sleep( 1000 ); // 1 second.
+  ThreadEC::sleep( delay ); // 1 second.
   return 1;
   }
 }
