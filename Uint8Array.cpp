@@ -3,7 +3,7 @@
 
 
 #include "Uint8Array.h"
-#include "StIO.h"
+// #include "StIO.h"
 
 
 Uint8Array::Uint8Array( void )
@@ -150,4 +150,12 @@ if( where >= last )
   throw "In valAt() past last.";
 
 return cArray[where];
+}
+
+
+
+Str Uint8Array::makeStr( void )
+{
+Str result( cArray, last );
+return result;
 }
