@@ -19,6 +19,8 @@ class Str
   public:
   Str( const char* pStr );
   Str( char ar[], Uint32 howMany );
+  Str( Uint8 ar[], const Uint32 howMany );
+
   Str( const Str& in );
   Str( const Str& in1, const Str& in2 );
   Str( Uint64 n );
