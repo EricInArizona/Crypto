@@ -8,6 +8,7 @@
 
 
 #include "BasicTypes.h"
+#include "Str.h"
 
 
 
@@ -31,6 +32,7 @@ class TimeEC
   TimeEC( void );
   void setNow( void );
   Int64 diffSec( TimeEC& in );
+  Str timeStr( void );
 
 
   };
