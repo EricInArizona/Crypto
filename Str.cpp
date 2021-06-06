@@ -57,6 +57,24 @@ for( Uint32 count = 0; count < arraySize;
 
 
 
+Str::Str( Uint8 ar[], const Uint32 howMany )
+{
+arraySize = howMany;
+if( arraySize == 0 )
+  {
+  cArray = new char[1];
+  return;
+  }
+
+cArray = new char[arraySize];
+for( Uint32 count = 0; count < arraySize;
+                                        count++ )
+  cArray[count] = (char)ar[count];
+
+}
+
+
+
 // The copy constructor.
 Str::Str( const Str& in )
 {
