@@ -3,7 +3,7 @@
 
 
 #include "TimeEC.h"
-#include "StIO.h"
+#include "Uint8Array.h"
 #include <ctime>
 
 
@@ -25,9 +25,9 @@ struct tm buf;
 // errno_t errorNumber = localtime_s( &buf,
 localtime_s( &buf, &rawtime );
 
-StIO::printFS( "Year:\n" );
-StIO::printFUD( 1900 + buf.tm_year );
-StIO::printFS( "\n" );
+// StIO::printFS( "Year:\n" );
+// StIO::printFUD( 1900 + buf.tm_year );
+// StIO::printFS( "\n" );
 
 seconds = buf.tm_sec;
 minutes = buf.tm_min;
@@ -45,4 +45,26 @@ dayLightSavings = buf.tm_isdst;
 Int64 TimeEC::diffSec( TimeEC& in )
 {
 return timeSeconds - in.timeSeconds;
+}
+
+
+
+Str TimeEC::timeStr( void )
+{
+Uint8Array u8a;
+
+
+Str colon( ":" );
+Str secS( seconds );
+Str minS( minutes );
+Str hourS( hour );
+
+// Close enough for now.
+u8a.appendStr( hourS );
+u8a.appendStr( colon );
+u8a.appendStr( minS );
+u8a.appendStr( colon );
+u8a.appendStr( secS );
+
+return u8a.makeStr();
 }
