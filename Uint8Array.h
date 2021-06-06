@@ -48,6 +48,7 @@ class Uint8Array
   void reverse( void );
   Uint8 valAt( Uint32 where );
   bool isAllZero( void );
+  Str makeStr( void );
 
 
   };
