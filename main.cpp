@@ -5,10 +5,10 @@
 #include "MainApp.h"
 
 
-MainApp mApp;
-
 
 Int32 main( Int32 argc, char* argv[] )
 {
+MainApp mApp;
+
 return mApp.mainLoop( argc, argv );
 }
