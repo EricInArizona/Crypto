@@ -63,7 +63,7 @@ catch( ... )
   mainIO.appendChars( in );
   mainIO.writeAll( outFile );
 
-  ThreadEC::sleep( delay ); // 1 second.
+  ThreadEC::sleep( delay );
   return 1;
   }
 }
