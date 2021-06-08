@@ -12,7 +12,7 @@
 
 int MainApp::mainLoop( int argc, char* argv[] )
 {
-Uint32 delay = 500; // milliseconds.
+Uint32 delay = 250; // milliseconds.
 const char* outFile =
              "\\Eric\\Main\\Crypto\\ExeOut.txt";
 
