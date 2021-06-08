@@ -8,7 +8,7 @@
 #include "Division.h"
 
 
-
+/*
 bool Division::shortDivide( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
@@ -70,6 +70,7 @@ else
   return false;
 
 }
+*/
 
 
 
@@ -136,6 +137,7 @@ return remainderU;
 
 
 
+
 void Division::divide( Integer& toDivideOriginal,
                        Integer& divideByOriginal,
                        Integer& quotient,
@@ -151,6 +153,7 @@ if( divideByOriginal.getIsNegative() )
 if( divideByOriginal.isZero() )
   throw "Divide() dividing by zero.";
 
+/*
 Integer toDivide;
 toDivide.copy( toDivideOriginal );
 
@@ -226,11 +229,12 @@ if( !remainder.isEqual( remainderTest2 ))
 
 if( !remainder.isEqual( remainderTest3 ))
   throw "!remainder.isEqual( remainderTest3 )";
-
+*/
 }
 
 
 
+/*
 bool Division::longDivide1( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
@@ -299,10 +303,11 @@ intMath.subtract( remainder, test1 );
 // Does not divide it exactly.
 return false;
 }
+*/
 
 
 
-
+/*
 void Division::testDivideBits( Uint64 maxValue,
                                bool isTop,
                                Uint32 testIndex,
@@ -359,10 +364,11 @@ for( Int32 bitCount = 31; bitCount >= 0;
   bitTest >>= 1;
   }
 }
+*/
 
 
 
-
+/*
 // This works like LongDivide1 except that it
 // estimates the maximum value for the digit and
 // the for-loop for bit testing is called
@@ -488,10 +494,11 @@ else
   return false;
 
 }
+*/
 
 
 
-
+/*
 // If you multiply the numerator and the
 // denominator by the same amount then the
 // quotient is still the same.  By shifting
@@ -514,9 +521,11 @@ for( Uint32 count = 0; count < 32; count++ )
 
 return shiftBy;
 }
+*/
 
 
 
+/*
 void Division::longDivide3( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
@@ -744,3 +753,4 @@ if( divideByKeep.paramIsGreater( remainder ))
   throw "Remainder > DivideBy longDivide3().";
 
 }
+*/
