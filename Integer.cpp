@@ -3,7 +3,6 @@
 
 
 #include "Integer.h"
-#include "StIO.h"
 #include "CharBuf.h"
 #include "RandomCrypto.h"
 #include "Uint8Array.h"
@@ -16,12 +15,11 @@ setToZero();
 
 
 // The copy constructor.
-Integer::Integer( const Integer& obj )
+Integer::Integer( const Integer& in )
 {
-copy( obj );
+// copy( in );
 
-StIO::printFS(
-          "Integer copy constructor called.\n" );
+throw "Don't use the Integer copy constructor.";
 }
 
 
@@ -38,7 +36,7 @@ if( index >= digitArraySize )
 }
 
 
-
+/*
 void Integer::setToMaxValue( void )
 {
 isNegative = false;
@@ -48,7 +46,7 @@ for( Uint32 count = 0; count <=
   D[count] = 0xFFFFFFFF;
 
 }
-
+*/
 
 
 void Integer::setFromULong( Uint64 toSet )
@@ -69,43 +67,46 @@ else
 
 
 
-void Integer::copy( const Integer& copyFrom )
+void Integer::copy( const Integer& from )
 {
-isNegative = copyFrom.isNegative;
-index = copyFrom.index;
-const Uint32 last = index;
+isNegative = from.isNegative;
+
+const Uint32 last = from.index;
+
+index = last;
 for( Uint32 count = 0; count <= last; count++ )
-      D[count] = copyFrom.D[count];
+      D[count] = from.D[count];
 
 }
 
 
-
+/*
 void Integer::copyFromP( const Integer* copyFrom )
 {
 // Like: copyFromP( this );
 
 isNegative = copyFrom->isNegative;
 index = copyFrom->index;
-const Uint32 last = index;
+const Uint32 last = copyFrom->index;
 for( Uint32 count = 0; count <= last; count++ )
       D[count] = copyFrom->D[count];
 
 }
+*/
 
 
-void Integer::copyUpTo( const Integer& copyFrom,
+void Integer::copyUpTo( const Integer& from,
                         Uint32 where )
 {
-isNegative = copyFrom.isNegative;
+isNegative = from.isNegative;
 index = where;
-for( Uint32 count = 0; count <= index; count++ )
-  D[count] = copyFrom.D[count];
+for( Uint32 count = 0; count <= where; count++ )
+  D[count] = from.D[count];
 
 }
 
 
-
+/*
 bool Integer::isEqualToULong( Uint64 toTest )
 {
 if( isNegative )
@@ -132,6 +133,7 @@ if( shifted != D[1] )
 
 return true;
 }
+*/
 
 
 
@@ -197,7 +199,7 @@ if( isNegative )
   throw "ParamIsGreater() can't be negative.";
 
 if( x.isNegative )
-  throw "ParamIsGreater() can't be negative.";
+  throw "ParamIsGreater() can't be negative (2).";
 
 if( index != x.index )
   {
@@ -225,7 +227,7 @@ return false; // It was equal, but not greater.
 }
 
 
-
+/*
 bool Integer::paramIsGreaterOrEq( Integer& x )
 {
 if( isEqual( x ))
@@ -264,6 +266,7 @@ if( carry != 0 )
   D[index] = carry;
   }
 }
+*/
 
 
 
@@ -312,6 +315,7 @@ if( carry != 0 )
   D[index] = carry;
   }
 }
+
 
 
 
@@ -374,6 +378,7 @@ if( carry != 0 )
 
 
 
+/*
 // This is an optimization for small squares.
 void Integer::square0( void )
 {
@@ -655,13 +660,11 @@ for( Uint32 count = 0; count < index; count++ )
   D[count] = 0;
 
 }
-
+*/
 
 
 bool Integer::makeRandomOdd( Uint32 setToIndex )
 {
-// StIO::printFS( "Top of random.\n" );
-
 isNegative = false;
 if( setToIndex > (digitArraySize - 3))
   throw "MakeRandomOdd index is too high.";
@@ -700,11 +703,7 @@ for( Uint32 count = 0; count <= index; count++ )
   if( (D[count] >> 32) != 0 )
     throw "(D[Count] >> 32) != 0 MakeRandom().";
 
-  // StIO::printFUD( D[count] );
-  // StIO::printFS( "\n" );
   }
-
-// StIO::printFS( "bottom of random.\n" );
 
 D[0] |= 1; // Make it odd.
 return true;
@@ -712,6 +711,7 @@ return true;
 
 
 
+/*
 void Integer::setOneDValueFromChar( Uint64 toSet,
                 Uint32 position, Uint32 offset )
 {
@@ -830,8 +830,8 @@ for( Uint32 count = 0; count <= index; count++ )
 
   }
 
-StIO::printFS(
-          "Before two copy constructors.\n" );
+// StIO::printFS(
+//        "Before two copy constructors.\n" );
 
 return cBuf.getStr();
 }
@@ -1020,7 +1020,7 @@ else
 // of it, so now add P0:
 return (part1 + p0) % divisor;
 }
-
+*/
 
 
 Uint64 Integer::getMod32( Uint64 divisor )
@@ -1066,7 +1066,7 @@ return remainder;
 
 
 
-
+/*
 Uint64 Integer::getMod64( Uint64 divisor )
 {
 if( divisor == 0 )
@@ -1150,3 +1150,4 @@ while( true )
   where -= 2;
   }
 }
+*/
