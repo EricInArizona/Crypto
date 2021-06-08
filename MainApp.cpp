@@ -9,13 +9,10 @@
 #include "ThreadEC.h"
 
 
-// See StIO.cpp for some notes.
-
-
 
 int MainApp::mainLoop( int argc, char* argv[] )
 {
-Uint32 delay = 250; // milliseconds.
+Uint32 delay = 200; // milliseconds.
 const char* outFile =
              "\\Eric\\Main\\Crypto\\ExeOut.txt";
 
@@ -29,7 +26,7 @@ StIO::printFS( "\n" );
 if( !basicThingsAreRight())
   {
   // StIO::printFS()
-  mainIO.appendChars(    
+  mainIO.appendChars(
    "basicThingsAreRight() returned false.\n" );
 
   mainIO.writeAll( outFile );
