@@ -17,9 +17,9 @@ class StIO
 
   public:
   static void printFS( const char* toWrite );
-  static void printFD( Int32 d );
-  static void printFUD( Uint32 d );
-  static void putC( Uint16 c );
+  // static void printFD( Int32 d );
+  // static void printFUD( Uint32 d );
+  // static void putC( Uint16 c );
 
   };
 
