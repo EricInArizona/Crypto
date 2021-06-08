@@ -17,10 +17,12 @@ class Division
   private:
 
   public:
+/*
   static bool shortDivide( Integer& toDivide,
                     Integer& divideBy,
                     Integer& quotient,
                     Integer& remainder );
+*/
 
   static Uint64 shortDivideRem(
                     Integer& toDivideOriginal,
@@ -33,6 +35,7 @@ class Division
                     Integer& remainder,
                     IntegerMath& intMath );
 
+/*
   static bool longDivide1( Integer& toDivide,
                     Integer& divideBy,
                     Integer& quotient,
@@ -62,7 +65,7 @@ class Division
                          Integer& remainder,
                          IntegerMath& intMath );
 
-
+*/
   };
 
 
