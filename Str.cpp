@@ -3,7 +3,7 @@
 
 
 #include "Str.h"
-#include "StIO.h"
+// #include "StIO.h"
 
 
 
@@ -89,7 +89,6 @@ cArray = new char[arraySize];
 for( Uint32 count = 0; count < arraySize; count++ )
   cArray[count] = in.cArray[count];
 
-StIO::printFS( "Str copy constructor called.\n" );
 }
 
 
@@ -196,6 +195,8 @@ return cArray[where];
 }
 
 
+
+/*
 void Str::print()
 {
 if( arraySize == 0 )
@@ -205,8 +206,10 @@ for( Uint32 count = 0; count < arraySize; count++ )
   StIO::putC( cArray[count] );
 
 }
+*/
 
 
+/*
 void Str::printLine()
 {
 if( arraySize == 0 )
@@ -220,6 +223,7 @@ for( Uint32 count = 0; count < arraySize; count++ )
 
 StIO::putC( '\n' );
 }
+*/
 
 
 
