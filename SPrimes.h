@@ -16,7 +16,7 @@
 class SPrimes
   {
   private:
-  Uint64* pArray;
+  Uint32* pArray;
   void makePrimeArray( void );
 
   public:
@@ -24,9 +24,9 @@ class SPrimes
   SPrimes( void );
   SPrimes( const SPrimes& in );
   ~SPrimes( void );
-  Uint64 getFirstPrimeFactor( Uint64 toTest );
-  Uint64 getBiggestPrime( void );
-  Uint64 getPrimeAt( Uint32 where );
+  Uint32 getFirstPrimeFactor( Uint32 toTest );
+  Uint32 getBiggestPrime( void );
+  Uint32 getPrimeAt( Uint32 where );
 
   };
 
