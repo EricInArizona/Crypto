@@ -2,11 +2,6 @@
 
 
 
-// Apparently if you write too much too quickly
-// then Windows will shut the program down.
-
-
-
 #include "StIO.h"
 #include <stdio.h>
 // #include <wchar.h>
