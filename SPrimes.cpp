@@ -3,16 +3,12 @@
 
 #include "SPrimes.h"
 #include "IntegerMath.h"
-#include "StIO.h"
 
 
 SPrimes::SPrimes( void )
 {
-// StIO::uPrintf( "Start SPrimes constructor.\n" );
-
-pArray = new Uint64[arrayLength];
+pArray = new Uint32[arrayLength];
 makePrimeArray();
-// StIO::uPrintf( "End SPrimes constructor.\n" );
 }
 
 
@@ -30,25 +26,28 @@ throw "Copy constructor for SPrimes called.\n";
 }
 
 
-Uint64 SPrimes::getBiggestPrime( void )
+Uint32 SPrimes::getBiggestPrime( void )
 {
 return pArray[arrayLength - 1];
 }
 
 
 
-Uint64 SPrimes::getPrimeAt( Uint32 where )
+Uint32 SPrimes::getPrimeAt( Uint32 where )
 {
 if( where >= arrayLength )
+  {
+  throw "getPrimeAt() out of bounds.";
   return 0;
+  }
 
 return pArray[where];
 }
 
 
 
-Uint64 SPrimes::getFirstPrimeFactor(
-                                 Uint64 toTest )
+Uint32 SPrimes::getFirstPrimeFactor(
+                                 Uint32 toTest )
 {
 if( toTest < 2 )
   return 0;
@@ -62,12 +61,12 @@ if( toTest == 3 )
 const Uint64 max = IntegerMath::
                          findULSqrRoot( toTest );
 if( max == 0 )
-  throw "Max was zero.";
+  throw "SPrimes. Max was zero.";
 
 for( Uint32 count = 0; count < arrayLength;
                                          count++ )
   {
-  Uint64 testN = pArray[count];
+  Uint32 testN = pArray[count];
   if( testN < 1 )
     return 0;
 
@@ -103,22 +102,18 @@ for( Uint64 testN = 29; ; testN += 2 )
   if( (testN % 3) == 0 )
     continue;
 
-  // Indicate if it's a Uint64.
-  // if( (testN >> 32) != 0 )
-    // StIO::printFS( "P" );
+  if( (testN >> 32) != 0 )
+    throw "SPrimes. A small prime is a Uint64.";
 
   // If it has no prime factors then add it.
-  if( 0 == getFirstPrimeFactor( testN ))
+  if( 0 == getFirstPrimeFactor( (Uint32)testN ))
     {
-    pArray[last] = testN;
+    pArray[last] = (Uint32)testN;
     last++;
     if( last >= arrayLength )
-      {
-      StIO::printFS( "Last prime: " );
-      StIO::printFUD( testN );
-      StIO::printFS( "\n" );
       return;
-      }
+
     }
   }
 }
+
