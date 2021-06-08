@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2015 - 2021.
+// Copyright Eric Chauvin 2021.
 
 
 
@@ -21,10 +21,11 @@ class Mod
   Integer baseAr[Integer::digitArraySize] = {};
   Integer currentBase;
 
+
   public:
   Mod( void );
   Mod( const Mod& in );
-  ~Mod( void );
+  // ~Mod( void );
   void setupBaseArray( Integer& setBase,
                          IntegerMath& intMath );
   void makeExact( Integer& exact,
@@ -34,12 +35,11 @@ class Mod
                            Integer& toReduce,
                            IntegerMath& intMath );
 
-  void modPower( Integer& result,
+  void toPower( Integer& result,
                         Integer& exponent,
                         Integer& modulus,
-                        bool usePreset,
+                        bool setUpBase,
                         IntegerMath& intMath );
-
 
   };
 
