@@ -11,7 +11,6 @@
 
 IntegerMath::IntegerMath( void )
 {
-
 }
 
 
@@ -23,6 +22,7 @@ IntegerMath::IntegerMath( const IntegerMath& in )
 {
 throw "Copy constructor: IntegerMath called.\n";
 }
+
 
 
 Uint64 IntegerMath::findULSqrRoot(
@@ -152,7 +152,7 @@ result.setIndex( 0 );
 }
 
 
-
+/*
 void IntegerMath::add( Integer& result,
                        Integer& toAdd )
 {
@@ -239,7 +239,7 @@ if( result.isEqual( toSub ))
 Integer tempSub1;
 Integer tempSub2;
 
-// ParamIsGreater() handles positive and
+// paramIsGreater() handles positive and
 // negative values, so if the parameter is
 // more toward the positive side then it's
 // true.  It's greater.
@@ -361,6 +361,7 @@ for( Int32 count = lastR; count >= 0; count-- )
 // would get down to here.
 result.setIndex( 0 );
 }
+*/
 
 
 
@@ -406,14 +407,14 @@ if( carry != 0 )
 
 Uint32 IntegerMath::multiplyUIntFromCopy(
                              Integer& result,
-                             Integer& fromCopy,
+                             Integer& from,
                              Uint64 toMul )
 {
-const Uint32 fromCopyIndex = fromCopy.getIndex();
+const Uint32 fromCopyIndex = from.getIndex();
 result.setIndex( fromCopyIndex );
 for( Uint32 column = 0; column <= fromCopyIndex;
                                        column++ )
-  scratch[column] = toMul * fromCopy.getD( column );
+  scratch[column] = toMul * from.getD( column );
 
 // Add these up with a carry.
 result.setD( 0, scratch[0] & 0xFFFFFFFF );
@@ -434,7 +435,6 @@ if( carry != 0 )
 
 return result.getIndex();
 }
-
 
 
 void IntegerMath::multiplyULong( Integer& result,
@@ -536,6 +536,8 @@ else
 }
 
 
+
+
 void IntegerMath::multiply( Integer& result,
                             Integer& toMul )
 {
@@ -623,6 +625,7 @@ setMultiplySign( result, toMul );
 
 
 
+/*
 void IntegerMath::setFromStr( Integer& result,
                               Str& in )
 {
@@ -647,7 +650,7 @@ for( Uint32 count = 1; count <= last; count++ )
   multiplyULong( tens, 10 );
   }
 }
-
+*/
 
 
 Str IntegerMath::toString10( Integer& from )
@@ -668,10 +671,11 @@ if( from.isULong())
     }
   }
 
-Integer toDivide( from );
+Integer toDivide;
+toDivide.copy( from );
+
 Integer quotient;
 CharBuf cBuf;
-Uint32 commaCount = 0;
 while( !toDivide.isZero())
   {
   Uint32 digit = (Uint32)Division::
@@ -679,17 +683,10 @@ while( !toDivide.isZero())
   toDivide.copy( quotient );
   // Ascii values go from '0' up to '9'.
   cBuf.appendChar( (char)('0' + digit) );
-  if( ((commaCount % 3) == 0) &&
-       (commaCount != 0) )
-    {
-    cBuf.appendChar( ',' );
-    }
-
-  commaCount++;
   }
 
 if( from.getIsNegative() )
-  cBuf.appendChar( ',' );
+  cBuf.appendChar( '-' );
 
 Str result = cBuf.getStr();
 result.reverse();
@@ -698,6 +695,7 @@ return result;
 
 
 
+/*
 void IntegerMath::square( Integer& toSquare )
 {
 if( toSquare.getIndex() == 0 )
@@ -1026,3 +1024,5 @@ for( Uint32 bitCount = 0; bitCount < 32;
 
 sqrRoot.setD( testIndex, xDigit );
 }
+
+*/
