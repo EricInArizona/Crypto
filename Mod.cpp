@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2015 - 2021.
+// Copyright Eric Chauvin 2021.
 
 
 
@@ -17,10 +17,8 @@
 // See the reduce() function.
 
 
-
 Mod::Mod( void )
 {
-
 }
 
 
@@ -30,11 +28,12 @@ Mod::Mod( const Mod& in )
 throw "Don't copy Mod in a copy constructor.";
 }
 
-
+/*
 Mod::~Mod( void )
 {
 
 }
+*/
 
 
 void Mod::setupBaseArray( Integer& setBase,
@@ -49,8 +48,10 @@ intMath.multiplyUInt( base2, 256 ); // 0x1000000
 intMath.multiplyUInt( base2, 256 );
 // Now it is: 0x1 0000 0000
 
+
 // 0x100000000 is the
 // base of this number system.
+
 
 Integer baseValue;
 Integer quotient;
@@ -160,19 +161,18 @@ return result.getIndex();
 // or on Wikipedia, but its use of the new
 // modular reduction algorithm is new (in 2015).
 
-// https://en.wikipedia.org/wiki/
-//                    Exponentiation_by_squaring
 // x^n = (x^2)^((n - 1)/2) if n is odd.
 // x^n = (x^2)^(n/2)       if n is even.
-void Mod::modPower( Integer& result,
+void Mod::toPower( Integer& result,
                         Integer& exponent,
                         Integer& modulus,
-                        bool usePreset,
+                        bool setUpBase,
                         IntegerMath& intMath )
 {
 if( result.isZero())
   return; // With Result still zero.
 
+/*
 if( result.isEqual( modulus ))
   {
   // It is congruent to zero % ModN.
@@ -198,13 +198,14 @@ if( modulus.paramIsGreater( result ))
   result.copy( remainder );
   }
 
+
 if( exponent.isOne())
   {
   // Result stays the same.
   return;
   }
 
-if( !usePreset )
+if( setUpBase )
   setupBaseArray( modulus, intMath );
 
 Integer xForModPower;
@@ -215,6 +216,7 @@ xForModPower.copy( result );
 exponentCopy.copy( exponent );
 // Uint32 testIndex = 0;
 result.setFromULong( 1 );
+
 while( true )
   {  // If the bottom bit is 1.
   if( (exponentCopy.getD( 0 ) & 1) == 1 )
@@ -258,7 +260,9 @@ result.copy( tempForModPower );
 // Not a thousand or two thousand times.
 
 makeExact( result, intMath );
+*/
 }
+
 
 
 
