@@ -9,6 +9,9 @@
 #include "ThreadEC.h"
 
 
+// See StIO.cpp for some notes.
+
+
 
 int MainApp::mainLoop( int argc, char* argv[] )
 {
@@ -18,11 +21,18 @@ const char* outFile =
 
 try
 {
+StIO::printFS( "See output at:\n" );
+StIO::printFS( outFile );
+StIO::printFS( "\n" );
+
+
 if( !basicThingsAreRight())
   {
-  StIO::printFS(
-      "basicThingsAreRight() returned false.\n" );
+  // StIO::printFS()
+  mainIO.appendChars(    
+   "basicThingsAreRight() returned false.\n" );
 
+  mainIO.writeAll( outFile );
   return 1; // Some error code.
   }
 
