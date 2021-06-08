@@ -2,9 +2,14 @@
 
 
 
+// Apparently if you write too much too quickly
+// then Windows will shut the program down.
+
+
+
 #include "StIO.h"
 #include <stdio.h>
-#include <wchar.h>
+// #include <wchar.h>
 
 
 // wchar_t Wide character type
@@ -15,7 +20,6 @@
 
 
 /*
-pecifier Output Example
 d or i Signed decimal integer 392
 u Unsigned decimal integer 7235
 o Unsigned octal 610
@@ -71,19 +75,26 @@ printf( "%s", toWrite );
 }
 
 
+
+/*
 void StIO::printFD( Int32 d )
 {
 printf( "%d", d );
 }
+*/
 
 
+/*
 void StIO::printFUD( Uint32 d )
 {
 printf( "%u", d );
 }
+*/
 
 
+/*
 void StIO::putC( Uint16 c )
 {
 putwchar( c );
 }
+*/
