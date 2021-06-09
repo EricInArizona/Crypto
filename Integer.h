@@ -18,7 +18,11 @@ class Integer
   public:
   // This many 32 bit integers.
   // 100 is 3,200 bits.
+
+  // Make this big enough to over run the stack?
   static const Uint32 digitArraySize = 2000;
+  // See the /STACK option in BuildProj.bat
+
 
   private:
   bool isNegative = false;
@@ -32,6 +36,9 @@ class Integer
   // It is Uint64 to hold multiplied values.
   // Uint64 D[digitArraySize] = { 0,1,2 };
   Uint64* D;
+
+  // This scratch array doesn't need to be in
+  // this object.
   // Uint64 scratch[digitArraySize] =  { 0,1,2 };
   Uint64* scratch;
 
