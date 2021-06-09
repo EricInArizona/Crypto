@@ -19,12 +19,17 @@
 
 
 
-/*
 RSA::RSA( void )
 {
 
 }
-*/
+
+
+// The copy constructor.
+RSA::RSA( const RSA& in )
+{
+throw "Don't use copy constructor for RSA.\n";
+}
 
 
 void RSA::test( FileIO& mainIO )
@@ -49,18 +54,18 @@ void RSA::makeRSAKeys( FileIO& mainIO )
 pubKeyExponent.setFromULong( PubKeyExponentU );
 
 Uint32 showBits = (PrimeIndex + 1) * 32;
-    // int TestLoops = 0;
+
 mainIO.appendChars( "Making RSA keys.\n" );
 mainIO.appendChars( "Bits size is: " );
 Str bits( showBits );
 mainIO.appendStr( bits );
 mainIO.appendChars( "\n" );
 
-
 Fermat fermat;
+
 /*
 // while( true )
-for( Uint32 count = 0; count < 3; count++ )
+for( Uint32 count = 0; count < 1000; count++ )
   {
   mainIO.appendChars( "Count: " );
   // printFD( Int32 d );
@@ -78,12 +83,14 @@ for( Uint32 count = 0; count < 3; count++ )
                                    100,
                                    sPrimes,
                                    intMath ))
+    {
     return;
+    }
 
   mainIO.appendChars( "After makeAPrime.\n" );
   }
-
 */
+
 mainIO.appendChars( "End of makeRSAKeys().\n" );
 }
 
