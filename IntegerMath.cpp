@@ -1,6 +1,11 @@
 // Copyright Eric Chauvin 2021.
 
 
+// ======
+// M[(column *
+//         Integer::digitArraySize) + row]
+
+
 
 #include "IntegerMath.h"
 #include "Base10Number.h"
@@ -381,7 +386,7 @@ result.setIndex( 0 );
 }
 
 
-/*
+
 void IntegerMath::multiplyUInt( Integer& result,
                                 Uint64 toMul )
 {
@@ -396,18 +401,20 @@ if( toMul == 1 )
 
 const Uint32 last = result.getIndex();
 for( Uint32 column = 0; column <= last; column++ )
-  M[column][0] = toMul * result.getD( column );
+  M[(column * Integer::digitArraySize) + 0] =
+                   toMul * result.getD( column );
 
 // Add these up with a carry.
-result.setD( 0, M[0][0] & 0xFFFFFFFF );
-Uint64 carry = M[0][0] >> 32;
+result.setD( 0, M[0] & 0xFFFFFFFF );
+Uint64 carry = M[0] >> 32;
 for( Uint32 column = 1; column <= last; column++ )
   {
   // This Test value does not overflow:
   // const ulong Test = ((ulong)0xFFFFFFFF *
   //    (ulong)(0xFFFFFFFF)) + 0xFFFFFFFF;
 
-  Uint64 total = M[column][0] + carry;
+  Uint64 total = M[(column *
+         Integer::digitArraySize) + 0] + carry;
   result.setD( column, total & 0xFFFFFFFF );
   carry = total >> 32;
   }
@@ -418,7 +425,6 @@ if( carry != 0 )
   result.setD( result.getIndex(), carry );
   }
 }
-*/
 
 
 
