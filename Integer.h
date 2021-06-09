@@ -18,7 +18,7 @@ class Integer
   public:
   // This many 32 bit integers.
   // 100 is 3,200 bits.
-  static const Uint32 digitArraySize = 200;
+  static const Uint32 digitArraySize = 2000;
 
   private:
   bool isNegative = false;
@@ -30,8 +30,10 @@ class Integer
   // stack pointer.
 
   // It is Uint64 to hold multiplied values.
-  Uint64 D[digitArraySize] = { 0,1,2 };
-  Uint64 scratch[digitArraySize] =  { 0,1,2 };
+  // Uint64 D[digitArraySize] = { 0,1,2 };
+  Uint64* D;
+  // Uint64 scratch[digitArraySize] =  { 0,1,2 };
+  Uint64* scratch;
 
 /*
   void setOneDValueFromChar( Uint64 toSet,
@@ -49,7 +51,7 @@ class Integer
   public:
   Integer( void );
   Integer( const Integer& obj );
-  // ~Integer();
+  ~Integer();
 
   inline void setToZero( void )
     {
@@ -138,7 +140,7 @@ class Integer
 */
 
   void setFromULong( Uint64 toSet );
-  void copy( const Integer& copyFrom );
+  void copy( Integer& copyFrom );
 
 /*
   void copyFromP( const Integer* copyFrom );
@@ -155,9 +157,9 @@ class Integer
   bool isULong( void );
   Uint64 getAsULong( void );
   bool paramIsGreater( Integer& x );
+  bool paramIsGreaterOrEq( Integer& x );
 
 /*
-  bool paramIsGreaterOrEq( Integer& x );
   void increment( void );
 */
 
@@ -168,12 +170,16 @@ class Integer
   void square0( void );
   void square1( void );
   void square2( void );
-  void shiftLeft( Uint32 shiftBy );
-  void shiftRight( Uint32 shiftBy );
-  void setDigitAndClear( Uint32 where,
-                                  Uint64 toSet );
 */
 
+  void shiftLeft( Uint32 shiftBy );
+
+/*
+  void shiftRight( Uint32 shiftBy );
+*/
+
+  void setDigitAndClear( Uint32 where,
+                                  Uint64 toSet );
   bool makeRandomOdd( Uint32 setToIndex );
 
 /*
