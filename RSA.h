@@ -49,7 +49,8 @@ class RSA
   // static const int PrimeIndex = 127; // 4096
 
 
-  // RSA( void );
+  RSA( void );
+  RSA( const RSA& in );
   void test( FileIO& mainIO );
   void makeRSAKeys( FileIO& mainIO );
 
