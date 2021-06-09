@@ -73,7 +73,6 @@ else
 */
 
 
-
 // This is a variation on ShortDivide that returns
 // the remainder.
 // Also, divideBy is a Uint64.
@@ -136,8 +135,7 @@ return remainderU;
 
 
 
-
-
+/*
 void Division::divide( Integer& toDivideOriginal,
                        Integer& divideByOriginal,
                        Integer& quotient,
@@ -153,7 +151,6 @@ if( divideByOriginal.getIsNegative() )
 if( divideByOriginal.isZero() )
   throw "Divide() dividing by zero.";
 
-/*
 Integer toDivide;
 toDivide.copy( toDivideOriginal );
 
@@ -193,6 +190,7 @@ if( divideBy.getIndex() == 0 )
   return;
   }
 
+
 Integer toDivideTest2;
 Integer divideByTest2;
 Integer quotientTest2;
@@ -201,6 +199,7 @@ Integer toDivideTest3;
 Integer divideByTest3;
 Integer quotientTest3;
 Integer remainderTest3;
+
 
 toDivideTest2.copy( toDivide );
 toDivideTest3.copy( toDivide );
@@ -211,6 +210,7 @@ divideByTest3.copy( divideBy );
 longDivide1( toDivideTest2, divideByTest2,
                 quotientTest2, remainderTest2,
                 intMath );
+
 longDivide2( toDivideTest3, divideByTest3,
                 quotientTest3, remainderTest3,
                 intMath );
@@ -229,9 +229,9 @@ if( !remainder.isEqual( remainderTest2 ))
 
 if( !remainder.isEqual( remainderTest3 ))
   throw "!remainder.isEqual( remainderTest3 )";
-*/
-}
 
+}
+*/
 
 
 /*
@@ -303,11 +303,10 @@ intMath.subtract( remainder, test1 );
 // Does not divide it exactly.
 return false;
 }
-*/
 
 
 
-/*
+
 void Division::testDivideBits( Uint64 maxValue,
                                bool isTop,
                                Uint32 testIndex,
@@ -364,11 +363,10 @@ for( Int32 bitCount = 31; bitCount >= 0;
   bitTest >>= 1;
   }
 }
-*/
 
 
 
-/*
+
 // This works like LongDivide1 except that it
 // estimates the maximum value for the digit and
 // the for-loop for bit testing is called
@@ -494,11 +492,9 @@ else
   return false;
 
 }
-*/
 
 
 
-/*
 // If you multiply the numerator and the
 // denominator by the same amount then the
 // quotient is still the same.  By shifting
@@ -521,11 +517,10 @@ for( Uint32 count = 0; count < 32; count++ )
 
 return shiftBy;
 }
-*/
 
 
 
-/*
+
 void Division::longDivide3( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
