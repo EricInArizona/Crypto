@@ -51,9 +51,10 @@ class IntegerMath
                                Integer& toSub );
   void subtractPositive( Integer& result,
                                Integer& toSub );
-/*
+
   void multiplyUInt( Integer& result,
                                 Uint64 toMul );
+/*
   Uint32 multiplyUIntFromCopy( Integer& result,
                              Integer& from,
                              Uint64 toMul );
