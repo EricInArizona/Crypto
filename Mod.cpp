@@ -19,6 +19,7 @@
 
 Mod::Mod( void )
 {
+baseAr = new Integer[Integer::digitArraySize];
 }
 
 
@@ -28,17 +29,18 @@ Mod::Mod( const Mod& in )
 throw "Don't copy Mod in a copy constructor.";
 }
 
-/*
+
 Mod::~Mod( void )
 {
-
+delete[] baseAr;
 }
-*/
+
 
 
 void Mod::setupBaseArray( Integer& setBase,
                           IntegerMath& intMath )
 {
+/*
 currentBase.copy( setBase );
 
 Integer base2;
@@ -77,6 +79,7 @@ for( Uint32 column = 0; column <
   baseValue.copy( remainder );
   intMath.multiply( baseValue, currentBase );
   }
+*/
 }
 
 
@@ -84,6 +87,7 @@ for( Uint32 column = 0; column <
 void Mod::makeExact( Integer& exact,
                           IntegerMath& intMath )
 {
+/*
 // Most of the time the math is not exact,
 // like in the modular exponentiation function
 // modularPower().  It leaves some small
@@ -98,6 +102,7 @@ Division::divide( exact, currentBase,
                   quotient, remainder, intMath );
 
 exact.copy( remainder );
+*/
 }
 
 
@@ -106,6 +111,9 @@ Uint32 Mod::reduce( Integer& result,
                            Integer& toReduce,
                            IntegerMath& intMath )
 {
+return 0;
+/*
+
 if( toReduce.paramIsGreater( currentBase ))
   {
   result.copy( toReduce );
@@ -151,6 +159,7 @@ for( Uint32 count = highestCopyIndex; count <
   }
 
 return result.getIndex();
+*/
 }
 
 
@@ -169,10 +178,10 @@ void Mod::toPower( Integer& result,
                         bool setUpBase,
                         IntegerMath& intMath )
 {
+/*
 if( result.isZero())
   return; // With Result still zero.
 
-/*
 if( result.isEqual( modulus ))
   {
   // It is congruent to zero % ModN.
