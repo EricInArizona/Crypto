@@ -18,14 +18,15 @@
 class Mod
   {
   private:
-  Integer baseAr[Integer::digitArraySize] = {};
+  Integer* baseAr;
+            // [Integer::digitArraySize] = {};
   Integer currentBase;
 
 
   public:
   Mod( void );
   Mod( const Mod& in );
-  // ~Mod( void );
+  ~Mod( void );
   void setupBaseArray( Integer& setBase,
                          IntegerMath& intMath );
   void makeExact( Integer& exact,
