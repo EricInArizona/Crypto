@@ -29,13 +29,13 @@ class Division
                     Uint64 divideByU,
                     Integer& quotient );
 
+/*
   static void divide( Integer& toDivideOriginal,
                     Integer& divideByOriginal,
                     Integer& quotient,
                     Integer& remainder,
                     IntegerMath& intMath );
 
-/*
   static bool longDivide1( Integer& toDivide,
                     Integer& divideBy,
                     Integer& quotient,
@@ -64,7 +64,6 @@ class Division
                          Integer& quotient,
                          Integer& remainder,
                          IntegerMath& intMath );
-
 */
   };
 
