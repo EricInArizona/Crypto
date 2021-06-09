@@ -19,7 +19,6 @@ class Mod
   {
   private:
   Integer* baseAr;
-            // [Integer::digitArraySize] = {};
   Integer currentBase;
 
 
