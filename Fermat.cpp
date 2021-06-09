@@ -8,7 +8,7 @@
 
 Fermat::Fermat( void )
 {
-// 
+//
 }
 
 
@@ -27,14 +27,14 @@ bool Fermat::makeAPrime( FileIO& mainIO,
                           IntegerMath& intMath )
 {
 mainIO.appendChars( "Top of makeAPrime().\n" );
-/*
-for( Uint32 count = 0; count < 10; count++ )
+
+for( Uint32 count = 0; count < 1000; count++ )
   {
   // ThreadEC::sleep( 1 );
 
   if( !result.makeRandomOdd( setToIndex ))
     {
-    throw "Error making random number.\n";
+    throw "Error making random number.";
     }
 
   Str showS =  intMath.toString10( result );
@@ -43,7 +43,7 @@ for( Uint32 count = 0; count < 10; count++ )
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
-    throw "Size of random prime is wrong.\n";
+    throw "Size of random prime is wrong.";
 
   Uint32 testPrime = intMath.
                      isDivisibleBySmallPrime(
@@ -72,7 +72,7 @@ for( Uint32 count = 0; count < 10; count++ )
 
 mainIO.appendChars(
             "Loops ended in makeAPrime().\n" );
-*/
+
 return false;
 }
 
@@ -84,8 +84,6 @@ bool Fermat::isPrime( Integer& toTest,
                            SPrimes& sPrimes,
                            IntegerMath& intMath )
 {
-return true;
-/*
 // Use bigger primes for Fermat test because the
 // modulus can't be too small.  And also it's
 // more likely to be congruent to 1 with a very
@@ -121,7 +119,6 @@ for( Uint32 count = startAt; count <
 // that it's a prime.
 
 return true;
-*/
 }
 
 
@@ -131,9 +128,6 @@ bool Fermat::isPrimeForOneValue(
                           Uint64 base,
                           IntegerMath& intMath )
 {
-return true;
-/*
-
 // Assume toTest is not a small number.  (Not
 // the size of a small prime.)
 // Normally it would be something like a 1024
@@ -168,9 +162,5 @@ if( A.isOne())
 else
   return false; // It is definitely a
                 // composite number.
-*/
+
 }
-
-
-
-
