@@ -11,16 +11,33 @@
 
 IntegerMath::IntegerMath( void )
 {
+// This is something like 8 bytes times
+// 1000 * 1000 which is 8 million bytes.
+// The maximum default stack size is 8 megabytes.
+
+// "For instance, to specify a 16MB stack
+// you could do the following:"
+// cc -Wl,-stack_size -Wl,0x1000000
+
+signedD = new Int64[Integer::digitArraySize];
+M = new Uint64[Integer::digitArraySize *
+               Integer::digitArraySize];
+scratch = new Uint64[Integer::digitArraySize];
 }
 
 
-// IntegerMath::~IntegerMath( void )
+IntegerMath::~IntegerMath( void )
+{
+delete[] signedD;
+delete[] M;
+delete[] scratch;
+}
 
 
 // The copy constructor.
 IntegerMath::IntegerMath( const IntegerMath& in )
 {
-throw "Copy constructor: IntegerMath called.\n";
+throw "Copy constructor: IntegerMath.\n";
 }
 
 
@@ -223,6 +240,7 @@ if( result.getIsNegative() &&
   return;
   }
 }
+*/
 
 
 
@@ -361,10 +379,9 @@ for( Int32 count = lastR; count >= 0; count-- )
 // would get down to here.
 result.setIndex( 0 );
 }
-*/
 
 
-
+/*
 void IntegerMath::multiplyUInt( Integer& result,
                                 Uint64 toMul )
 {
@@ -401,10 +418,11 @@ if( carry != 0 )
   result.setD( result.getIndex(), carry );
   }
 }
+*/
 
 
 
-
+/*
 Uint32 IntegerMath::multiplyUIntFromCopy(
                              Integer& result,
                              Integer& from,
@@ -435,8 +453,10 @@ if( carry != 0 )
 
 return result.getIndex();
 }
+*/
 
 
+/*
 void IntegerMath::multiplyULong( Integer& result,
                                  Uint64 toMul )
 {
@@ -520,7 +540,7 @@ if( carry != 0 )
   result.setD( result.getIndex(), carry );
   }
 }
-
+*/
 
 
 void IntegerMath::setMultiplySign(
@@ -537,7 +557,7 @@ else
 
 
 
-
+/*
 void IntegerMath::multiply( Integer& result,
                             Integer& toMul )
 {
@@ -622,7 +642,7 @@ if( carry != 0 )
 
 setMultiplySign( result, toMul );
 }
-
+*/
 
 
 /*
@@ -777,6 +797,7 @@ if( carry != 0 )
   toSquare.setD( toSquare.getIndex(), carry );
   }
 }
+*/
 
 
 
@@ -786,6 +807,7 @@ if( carry != 0 )
 void IntegerMath::multiplyTop( Integer& result,
                                Integer& toMul )
 {
+/*
 Uint32 totalIndex = result.getIndex() +
                              toMul.getIndex();
 if( totalIndex >= Integer::digitArraySize )
@@ -826,6 +848,7 @@ if( carry != 0 )
 
   result.setD( result.getIndex(), carry );
   }
+*/
 }
 
 
@@ -858,6 +881,8 @@ result.setIndex( totalIndex );
 }
 
 
+
+/*
 // In the SquareRoot() method SqrRoot.Index is
 // half of Square.Index.  Compare this to the
 // Square() method where the Carry might or
