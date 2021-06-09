@@ -40,7 +40,6 @@ delete[] baseAr;
 void Mod::setupBaseArray( Integer& setBase,
                           IntegerMath& intMath )
 {
-/*
 currentBase.copy( setBase );
 
 Integer base2;
@@ -61,6 +60,7 @@ Integer remainder;
 
 baseValue.setFromULong( 1 );
 
+/*
 for( Uint32 column = 0; column <
              Integer::digitArraySize; column++ )
   {
