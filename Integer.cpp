@@ -10,6 +10,9 @@
 
 Integer::Integer( void )
 {
+D = new Uint64[digitArraySize];
+scratch = new Uint64[digitArraySize];
+
 setToZero();
 }
 
@@ -17,13 +20,16 @@ setToZero();
 // The copy constructor.
 Integer::Integer( const Integer& in )
 {
-// copy( in );
-
 throw "Don't use the Integer copy constructor.";
 }
 
 
-// Integer::~Integer( void )
+Integer::~Integer( void )
+{
+delete[] D;
+delete[] scratch;
+}
+
 
 
 
@@ -67,7 +73,7 @@ else
 
 
 
-void Integer::copy( const Integer& from )
+void Integer::copy( Integer& from )
 {
 isNegative = from.isNegative;
 
@@ -227,7 +233,7 @@ return false; // It was equal, but not greater.
 }
 
 
-/*
+
 bool Integer::paramIsGreaterOrEq( Integer& x )
 {
 if( isEqual( x ))
@@ -237,7 +243,7 @@ return paramIsGreater( x );
 }
 
 
-
+/*
 void Integer::increment( void )
 {
 D[0] += 1;
@@ -573,7 +579,7 @@ if( carry != 0 )
   D[5] = carry;
   }
 }
-
+*/
 
 
 void Integer::shiftLeft( Uint32 shiftBy )
@@ -608,7 +614,7 @@ if( carry != 0 )
 
 
 
-
+/*
 void Integer::shiftRight( Uint32 shiftBy )
 {
 if( shiftBy > 32 )
@@ -636,6 +642,7 @@ if( D[index] == 0 )
   // throw "ShiftRight() Carry not zero.";
 
 }
+*/
 
 
 
@@ -660,7 +667,7 @@ for( Uint32 count = 0; count < index; count++ )
   D[count] = 0;
 
 }
-*/
+
 
 
 bool Integer::makeRandomOdd( Uint32 setToIndex )
