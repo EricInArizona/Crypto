@@ -63,7 +63,7 @@ mainIO.appendChars( "\n" );
 
 Fermat fermat;
 
-/*
+
 // while( true )
 for( Uint32 count = 0; count < 1000; count++ )
   {
@@ -89,7 +89,6 @@ for( Uint32 count = 0; count < 1000; count++ )
 
   mainIO.appendChars( "After makeAPrime.\n" );
   }
-*/
 
 mainIO.appendChars( "End of makeRSAKeys().\n" );
 }
