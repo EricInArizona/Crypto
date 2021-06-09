@@ -17,16 +17,10 @@ class IntegerMath
   {
   private:
   // Signed digits for use in subtraction.
-  Int64 signedD[Integer::digitArraySize] =
-                                     { 1,2,3 };
-
+  Int64* signedD;
   // Scratch pad, just like you would do on paper.
-  Uint64 M[Integer::digitArraySize]
-          [Integer::digitArraySize] =
-                                      { {1,2,3},
-                                      {1,2,3} };
-  Uint64 scratch[Integer::digitArraySize] =
-                                      { 1,2,3 };
+  Uint64* M;
+  Uint64* scratch;
 
   void setMultiplySign( Integer& result,
                         Integer& toMul );
@@ -41,6 +35,7 @@ class IntegerMath
   public:
   IntegerMath( void );
   IntegerMath( const IntegerMath& in );
+  ~IntegerMath( void  );
   static Uint64 findULSqrRoot( Uint64 toMatch );
   Uint64 isDivisibleBySmallPrime(
                               Integer& toTest,
@@ -50,12 +45,13 @@ class IntegerMath
                                   Uint64 toSub );
 /*
   void add( Integer& result, Integer& toAdd );
+*/
+
   void subtract( Integer& result,
                                Integer& toSub );
   void subtractPositive( Integer& result,
                                Integer& toSub );
-*/
-
+/*
   void multiplyUInt( Integer& result,
                                 Uint64 toMul );
   Uint32 multiplyUIntFromCopy( Integer& result,
@@ -65,6 +61,7 @@ class IntegerMath
                            Uint64 toMul );
   void multiply( Integer& result,
                                Integer& toMul );
+*/
 
 /*
   void setFromStr( Integer& result, Str& in );
@@ -74,10 +71,14 @@ class IntegerMath
 
 /*
   void square( Integer& toSquare );
+*/
+
   void multiplyTop( Integer& result,
                                Integer& toMul );
   void multiplyTopOne( Integer& result,
                                Integer& toMul );
+
+/*
   bool squareRoot( Integer& fromSqr,
                             Integer& sqrRoot );
 */
