@@ -11,6 +11,8 @@
 #include "SPrimes.h"
 #include "Str.h"
 #include "FileIO.h"
+#include "TwoDUint64.h"
+
 
 
 class IntegerMath
@@ -19,7 +21,7 @@ class IntegerMath
   // Signed digits for use in subtraction.
   Int64* signedD;
   // Scratch pad, just like you would do on paper.
-  Uint64* M;
+  TwoDUint64 M;
   Uint64* scratch;
 
   void setMultiplySign( Integer& result,
@@ -43,10 +45,7 @@ class IntegerMath
 
   void subtractULong( Integer& result,
                                   Uint64 toSub );
-/*
   void add( Integer& result, Integer& toAdd );
-*/
-
   void subtract( Integer& result,
                                Integer& toSub );
   void subtractPositive( Integer& result,
@@ -54,7 +53,6 @@ class IntegerMath
 
   void multiplyUInt( Integer& result,
                                 Uint64 toMul );
-/*
   Uint32 multiplyUIntFromCopy( Integer& result,
                              Integer& from,
                              Uint64 toMul );
@@ -62,7 +60,6 @@ class IntegerMath
                            Uint64 toMul );
   void multiply( Integer& result,
                                Integer& toMul );
-*/
 
 /*
   void setFromStr( Integer& result, Str& in );
