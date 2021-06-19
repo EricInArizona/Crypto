@@ -180,11 +180,7 @@ class Integer
 */
 
   void shiftLeft( Uint32 shiftBy );
-
-/*
   void shiftRight( Uint32 shiftBy );
-*/
-
   void setDigitAndClear( Uint32 where,
                                   Uint64 toSet );
   bool makeRandomOdd( Uint32 setToIndex );
