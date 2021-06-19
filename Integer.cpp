@@ -614,7 +614,7 @@ if( carry != 0 )
 
 
 
-/*
+
 void Integer::shiftRight( Uint32 shiftBy )
 {
 if( shiftBy > 32 )
@@ -642,7 +642,7 @@ if( D[index] == 0 )
   // throw "ShiftRight() Carry not zero.";
 
 }
-*/
+
 
 
 
