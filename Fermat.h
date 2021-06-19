@@ -30,12 +30,13 @@ class Fermat
                    SPrimes& sPrimes,
                    IntegerMath& intMath );
 
-  bool isPrime( Integer& toTest,
+  bool isPrime( FileIO& mainIO,
+                Integer& toTest,
                       Uint32 howMany,
                       SPrimes& sPrimes,
                       IntegerMath& intMath );
 
-  bool isPrimeForOneValue(
+  bool isPrimeForOneValue( FileIO& mainIO,
                       Integer& toTest,
                       Uint64 base,
                       IntegerMath& intMath );
