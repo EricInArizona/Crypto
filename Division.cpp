@@ -8,7 +8,7 @@
 #include "Division.h"
 
 
-/*
+
 bool Division::shortDivide( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
@@ -70,7 +70,7 @@ else
   return false;
 
 }
-*/
+
 
 
 // This is a variation on ShortDivide that returns
@@ -135,7 +135,7 @@ return remainderU;
 
 
 
-/*
+
 void Division::divide( Integer& toDivideOriginal,
                        Integer& divideByOriginal,
                        Integer& quotient,
@@ -231,10 +231,10 @@ if( !remainder.isEqual( remainderTest3 ))
   throw "!remainder.isEqual( remainderTest3 )";
 
 }
-*/
 
 
-/*
+
+
 bool Division::longDivide1( Integer& toDivide,
                             Integer& divideBy,
                             Integer& quotient,
@@ -748,4 +748,3 @@ if( divideByKeep.paramIsGreater( remainder ))
   throw "Remainder > DivideBy longDivide3().";
 
 }
-*/
