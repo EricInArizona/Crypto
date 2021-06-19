@@ -22,7 +22,7 @@ class TwoDUint64
   public:
   TwoDUint64( void );
   ~TwoDUint64( void );
-  inline Uint64 getVal( Uint32 row, Uint32 column )
+  inline Uint64 getV( Uint32 column, Uint32 row )
     {
     Uint32 where = (row * Integer::digitArraySize)
                    + column;
@@ -33,7 +33,7 @@ class TwoDUint64
     }
 
 
-  inline void setVal( Uint32 row, Uint32 column,
+  inline void setV( Uint32 column, Uint32 row,
                       Uint64 val )
     {
     Uint32 where = (row * Integer::digitArraySize)
