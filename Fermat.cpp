@@ -37,9 +37,9 @@ for( Uint32 count = 0; count < 1000; count++ )
     throw "Error making random number.";
     }
 
-  Str showS =  intMath.toString10( result );
-  mainIO.appendStr( showS );
-  mainIO.appendChars( "\n\n" );
+  // Str showS =  intMath.toString10( result );
+  // mainIO.appendStr( showS );
+  // mainIO.appendChars( "\n\n" );
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
@@ -52,7 +52,7 @@ for( Uint32 count = 0; count < 1000; count++ )
   if( 0 != testPrime)
     continue;
 
-  if( !isPrime( result, howMany, sPrimes,
+  if( !isPrime( mainIO, result, howMany, sPrimes,
                                        intMath ))
     {
     mainIO.appendChars(
@@ -79,7 +79,8 @@ return false;
 
 
 
-bool Fermat::isPrime( Integer& toTest,
+bool Fermat::isPrime( FileIO& mainIO,
+                      Integer& toTest,
                            Uint32 howMany,
                            SPrimes& sPrimes,
                            IntegerMath& intMath )
@@ -105,7 +106,7 @@ Uint32 startAt = SPrimes::arrayLength >> 1;
 for( Uint32 count = startAt; count <
                    (howMany + startAt); count++ )
   {
-  if( !isPrimeForOneValue( toTest,
+  if( !isPrimeForOneValue( mainIO, toTest,
                    sPrimes.getPrimeAt( count ),
                    intMath ))
     {
@@ -123,7 +124,7 @@ return true;
 
 
 
-bool Fermat::isPrimeForOneValue(
+bool Fermat::isPrimeForOneValue( FileIO& mainIO,
                           Integer& toTest,
                           Uint64 base,
                           IntegerMath& intMath )
@@ -156,6 +157,12 @@ intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
 mod.toPower( A, pMinus1, toTest, true, intMath );
+
+mainIO.appendChars(
+                "Value of A:\n" );
+  Str showS =  intMath.toString10( A );
+  mainIO.appendStr( showS );
+  mainIO.appendChars( "\n\n" );
 
 if( A.isOne())
   return true; // It _might_ be a prime.
