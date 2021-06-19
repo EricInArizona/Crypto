@@ -1,10 +1,6 @@
 // Copyright Eric Chauvin 2021.
 
 
-// ======
-// M[(column *
-//         Integer::digitArraySize) + row]
-
 
 
 #include "IntegerMath.h"
@@ -25,8 +21,6 @@ IntegerMath::IntegerMath( void )
 // cc -Wl,-stack_size -Wl,0x1000000
 
 signedD = new Int64[Integer::digitArraySize];
-M = new Uint64[Integer::digitArraySize *
-               Integer::digitArraySize];
 scratch = new Uint64[Integer::digitArraySize];
 }
 
@@ -34,7 +28,6 @@ scratch = new Uint64[Integer::digitArraySize];
 IntegerMath::~IntegerMath( void )
 {
 delete[] signedD;
-delete[] M;
 delete[] scratch;
 }
 
@@ -174,7 +167,7 @@ result.setIndex( 0 );
 }
 
 
-/*
+
 void IntegerMath::add( Integer& result,
                        Integer& toAdd )
 {
@@ -245,7 +238,7 @@ if( result.getIsNegative() &&
   return;
   }
 }
-*/
+
 
 
 
@@ -401,20 +394,21 @@ if( toMul == 1 )
 
 const Uint32 last = result.getIndex();
 for( Uint32 column = 0; column <= last; column++ )
-  M[(column * Integer::digitArraySize) + 0] =
-                   toMul * result.getD( column );
+  {
+  M.setV( column, 0, toMul *
+                      result.getD( column ));
+  }
 
 // Add these up with a carry.
-result.setD( 0, M[0] & 0xFFFFFFFF );
-Uint64 carry = M[0] >> 32;
+result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
+Uint64 carry = M.getV( 0, 0 ) >> 32;
 for( Uint32 column = 1; column <= last; column++ )
   {
   // This Test value does not overflow:
   // const ulong Test = ((ulong)0xFFFFFFFF *
   //    (ulong)(0xFFFFFFFF)) + 0xFFFFFFFF;
 
-  Uint64 total = M[(column *
-         Integer::digitArraySize) + 0] + carry;
+  Uint64 total = M.getV( column, 0 ) + carry;
   result.setD( column, total & 0xFFFFFFFF );
   carry = total >> 32;
   }
@@ -428,7 +422,6 @@ if( carry != 0 )
 
 
 
-/*
 Uint32 IntegerMath::multiplyUIntFromCopy(
                              Integer& result,
                              Integer& from,
@@ -459,10 +452,10 @@ if( carry != 0 )
 
 return result.getIndex();
 }
-*/
 
 
-/*
+
+
 void IntegerMath::multiplyULong( Integer& result,
                                  Uint64 toMul )
 {
@@ -500,20 +493,20 @@ for( Uint32 column = 0; column <= countTo;
                                        column++ )
   {
   Uint64 digit = result.getD( column );
-  M[column][0] = B0 * digit;
+  M.setV( column, 0, B0 * digit );
   // Column + 1 and Row is 1, so it's just like
   // pen and paper.
-  M[column + 1][1] = B1 * digit;
+  M.setV( column + 1, 1, B1 * digit );
   }
 
 // Since B1 is not zero, the index is set one
 // higher.
 result.incrementIndex();
-M[result.getIndex()][0] = 0;
+M.setV( result.getIndex(), 0, 0 );
 
 // Add these up with a carry.
-result.setD( 0, M[0][0] & 0xFFFFFFFF );
-Uint64 carry = M[0][0] >> 32;
+result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
+Uint64 carry = M.getV( 0, 0 ) >> 32;
 countTo = result.getIndex();
 for( Uint32 column = 1; column <= countTo;
                                        column++ )
@@ -529,7 +522,7 @@ for( Uint32 column = 1; column <= countTo;
   // There's only the two rows for this.
   for( Uint32 row = 0; row <= 1; row++ )
     {
-    Uint64 mValue = M[column][row];
+    Uint64 mValue = M.getV( column, row );
     totalRight += mValue & 0xFFFFFFFF;
     totalLeft += mValue >> 32;
     }
@@ -546,7 +539,7 @@ if( carry != 0 )
   result.setD( result.getIndex(), carry );
   }
 }
-*/
+
 
 
 void IntegerMath::setMultiplySign(
@@ -563,7 +556,6 @@ else
 
 
 
-/*
 void IntegerMath::multiply( Integer& result,
                             Integer& toMul )
 {
@@ -594,7 +586,7 @@ for( Uint32 row = 0; row <= countTo; row++ )
     for( Uint32 column = 0; column <= countZeros;
                                         column++ )
       {
-      M[column + row][row] = 0;
+      M.setV( column + row, row, 0 );
       }
     }
   else
@@ -603,15 +595,16 @@ for( Uint32 row = 0; row <= countTo; row++ )
     for( Uint32 column = 0; column <= countMult;
                                         column++ )
       {
-      M[column + row][row] = toMul.getD( row ) *
-                           result.getD( column );
+      M.setV( column + row, row,
+                           toMul.getD( row ) *
+                           result.getD( column ));
       }
     }
   }
 
 // Add the columns up with a carry.
-result.setD( 0, M[0][0] & 0xFFFFFFFF );
-Uint64 carry = M[0][0] >> 32;
+result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
+Uint64 carry = M.getV( 0, 0 ) >> 32;
 Uint32 resultIndex = result.getIndex();
 Uint32 mulIndex = toMul.getIndex();
 for( Uint32 column = 1; column <= totalIndex;
@@ -629,8 +622,9 @@ for( Uint32 column = 1; column <= totalIndex;
 
     // Split the ulongs into right and left sides
     // so that they don't overflow.
-    totalRight += M[column][row] & 0xFFFFFFFF;
-    totalLeft += M[column][row] >> 32;
+    totalRight += M.getV( column, row )
+                                   & 0xFFFFFFFF;
+    totalLeft += M.getV( column, row ) >> 32;
     }
 
   totalRight += carry;
@@ -648,7 +642,7 @@ if( carry != 0 )
 
 setMultiplySign( result, toMul );
 }
-*/
+
 
 
 /*
