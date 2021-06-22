@@ -25,22 +25,13 @@ class Integer
 
 
   private:
+  Int32 testforCopy = 123;
   bool isNegative = false;
   Uint32 index = 0;
-
-  // I want this to be a fixed size that can be
-  // pushed on the stack.  The only memory
-  // allocation that is done is to move the
-  // stack pointer.
 
   // It is Uint64 to hold multiplied values.
   // Uint64 D[digitArraySize] = { 0,1,2 };
   Uint64* D;
-
-  // This scratch array doesn't need to be in
-  // this object.
-  // Uint64 scratch[digitArraySize] =  { 0,1,2 };
-  Uint64* scratch;
 
 /*
   void setOneDValueFromChar( Uint64 toSet,
@@ -67,14 +58,13 @@ class Integer
     D[0] = 0;
     }
 
-/*
   inline void setToOne( void )
     {
     isNegative = false;
     index = 0;
     D[0] = 1;
     }
-*/
+
 
   inline bool isZero( void )
     {
@@ -127,7 +117,7 @@ class Integer
     return D[where];
     }
 
-  inline void setD( Uint32 where, Uint32 toSet )
+  inline void setD( Uint32 where, Uint64 toSet )
     {
     if( where >= digitArraySize )
       throw "setD() index out of bounds.";
@@ -136,7 +126,6 @@ class Integer
     }
 
   void incrementIndex( void );
-/*
   void setToMaxValue( void );
   inline void setFromUInt( Uint32 toSet )
     {
@@ -144,32 +133,19 @@ class Integer
     D[0] = toSet;
     index = 0;
     }
-*/
 
   void setFromULong( Uint64 toSet );
   void copy( Integer& copyFrom );
-
-/*
-  void copyFromP( const Integer* copyFrom );
-*/
-
+  // void copyFromP( const Integer* copyFrom );
   void copyUpTo( const Integer& copyFrom,
                                  Uint32 where );
-
-/*
   bool isEqualToULong( Uint64 toTest );
-*/
-
   bool isEqual( Integer& x );
   bool isULong( void );
   Uint64 getAsULong( void );
   bool paramIsGreater( Integer& x );
   bool paramIsGreaterOrEq( Integer& x );
-
-/*
   void increment( void );
-*/
-
   void addULong( Uint64 toAdd );
   void add( Integer& toAdd );
 
@@ -192,16 +168,8 @@ class Integer
                               Uint8Array& U8Ar );
   void getBigEndianByteArray(
                              Uint8Array& toGet );
-  static Uint64 mod64FromTwoULongs( Uint64 P1,
-                                 Uint64 P0,
-                                 Uint64 divisor );
 */
 
-  Uint64 getMod32( Uint64 divisor );
-
-/*
-  Uint64 getMod64( Uint64 divisor );
-*/
   };
 
 
