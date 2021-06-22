@@ -15,6 +15,10 @@ Fermat::Fermat( void )
 // The copy constructor.
 Fermat::Fermat( const Fermat& in )
 {
+// Make the compiler think in is being used.
+if( in.forCopyTest == 7 )
+  return;
+
 throw "Don't use the Fermat copy constructor.";
 }
 
@@ -28,7 +32,7 @@ bool Fermat::makeAPrime( FileIO& mainIO,
 {
 mainIO.appendChars( "Top of makeAPrime().\n" );
 
-for( Uint32 count = 0; count < 1000; count++ )
+for( Uint32 count = 0; count < howMany; count++ )
   {
   // ThreadEC::sleep( 1 );
 
@@ -37,21 +41,22 @@ for( Uint32 count = 0; count < 1000; count++ )
     throw "Error making random number.";
     }
 
-  // Str showS =  intMath.toString10( result );
-  // mainIO.appendStr( showS );
-  // mainIO.appendChars( "\n\n" );
+  Str showS =  intMath.toString10( result );
+  mainIO.appendStr( showS );
+  mainIO.appendChars( "\n\n" );
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
     throw "Size of random prime is wrong.";
 
-  Uint32 testPrime = intMath.
+  Uint64 testPrime = intMath.
                      isDivisibleBySmallPrime(
                                       result,
                                       sPrimes );
   if( 0 != testPrime)
     continue;
 
+/*
   if( !isPrime( mainIO, result, howMany, sPrimes,
                                        intMath ))
     {
@@ -68,7 +73,9 @@ for( Uint32 count = 0; count < 1000; count++ )
   mainIO.appendStr( attem );
   mainIO.appendChars( "\n" );
   return true; // With result.
+  */
   }
+
 
 mainIO.appendChars(
             "Loops ended in makeAPrime().\n" );
