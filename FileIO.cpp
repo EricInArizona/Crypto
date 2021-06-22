@@ -19,8 +19,12 @@ FileIO::FileIO( void )
 
 
 // The copy constructor.
-FileIO::FileIO( const FileIO &obj )
+FileIO::FileIO( const FileIO &in )
 {
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
 // Don't copy a giant buffer.
 const char* showS = "The FileIO copy constructor"
          " should not be getting called.\n";
@@ -56,13 +60,20 @@ std::ifstream inFile( fileName,
                       std::ifstream::binary );
 
 inFile.seekg( 0, inFile.end );
-Uint64 howMany = inFile.tellg();
+Int64 howMany = inFile.tellg();
+// Error returns -1.
+if( howMany < 0 )
+  throw "Infile tellg() returned < 0.";
+
+if( howMany > 4000000000 )
+  throw "Infile tellg() returned > 4000000000.";
+
 inFile.seekg( 0 );
 
-char* buffer = new char[howMany];
+char* buffer = new char[(Uint64)howMany];
 inFile.read( buffer, howMany );
 
-cBuf.appendCharBuf( buffer, howMany );
+cBuf.appendCharBuf( buffer, (Uint32)howMany );
 
 delete[] buffer;
 inFile.close();
