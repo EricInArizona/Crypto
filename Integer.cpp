@@ -11,7 +11,6 @@
 Integer::Integer( void )
 {
 D = new Uint64[digitArraySize];
-scratch = new Uint64[digitArraySize];
 
 setToZero();
 }
@@ -20,6 +19,10 @@ setToZero();
 // The copy constructor.
 Integer::Integer( const Integer& in )
 {
+// Make the compiler think in is being used.
+if( in.testforCopy == 7 )
+  return;
+
 throw "Don't use the Integer copy constructor.";
 }
 
@@ -27,7 +30,6 @@ throw "Don't use the Integer copy constructor.";
 Integer::~Integer( void )
 {
 delete[] D;
-delete[] scratch;
 }
 
 
@@ -42,7 +44,7 @@ if( index >= digitArraySize )
 }
 
 
-/*
+
 void Integer::setToMaxValue( void )
 {
 isNegative = false;
@@ -52,7 +54,7 @@ for( Uint32 count = 0; count <=
   D[count] = 0xFFFFFFFF;
 
 }
-*/
+
 
 
 void Integer::setFromULong( Uint64 toSet )
@@ -112,7 +114,7 @@ for( Uint32 count = 0; count <= where; count++ )
 }
 
 
-/*
+
 bool Integer::isEqualToULong( Uint64 toTest )
 {
 if( isNegative )
@@ -139,7 +141,6 @@ if( shifted != D[1] )
 
 return true;
 }
-*/
 
 
 
@@ -148,6 +149,7 @@ bool Integer::isEqual( Integer& x )
 if( isNegative != x.isNegative )
   return false;
 
+// The quickest way to return false.
 if( D[0] != x.D[0] )
   return false;
 
@@ -217,7 +219,8 @@ if( index != x.index )
   }
 
 // Indexes are the same:
-for( Int32 count = index; count >= 0; count-- )
+for( Int32 count = (Int32)index; count >= 0;
+                                       count-- )
   {
   if( D[count] != x.D[count] )
     {
@@ -243,7 +246,7 @@ return paramIsGreater( x );
 }
 
 
-/*
+
 void Integer::increment( void )
 {
 D[0] += 1;
@@ -272,7 +275,7 @@ if( carry != 0 )
   D[index] = carry;
   }
 }
-*/
+
 
 
 
@@ -621,7 +624,8 @@ if( shiftBy > 32 )
   throw "ShiftBy > 32 on ShiftRight.";
 
 Uint64 carry = 0;
-for( Int32 count = index; count >= 0; count-- )
+for( Int32 count = (Int32)index; count >= 0;
+                                        count-- )
   {
   Uint64 digit = D[count] << 32;
   digit >>= shiftBy;
@@ -771,6 +775,7 @@ if( offset == 3 )
 
 return (char)0; // This should never happen.
 }
+
 
 
 bool Integer::setFromAsciiStr( Str& in )
@@ -975,186 +980,4 @@ toGet.reverse();
 // toGet might have leading zero bytes here.
 }
 
-
-
-Uint64 Integer::mod64FromTwoULongs( Uint64 p1,
-                                  Uint64 p0,
-                                  Uint64 divisor )
-{
-if( divisor <= 0xFFFFFFFFL )
-  throw "mod64FromTwoULongs divisor <= ";
-
-// This is never shifted more than 12 bits, so
-// check to make sure there's room to shift it.
-if( (divisor >> 52) != 0 )
-  throw "divisor too big in mod64FromTwoULongs.";
-
-if( p1 == 0 )
-  return p0 % divisor;
-
-//////////////////////////////////////////////
-// (P1 * 2^64) + P0 is what the number is.
-// Uint64 base = 1 << 32;
-
-Uint64 part1 = p1 % divisor;
-if( (divisor >> 40) == 0 )
-  {
-  // Then this can be done 24 bits at a time.
-  part1 <<= 24;  // Times 2^24
-  part1 = part1 % divisor;
-  part1 <<= 24;  //  48
-  part1 = part1 % divisor;
-  part1 <<= 16;  // Brings it to 64
-  part1 = part1 % divisor;
-  }
-else
-  {
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12 Brings it to 48.
-  part1 = part1 % divisor;
-  part1 <<= 8;  // Times 2^8
-  part1 = part1 % divisor;
-  part1 <<= 8;  // Times 2^8 Brings it to 64.
-  part1 = part1 % divisor;
-  }
-
-// All of the above was just to get the P1 part
-// of it, so now add P0:
-return (part1 + p0) % divisor;
-}
-*/
-
-
-Uint64 Integer::getMod32( Uint64 divisor )
-{
-if( divisor == 0 )
-  throw "getMod32: divisor == 0.";
-
-if( (divisor >> 32) != 0 )
-  throw "getMod32: (DivideByU >> 32) != 0.";
-
-if( index == 0 )
-  {
-  Uint64 result = D[0] % divisor;
-  return result;
-  }
-
-for( Uint32 count = 0; count < index; count++ )
-  scratch[count] = D[count];
-
-Uint64 remainder = 0;
-if( divisor <= scratch[index] )
-  {
-  Uint64 oneDigit = scratch[index];
-  remainder = oneDigit % divisor;
-  scratch[index] = remainder;
-  }
-
-for( Int32 count = index; count >= 1; count-- )
-  {
-  Uint64 twoDigits = scratch[count];
-  twoDigits <<= 32;
-  twoDigits |= scratch[count - 1];
-  remainder = twoDigits % divisor;
-
-  // This is not necessary for just a remainder:
-  // scratch[count] = 0;
-
-  scratch[count - 1] = remainder;
-  }
-
-return remainder;
-}
-
-
-
-/*
-Uint64 Integer::getMod64( Uint64 divisor )
-{
-if( divisor == 0 )
-  throw "getMod64: divisor == 0.";
-
-if( (divisor & 0xFFFFFFFFL ) == 0 )
-  throw "getMod64: Divisor too small.";
-
-if( index == 0 )
-  return D[0]; // It's a 33+ bit divisor.
-
-Uint64 digit1 = 0;
-Uint64 digit0 = 0;
-Uint64 remainder = 0;
-if( index == 2 )
-  {
-  digit1 = D[2];
-  digit0 = D[1] << 32;
-  digit0 |= D[0];
-  return mod64FromTwoULongs( digit1, digit0,
-                                      divisor );
-  }
-
-if( index == 3 )
-  {
-  digit1 = D[3] << 32;
-  digit1 |= D[2];
-  digit0 = D[1] << 32;
-  digit0 |= D[0];
-  return mod64FromTwoULongs( digit1, digit0,
-                                     divisor );
-  }
-
-for( Uint32 count = 0; count < index; count++ )
-  scratch[count] = D[count];
-
-Uint32 where = index;
-while( true )
-  {
-  if( where <= 3 )
-    {
-    if( where < 2 ) // This can't happen.
-      throw "GetMod64(): Where < 2.";
-
-    if( where == 2 )
-      {
-      digit1 = scratch[2];
-      digit0 = scratch[1] << 32;
-      digit0 |= scratch[0];
-      return mod64FromTwoULongs( digit1, digit0,
-                                        divisor );
-      }
-
-    if( where == 3 )
-      {
-      digit1 = scratch[3] << 32;
-      digit1 |= scratch[2];
-      digit0 = scratch[1] << 32;
-      digit0 |= scratch[0];
-      return mod64FromTwoULongs( digit1, digit0,
-                                       divisor );
-      }
-    }
-  else
-    {
-    // The index is bigger than 3.
-    // This part would get called at least once.
-    digit1 = scratch[where] << 32;
-    digit1 |= scratch[where - 1];
-    digit0 = scratch[where - 2] << 32;
-    digit0 |= scratch[where - 3];
-    remainder = mod64FromTwoULongs( digit1, digit0,
-                                  divisor );
-    scratch[where] = 0;
-    scratch[where - 1] = 0;
-    scratch[where - 2] = remainder >> 32;
-    scratch[where - 3] = remainder &
-                                      0xFFFFFFFF;
-    }
-
-  where -= 2;
-  }
-}
 */
