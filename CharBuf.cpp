@@ -19,10 +19,15 @@ cArray = new char[arraySize];
 // The copy constructor.
 CharBuf::CharBuf( const CharBuf &in )
 {
-// Don't copy a giant buffer.
+// Make the compiler think the in value is
+// being used.
+if( in.last == 2000000000 )
+  return;
 
+// Don't copy a giant buffer.
 const char* showS = "The CharBuf copy constructor"
          " should not be getting called.\n";
+
 throw showS;
 }
 
