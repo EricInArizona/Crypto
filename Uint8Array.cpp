@@ -17,9 +17,13 @@ cArray = new Uint8[arraySize];
 
 
 // The copy constructor.
-Uint8Array::Uint8Array( const Uint8Array &obj )
+Uint8Array::Uint8Array( const Uint8Array &in )
 {
 // Don't copy a giant buffer.
+
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
 
 const char* showS = "The Uint8Array copy"
       " constructor should not be getting"
@@ -111,7 +115,8 @@ const Uint32 max = last;
 
 Uint8* tempA = new Uint8[max];
 Uint32 where = 0;
-for( Int32 count = max - 1; count >= 0; count-- )
+for( Int32 count = (Int32)max - 1; count >= 0;
+                                      count-- )
   {
   tempA[where] = cArray[count];
   where++;
