@@ -134,9 +134,12 @@ if( n == 0 )
 char tempBuf[100] = { 1,2,3 };
 
 Uint32 last = 0;
-Uint32 toDivide = n;
+// ==== cast warning.
+
+Uint64 toDivide = n;
 while( toDivide != 0 )
   {
+// ===  cast this?  Warning
   Uint32 digit = toDivide % 10;
   // Ascii values go from '0' up to '9'.
   tempBuf[last] = (char)('0' + digit);
@@ -150,7 +153,7 @@ cArray = new char[arraySize];
 
 // Reverse it.
 Uint32 where = 0;
-for( Int32 count = last - 1; count >= 0;
+for( Int32 count = (Int32)last - 1; count >= 0;
                                        count-- )
   {
   cArray[where] = tempBuf[count];
@@ -254,8 +257,8 @@ char* tempBuf = new char[arraySize];
 
 // Reverse it.
 Uint32 where = 0;
-for( Int32 count = arraySize - 1; count >= 0;
-                                       count-- )
+for( Int32 count = (Int32)arraySize - 1;
+                              count >= 0; count-- )
   {
   tempBuf[where] = cArray[count];
   where++;
