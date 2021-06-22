@@ -26,6 +26,10 @@ baseAr = new Integer[Integer::digitArraySize];
 // Copy constructor.
 Mod::Mod( const Mod& in )
 {
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
 throw "Don't copy Mod in a copy constructor.";
 }
 
@@ -245,8 +249,8 @@ while( true )
 // you can get carry bits that can make it a
 // little bigger.
 
-Int32 howBig = result.getIndex() -
-                             modulus.getIndex();
+Int32 howBig = (Int32)result.getIndex() -
+               (Int32)modulus.getIndex();
 // if( howBig > 1 )
   // throw "This does happen.";
 
