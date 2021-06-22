@@ -19,7 +19,7 @@
 class CharBuf
   {
   private:
-  char* cArray = 0;
+  char* cArray;
   Uint32 arraySize = 0;
   Uint32 last = 0;
   void increaseSize( Uint32 howMuch );
