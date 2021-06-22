@@ -55,9 +55,9 @@ Uint8Array u8a;
 
 
 Str colon( ":" );
-Str secS( seconds );
-Str minS( minutes );
-Str hourS( hour );
+Str secS( (Uint64)seconds );
+Str minS( (Uint64)minutes );
+Str hourS( (Uint64)hour );
 
 // Close enough for now.
 u8a.appendStr( hourS );
