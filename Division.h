@@ -45,7 +45,7 @@ class Division
                        Integer& toDivide,
                        Integer& divideBy,
                        Integer& quotient,
-                       Integer& remainder,
+                       // Integer& remainder,
                        IntegerMath& intMath );
 
   static bool longDivide2( Integer& toDivide,
@@ -54,7 +54,7 @@ class Division
                          Integer& remainder,
                          IntegerMath& intMath );
 
-  static Int32 findShiftBy( Uint64 toTest );
+  static Uint32 findShiftBy( Uint64 toTest );
 
   static void longDivide3( Integer& toDivide,
                          Integer& divideBy,
