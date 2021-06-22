@@ -10,7 +10,8 @@
 
 
 
-int MainApp::mainLoop( int argc, char* argv[] )
+// int MainApp::mainLoop( int argc, char* argv[] )
+int MainApp::mainLoop( void )
 {
 Uint32 delay = 200; // milliseconds.
 const char* outFile =
