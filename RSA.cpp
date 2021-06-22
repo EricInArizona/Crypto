@@ -28,6 +28,10 @@ RSA::RSA( void )
 // The copy constructor.
 RSA::RSA( const RSA& in )
 {
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
 throw "Don't use copy constructor for RSA.\n";
 }
 
@@ -68,7 +72,6 @@ Fermat fermat;
 for( Uint32 count = 0; count < 1000; count++ )
   {
   mainIO.appendChars( "Count: " );
-  // printFD( Int32 d );
   Str showCount( count );
   mainIO.appendStr( showCount );
   mainIO.appendChars( "\n" );
