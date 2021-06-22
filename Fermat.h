@@ -18,7 +18,7 @@ class Fermat
   {
   private:
   Mod mod;
-
+  Uint32 forCopyTest = 123;
   public:
   Fermat( void );
   Fermat( const Fermat& in );
