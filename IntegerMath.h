@@ -18,6 +18,7 @@
 class IntegerMath
   {
   private:
+  Int32 testForCopy = 123;
   // Signed digits for use in subtraction.
   Int64* signedD;
   // Scratch pad, just like you would do on paper.
@@ -70,6 +71,12 @@ class IntegerMath
 /*
   void square( Integer& toSquare );
 */
+
+  Uint64 getMod32( Integer& in, Uint64 divisor );
+  Uint64 getMod64( Integer& in, Uint64 divisor );
+  static Uint64 mod64FromTwoULongs( Uint64 P1,
+                                 Uint64 P0,
+                                 Uint64 divisor );
 
   void multiplyTop( Integer& result,
                                Integer& toMul );
