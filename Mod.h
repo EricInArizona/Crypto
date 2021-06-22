@@ -18,6 +18,7 @@
 class Mod
   {
   private:
+  Int32 testForCopy = 123;
   Integer* baseAr;
   Integer currentBase;
 
