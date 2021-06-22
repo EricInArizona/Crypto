@@ -1,6 +1,7 @@
 // Copyright Eric Chauvin 2021.
 
 
+
 #include "SPrimes.h"
 #include "IntegerMath.h"
 
@@ -22,6 +23,10 @@ delete[] pArray;
 // The copy constructor.
 SPrimes::SPrimes( const SPrimes& in )
 {
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
 throw "Copy constructor for SPrimes called.\n";
 }
 
@@ -36,10 +41,7 @@ return pArray[arrayLength - 1];
 Uint32 SPrimes::getPrimeAt( Uint32 where )
 {
 if( where >= arrayLength )
-  {
   throw "getPrimeAt() out of bounds.";
-  return 0;
-  }
 
 return pArray[where];
 }
@@ -116,4 +118,3 @@ for( Uint64 testN = 29; ; testN += 2 )
     }
   }
 }
-
