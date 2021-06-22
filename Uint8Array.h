@@ -14,6 +14,7 @@
 class Uint8Array
   {
   private:
+  Int32 testForCopy = 123;
   Uint32 arraySize = 0;
   Uint32 last = 0;
   Uint8* cArray;
