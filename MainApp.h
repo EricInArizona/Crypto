@@ -8,6 +8,7 @@
 
 
 #include "BasicTypes.h"
+#include "FileIO.h"
 
 
 
@@ -15,15 +16,16 @@ class MainApp
   {
   private:
   bool basicThingsAreRight();
-
+  FileIO mainIO; // Sort of like Standard Out.
 
   public:
   inline static const char* getVersionStr( void )
     {
-    return "4/26/2021";
+    return "6/21/2021";
     }
 
-  Int32 mainLoop( Int32 argc, char* argv[] );
+  // Int32 mainLoop( Int32 argc, char* argv[] );
+  Int32 mainLoop( void );
 
   };
 
