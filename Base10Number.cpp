@@ -61,17 +61,17 @@ void Base10Number::setFromStr( Str& toSet )
 index = 0;
 D[0] = 0;
 
-const Int32 last = toSet.getSize();
+const Uint32 last = toSet.getSize();
 if( last < 1 )
   return;
 
 Uint32 where = 0;
-for( Int32 count = last - 1; count >= 0; count-- )
+for( Int32 count = (Int32)(last - 1); count >= 0; count-- )
   {
   if( where >= digitArraySize )
     throw "Base10Number: Too big for array.";
 
-  Uint16 c = toSet.charAt( count );
+  Uint16 c = (Uint16)toSet.charAt( (Uint16)count );
 
   // Ignore white space, commas, non digits.
   if( (c < '0') || (c > '9'))
