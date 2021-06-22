@@ -35,6 +35,10 @@ delete[] scratch;
 // The copy constructor.
 IntegerMath::IntegerMath( const IntegerMath& in )
 {
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
 throw "Copy constructor: IntegerMath.\n";
 }
 
@@ -88,7 +92,7 @@ for( Uint32 count = 1; count <
   // Is the prime a 32 bit number?
   // getMod32 would throw an exception.
   Uint64 aPrime = sPrimes.getPrimeAt( count );
-  if( 0 == toTest.getMod32( aPrime ))
+  if( 0 == getMod32( toTest, aPrime ))
     return aPrime;
 
   }
@@ -151,11 +155,12 @@ if( signedD[last] < 0 )
 for( Uint32 count = 0; count <= last; count++ )
   result.setD( count, (Uint64)signedD[count] );
 
-for( Int32 count = last; count >= 0; count-- )
+for( Int32 count = (Int32)last; count >= 0;
+                                       count-- )
   {
-  if( result.getD( count ) != 0 )
+  if( result.getD( (Uint32)count ) != 0 )
     {
-    result.setIndex( count );
+    result.setIndex( (Uint32)count );
     return;
     }
   }
@@ -347,7 +352,7 @@ const Uint32 lastR = result.getIndex();
 
 for( Uint32 count = last + 1; count <= lastR;
                                        count++ )
-  signedD[count] = (Uint64)result.getD( count );
+  signedD[count] = (Int64)result.getD( count );
 
 for( Uint32 count = 0; count < lastR; count++ )
   {
@@ -364,11 +369,12 @@ if( signedD[lastR] < 0 )
 for( Uint32 count = 0; count <= lastR; count++ )
   result.setD( count, (Uint64)signedD[count] );
 
-for( Int32 count = lastR; count >= 0; count-- )
+for( Int32 count = (Int32)lastR; count >= 0;
+                                        count-- )
   {
-  if( result.getD( count ) != 0 )
+  if( result.getD( (Uint32)count ) != 0 )
     {
-    result.setIndex( count );
+    result.setIndex( (Uint32)count );
     return;
     }
   }
@@ -807,7 +813,6 @@ if( carry != 0 )
 void IntegerMath::multiplyTop( Integer& result,
                                Integer& toMul )
 {
-/*
 Uint32 totalIndex = result.getIndex() +
                              toMul.getIndex();
 if( totalIndex >= Integer::digitArraySize )
@@ -819,9 +824,10 @@ Uint32 toMulIndex = toMul.getIndex();
 Uint32 resultIndex = result.getIndex();
 for( Uint32 column = 0; column <= toMulIndex;
                                       column++ )
-  M[column + resultIndex][resultIndex] =
-                    result.getD( resultIndex ) *
-                    toMul.getD( column );
+  M.setV( column + resultIndex,
+          resultIndex, 
+          result.getD( resultIndex ) *
+          toMul.getD( column ));
 
 for( Uint32 column = 0; column < resultIndex;
                                        column++ )
@@ -831,8 +837,8 @@ Uint64 carry = 0;
 for( Uint32 column = 0; column <= toMulIndex;
                                        column++ )
   {
-  Uint64 total = M[column + resultIndex]
-                           [resultIndex] + carry;
+  Uint64 total = M.getV( column + resultIndex,
+                         resultIndex) + carry;
   result.setD( column + resultIndex,
                            total & 0xFFFFFFFF );
   carry = total >> 32;
@@ -848,7 +854,6 @@ if( carry != 0 )
 
   result.setD( result.getIndex(), carry );
   }
-*/
 }
 
 
@@ -1051,3 +1056,192 @@ sqrRoot.setD( testIndex, xDigit );
 }
 
 */
+
+
+
+Uint64 IntegerMath::getMod32( Integer& in,
+                              Uint64 divisor )
+{
+if( divisor == 0 )
+  throw "getMod32: divisor == 0.";
+
+if( (divisor >> 32) != 0 )
+  throw "getMod32: (DivideByU >> 32) != 0.";
+
+if( in.getIndex() == 0 )
+  {
+  Uint64 result = in.getD( 0 ) % divisor;
+  return result;
+  }
+
+const Uint32 last = in.getIndex();
+
+for( Uint32 count = 0; count <= last; count++ )
+  scratch[count] = in.getD( count );
+
+Uint64 remainder = 0;
+if( divisor <= scratch[last] )
+  {
+  Uint64 oneDigit = scratch[last];
+  remainder = oneDigit % divisor;
+  scratch[last] = remainder;
+  }
+
+for( Int32 count = (Int32)last; count >= 1;
+                                        count-- )
+  {
+  Uint64 twoDigits = scratch[count];
+  twoDigits <<= 32;
+  twoDigits |= scratch[count - 1];
+  remainder = twoDigits % divisor;
+
+  // This is not necessary for just a remainder:
+  // scratch[count] = 0;
+
+  scratch[count - 1] = remainder;
+  }
+
+return remainder;
+}
+
+
+
+Uint64 IntegerMath::mod64FromTwoULongs( Uint64 p1,
+                                  Uint64 p0,
+                                  Uint64 divisor )
+{
+if( divisor <= 0xFFFFFFFFL )
+  throw "mod64FromTwoULongs divisor <= ";
+
+// This is never shifted more than 12 bits, so
+// check to make sure there's room to shift it.
+if( (divisor >> 52) != 0 )
+  throw "divisor too big in mod64FromTwoULongs.";
+
+if( p1 == 0 )
+  return p0 % divisor;
+
+//////////////////////////////////////////////
+// (P1 * 2^64) + P0 is what the number is.
+// Uint64 base = 1 << 32;
+
+Uint64 part1 = p1 % divisor;
+if( (divisor >> 40) == 0 )
+  {
+  // Then this can be done 24 bits at a time.
+  part1 <<= 24;  // Times 2^24
+  part1 = part1 % divisor;
+  part1 <<= 24;  //  48
+  part1 = part1 % divisor;
+  part1 <<= 16;  // Brings it to 64
+  part1 = part1 % divisor;
+  }
+else
+  {
+  part1 <<= 12;  // Times 2^12
+  part1 = part1 % divisor;
+  part1 <<= 12;  // Times 2^12
+  part1 = part1 % divisor;
+  part1 <<= 12;  // Times 2^12
+  part1 = part1 % divisor;
+  part1 <<= 12;  // Times 2^12 Brings it to 48.
+  part1 = part1 % divisor;
+  part1 <<= 8;  // Times 2^8
+  part1 = part1 % divisor;
+  part1 <<= 8;  // Times 2^8 Brings it to 64.
+  part1 = part1 % divisor;
+  }
+
+// All of the above was just to get the P1 part
+// of it, so now add P0:
+return (part1 + p0) % divisor;
+}
+
+
+
+Uint64 IntegerMath::getMod64( Integer& in,
+                              Uint64 divisor )
+{
+if( divisor == 0 )
+  throw "getMod64: divisor == 0.";
+
+if( (divisor & 0xFFFFFFFFL ) == 0 )
+  throw "getMod64: Divisor too small.";
+
+const Uint32 last = in.getIndex();
+
+if( last == 0 )
+  return in.getD( 0 ); // It's a 33+ bit divisor.
+
+Uint64 digit1 = 0;
+Uint64 digit0 = 0;
+Uint64 remainder = 0;
+if( last == 2 )
+  {
+  digit1 = in.getD( 2 );
+  digit0 = in.getD( 1 ) << 32;
+  digit0 |= in.getD( 0 );
+  return mod64FromTwoULongs( digit1, digit0,
+                                      divisor );
+  }
+
+if( last == 3 )
+  {
+  digit1 = in.getD( 3 ) << 32;
+  digit1 |= in.getD( 2 );
+  digit0 = in.getD( 1 ) << 32;
+  digit0 |= in.getD( 0 );
+  return mod64FromTwoULongs( digit1, digit0,
+                                     divisor );
+  }
+
+for( Uint32 count = 0; count <= last; count++ )
+  scratch[count] = in.getD( count );
+
+Uint32 where = last;
+while( true )
+  {
+  if( where <= 3 )
+    {
+    if( where < 2 ) // This can't happen.
+      throw "GetMod64(): Where < 2.";
+
+    if( where == 2 )
+      {
+      digit1 = scratch[2];
+      digit0 = scratch[1] << 32;
+      digit0 |= scratch[0];
+      return mod64FromTwoULongs( digit1, digit0,
+                                        divisor );
+      }
+
+    if( where == 3 )
+      {
+      digit1 = scratch[3] << 32;
+      digit1 |= scratch[2];
+      digit0 = scratch[1] << 32;
+      digit0 |= scratch[0];
+      return mod64FromTwoULongs( digit1, digit0,
+                                       divisor );
+      }
+    }
+  else
+    {
+    // The index is bigger than 3.
+    // This part would get called at least once.
+    digit1 = scratch[where] << 32;
+    digit1 |= scratch[where - 1];
+    digit0 = scratch[where - 2] << 32;
+    digit0 |= scratch[where - 3];
+    remainder = mod64FromTwoULongs( digit1, digit0,
+                                  divisor );
+    scratch[where] = 0;
+    scratch[where - 1] = 0;
+    scratch[where - 2] = remainder >> 32;
+    scratch[where - 3] = remainder &
+                                      0xFFFFFFFF;
+    }
+
+  where -= 2;
+  }
+}
