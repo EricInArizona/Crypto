@@ -21,13 +21,9 @@ rem C:\LLVM\bin\clang++ main.cpp MainApp.cpp Base10Number.cpp FileUtil.cpp Base1
 
 rem -MAP goes to main.map.
 
-rem What is this?
-rem https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html#available-checks
-
 rem -Weverything
-rem Enable all diagnostics.
 rem -Wall
-C:\LLVM\bin\clang++ *.cpp -o main.exe -Weverything -Wno-old-style-cast -Wno-c++98-compat-pedantic -fsanitize=integer -O1 -Wl,-MAP -Wl,-STACK:10000000 2> Build.log
+C:\LLVM\bin\clang++ *.cpp -o main.exe -Weverything -Wno-old-style-cast -Wno-c++98-compat-pedantic -fsanitize=implicit-unsigned-integer-truncation -fsanitize=integer -O1 -Wl,-MAP -Wl,-STACK:10000000 2> Build.log
 
 rem https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations?view=msvc-160
 rem Tell the linker to use this max stack size.
