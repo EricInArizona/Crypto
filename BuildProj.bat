@@ -4,9 +4,6 @@ rem 1> is standard out and 2> is standard error.
 
 cd \Eric\Main\Crypto
 
-rem -Weverything
-rem Enable all diagnostics.
-
 rem Command line reference:
 rem https://clang.llvm.org/docs/ClangCommandLineReference.html
 
@@ -23,7 +20,14 @@ rem C:\LLVM\bin\clang++ --help
 rem C:\LLVM\bin\clang++ main.cpp MainApp.cpp Base10Number.cpp FileUtil.cpp Base10Number.cpp -o main.exe -Wall -O1 2> Build.log
 
 rem -MAP goes to main.map.
-C:\LLVM\bin\clang++ *.cpp -o main.exe -Wall -O1 -Wl,-MAP -Wl,-STACK:10000000 2> Build.log
+
+rem What is this?
+rem https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html#available-checks
+
+rem -Weverything
+rem Enable all diagnostics.
+rem -Wall
+C:\LLVM\bin\clang++ *.cpp -o main.exe -Weverything -Wno-old-style-cast -Wno-c++98-compat-pedantic -fsanitize=integer -O1 -Wl,-MAP -Wl,-STACK:10000000 2> Build.log
 
 rem https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations?view=msvc-160
 rem Tell the linker to use this max stack size.
@@ -36,4 +40,3 @@ rem stack size is 1 MB."
 rem -Wl,<arg>
 rem Pass the comma separated arguments in
 rem <arg> to the linker
-
