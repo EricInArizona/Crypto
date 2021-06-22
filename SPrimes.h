@@ -16,6 +16,7 @@
 class SPrimes
   {
   private:
+  Int32 testForCopy = 123;
   Uint32* pArray;
   void makePrimeArray( void );
 
