@@ -18,6 +18,7 @@
 class RSA
   {
   private:
+  Int32 testForCopy = 123;
   IntegerMath intMath;
   SPrimes sPrimes;
   Integer primeP;
@@ -39,8 +40,9 @@ class RSA
   static const Uint32 PubKeyExponentU = 65537;
 
   // The index, which is the size of the prime.
+  static const int PrimeIndex = 0; // 32-bit
   // static const int PrimeIndex = 1; // 64-bit
-  static const Uint32 PrimeIndex = 2; // 96-bit
+  // static const Uint32 PrimeIndex = 2; // 96-bit
   // static const int PrimeIndex = 3; // 128-bit
   // static const int PrimeIndex = 7; // 256-bit
   // static const int PrimeIndex = 15; // 512
