@@ -106,6 +106,9 @@ for( Uint32 count = 0; count <= last; count++ )
 void Integer::copyUpTo( const Integer& from,
                         Uint32 where )
 {
+if( where >= digitArraySize )
+  throw "copyUpTo where out of range.";
+
 isNegative = from.isNegative;
 index = where;
 for( Uint32 count = 0; count <= where; count++ )
