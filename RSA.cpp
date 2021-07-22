@@ -69,7 +69,7 @@ Fermat fermat;
 
 
 // while( true )
-for( Uint32 count = 0; count < 1000; count++ )
+for( Uint32 count = 0; count < 100; count++ )
   {
   mainIO.appendChars( "Count: " );
   Str showCount( count );
@@ -83,10 +83,11 @@ for( Uint32 count = 0; count < 1000; count++ )
 
   if( !fermat.makeAPrime( mainIO, primeP,
                                    PrimeIndex,
-                                   100,
+                                   1000,
                                    sPrimes,
                                    intMath ))
     {
+    mainIO.appendChars( "makeAPrime is false.\n" );
     return;
     }
 
