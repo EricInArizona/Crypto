@@ -32,11 +32,13 @@ class Mod
   void makeExact( Integer& exact,
                          IntegerMath& intMath );
 
-  Uint32 reduce( Integer& result,
+  Uint32 reduce( FileIO& mainIO,
+                           Integer& result,
                            Integer& toReduce,
                            IntegerMath& intMath );
 
-  void toPower( Integer& result,
+  void toPower( FileIO& mainIO,
+                        Integer& result,
                         Integer& exponent,
                         Integer& modulus,
                         bool setUpBase,
