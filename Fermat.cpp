@@ -41,9 +41,9 @@ for( Uint32 count = 0; count < howMany; count++ )
     throw "Error making random number.";
     }
 
-  Str showS =  intMath.toString10( result );
-  mainIO.appendStr( showS );
-  mainIO.appendChars( "\n\n" );
+  // Str showS =  intMath.toString10( result );
+  // mainIO.appendStr( showS );
+  // mainIO.appendChars( "\n\n" );
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
@@ -56,7 +56,6 @@ for( Uint32 count = 0; count < howMany; count++ )
   if( 0 != testPrime)
     continue;
 
-/*
   if( !isPrime( mainIO, result, howMany, sPrimes,
                                        intMath ))
     {
@@ -65,7 +64,6 @@ for( Uint32 count = 0; count < howMany; count++ )
     continue;
     }
 
-
   mainIO.appendChars(
                   "\nFound a probable prime.\n" );
   mainIO.appendChars( "Attempts: " );
@@ -73,7 +71,6 @@ for( Uint32 count = 0; count < howMany; count++ )
   mainIO.appendStr( attem );
   mainIO.appendChars( "\n" );
   return true; // With result.
-  */
   }
 
 
@@ -163,10 +160,12 @@ pMinus1.copy( toTest );
 intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
-mod.toPower( A, pMinus1, toTest, true, intMath );
+mod.toPower( mainIO, A, pMinus1, toTest, true,
+                                        intMath );
 
 mainIO.appendChars(
                 "Value of A:\n" );
+
   Str showS =  intMath.toString10( A );
   mainIO.appendStr( showS );
   mainIO.appendChars( "\n\n" );
