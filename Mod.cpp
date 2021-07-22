@@ -107,12 +107,15 @@ exact.copy( remainder );
 
 
 
-Uint32 Mod::reduce( Integer& result,
+Uint32 Mod::reduce( FileIO& mainIO,
+                           Integer& result,
                            Integer& toReduce,
                            IntegerMath& intMath )
 {
 if( toReduce.paramIsGreater( currentBase ))
   {
+  mainIO.appendChars(
+                "paramIsGreater in reduce().\n" );
   result.copy( toReduce );
   return result.getIndex();
   }
@@ -127,7 +130,9 @@ Integer accumBase;
 // Those parts that are less than the base are
 // still at some power of two.
 
-result.copyUpTo( toReduce, highestCopyIndex - 1 );
+// If it's zero then minus 1 makes the Uint huge.
+result.copyUpTo( toReduce, highestCopyIndex );
+// result.copyUpTo( toReduce, highestCopyIndex - 1 );
 
 // But from here up they have to be added
 // up individually.
@@ -168,18 +173,26 @@ return result.getIndex();
 
 // x^n = (x^2)^((n - 1)/2) if n is odd.
 // x^n = (x^2)^(n/2)       if n is even.
-void Mod::toPower( Integer& result,
+void Mod::toPower( FileIO& mainIO,
+                        Integer& result,
                         Integer& exponent,
                         Integer& modulus,
                         bool setUpBase,
                         IntegerMath& intMath )
 {
 if( result.isZero())
+  {
+  mainIO.appendChars(
+                "toPower() is zero at top.\n" );
+
   return; // With Result still zero.
+  }
 
 if( result.isEqual( modulus ))
   {
   // It is congruent to zero % ModN.
+  mainIO.appendChars(
+            "Congruent to zero in toPower().\n" );
   result.setToZero();
   return;
   }
@@ -187,7 +200,9 @@ if( result.isEqual( modulus ))
 // Result is not zero at this point.
 if( exponent.isZero() )
   {
-  result.setFromULong( 1 );
+  mainIO.appendChars(
+            "Exponent is zero in toPower().\n" );
+  result.setToOne();
   return;
   }
 
@@ -205,6 +220,8 @@ if( modulus.paramIsGreater( result ))
 
 if( exponent.isOne())
   {
+  mainIO.appendChars(
+            "Exponent is one in toPower().\n" );
   // Result stays the same.
   return;
   }
@@ -219,14 +236,19 @@ Integer tempForModPower;
 xForModPower.copy( result );
 exponentCopy.copy( exponent );
 // Uint32 testIndex = 0;
-result.setFromULong( 1 );
 
-while( true )
+result.setToOne();
+
+for( Uint32 count = 0; count < 100; count++ )
+// while( true )
   {  // If the bottom bit is 1.
+  mainIO.appendChars(
+            "Top of loop in toPower().\n" );
+
   if( (exponentCopy.getD( 0 ) & 1) == 1 )
     {
     intMath.multiply( result, xForModPower );
-    reduce( tempForModPower, result, intMath );
+    reduce( mainIO, tempForModPower, result, intMath );
     result.copy( tempForModPower );
     }
 
@@ -238,7 +260,7 @@ while( true )
   intMath.multiply( xForModPower, xForModPower );
   // IntMath.square( xForModPower );
 
-  reduce( tempForModPower, xForModPower, intMath );
+  reduce( mainIO, tempForModPower, xForModPower, intMath );
   xForModPower.copy( tempForModPower );
   }
 
@@ -257,7 +279,7 @@ Int32 howBig = (Int32)result.getIndex() -
 if( howBig > 2 )
   throw "This never happens. howBig.";
 
-reduce( tempForModPower, result, intMath );
+reduce( mainIO, tempForModPower, result, intMath );
 result.copy( tempForModPower );
 
 // Notice that this Divide() is done once.
@@ -427,4 +449,6 @@ Java code:
     result = result % base;
     return result;
     }
+
+Java code.
 */
