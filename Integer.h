@@ -20,8 +20,10 @@ class Integer
   // 100 is 3,200 bits.
 
   // Make this big enough to over run the stack?
-  static const Uint32 digitArraySize = 2000;
+  static const Uint32 digitArraySize = 1000;
   // See the /STACK option in BuildProj.bat
+
+  // static const Uint32 testMod = 1000;
 
 
   private:
