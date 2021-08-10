@@ -27,8 +27,9 @@ class Mod
   Mod( void );
   Mod( const Mod& in );
   ~Mod( void );
-  void setupBaseArray( Integer& setBase,
-                         IntegerMath& intMath );
+  void setupBaseArray( // FileIO& mainIO,
+                       Integer& setBase,
+                       IntegerMath& intMath );
   void makeExact( Integer& exact,
                          IntegerMath& intMath );
 
