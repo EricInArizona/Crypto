@@ -41,10 +41,16 @@ delete[] baseAr;
 
 
 
-void Mod::setupBaseArray( Integer& setBase,
+void Mod::setupBaseArray( // FileIO& mainIO,
+                          Integer& setBase,
                           IntegerMath& intMath )
 {
 currentBase.copy( setBase );
+
+// mainIO.appendChars( "currentBase:\n" );
+// Str showS3 =  intMath.toString10( currentBase );
+// mainIO.appendStr( showS3 );
+// mainIO.appendChars( "\n" );
 
 Integer base2;
 base2.setFromULong( 256 ); // 0x100
@@ -52,6 +58,11 @@ intMath.multiplyUInt( base2, 256 ); // 0x10000
 intMath.multiplyUInt( base2, 256 ); // 0x1000000
 intMath.multiplyUInt( base2, 256 );
 // Now it is: 0x1 0000 0000
+
+// mainIO.appendChars( "base2:\n" );
+// Str showS =  intMath.toString10( base2 );
+// mainIO.appendStr( showS );
+// mainIO.appendChars( "\n" );
 
 
 // 0x100000000 is the
@@ -73,6 +84,14 @@ for( Uint32 column = 0; column <
 
   baseAr[column].copy( remainder );
 
+  // mainIO.appendChars(
+     //           "baseAr[column].\n" );
+  // Str showS2 =  intMath.toString10(
+  //                            baseAr[column] );
+  // mainIO.appendStr( showS2 );
+  // mainIO.appendChars( "\n" );
+
+
   // This would need a full size baseValue.
   // Not mod the remainder.
   // quotientAr[column].copy( quotient );
@@ -80,7 +99,7 @@ for( Uint32 column = 0; column <
   // Done at the bottom for the next round of
   // the loop.
   baseValue.copy( remainder );
-  intMath.multiply( baseValue, currentBase );
+  intMath.multiply( baseValue, base2 );
   }
 }
 
@@ -112,6 +131,7 @@ Uint32 Mod::reduce( FileIO& mainIO,
                            Integer& toReduce,
                            IntegerMath& intMath )
 {
+
 if( toReduce.paramIsGreater( currentBase ))
   {
   mainIO.appendChars(
@@ -227,7 +247,8 @@ if( exponent.isOne())
   }
 
 if( setUpBase )
-  setupBaseArray( modulus, intMath );
+  setupBaseArray( // mainIO,
+                  modulus, intMath );
 
 Integer xForModPower;
 Integer exponentCopy;
@@ -242,13 +263,14 @@ result.setToOne();
 for( Uint32 count = 0; count < 100; count++ )
 // while( true )
   {  // If the bottom bit is 1.
-  mainIO.appendChars(
-            "Top of loop in toPower().\n" );
+  // mainIO.appendChars(
+     //       "Top of loop in toPower().\n" );
 
   if( (exponentCopy.getD( 0 ) & 1) == 1 )
     {
     intMath.multiply( result, xForModPower );
-    reduce( mainIO, tempForModPower, result, intMath );
+    reduce( mainIO,
+            tempForModPower, result, intMath );
     result.copy( tempForModPower );
     }
 
@@ -260,7 +282,8 @@ for( Uint32 count = 0; count < 100; count++ )
   intMath.multiply( xForModPower, xForModPower );
   // IntMath.square( xForModPower );
 
-  reduce( mainIO, tempForModPower, xForModPower, intMath );
+  reduce( mainIO,
+          tempForModPower, xForModPower, intMath );
   xForModPower.copy( tempForModPower );
   }
 
