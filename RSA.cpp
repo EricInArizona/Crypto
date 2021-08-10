@@ -69,7 +69,7 @@ Fermat fermat;
 
 
 // while( true )
-for( Uint32 count = 0; count < 100; count++ )
+for( Uint32 count = 0; count < 10; count++ )
   {
   mainIO.appendChars( "Count: " );
   Str showCount( count );
