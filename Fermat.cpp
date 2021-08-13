@@ -26,13 +26,13 @@ throw "Don't use the Fermat copy constructor.";
 bool Fermat::makeAPrime( FileIO& mainIO,
                           Integer& result,
                           Uint32 setToIndex,
-                          Uint32 howMany,
+                          // Uint32 howMany,
                           SPrimes& sPrimes,
                           IntegerMath& intMath )
 {
-mainIO.appendChars( "Top of makeAPrime().\n" );
+// mainIO.appendChars( "Top of makeAPrime().\n" );
 
-for( Uint32 count = 0; count < howMany; count++ )
+for( Uint32 count = 0; count < 1000; count++ )
   {
   // ThreadEC::sleep( 1 );
 
@@ -56,20 +56,19 @@ for( Uint32 count = 0; count < howMany; count++ )
   if( 0 != testPrime)
     continue;
 
-  if( !isPrime( mainIO, result, howMany, sPrimes,
-                                       intMath ))
+  if( !isPrime( mainIO, result, sPrimes, intMath ))
     {
     mainIO.appendChars(
                 "Did not pass Fermat test.\n" );
     continue;
     }
 
-  mainIO.appendChars(
-                  "\nFound a probable prime.\n" );
-  mainIO.appendChars( "Attempts: " );
-  Str attem( count );
-  mainIO.appendStr( attem );
-  mainIO.appendChars( "\n" );
+  // mainIO.appendChars(
+  //            "\nFound a probable prime.\n" );
+  // mainIO.appendChars( "Attempts: " );
+  // Str attem( count );
+  // mainIO.appendStr( attem );
+  // mainIO.appendChars( "\n" );
   return true; // With result.
   }
 
@@ -85,9 +84,9 @@ return false;
 
 bool Fermat::isPrime( FileIO& mainIO,
                       Integer& toTest,
-                           Uint32 howMany,
-                           SPrimes& sPrimes,
-                           IntegerMath& intMath )
+                      // Uint32 howMany,
+                      SPrimes& sPrimes,
+                      IntegerMath& intMath )
 {
 // Use bigger primes for Fermat test because the
 // modulus can't be too small.  And also it's
@@ -108,7 +107,7 @@ bool Fermat::isPrime( FileIO& mainIO,
 Uint32 startAt = SPrimes::arrayLength >> 1;
 
 for( Uint32 count = startAt; count <
-                   (howMany + startAt); count++ )
+                   (100 + startAt); count++ )
   {
   if( !isPrimeForOneValue( mainIO, toTest,
                    sPrimes.getPrimeAt( count ),
@@ -163,12 +162,10 @@ A.setFromULong( base );
 mod.toPower( mainIO, A, pMinus1, toTest, true,
                                         intMath );
 
-mainIO.appendChars(
-                "Value of A:\n" );
-
-  Str showS =  intMath.toString10( A );
-  mainIO.appendStr( showS );
-  mainIO.appendChars( "\n\n" );
+// mainIO.appendChars( "Value of A:\n" );
+// Str showS =  intMath.toString10( A );
+// mainIO.appendStr( showS );
+// mainIO.appendChars( "\n\n" );
 
 if( A.isOne())
   return true; // It _might_ be a prime.
