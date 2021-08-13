@@ -33,7 +33,7 @@ class Mod
   void makeExact( Integer& exact,
                          IntegerMath& intMath );
 
-  Uint32 reduce( FileIO& mainIO,
+  Uint32 reduce( // FileIO& mainIO,
                            Integer& result,
                            Integer& toReduce,
                            IntegerMath& intMath );
