@@ -26,15 +26,15 @@ class Fermat
   bool makeAPrime( FileIO& mainIO,
                    Integer& result,
                    Uint32 setToIndex,
-                   Uint32 howMany,
+                   // Uint32 howMany,
                    SPrimes& sPrimes,
                    IntegerMath& intMath );
 
   bool isPrime( FileIO& mainIO,
                 Integer& toTest,
-                      Uint32 howMany,
-                      SPrimes& sPrimes,
-                      IntegerMath& intMath );
+                // Uint32 howMany,
+                SPrimes& sPrimes,
+                IntegerMath& intMath );
 
   bool isPrimeForOneValue( FileIO& mainIO,
                       Integer& toTest,
