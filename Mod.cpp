@@ -126,6 +126,24 @@ exact.copy( remainder );
 
 
 
+Uint32 Mod::reduce( // FileIO& mainIO,
+                           Integer& result,
+                           Integer& toReduce,
+                           IntegerMath& intMath )
+{
+Integer quotient;
+Integer remainder;
+
+Division::divide( toReduce, currentBase,
+                          quotient, remainder,
+                          intMath );
+result.copy( remainder );
+return result.getIndex();
+}
+
+
+
+/*
 Uint32 Mod::reduce( FileIO& mainIO,
                            Integer& result,
                            Integer& toReduce,
@@ -182,7 +200,7 @@ for( Uint32 count = highestCopyIndex; count <
 
 return result.getIndex();
 }
-
+*/
 
 
 
@@ -260,7 +278,8 @@ exponentCopy.copy( exponent );
 
 result.setToOne();
 
-for( Uint32 count = 0; count < 100; count++ )
+// For each bit.
+for( Uint32 count = 0; count < 10000; count++ )
 // while( true )
   {  // If the bottom bit is 1.
   // mainIO.appendChars(
@@ -269,7 +288,7 @@ for( Uint32 count = 0; count < 100; count++ )
   if( (exponentCopy.getD( 0 ) & 1) == 1 )
     {
     intMath.multiply( result, xForModPower );
-    reduce( mainIO,
+    reduce( // mainIO,
             tempForModPower, result, intMath );
     result.copy( tempForModPower );
     }
@@ -282,7 +301,7 @@ for( Uint32 count = 0; count < 100; count++ )
   intMath.multiply( xForModPower, xForModPower );
   // IntMath.square( xForModPower );
 
-  reduce( mainIO,
+  reduce( // mainIO,
           tempForModPower, xForModPower, intMath );
   xForModPower.copy( tempForModPower );
   }
@@ -302,7 +321,8 @@ Int32 howBig = (Int32)result.getIndex() -
 if( howBig > 2 )
   throw "This never happens. howBig.";
 
-reduce( mainIO, tempForModPower, result, intMath );
+reduce( // mainIO,
+     tempForModPower, result, intMath );
 result.copy( tempForModPower );
 
 // Notice that this Divide() is done once.
