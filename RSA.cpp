@@ -15,7 +15,6 @@
 #include "RSA.h"
 #include "FileIO.h"
 #include "TimeEC.h"
-#include "Fermat.h"
 
 
 
@@ -65,13 +64,10 @@ Str bits( showBits );
 mainIO.appendStr( bits );
 mainIO.appendChars( "\n" );
 
-Fermat fermat;
-
-
 // while( true )
-for( Uint32 count = 0; count < 10; count++ )
+for( Uint32 count = 0; count < 3; count++ )
   {
-  mainIO.appendChars( "Count: " );
+  mainIO.appendChars( "makeRSAKeys count: " );
   Str showCount( count );
   mainIO.appendStr( showCount );
   mainIO.appendChars( "\n" );
@@ -83,7 +79,6 @@ for( Uint32 count = 0; count < 10; count++ )
 
   if( !fermat.makeAPrime( mainIO, primeP,
                                    PrimeIndex,
-                                   1000,
                                    sPrimes,
                                    intMath ))
     {
@@ -91,7 +86,34 @@ for( Uint32 count = 0; count < 10; count++ )
     return;
     }
 
-  mainIO.appendChars( "After makeAPrime.\n" );
+  if( !fermat.makeAPrime( mainIO, primeQ,
+                                   PrimeIndex,
+                                   sPrimes,
+                                   intMath ))
+    {
+    mainIO.appendChars( "makeAPrime is false.\n" );
+    return;
+    }
+
+  mainIO.appendChars( "\n" );
+
+  mainIO.appendChars( "primeP:\n" );
+  Str showP =  intMath.toString10( primeP );
+  mainIO.appendStr( showP );
+  mainIO.appendChars( "\n" );
+
+  mainIO.appendChars( "primeQ:\n" );
+  Str showQ =  intMath.toString10( primeQ );
+  mainIO.appendStr( showQ );
+  mainIO.appendChars( "\n" );
+
+  // It would make more sense to keep one of
+  // these and make one new one for the next
+  // pair to test.
+  if( !isGoodPair( mainIO, primeP, primeQ ))
+    continue;
+
+  mainIO.appendChars( "Good pair.\n" );
   }
 
 mainIO.appendChars( "End of makeRSAKeys().\n" );
@@ -99,56 +121,26 @@ mainIO.appendChars( "End of makeRSAKeys().\n" );
 
 
 
-/*
-Way too much in one function.
-void RSA::makeRSAKeys( FileIO& mainIO )
+// Way too much in the old one function.
+// So break it up.
+
+
+
+bool RSA::isGoodPair( FileIO& mainIO,
+                      Integer& P,
+                      Integer& Q )
 {
-
-// while( true )
-for( Uint32 count = 0; count < 10; count++ )
+// This is extremely unlikely.
+Integer gcd;
+euclid.greatestComDiv( P, Q, gcd, intMath );
+if( !gcd.isOne())
   {
-  mainIO.appendChars( "Count: " );
-  // printFD( Int32 d );
-  Str showCount( count );
-  mainIO.appendStr( showCount );
-  mainIO.appendChars( "\n" );
+  mainIO.appendChars( "They had a GCD.\n" );
+  return false;
+  }
 
-  // Thread.Sleep( 1 ); // Let other things run.
-  // Make two prime factors.
-  // Normally you'd only make new primes when
-  // you pay the Certificate Authority for a
-  // new certificate.
 
-  if( !makeAPrime( mainIO, primeP, PrimeIndex,
-                                          100 ))
-    return;
-
-  mainIO.appendChars( "After makeAPrime.\n" );
-
-  return;
-  /////////////
-
-      if( !MakeAPrime( PrimeQ, PrimeIndex, 20 ))
-        return;
-
-      if( Worker.CancellationPending )
-        return;
-
-      // This is extremely unlikely.
-      Integer Gcd = new Integer();
-      IntMath.GreatestCommonDivisor( PrimeP,
-                                   PrimeQ, Gcd );
-      if( !Gcd.IsOne())
-        {
-        Worker.ReportProgress( 0,
-                         "They had a GCD: " +
-                       IntMath.ToString10( Gcd ));
-        continue;
-        }
-
-      if( Worker.CancellationPending )
-        return;
-
+/*
       IntMath.GreatestCommonDivisor( PrimeP,
                           PubKeyExponent, Gcd );
       if( !Gcd.IsOne())
@@ -171,6 +163,15 @@ for( Uint32 count = 0; count < 10; count++ )
              IntMath.ToString10( Gcd ));
         continue;
         }
+*/
+
+return true;
+}
+
+
+
+
+/*
 
       // For Modular Reduction.
       //  This only has to be done
