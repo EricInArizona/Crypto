@@ -1,6 +1,10 @@
 // Copyright Eric Chauvin, 2021.
 
 
+// This is 8 bytes times digitArraySize *
+// digitArraySize, which is like 8 million bytes
+// or 32 million bytes or something like that.
+
 
 
 #ifndef ECTwoDUint64_H
