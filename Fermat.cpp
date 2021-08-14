@@ -6,29 +6,13 @@
 
 
 
-Fermat::Fermat( void )
-{
-//
-}
-
-
-// The copy constructor.
-Fermat::Fermat( const Fermat& in )
-{
-// Make the compiler think in is being used.
-if( in.forCopyTest == 7 )
-  return;
-
-throw "Don't use the Fermat copy constructor.";
-}
-
-
 bool Fermat::makeAPrime( FileIO& mainIO,
                           Integer& result,
                           Uint32 setToIndex,
                           // Uint32 howMany,
                           SPrimes& sPrimes,
-                          IntegerMath& intMath )
+                          IntegerMath& intMath,
+                          Mod& mod )
 {
 // mainIO.appendChars( "Top of makeAPrime().\n" );
 
@@ -56,7 +40,8 @@ for( Uint32 count = 0; count < 1000; count++ )
   if( 0 != testPrime)
     continue;
 
-  if( !isPrime( mainIO, result, sPrimes, intMath ))
+  if( !isPrime( mainIO, result, sPrimes, intMath,
+                                         mod ))
     {
     mainIO.appendChars(
                 "Did not pass Fermat test.\n" );
@@ -86,7 +71,8 @@ bool Fermat::isPrime( FileIO& mainIO,
                       Integer& toTest,
                       // Uint32 howMany,
                       SPrimes& sPrimes,
-                      IntegerMath& intMath )
+                      IntegerMath& intMath,
+                      Mod& mod )
 {
 // Use bigger primes for Fermat test because the
 // modulus can't be too small.  And also it's
@@ -111,7 +97,8 @@ for( Uint32 count = startAt; count <
   {
   if( !isPrimeForOneValue( mainIO, toTest,
                    sPrimes.getPrimeAt( count ),
-                   intMath ))
+                   intMath,
+                   mod ))
     {
     // It is definitely not a prime.
     return false;
@@ -130,7 +117,8 @@ return true;
 bool Fermat::isPrimeForOneValue( FileIO& mainIO,
                           Integer& toTest,
                           Uint64 base,
-                          IntegerMath& intMath )
+                          IntegerMath& intMath,
+                          Mod& mod )
 {
 // Assume toTest is not a small number.  (Not
 // the size of a small prime.)
