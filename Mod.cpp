@@ -19,7 +19,7 @@
 
 Mod::Mod( void )
 {
-baseAr = new Integer[Integer::digitArraySize];
+// baseAr = new Integer[Integer::digitArraySize];
 }
 
 
@@ -36,17 +36,19 @@ throw "Don't copy Mod in a copy constructor.";
 
 Mod::~Mod( void )
 {
-delete[] baseAr;
+// delete[] baseAr;
 }
 
 
 
 void Mod::setupBaseArray( // FileIO& mainIO,
-                          Integer& setBase,
-                          IntegerMath& intMath )
+                          Integer& setBase // ,
+                          // IntegerMath& intMath
+                          )
 {
 currentBase.copy( setBase );
 
+/*
 // mainIO.appendChars( "currentBase:\n" );
 // Str showS3 =  intMath.toString10( currentBase );
 // mainIO.appendStr( showS3 );
@@ -101,6 +103,7 @@ for( Uint32 column = 0; column <
   baseValue.copy( remainder );
   intMath.multiply( baseValue, base2 );
   }
+*/
 }
 
 
@@ -266,7 +269,9 @@ if( exponent.isOne())
 
 if( setUpBase )
   setupBaseArray( // mainIO,
-                  modulus, intMath );
+                  modulus
+                  //, intMath
+                  );
 
 Integer xForModPower;
 Integer exponentCopy;
