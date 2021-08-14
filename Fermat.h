@@ -17,29 +17,27 @@
 class Fermat
   {
   private:
-  Mod mod;
-  Uint32 forCopyTest = 123;
-  public:
-  Fermat( void );
-  Fermat( const Fermat& in );
 
-  bool makeAPrime( FileIO& mainIO,
+  public:
+
+  static bool makeAPrime( FileIO& mainIO,
                    Integer& result,
                    Uint32 setToIndex,
-                   // Uint32 howMany,
                    SPrimes& sPrimes,
-                   IntegerMath& intMath );
+                   IntegerMath& intMath,
+                   Mod& mod );
 
-  bool isPrime( FileIO& mainIO,
+  static bool isPrime( FileIO& mainIO,
                 Integer& toTest,
-                // Uint32 howMany,
                 SPrimes& sPrimes,
-                IntegerMath& intMath );
+                IntegerMath& intMath,
+                Mod& mod );
 
-  bool isPrimeForOneValue( FileIO& mainIO,
+  static bool isPrimeForOneValue( FileIO& mainIO,
                       Integer& toTest,
                       Uint64 base,
-                      IntegerMath& intMath );
+                      IntegerMath& intMath,
+                      Mod& mod );
 
 
   };
