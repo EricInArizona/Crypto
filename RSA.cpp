@@ -15,6 +15,8 @@
 #include "RSA.h"
 #include "FileIO.h"
 #include "TimeEC.h"
+#include "Fermat.h"
+#include "Euclid.h"
 
 
 
@@ -43,8 +45,12 @@ TimeEC t1;
 
 makeRSAKeys( mainIO );
 
-Str showTime = t1.timeStr();
-mainIO.appendChars( "\nTime: " );
+TimeEC t2;
+
+Int64 diff = t2.diffSec( t1 );
+
+Str showTime( (Uint64)diff );
+mainIO.appendChars( "\nSeconds: " );
 mainIO.appendStr( showTime );
 mainIO.appendChars( "\n\n" );
 mainIO.appendChars( "Finished test.\n" );
@@ -77,19 +83,21 @@ for( Uint32 count = 0; count < 3; count++ )
 
   // Make two prime factors.
 
-  if( !fermat.makeAPrime( mainIO, primeP,
+  if( !Fermat::makeAPrime( mainIO, primeP,
                                    PrimeIndex,
                                    sPrimes,
-                                   intMath ))
+                                   intMath,
+                                   mod ))
     {
     mainIO.appendChars( "makeAPrime is false.\n" );
     return;
     }
 
-  if( !fermat.makeAPrime( mainIO, primeQ,
+  if( !Fermat::makeAPrime( mainIO, primeQ,
                                    PrimeIndex,
                                    sPrimes,
-                                   intMath ))
+                                   intMath,
+                                   mod ))
     {
     mainIO.appendChars( "makeAPrime is false.\n" );
     return;
@@ -107,11 +115,53 @@ for( Uint32 count = 0; count < 3; count++ )
   mainIO.appendStr( showQ );
   mainIO.appendChars( "\n" );
 
-  // It would make more sense to keep one of
-  // these and make one new one for the next
-  // pair to test.
-  if( !isGoodPair( mainIO, primeP, primeQ ))
+  if( !isGoodPair( mainIO ))
     continue;
+
+  primePMinus1.copy( primeP );
+
+  // Make sure that primePMinus1 and
+  // primeQMinus1 don't have all small factors.
+  // Do Pollard's algorithm to test this.
+
+  // Work on the Least Common Multiple thing for
+  // P - 1 and Q - 1.
+
+  intMath.subtractULong( primePMinus1, 1 );
+  primeQMinus1.copy( primeQ );
+  intMath.subtractULong( primeQMinus1, 1 );
+
+  phiN.copy( primePMinus1 );
+  intMath.multiply( phiN, primeQMinus1 );
+
+  pubKeyN.copy( primeP );
+  intMath.multiply( pubKeyN, primeQ );
+
+
+  // In RFC 2437 there are commonly used
+  // letters/symbols to represent
+  // the numbers used.  So the number e
+  // is the public exponent.
+  // The number e that is used here is
+  // called pPubKeyExponentUint = 65537.
+  // In the RFC the private key d is the
+  // multiplicative inverse of
+  // e mod PhiN.  Which is mod
+  // (P - 1)(Q - 1).  It's called
+  // privKInverseExponent here.
+
+/*
+
+      if( !IntMath.
+FindMultiplicativeInverseSmall(
+ PrivKInverseExponent, PubKeyExponent, PhiN,
+ Worker ))
+        return;
+
+      if( PrivKInverseExponent.IsZero())
+        continue;
+*/
+
 
   mainIO.appendChars( "Good pair.\n" );
   }
@@ -126,153 +176,55 @@ mainIO.appendChars( "End of makeRSAKeys().\n" );
 
 
 
-bool RSA::isGoodPair( FileIO& mainIO,
-                      Integer& P,
-                      Integer& Q )
+bool RSA::isGoodPair( FileIO& mainIO )
 {
-// This is extremely unlikely.
+// This is extremely unlikely since they are
+// supposed to be primes, and have passed some
+// primality tests.
 Integer gcd;
-euclid.greatestComDiv( P, Q, gcd, intMath );
+Euclid::greatestComDiv( primeP, primeQ,
+                                 gcd, intMath );
 if( !gcd.isOne())
   {
-  mainIO.appendChars( "They had a GCD.\n" );
+  mainIO.appendChars( "Bad pair had a GCD.\n" );
   return false;
   }
 
+Euclid::greatestComDiv( primeP, pubKeyExponent,
+                              gcd, intMath );
+if( !gcd.isOne())
+  {
+  mainIO.appendChars(
+       "primeP had a GCD with pubKeyExponent.\n" );
+  return false;
+  }
 
-/*
-      IntMath.GreatestCommonDivisor( PrimeP,
-                          PubKeyExponent, Gcd );
-      if( !Gcd.IsOne())
-        {
-        Worker.ReportProgress( 0,
-         "They had a GCD with PubKeyExponent: " +
-                  IntMath.ToString10( Gcd ));
-        continue;
-        }
-
-      if( Worker.CancellationPending )
-        return;
-
-      IntMath.GreatestCommonDivisor( PrimeQ,
-                          PubKeyExponent, Gcd );
-      if( !Gcd.IsOne())
-        {
-        Worker.ReportProgress( 0,
-     "2) They had a GCD with PubKeyExponent: " +
-             IntMath.ToString10( Gcd ));
-        continue;
-        }
-*/
+Euclid::greatestComDiv( primeQ, pubKeyExponent,
+                                 gcd, intMath );
+if( !gcd.isOne())
+  {
+  mainIO.appendChars(
+      "primeQ had a GCD with pubKeyExponent.\n" );
+  return false;
+  }
 
 return true;
 }
 
 
-
-
 /*
+bool RSA::isGoodPair2( FileIO& mainIO )
+{
+Integer gcd;
+// GCD for these is at least 2 since they
+// are even numbers.
+Euclid::greatestComDiv( primePMinus1,
+                 primeQMinus1, gcd, intMath );
 
-      // For Modular Reduction.
-      //  This only has to be done
-      // once, when P and Q are made.
-      IntMathForP.ModReduction.
-                 SetupGeneralBaseArray( PrimeP );
-      IntMathForQ.ModReduction.
-                 SetupGeneralBaseArray( PrimeQ );
-      PrimePMinus1.Copy( PrimeP );
-      IntMath.SubtractULong( PrimePMinus1, 1 );
-      PrimeQMinus1.Copy( PrimeQ );
-      IntMath.SubtractULong( PrimeQMinus1, 1 );
+// How big of a GCD is too big?
+// (P - 1)(Q - 1) + (P - 1) + (Q - 1)
+//         = PQ - 1
 
-      if( Worker.CancellationPending )
-        return;
-
-      // These checks should be more thorough to
-      // make sure the primes P and Q are numbers
-      // that can be used in a secure way.
-
-      Worker.ReportProgress( 0,
-                "The Index of Prime P is: " +
-               PrimeP.GetIndex().ToString() );
-      Worker.ReportProgress( 0, "Prime P:" );
-      Worker.ReportProgress( 0,
-                  IntMath.ToString10( PrimeP ));
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0, "Prime Q:" );
-      Worker.ReportProgress( 0,
-                 IntMath.ToString10( PrimeQ ));
-      Worker.ReportProgress( 0, " " );
-      PubKeyN.Copy( PrimeP );
-      IntMath.Multiply( PubKeyN, PrimeQ );
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0, "PubKeyN:" );
-      Worker.ReportProgress( 0,
-                 IntMath.ToString10( PubKeyN ));
-      Worker.ReportProgress( 0, " " );
-
-      // Test Division:
-      Integer QuotientTest = new Integer();
-      Integer RemainderTest = new Integer();
-
-      IntMath.Divider.Divide( PubKeyN, PrimeP,
-                    QuotientTest, RemainderTest );
-      if( !RemainderTest.IsZero())
-        throw( new Exception(
-      "RemainderTest should be zero after divide
-                       by PrimeP." ));
-
-      IntMath.Multiply( QuotientTest, PrimeP );
-      if( !QuotientTest.IsEqual( PubKeyN ))
-        throw( new Exception(
-       "QuotientTest didn't come out right." ));
-
-
-// ==========
-// Work on the Least Common Multiple thing for
-// P - 1 and Q - 1.
-// =====
-
-      IntMath.GreatestCommonDivisor( PrimePMinus1,
- PrimeQMinus1, Gcd );
-      Worker.ReportProgress( 0,
- "GCD of PrimePMinus1, PrimeQMinus1 is: " +
- IntMath.ToString10( Gcd ));
-      if( !Gcd.IsULong())
-        {
-        Worker.ReportProgress( 0,
- "This GCD number is too big: " +
- IntMath.ToString10( Gcd ));
-        continue;
-        }
-      else
-        {
-        ulong TooBig = Gcd.GetAsULong();
-        // How big of a GCD is too big?
-// ==============
-
-        if( TooBig > 1234567 )
-          {
-          // (P - 1)(Q - 1) + (P - 1) + (Q - 1)
-                  = PQ - 1
-          Worker.ReportProgress( 0,
-  "This GCD number is bigger than 1234567: " +
- IntMath.ToString10( Gcd ));
-          continue;
-          }
-        }
-
-      Integer Temp1 = new Integer();
-      PhiN.Copy( PrimePMinus1 );
-      Temp1.Copy( PrimeQMinus1 );
-      IntMath.Multiply( PhiN, Temp1 );
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0, "PhiN:" );
-      Worker.ReportProgress( 0,
- IntMath.ToString10( PhiN ));
-      Worker.ReportProgress( 0, " " );
-      if( Worker.CancellationPending )
-        return;
 
       // In RFC 2437 there are commonly used
  letters/symbols to represent
@@ -293,6 +245,11 @@ FindMultiplicativeInverseSmall(
 
       if( PrivKInverseExponent.IsZero())
         continue;
+========
+
+
+
+
 
       Worker.ReportProgress( 0, " " );
       Worker.ReportProgress( 0,
