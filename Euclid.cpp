@@ -77,17 +77,22 @@ while( true )
 The extended Euclidean algorithm gives the
 multiplicative inverse.
 
-Euclid class.
-  internal bool MultiplicativeInverse( Integer X, Integer Modulus, Integer MultInverse, BackgroundWorker Worker )
-    {
-    // This is the extended Euclidean Algorithm.
-    // A*X + B*Y = Gcd
-    // A*X + B*Y = 1 If there's a multiplicative inverse.
-    // A*X = 1 - B*Y so A is the multiplicative inverse of X mod Y.
-    if( X.IsZero())
-      throw( new Exception( "Doing Multiplicative Inverse with a parameter that is zero." ));
+bool Euclid::mMultInverse( Integer X,
+                           Integer& modulus,
+                           Integer& inverse,
+                           IntegerMath& intMath )
+{
+// This is the extended Euclidean Algorithm.
+// A*X + B*Y = Gcd
+// A*X + B*Y = 1 If there's a multiplicative
+// inverse.
+// A*X = 1 - B*Y so A is the multiplicative
+// inverse of X mod Y.
 
-    if( Modulus.IsZero())
+if( X.isZero())
+  throw "MultInverse with X that is zero.";
+
+if( modulus.isZero())
       throw( new Exception( "Doing Multiplicative Inverse with a parameter that is zero." ));
 
     // This happens sometimes:
