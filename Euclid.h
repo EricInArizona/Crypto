@@ -17,7 +17,7 @@ class Euclid
   private:
 
   public:
-  void greatestComDiv( Integer& X,
+  static void greatestComDiv( Integer& X,
                        Integer& Y,
                        Integer& gcd,
                        IntegerMath& intMath );
