@@ -22,6 +22,12 @@ class Euclid
                        Integer& gcd,
                        IntegerMath& intMath );
 
+
+  static bool multInverse( Integer& X,
+                           Integer& modulus,
+                           Integer& inverse,
+                           IntegerMath& intMath );
+
   };
 
 
