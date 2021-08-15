@@ -65,128 +65,148 @@ while( true )
 
 
 
-// Reciprocity?
+// Reciprocity.
 // They have a kind of reciprical relationship.
-// This is how they relate to each other.
-// "x is the modular multiplicative inverse
-// of a modulo b, and y is the modular
-// multiplicative inverse of b modulo a."
 
+// The extended Euclidean algorithm gives the
+// multiplicative inverse.
 
-/*
-The extended Euclidean algorithm gives the
-multiplicative inverse.
+// X is known.  X * inverse mod modulus = 1.
 
-bool Euclid::mMultInverse( Integer X,
-                           Integer& modulus,
-                           Integer& inverse,
-                           IntegerMath& intMath )
+bool Euclid::multInverse( Integer& X,
+                          Integer& modulus,
+                          Integer& inverse,
+                          IntegerMath& intMath )
 {
 // This is the extended Euclidean Algorithm.
-// A*X + B*Y = Gcd
+// A*X + B*Y = GCD
+// But GCD has to be 1 or there can't
+// be a multiplicative inverse.
+
+// Either A or B has to be negative here.
 // A*X + B*Y = 1 If there's a multiplicative
 // inverse.
-// A*X = 1 - B*Y so A is the multiplicative
-// inverse of X mod Y.
+
+// If B is negative then it is:
+// A*X + -B*Y = 1
+// A*X = 1 + B*Y
+// A is the multiplicative inverse of X mod B.
+// Or mod Y.
 
 if( X.isZero())
-  throw "MultInverse with X that is zero.";
+  throw "MultInverse with X that is zero.\n";
 
 if( modulus.isZero())
-      throw( new Exception( "Doing Multiplicative Inverse with a parameter that is zero." ));
+  throw "MultInverse with modulus that is zero.";
 
-    // This happens sometimes:
-    // if( Modulus.ParamIsGreaterOrEq( X ))
-      // throw( new Exception( "Modulus.ParamIsGreaterOrEq( X ) for Euclid." ));
+// if( modulus.paramIsGreaterOrEq( X ))
 
-    // Worker.ReportProgress( 0, " " );
-    // Worker.ReportProgress( 0, " " );
-    // Worker.ReportProgress( 0, "Top of mod inverse." );
-    // U is the old part to keep.
-    U0.SetToZero();
-    U1.SetToOne();
-    U2.Copy( Modulus ); // Don't change the original numbers that came in as parameters.
-    // V is the new part.
-    V0.SetToOne();
-    V1.SetToZero();
-    V2.Copy( X );
-    T0.SetToZero();
-    T1.SetToZero();
-    T2.SetToZero();
-    Quotient.SetToZero();
-    // while( not forever if there's a problem )
-    for( int Count = 0; Count < 10000; Count++ )
-      {
-      if( U2.IsNegative )
-        throw( new Exception( "U2 was negative." ));
+Integer U0;
+Integer U1;
+Integer U2;
 
-      if( V2.IsNegative )
-        throw( new Exception( "V2 was negative." ));
+Integer V0;
+Integer V1;
+Integer V2;
 
-      Divider.Divide( U2, V2, Quotient, Remainder );
-      if( Remainder.IsZero())
-        {
-        Worker.ReportProgress( 0, "Remainder is zero. No multiplicative-inverse." );
-        return false;
-        }
+Integer T0;
+Integer T1;
+Integer T2;
 
-      TempEuclid1.Copy( U0 );
-      TempEuclid2.Copy( V0 );
-      Multiply( TempEuclid2, Quotient );
-      Subtract( TempEuclid1, TempEuclid2 );
-      T0.Copy( TempEuclid1 );
-      TempEuclid1.Copy( U1 );
-      TempEuclid2.Copy( V1 );
-      Multiply( TempEuclid2, Quotient );
-      Subtract( TempEuclid1, TempEuclid2 );
-      T1.Copy( TempEuclid1 );
-      TempEuclid1.Copy( U2 );
-      TempEuclid2.Copy( V2 );
-      Multiply( TempEuclid2, Quotient );
-      Subtract( TempEuclid1, TempEuclid2 );
-      T2.Copy( TempEuclid1 );
-      U0.Copy( V0 );
-      U1.Copy( V1 );
-      U2.Copy( V2 );
-      V0.Copy( T0 );
-      V1.Copy( T1 );
-      V2.Copy( T2 );
-      if( Remainder.IsOne())
-        {
-        // Worker.ReportProgress( 0, " " );
-        // Worker.ReportProgress( 0, "Remainder is 1. There is a multiplicative-inverse." );
-        break;
-        }
-      }
+// Don't change the original numbers that were
+// passed in as references.
 
-    MultInverse.Copy( T0 );
-    if( MultInverse.IsNegative )
-      {
-      Add( MultInverse, Modulus );
-      }
+// U is the old part to keep.
+U0.setToZero();
+U1.setToOne();
+U2.copy( modulus );
 
-    // Worker.ReportProgress( 0, "MultInverse: " + ToString10( MultInverse ));
-    TestForModInverse1.Copy( MultInverse );
-    TestForModInverse2.Copy( X );
-    Multiply( TestForModInverse1, TestForModInverse2 );
-    Divider.Divide( TestForModInverse1, Modulus, Quotient, Remainder );
-    if( !Remainder.IsOne())  // By the definition of Multiplicative inverse:
-      throw( new Exception( "MultInverse is wrong: " + ToString10( Remainder )));
+// V is the new part.
+V0.setToOne();
+V1.setToZero();
+V2.copy( X );
 
-    // Worker.ReportProgress( 0, "MultInverse is the right number: " + ToString10( MultInverse ));
-    return true;
-    }
+T0.setToZero();
+T1.setToZero();
+T2.setToZero();
 
-*/
+Integer quotient;
+Integer remainder;
+
+Integer temp1;
+Integer temp2;
+
+Integer testForModInverse1;
+Integer testForModInverse2;
+
+quotient.setToZero();
+// while( not forever )
+for( Uint32 count = 0; count < 10000; count++ )
+  {
+  if( U2.getIsNegative() )
+    throw "The modulus was negative.\n";
+
+  if( V2.getIsNegative() )
+    throw "V2 was negative.\n";
+
+  Division::divide( U2, V2, quotient,
+                    remainder, intMath );
+
+  // There is no multiplicative inverse if
+  // GCD is more than 1.
+  // Also see Pollard's P - 1 algorithm.
+  if( remainder.isZero())
+    return false;
+
+  temp1.copy( U0 );
+  temp2.copy( V0 );
+  intMath.multiply( temp2, quotient );
+  intMath.subtract( temp1, temp2 );
+  T0.copy( temp1 );
+  temp1.copy( U1 );
+  temp2.copy( V1 );
+  intMath.multiply( temp2, quotient );
+  intMath.subtract( temp1, temp2 );
+  T1.copy( temp1 );
+  temp1.copy( U2 );
+  temp2.copy( V2 );
+  intMath.multiply( temp2, quotient );
+  intMath.subtract( temp1, temp2 );
+  T2.copy( temp1 );
+  U0.copy( V0 );
+  U1.copy( V1 );
+  U2.copy( V2 );
+  V0.copy( T0 );
+  V1.copy( T1 );
+  V2.copy( T2 );
+  if( remainder.isOne())
+    break;
+
+  }
+
+inverse.copy( T0 );
+if( inverse.getIsNegative() )
+intMath.add( inverse, modulus );
+testForModInverse1.copy( inverse );
+testForModInverse2.copy( X );
+intMath.multiply( testForModInverse1,
+                            testForModInverse2 );
+Division::divide( testForModInverse1,
+         modulus, quotient, remainder, intMath );
+
+// By the definition of Multiplicative inverse:
+if( !remainder.isOne())
+  throw "multInverse() is wrong.\n";
+
+return true;
+}
 
 
 
 
 /*
+Not used:
 
-  internal bool IntegerMath::
-          FindMultiplicativeInverseSmall( Integer ToFind, Integer KnownNumber, Integer Modulus, BackgroundWorker Worker )
-    {
     // This method is for: KnownNumber * ToFind = 1
     // mod Modulus
     // An example:
@@ -202,71 +222,4 @@ if( modulus.isZero())
     // See: Hasse Principle.
     // This also depends on the idea that the KnownNumber is prime and
     // that there is one unique modular inverse.
-    // if( !KnownNumber-is-a-prime )
-    //    then it won't work.
-    if( !KnownNumber.IsULong())
-      throw( new Exception( "FindMultiplicativeInverseSmall() was called with too big of a KnownNumber." ));
-
-    ulong KnownNumberULong  = KnownNumber.GetAsULong();
-    //                       65537
-    if( KnownNumberULong > 1000000 )
-      throw( new Exception( "KnownNumberULong > 1000000. FindMultiplicativeInverseSmall() was called with too big of an exponent." ));
-
-    // (Y * PhiN) + 1 mod PubKExponent has to be zero if Y is a solution.
-    ulong ModulusModKnown = Divider.GetMod32( Modulus, KnownNumberULong );
-    Worker.ReportProgress( 0, "ModulusModExponent: " + ModulusModKnown.ToString( "N0" ));
-    if( Worker.CancellationPending )
-      return false;
-
-    // Y can't be zero.
-    // The exponent is a small number like 65537.
-    for( uint Y = 1; Y < (uint)KnownNumberULong; Y++ )
-      {
-      ulong X = (ulong)Y * ModulusModKnown;
-      X++; // Add 1 to it for (Y * PhiN) + 1.
-      X = X % KnownNumberULong;
-      if( X == 0 )
-        {
-        if( Worker.CancellationPending )
-          return false;
-
-        // What is PhiN mod 65537?
-        // That gives me Y.
-        // The private key exponent is X*65537 + ModPart
-        // The CipherText raised to that is the PlainText.
-        // P + zN = C^(X*65537 + ModPart)
-        // P + zN = C^(X*65537)(C^ModPart)
-        // P + zN = ((C^65537)^X)(C^ModPart)
-        Worker.ReportProgress( 0, "Found Y at: " + Y.ToString( "N0" ));
-        ToFind.Copy( Modulus );
-        MultiplyULong( ToFind, Y );
-        ToFind.AddULong( 1 );
-        Divider.Divide( ToFind, KnownNumber, Quotient, Remainder );
-        if( !Remainder.IsZero())
-          throw( new Exception( "This can't happen. !Remainder.IsZero()" ));
-
-        ToFind.Copy( Quotient );
-        // Worker.ReportProgress( 0, "ToFind: " + ToString10( ToFind ));
-        break;
-        }
-      }
-
-    if( Worker.CancellationPending )
-      return false;
-
-    TestForModInverse1.Copy( ToFind );
-    MultiplyULong( TestForModInverse1, KnownNumberULong );
-    Divider.Divide( TestForModInverse1, Modulus, Quotient, Remainder );
-    if( !Remainder.IsOne())
-      {
-      // The definition is that it's congruent to 1 mod the modulus,
-      // so this has to be 1.
-      // I've only seen this happen once.  Were the primes P and Q not
-      // really primes?
-      throw( new Exception( "Remainder has to be 1: " + ToString10( Remainder ) ));
-      }
-
-    return true;
-    }
-
 */
