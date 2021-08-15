@@ -29,8 +29,8 @@ class RSA
   Integer pubKeyN;
   Integer pubKeyExponent;
   Integer privKInverseExponent;
-  // Integer privKInverseExponentDP;
-  // Integer privKInverseExponentDQ;
+  Integer privKInverseExponentDP;
+  Integer privKInverseExponentDQ;
   // Integer qInv;
   Integer phiN;
 
@@ -43,8 +43,11 @@ class RSA
   // The index, which is the size of the prime.
   // static const int PrimeIndex = 0; // 32-bit
   // static const int PrimeIndex = 1; // 64-bit
-  static const Uint32 PrimeIndex = 2; // 96-bit
+  // static const Uint32 PrimeIndex = 2; // 96-bit
   // static const int PrimeIndex = 3; // 128-bit
+  static const int PrimeIndex = 4; // 160-bit
+  // static const int PrimeIndex = 5; // 192-bit
+  // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
   // static const int PrimeIndex = 15; // 512
   // static const int PrimeIndex = 31; // 1024
@@ -57,7 +60,8 @@ class RSA
   void test( FileIO& mainIO );
   void makeRSAKeys( FileIO& mainIO );
   bool isGoodPair( FileIO& mainIO );
-  bool isGoodPair2( FileIO& mainIO );
+  bool setPrivateKeys( void ); // FileIO& mainIO );
+  bool testEncryption( FileIO& mainIO );
 
   };
 
