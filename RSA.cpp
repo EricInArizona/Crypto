@@ -7,16 +7,15 @@
 
 // Public-Key Cryptography Standards
 // (PKCS) #1: RSA Cryptography
-// Specifications Version 2.1
 // http://tools.ietf.org/html/rfc2437
 // http://tools.ietf.org/html/rfc3447
 
 
 #include "RSA.h"
-#include "FileIO.h"
 #include "TimeEC.h"
 #include "Fermat.h"
 #include "Euclid.h"
+#include "Division.h"
 
 
 
@@ -70,7 +69,6 @@ Str bits( showBits );
 mainIO.appendStr( bits );
 mainIO.appendChars( "\n" );
 
-// while( true )
 for( Uint32 count = 0; count < 3; count++ )
   {
   mainIO.appendChars( "makeRSAKeys count: " );
@@ -137,30 +135,12 @@ for( Uint32 count = 0; count < 3; count++ )
   pubKeyN.copy( primeP );
   intMath.multiply( pubKeyN, primeQ );
 
+  if( !setPrivateKeys()) // mainIO ))
+    throw "!setPrivateKeys().\n";
+    // continue;
 
-  // In RFC 2437 there are commonly used
-  // letters/symbols to represent
-  // the numbers used.  So the number e
-  // is the public exponent.
-  // The number e that is used here is
-  // called pPubKeyExponentUint = 65537.
-  // In the RFC the private key d is the
-  // multiplicative inverse of
-  // e mod PhiN.  Which is mod
-  // (P - 1)(Q - 1).  It's called
-  // privKInverseExponent here.
-
-/*
-
-      if( !IntMath.
-FindMultiplicativeInverseSmall(
- PrivKInverseExponent, PubKeyExponent, PhiN,
- Worker ))
-        return;
-
-      if( PrivKInverseExponent.IsZero())
-        continue;
-*/
+  if( !testEncryption( mainIO ))
+    throw "!testEncryption().\n";
 
 
   mainIO.appendChars( "Good pair.\n" );
@@ -169,10 +149,6 @@ FindMultiplicativeInverseSmall(
 mainIO.appendChars( "End of makeRSAKeys().\n" );
 }
 
-
-
-// Way too much in the old one function.
-// So break it up.
 
 
 
@@ -212,186 +188,132 @@ return true;
 }
 
 
-/*
-bool RSA::isGoodPair2( FileIO& mainIO )
+
+
+bool RSA::setPrivateKeys( void ) // FileIO& mainIO )
 {
-Integer gcd;
-// GCD for these is at least 2 since they
-// are even numbers.
-Euclid::greatestComDiv( primePMinus1,
-                 primeQMinus1, gcd, intMath );
+// In RFC 2437 there are commonly used
+// letters/symbols to represent
+// the numbers used.  So the number e
+// is the public exponent.
+// The number e that is used here is
+// called pPubKeyExponentUint = 65537.
+// In the RFC the private key d is the
+// multiplicative inverse of
+// e mod PhiN.  Which is mod
+// (P - 1)(Q - 1).  It's called
+// privKInverseExponent here.
 
-// How big of a GCD is too big?
-// (P - 1)(Q - 1) + (P - 1) + (Q - 1)
-//         = PQ - 1
+if( !Euclid::multInverse( pubKeyExponent,
+                          phiN,
+                          privKInverseExponent,
+                          intMath ))
+  {
+  throw "multInverse was false. (1)\n";
+  }
+
+// In RFC 2437 it defines a number dP
+// which is the multiplicative
+// inverse, mod (P - 1) of e.  That dP
+// is named PrivKInverseExponentDP here.
+
+if( !Euclid::multInverse( pubKeyExponent,
+                          primePMinus1,
+                          privKInverseExponentDP,
+                          intMath ))
+  {
+  throw "multInverse was false. (2)\n";
+  }
+
+Integer quotient;
+Integer remainder;
+
+Integer test1;
+test1.copy( privKInverseExponent );
+Division::divide( test1, primePMinus1,
+                  quotient, remainder, intMath );
+test1.copy( remainder );
+if( !test1.isEqual( privKInverseExponentDP ))
+  throw "Bad privKInverseExponentDP.\n";
+
+// In RFC 2437 it defines a number dQ
+// which is the multiplicative
+//      // inverse, mod (Q - 1) of e.  That dQ
+// is named privKInverseExponentDQ here.
+
+if( !Euclid::multInverse( pubKeyExponent,
+                          primeQMinus1,
+                          privKInverseExponentDQ,
+                          intMath ))
+  {
+  throw "multInverse was false. (3)\n";
+  }
+
+test1.copy( privKInverseExponent );
+Division::divide( test1, primeQMinus1,
+                  quotient, remainder, intMath );
+test1.copy( remainder );
+if( !test1.isEqual( privKInverseExponentDQ ))
+  throw "Bad privKInverseExponentDQ.\n";
+
+return true;
+}
 
 
-      // In RFC 2437 there are commonly used
- letters/symbols to represent
-      // the numbers used.  So the number e
- is the public exponent.
-      // The number e that is used here is
- called PubKeyExponentUint = 65537.
-      // In the RFC the private key d is the
- multiplicative inverse of
-      // e mod PhiN.  Which is mod
-         (P - 1)(Q - 1).  It's called
-      // PrivKInverseExponent here.
-      if( !IntMath.
-FindMultiplicativeInverseSmall(
- PrivKInverseExponent, PubKeyExponent, PhiN,
- Worker ))
-        return;
-
-      if( PrivKInverseExponent.IsZero())
-        continue;
-========
 
 
+bool RSA::testEncryption( FileIO& mainIO )
+{
+// Make a random number to test
+// encryption/decryption.
 
+if( PrimeIndex == 0 )
+  return true;
 
+Integer toEncrypt;
 
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
- "PrivKInverseExponent: " +
- IntMath.ToString10( PrivKInverseExponent ));
-      if( Worker.CancellationPending )
-        return;
+if( !toEncrypt.makeRandomOdd( (Uint32)
+                         (PrimeIndex - 1 )))
+  throw "Error making toEncrypt random number.";
 
-      // In RFC 2437 it defines a number dP
-which is the multiplicative
-      // inverse, mod (P - 1) of e.  That dP
- is named PrivKInverseExponentDP here.
-      Worker.ReportProgress( 0, " " );
-      if( !IntMath.
-FindMultiplicativeInverseSmall(
- PrivKInverseExponentDP, PubKeyExponent,
- PrimePMinus1, Worker ))
-        return;
+Integer plainTextNumber;
+plainTextNumber.copy( toEncrypt );
 
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
- "PrivKInverseExponentDP: " + IntMath.
-ToString10( PrivKInverseExponentDP ));
-      if( PrivKInverseExponentDP.IsZero())
-        continue;
+mod.toPower( mainIO, toEncrypt,
+                        pubKeyExponent,
+                        pubKeyN,
+                        true,
+                        intMath );
 
-      // PrivKInverseExponentDP is
- PrivKInverseExponent mod PrimePMinus1.
-      Integer Test1 = new Integer();
-      Test1.Copy( PrivKInverseExponent );
-      IntMath.Divider.Divide( Test1, PrimePMinus1,
- Quotient, Remainder );
-      Test1.Copy( Remainder );
-      if( !Test1.IsEqual( PrivKInverseExponentDP ))
-        throw( new Exception( "This does not
- match the definition of
-PrivKInverseExponentDP." ));
+Integer cipherTextNumber;
+cipherTextNumber.copy( toEncrypt );
 
-      if( Worker.CancellationPending )
-        return;
+// TimeEC t1;
+// TimeEC t2;
 
-      // In RFC 2437 it defines a number dQ
- which is the multiplicative
-      // inverse, mod (Q - 1) of e.  That dQ
-is named PrivKInverseExponentDQ here.
-      Worker.ReportProgress( 0, " " );
-      if( !IntMath.
-FindMultiplicativeInverseSmall(
- PrivKInverseExponentDQ, PubKeyExponent,
- PrimeQMinus1, Worker ))
-        return;
+// Int64 diff = t2.diffSec( t1 );
 
-      if( PrivKInverseExponentDQ.IsZero())
-        continue;
+// Str showTime( (Uint64)diff );
+// mainIO.appendChars( "\nSeconds: " );
+// mainIO.appendStr( showTime );
+// mainIO.appendChars( "\n\n" );
 
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
- "PrivKInverseExponentDQ: " +
-IntMath.ToString10( PrivKInverseExponentDQ ));
-      if( Worker.CancellationPending )
-        return;
+mod.toPower( mainIO, toEncrypt,
+                     privKInverseExponent,
+                     pubKeyN, true, intMath );
 
-      Test1.Copy( PrivKInverseExponent );
-      IntMath.Divider.Divide( Test1,
- PrimeQMinus1, Quotient, Remainder );
-      Test1.Copy( Remainder );
-      if( !Test1.IsEqual(
- PrivKInverseExponentDQ ))
-        throw( new Exception(
- "This does not match the definition of
- PrivKInverseExponentDQ." ));
-
-      // Make a random number to test
- encryption/decryption.
-      Integer ToEncrypt = new Integer();
-      int HowManyBytes = PrimeIndex * 4;
-      byte[] RandBytes = MakeRandomBytes(
- HowManyBytes );
-      if( RandBytes == null )
-        {
-        Worker.ReportProgress( 0,
- "Error making random bytes in MakeRSAKeys()." );
-        return;
-        }
-
-      if( !ToEncrypt.MakeRandomOdd(
- PrimeIndex - 1, RandBytes ))
-        {
-        Worker.ReportProgress( 0,
- "Error making random number ToEncrypt." );
-        return;
-        }
-
-      Integer PlainTextNumber = new Integer();
-      PlainTextNumber.Copy( ToEncrypt );
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
- "Before encrypting number: " +
- IntMath.ToString10( ToEncrypt ));
-      Worker.ReportProgress( 0, " " );
-      IntMath.ModReduction.ModularPower(
- ToEncrypt, PubKeyExponent, PubKeyN, false );
-      if( Worker.CancellationPending )
-        return;
-
-      // Worker.ReportProgress( 0,
- IntMath.GetStatusString() );
-
-      Integer CipherTextNumber = new Integer();
-      CipherTextNumber.Copy( ToEncrypt );
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
- "Encrypted number: " +
- IntMath.ToString10( CipherTextNumber ));
-      Worker.ReportProgress( 0, " " );
-      ECTime DecryptTime = new ECTime();
-      DecryptTime.SetToNow();
-      IntMath.ModReduction.ModularPower(
- ToEncrypt, PrivKInverseExponent,
-PubKeyN, false );
-      Worker.ReportProgress( 0,
- "Decrypted number: " +
-IntMath.ToString10( ToEncrypt ));
-      if( !PlainTextNumber.IsEqual( ToEncrypt ))
-        {
-        throw( new Exception(
- "PlainTextNumber not equal to
- unencrypted value." ));
+if( !plainTextNumber.isEqual( toEncrypt ))
+  throw "PlainTextNumber not equal.\n";
         // Because P or Q wasn't really a prime?
-        // Worker.ReportProgress( 0,
- "PlainTextNumber not equal to
- unencrypted value." );
-        // continue;
-        }
 
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
+
+/*
  "Decrypt time seconds: " +
  DecryptTime.GetSecondsToNow().ToString( "N2" ));
       Worker.ReportProgress( 0, " " );
       if( Worker.CancellationPending )
         return;
+
 
       // Test the standard optimized way of
  decrypting:
@@ -441,31 +363,20 @@ of PrimeQ mod PrimeP.
       Worker.ReportProgress( 0,
  "Seconds: " +
  StartTime.GetSecondsToNow().ToString( "N0" ));
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 1, "Prime1: " +
- IntMath.ToString10( PrimeP ));
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 1, "Prime2: " +
- IntMath.ToString10( PrimeQ ));
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 1, "PubKeyN: " +
- IntMath.ToString10( PubKeyN ));
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 1,
- "PrivKInverseExponent: " +
- IntMath.ToString10( PrivKInverseExponent ));
 
-      // return; // Comment this out to
- just leave it while( true ) for testing.
-  ////////
-  }
+*/
+
+
+return true;
 }
 
 
 
+
+/*
   internal bool DecryptWithQInverse(
-  Integer EncryptedNumber,
-  Integer DecryptedNumber,
+     Integer EncryptedNumber,
+     Integer DecryptedNumber,
   Integer TestDecryptedNumber,
   Integer PubKeyN,
   Integer PrivKInverseExponentDP,
