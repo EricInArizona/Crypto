@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECDivision_H
-#define ECDivision_H
+#pragma once
 
 
 
@@ -63,6 +62,3 @@ class Division
                          IntegerMath& intMath );
 
   };
-
-
-#endif
