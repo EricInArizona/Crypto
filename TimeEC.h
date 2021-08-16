@@ -2,9 +2,7 @@
 
 
 
-#ifndef TimeEC_H
-#define TimeEC_H
-
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -36,6 +34,3 @@ class TimeEC
 
 
   };
-
-
-#endif
