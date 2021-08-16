@@ -2,9 +2,7 @@
 
 
 
-#ifndef ECUint8Array_H
-#define ECUint8Array_H
-
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -55,4 +53,3 @@ class Uint8Array
   };
 
 
-#endif
