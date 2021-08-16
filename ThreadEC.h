@@ -2,8 +2,7 @@
 
 
 
-#ifndef ThreadEC_H
-#define ThreadEC_H
+#pragma once
 
 
 
@@ -18,7 +17,3 @@ class ThreadEC
   static void sleep( Uint32 milli );
 
   };
-
-
-#endif
-
