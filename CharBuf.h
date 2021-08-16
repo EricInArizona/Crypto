@@ -2,8 +2,8 @@
 
 
 
-#ifndef ECCharBuf_H
-#define ECCharBuf_H
+#pragma once
+
 
 
 // This is really a byte buffer, for just any
@@ -46,7 +46,3 @@ class CharBuf
   Str getStr( void );
 
   };
-
-
-
-#endif
