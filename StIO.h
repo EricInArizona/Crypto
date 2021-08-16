@@ -2,9 +2,7 @@
 
 
 
-#ifndef ECStIO_H
-#define ECStIO_H
-
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -22,6 +20,3 @@ class StIO
   // static void putC( Uint16 c );
 
   };
-
-
-#endif
