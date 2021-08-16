@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECBase10Number_H
-#define ECBase10Number_H
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -46,6 +45,3 @@ class Base10Number
   void setFromStr( Str& toSet );
 
   };
-
-
-#endif
