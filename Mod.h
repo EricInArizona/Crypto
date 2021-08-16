@@ -2,11 +2,9 @@
 
 
 
+#pragma once
+
 // Modular Arithmetic.
-
-
-#ifndef ECMod_H
-#define ECMod_H
 
 
 
@@ -52,7 +50,3 @@ class Mod
                         IntegerMath& intMath );
 
   };
-
-
-
-#endif
