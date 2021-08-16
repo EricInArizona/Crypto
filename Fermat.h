@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECFermat_H
-#define ECFermat_H
+#pragma once
 
 
 
@@ -41,6 +40,3 @@ class Fermat
 
 
   };
-
-
-#endif
