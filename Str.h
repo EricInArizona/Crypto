@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECStr_H
-#define ECStr_H
+#pragma once
 
 
 
@@ -37,6 +36,3 @@ class Str
   void reverse( void );
 
   };
-
-
-#endif
