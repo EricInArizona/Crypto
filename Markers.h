@@ -2,8 +2,8 @@
 
 
 
-#ifndef ECMarkers_H
-#define ECMarkers_H
+#pragma once
+
 
 
 // Basic Multilingual Plane
@@ -55,6 +55,3 @@ class Markers
     }
 
   };
-
-
-#endif
