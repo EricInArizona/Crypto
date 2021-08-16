@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECEuclid_H
-#define ECEuclid_H
+#pragma once
 
 
 
@@ -23,12 +22,9 @@ class Euclid
                        IntegerMath& intMath );
 
 
-  static bool multInverse( Integer& X,
+  static bool multInverse( Integer& knownX,
                            Integer& modulus,
                            Integer& inverse,
                            IntegerMath& intMath );
 
   };
-
-
-#endif
