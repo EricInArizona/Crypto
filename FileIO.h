@@ -2,9 +2,7 @@
 
 
 
-#ifndef ECFileIO_H
-#define ECFileIO_H
-
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -26,6 +24,3 @@ class FileIO
   void appendChars( const char* pStr );
 
   };
-
-
-#endif
