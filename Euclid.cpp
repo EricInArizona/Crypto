@@ -71,14 +71,6 @@ while( true )
 // The extended Euclidean algorithm gives the
 // multiplicative inverse.
 
-// X is known.  X * inverse mod modulus = 1.
-
-bool Euclid::multInverse( Integer& X,
-                          Integer& modulus,
-                          Integer& inverse,
-                          IntegerMath& intMath )
-{
-// This is the extended Euclidean Algorithm.
 // A*X + B*Y = GCD
 // But GCD has to be 1 or there can't
 // be a multiplicative inverse.
@@ -93,13 +85,26 @@ bool Euclid::multInverse( Integer& X,
 // A is the multiplicative inverse of X mod B.
 // Or mod Y.
 
-if( X.isZero())
-  throw "MultInverse with X that is zero.\n";
+// X is known.  X * inverse mod modulus = 1.
+
+bool Euclid::multInverse( Integer& knownX,
+                          Integer& modulus,
+                          Integer& inverse,
+                          IntegerMath& intMath )
+{
+// Given knownX find inverse with this modulus.
+
+// This is the standard extended Euclidean
+// Algorithm like you'd find in Wikipedia or
+// any text book.
+
+if( knownX.isZero())
+  throw "MultInverse knownX is zero.\n";
 
 if( modulus.isZero())
   throw "MultInverse with modulus that is zero.";
 
-// if( modulus.paramIsGreaterOrEq( X ))
+// if( modulus.paramIsGreaterOrEq( knownX ))
 
 Integer U0;
 Integer U1;
@@ -124,7 +129,7 @@ U2.copy( modulus );
 // V is the new part.
 V0.setToOne();
 V1.setToZero();
-V2.copy( X );
+V2.copy( knownX );
 
 T0.setToZero();
 T1.setToZero();
@@ -144,7 +149,7 @@ quotient.setToZero();
 for( Uint32 count = 0; count < 10000; count++ )
   {
   if( U2.getIsNegative() )
-    throw "The modulus was negative.\n";
+    throw "The U2 modulus was negative.\n";
 
   if( V2.getIsNegative() )
     throw "V2 was negative.\n";
@@ -186,9 +191,10 @@ for( Uint32 count = 0; count < 10000; count++ )
 
 inverse.copy( T0 );
 if( inverse.getIsNegative() )
-intMath.add( inverse, modulus );
+  intMath.add( inverse, modulus );
+
 testForModInverse1.copy( inverse );
-testForModInverse2.copy( X );
+testForModInverse2.copy( knownX );
 intMath.multiply( testForModInverse1,
                             testForModInverse2 );
 Division::divide( testForModInverse1,
@@ -217,9 +223,8 @@ Not used:
     // X is less than PhiN.
     // So Y is less than PublicKExponent.
     // Y can't be zero.
-    // If this equation can be solved then it can be solved modulo
-    // any number.  So it has to be solvable mod PublicKExponent.
-    // See: Hasse Principle.
-    // This also depends on the idea that the KnownNumber is prime and
-    // that there is one unique modular inverse.
+    // If this equation can be solved then it
+    // can be solved modulo
+    // any number.  So it has to be solvable
+    //   mod PublicKExponent.
 */
