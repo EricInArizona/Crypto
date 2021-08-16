@@ -17,13 +17,12 @@ class Integer
   public:
   // This many 32 bit integers.
   // 100 is 3,200 bits.
+  // 200 is 6,400 bits.
+  // A 4096 bit number multiplied is 8192
+  // bits.
 
-  // Make this big enough to over run the stack?
-  static const Uint32 digitArraySize = 1000;
+  static const Uint32 digitArraySize = 400;
   // See the /STACK option in BuildProj.bat
-
-  // static const Uint32 testMod = 1000;
-
 
   private:
   Int32 testforCopy = 123;
@@ -31,8 +30,13 @@ class Integer
   Uint32 index = 0;
 
   // It is Uint64 to hold multiplied values.
-  // Uint64 D[digitArraySize] = { 0,1,2 };
-  Uint64* D;
+  // I want a fixed array that gets pushed on
+  // to the stack.  In other words there is
+  // no memory allocation that gets done when
+  // an Integer is created other than to move
+  // the stack pointer.
+  Uint64 D[digitArraySize] = { 0,1,2 };
+  // Uint64* D;
 
 /*
   void setOneDValueFromChar( Uint64 toSet,
@@ -50,7 +54,7 @@ class Integer
   public:
   Integer( void );
   Integer( const Integer& obj );
-  ~Integer();
+  // ~Integer();
 
   inline void setToZero( void )
     {
