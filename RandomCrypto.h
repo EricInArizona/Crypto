@@ -1,14 +1,13 @@
 // Copyright Eric Chauvin 2021.
 
 
+
+#pragma once
+
 // This is supposed to be cryptographically
 // random, but this is in the early stages of
 // testing.  I'm not writing a book on
 // randomness just yet.
-
-
-#ifndef ECRandomCrypto_H
-#define ECRandomCrypto_H
 
 
 
@@ -25,6 +24,3 @@ class RandomCrypto
                                Uint32 howMany );
 
   };
-
-
-#endif
