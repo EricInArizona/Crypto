@@ -304,200 +304,145 @@ mod.toPower( mainIO, toEncrypt,
 
 if( !plainTextNumber.isEqual( toEncrypt ))
   throw "PlainTextNumber not equal.\n";
-        // Because P or Q wasn't really a prime?
+
+// Test the standard optimized way of
+// decrypting:
+if( !toEncrypt.makeRandomOdd( (Uint32)
+                         (PrimeIndex - 1 )))
+  throw "Error making toEncrypt random number.";
+
+plainTextNumber.copy( toEncrypt );
+mod.toPower( mainIO, toEncrypt,
+                        pubKeyExponent,
+                        pubKeyN,
+                        true,
+                        intMath );
+
+cipherTextNumber.copy( toEncrypt );
 
 
+// Garner's Formula:
+
+// qInv is the multiplicative inverse
+// of PrimeQ mod PrimeP.
+if( !Euclid::multInverse( primeQ,
+                          primeP,
+                          qInv,
+                          intMath ))
+  throw "MultInverse() false with qInv.";
+
+
+decryptWithQInverse( mainIO,
+             cipherTextNumber,
+             toEncrypt );
 /*
- "Decrypt time seconds: " +
- DecryptTime.GetSecondsToNow().ToString( "N2" ));
-      Worker.ReportProgress( 0, " " );
-      if( Worker.CancellationPending )
-        return;
-
-
-      // Test the standard optimized way of
- decrypting:
-      if( !ToEncrypt.MakeRandomOdd(
- PrimeIndex - 1, RandBytes ))
-        {
-        Worker.ReportProgress( 0,
- "Error making random number in MakeRSAKeys()." );
-        return;
-        }
-
-      PlainTextNumber.Copy( ToEncrypt );
-      IntMath.ModReduction.ModularPower(
- ToEncrypt, PubKeyExponent, PubKeyN, false );
-      if( Worker.CancellationPending )
-        return;
-
-      CipherTextNumber.Copy( ToEncrypt );
-      // QInv is the multiplicative inverse
-of PrimeQ mod PrimeP.
-      if( !IntMath.MultiplicativeInverse(
- PrimeQ, PrimeP, QInv, Worker ))
-        throw( new Exception(
- "MultiplicativeInverse() returned false." ));
-
-      if( QInv.IsNegative )
-        throw( new Exception(
-"QInv is negative." ));
-
-      Worker.ReportProgress( 0, "QInv is: " +
- IntMath.ToString10( QInv ));
-      DecryptWithQInverse( CipherTextNumber,
-                           ToEncrypt,
- // Decrypt it to this.
-                           PlainTextNumber,
- // Test it against this.
-                           PubKeyN,
-                           PrivKInverseExponentDP,
-                           PrivKInverseExponentDQ,
-                           PrimeP,
-                           PrimeQ,
-                           Worker );
-
-      Worker.ReportProgress( 0, " " );
-      Worker.ReportProgress( 0,
-"Found the values:" );
-      Worker.ReportProgress( 0,
- "Seconds: " +
- StartTime.GetSecondsToNow().ToString( "N0" ));
-
+decryptWithQInverse( mainIO,
+                     cipherTextNumber,
+                     toEncrypt,
+                     plainTextNumber,
 */
-
 
 return true;
 }
 
 
 
+bool RSA::decryptWithQInverse( FileIO& mainIO,
+             Integer& encryptedNumber,
+             Integer& decryptedNumber )
+{
+// See section 5.1.2 of RFC 2437 for
+// these steps:
+// http://tools.ietf.org/html/rfc2437
 
-/*
-  internal bool DecryptWithQInverse(
-     Integer EncryptedNumber,
-     Integer DecryptedNumber,
-  Integer TestDecryptedNumber,
-  Integer PubKeyN,
-  Integer PrivKInverseExponentDP,
-  Integer PrivKInverseExponentDQ,
-  Integer PrimeP,
-  Integer PrimeQ,
-  BackgroundWorker Worker )
-    {
-    Worker.ReportProgress( 0, " " );
-    Worker.ReportProgress( 0,
- "Top of DecryptWithQInverse()." );
-    // QInv and the dP and dQ numbers
-are normally already set up before
-    // you start your listening socket.
-    ECTime DecryptTime = new ECTime();
-    DecryptTime.SetToNow();
-    // See section 5.1.2 of RFC 2437 for
- these steps:
-    // http://tools.ietf.org/html/rfc2437
-    //      2.2 Let m_1 = c^dP mod p.
-    //      2.3 Let m_2 = c^dQ mod q.
-    //      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
-    //      2.5 Let m = m_2 + hq.
-    Worker.ReportProgress( 0, "EncryptedNumber: "
- + IntMath.ToString10( EncryptedNumber ));
-    //      2.2 Let m_1 = c^dP mod p.
-    TestForDecrypt.Copy( EncryptedNumber );
-    IntMathForP.ModReduction.ModularPower(
- TestForDecrypt, PrivKInverseExponentDP,
- PrimeP, true );
-    if( Worker.CancellationPending )
-      return false;
+// Garner's Formula.
+//      2.2 Let m_1 = c^dP mod p.
+//      2.3 Let m_2 = c^dQ mod q.
+//      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
+//      2.5 Let m = m_2 + hq.
 
-    M1ForInverse.Copy( TestForDecrypt );
-    //      2.3 Let m_2 = c^dQ mod q.
-    TestForDecrypt.Copy( EncryptedNumber );
-    IntMathForQ.ModReduction.ModularPower(
- TestForDecrypt, PrivKInverseExponentDQ,
- PrimeQ, true );
-    if( Worker.CancellationPending )
-      return false;
+Integer testForDecrypt;
+testForDecrypt.copy( encryptedNumber );
+mod.toPower( mainIO, testForDecrypt,
+                    privKInverseExponentDP,
+                    primeP, true, intMath );
 
-    M2ForInverse.Copy( TestForDecrypt );
-    //      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
-    // How many is optimal to avoid the division?
-    int HowManyIsOptimal = (PrimeP.GetIndex() * 3);
-    for( int Count = 0; Count < HowManyIsOptimal;
- Count++ )
-      {
-      if( M1ForInverse.ParamIsGreater(
- M2ForInverse ))
-        M1ForInverse.Add( PrimeP );
-      else
-        break;
-      }
+Integer m1ForInverse;
+Integer m2ForInverse;
 
-    if( M1ForInverse.ParamIsGreater(
-M2ForInverse ))
-      {
-      M1M2SizeDiff.Copy( M2ForInverse );
-      IntMath.Subtract( M1M2SizeDiff,
- M1ForInverse );
-      // Unfortunately this long Divide()
- has to be done.
-      IntMath.Divider.Divide( M1M2SizeDiff,
-PrimeP, Quotient, Remainder );
-      Quotient.AddULong( 1 );
-      Worker.ReportProgress( 0, "The Quotient
- for M1M2SizeDiff is: " + IntMath.ToString10(
- Quotient ));
-      IntMath.Multiply( Quotient, PrimeP );
-      M1ForInverse.Add( Quotient );
-      }
+m1ForInverse.copy( testForDecrypt );
+//      2.3 Let m_2 = c^dQ mod q.
+testForDecrypt.copy( encryptedNumber );
 
-    M1MinusM2.Copy( M1ForInverse );
-    IntMath.Subtract( M1MinusM2, M2ForInverse );
-    if( M1MinusM2.IsNegative )
-      throw( new Exception(
- "M1MinusM2.IsNegative is true." ));
+mod.toPower( mainIO, testForDecrypt,
+                    privKInverseExponentDQ,
+                    primeQ, true, intMath );
 
-    if( QInv.IsNegative )
-      throw( new Exception(
- "QInv.IsNegative is true." ));
+m2ForInverse.copy( testForDecrypt );
+//      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
 
-    HForQInv.Copy( M1MinusM2 );
-    IntMath.Multiply( HForQInv, QInv );
-    if( HForQInv.IsNegative )
-      throw( new Exception(
- "HForQInv.IsNegative is true." ));
+// How many is optimal to avoid the division?
+Uint32 howManyIsOptimal = (primeP.getIndex() * 3);
+for( Uint32 count = 0; count < howManyIsOptimal;
+                                      count++ )
+  {
+  if( m1ForInverse.paramIsGreater(
+                             m2ForInverse ))
+    m1ForInverse.add( primeP );
+  else
+    break;
+  }
 
-    if( PrimeP.ParamIsGreater( HForQInv ))
-      {
-      IntMath.Divider.Divide( HForQInv, PrimeP,
- Quotient, Remainder );
-      HForQInv.Copy( Remainder );
-      }
+Integer m1M2SizeDiff;
+Integer quotient;
+Integer remainder;
 
-    //      2.5 Let m = m_2 + hq.
-    DecryptedNumber.Copy( HForQInv );
-    IntMath.Multiply( DecryptedNumber, PrimeQ );
-    DecryptedNumber.Add( M2ForInverse );
-    if( !TestDecryptedNumber.IsEqual(
-DecryptedNumber ))
-      throw( new Exception(
- "!TestDecryptedNumber.IsEqual(
- DecryptedNumber )." ));
+if( m1ForInverse.paramIsGreater( m2ForInverse ))
+  {
+  m1M2SizeDiff.copy( m2ForInverse );
+  intMath.subtract( m1M2SizeDiff, m1ForInverse );
+  // Unfortunately this long Divide()
+  // has to be done.
+  Division::divide( m1M2SizeDiff, primeP,
+                 quotient, remainder, intMath );
 
-    Worker.ReportProgress( 0, " " );
-    Worker.ReportProgress( 0,
- "DecryptedNumber: " +
- IntMath.ToString10( DecryptedNumber ));
-    Worker.ReportProgress( 0, " " );
-    Worker.ReportProgress( 0,
- "TestDecryptedNumber: " +
- IntMath.ToString10( TestDecryptedNumber ));
-    Worker.ReportProgress( 0, " " );
-    Worker.ReportProgress( 0,
- "Decrypt with QInv time seconds: " +
- DecryptTime.GetSecondsToNow().ToString( "N2" ));
-    Worker.ReportProgress( 0, " " );
-    return true;
-    }
+  quotient.addULong( 1 );
+  intMath.multiply( quotient, primeP );
+  m1ForInverse.add( quotient );
+  }
 
-*/
+Integer m1MinusM2;
+
+m1MinusM2.copy( m1ForInverse );
+intMath.subtract( m1MinusM2, m2ForInverse );
+if( m1MinusM2.getIsNegative() )
+  throw "m1MinusM2 is negative.";
+
+if( qInv.getIsNegative() )
+  throw "qInv is negative.";
+
+Integer hForQInv;
+hForQInv.copy( m1MinusM2 );
+intMath.multiply( hForQInv, qInv );
+if( hForQInv.getIsNegative() )
+  throw "hForQInv is negative.";
+
+if( primeP.paramIsGreater( hForQInv ))
+  {
+  Division::divide( hForQInv, primeP,
+                 quotient, remainder, intMath );
+
+  hForQInv.copy( remainder );
+  }
+
+//      2.5 Let m = m_2 + hq.
+decryptedNumber.copy( hForQInv );
+intMath.multiply( decryptedNumber, primeQ );
+decryptedNumber.add( m2ForInverse );
+
+if( !testForDecrypt.isEqual(
+                           decryptedNumber ))
+  throw "!testDecrypt.IsEqual()";
+
+return true;
+}
