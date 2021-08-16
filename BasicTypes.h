@@ -1,13 +1,11 @@
 // Copyright Eric Chauvin 2020 - 2021.
 
 
+#pragma once
+
 
 // Basic type definitions.
 
-
-
-#ifndef ECBasicTypes_H
-#define ECBasicTypes_H
 
 
 // The C and C++ standards don't specify an
@@ -83,6 +81,3 @@ bool basicThingsAreRight()
   return true;
   }
 */
-
-
-#endif
