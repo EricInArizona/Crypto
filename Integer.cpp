@@ -10,7 +10,7 @@
 
 Integer::Integer( void )
 {
-D = new Uint64[digitArraySize];
+// D = new Uint64[digitArraySize];
 
 setToZero();
 }
@@ -27,11 +27,12 @@ throw "Don't use the Integer copy constructor.";
 }
 
 
+/*
 Integer::~Integer( void )
 {
 delete[] D;
 }
-
+*/
 
 
 
