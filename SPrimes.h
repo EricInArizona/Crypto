@@ -2,11 +2,10 @@
 
 
 
+#pragma once
+
+
 // For small primes.
-
-
-#ifndef ECSPrimes_H
-#define ECSPrimes_H
 
 
 
@@ -30,7 +29,3 @@ class SPrimes
   Uint32 getPrimeAt( Uint32 where );
 
   };
-
-
-
-#endif
