@@ -2,8 +2,7 @@
 
 
 
-#ifndef ECInteger_H
-#define ECInteger_H
+#pragma once
 
 
 
@@ -173,6 +172,3 @@ class Integer
 */
 
   };
-
-
-#endif
