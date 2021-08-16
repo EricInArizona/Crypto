@@ -2,8 +2,8 @@
 
 
 
-#ifndef ECIntegerMath_H
-#define ECIntegerMath_H
+#pragma once
+
 
 
 #include "BasicTypes.h"
@@ -90,9 +90,3 @@ class IntegerMath
 
 
   };
-
-
-
-
-
-#endif
