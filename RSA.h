@@ -1,9 +1,7 @@
 // Copyright Eric Chauvin, 2021.
 
 
-
-#ifndef ECRSA_H
-#define ECRSA_H
+#pragma once
 
 
 
@@ -31,7 +29,7 @@ class RSA
   Integer privKInverseExponent;
   Integer privKInverseExponentDP;
   Integer privKInverseExponentDQ;
-  // Integer qInv;
+  Integer qInv;
   Integer phiN;
 
   public:
@@ -42,10 +40,10 @@ class RSA
 
   // The index, which is the size of the prime.
   // static const int PrimeIndex = 0; // 32-bit
-  // static const int PrimeIndex = 1; // 64-bit
+  static const int PrimeIndex = 1; // 64-bit
   // static const Uint32 PrimeIndex = 2; // 96-bit
   // static const int PrimeIndex = 3; // 128-bit
-  static const int PrimeIndex = 4; // 160-bit
+  // static const int PrimeIndex = 4; // 160-bit
   // static const int PrimeIndex = 5; // 192-bit
   // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
@@ -62,8 +60,8 @@ class RSA
   bool isGoodPair( FileIO& mainIO );
   bool setPrivateKeys( void ); // FileIO& mainIO );
   bool testEncryption( FileIO& mainIO );
+  bool decryptWithQInverse( FileIO& mainIO,
+                 Integer& encryptedNumber,
+                 Integer& decryptedNumber );
 
   };
-
-
-#endif
