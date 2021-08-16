@@ -1,14 +1,14 @@
 // Copyright Eric Chauvin, 2021.
 
 
+
+#pragma once
+
 // This is 8 bytes times digitArraySize *
 // digitArraySize, which is like 8 million bytes
 // or 32 million bytes or something like that.
 
 
-
-#ifndef ECTwoDUint64_H
-#define ECTwoDUint64_H
 
 
 #include "BasicTypes.h"
@@ -51,6 +51,3 @@ class TwoDUint64
 
 
   };
-
-
-#endif
