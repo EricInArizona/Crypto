@@ -47,7 +47,10 @@ class RSA
   // static const int PrimeIndex = 5; // 192-bit
   // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
+
+  // Seconds: 784
   // static const int PrimeIndex = 15; // 512
+
   // static const int PrimeIndex = 31; // 1024
   // static const int PrimeIndex = 63; // 2048
   // static const int PrimeIndex = 127; // 4096
