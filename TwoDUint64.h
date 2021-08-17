@@ -4,9 +4,19 @@
 
 #pragma once
 
+
 // This is 8 bytes times digitArraySize *
-// digitArraySize, which is like 8 million bytes
-// or 32 million bytes or something like that.
+// digitArraySize.
+
+// If it's the same row but the column is
+// incremented by one, then the values are
+// next to each other in ram.  And in the same
+// area of the RAM cache.  So on for loops
+// of columns and rows, the outside loop should
+// be rows.  Then it's reading/writing to
+// adjacent areas in ram in sequence.
+// for( row
+//   for( column
 
 
 
@@ -35,7 +45,6 @@ class TwoDUint64
 
     return aR[where];
     }
-
 
   inline void setV( Uint32 column, Uint32 row,
                       Uint64 val )
