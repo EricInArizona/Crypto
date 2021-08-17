@@ -124,12 +124,17 @@ class Integer
 
   inline void setD( Uint32 where, Uint64 toSet )
     {
+    // I want to be able to use toSet values
+    // that might be a full 64 bits long.
+    // See cleanUp().
+
     if( where >= digitArraySize )
       throw "setD() index out of bounds.";
 
     D[where] = toSet;
     }
 
+  void cleanUp( void );
   void incrementIndex( void );
   void setToMaxValue( void );
   inline void setFromUInt( Uint32 toSet )
