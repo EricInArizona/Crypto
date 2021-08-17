@@ -85,7 +85,7 @@ for( Uint32 count = 0; count <= last; count++ )
 
 
 
-Uint32 NumbSys::reduce( Integer& result,
+void NumbSys::reduce( Integer& result,
                         Integer& toReduce,
                         Integer& modulus,
                         IntegerMath& intMath )
@@ -99,7 +99,7 @@ if( !modulus.isEqual( currentBase ))
 if( toReduce.paramIsGreater( currentBase ))
   {
   result.copy( toReduce );
-  return result.getIndex();
+  return;
   }
 
 setValFromInt( toReduce );
@@ -124,6 +124,4 @@ for( Uint32 row = 0; row <= last; row++ )
   accumRow.cleanUp();
   result.add( accumRow );
   }
-
-return result.getIndex();
 }
