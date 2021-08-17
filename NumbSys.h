@@ -7,7 +7,6 @@
 
 // A number system.
 
-
 // An early version of this idea is in old code
 // I wrote from 2015 and earlier at:
 // https://github.com/Eric7Apps/OldCode/blob/master/ModularReduction.cs
@@ -41,7 +40,7 @@ class NumbSys
   public:
   NumbSys( void );
   NumbSys( const NumbSys& in );
-  Uint32 reduce( Integer& result,
+  void reduce( Integer& result,
                  Integer& toReduce,
                  Integer& modulus,
                  IntegerMath& intMath );
