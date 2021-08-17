@@ -6,20 +6,9 @@
 #include "Division.h"
 
 
-// If you said that something is a base-10
-// number or a base-16 (hexadecimal) number,
-// that number system is based on multiples of
-// that base.  Base-10 numbers are based on
-// 10, 100, 1000... and so on.
-// When I use the word 'base' here, I mean
-// like if something is equal to 3 mod 7,
-// then 7 is the base number.
-// See the reduce() function.
-
 
 Mod::Mod( void )
 {
-// baseAr = new Integer[Integer::digitArraySize];
 }
 
 
@@ -34,86 +23,14 @@ throw "Don't copy Mod in a copy constructor.";
 }
 
 
-Mod::~Mod( void )
-{
-// delete[] baseAr;
-}
-
-
-
-void Mod::setupBaseArray( // FileIO& mainIO,
-                          Integer& setBase // ,
-                          // IntegerMath& intMath
-                          )
-{
-currentBase.copy( setBase );
-
-/*
-// mainIO.appendChars( "currentBase:\n" );
-// Str showS3 =  intMath.toString10( currentBase );
-// mainIO.appendStr( showS3 );
-// mainIO.appendChars( "\n" );
-
-Integer base2;
-base2.setFromULong( 256 ); // 0x100
-intMath.multiplyUInt( base2, 256 ); // 0x10000
-intMath.multiplyUInt( base2, 256 ); // 0x1000000
-intMath.multiplyUInt( base2, 256 );
-// Now it is: 0x1 0000 0000
-
-// mainIO.appendChars( "base2:\n" );
-// Str showS =  intMath.toString10( base2 );
-// mainIO.appendStr( showS );
-// mainIO.appendChars( "\n" );
-
-
-// 0x100000000 is the
-// base of this number system.
-
-
-Integer baseValue;
-Integer quotient;
-Integer remainder;
-
-baseValue.setFromULong( 1 );
-
-for( Uint32 column = 0; column <
-             Integer::digitArraySize; column++ )
-  {
-  Division::divide( baseValue, currentBase,
-                    quotient, remainder,
-                    intMath );
-
-  baseAr[column].copy( remainder );
-
-  // mainIO.appendChars(
-     //           "baseAr[column].\n" );
-  // Str showS2 =  intMath.toString10(
-  //                            baseAr[column] );
-  // mainIO.appendStr( showS2 );
-  // mainIO.appendChars( "\n" );
-
-
-  // This would need a full size baseValue.
-  // Not mod the remainder.
-  // quotientAr[column].copy( quotient );
-
-  // Done at the bottom for the next round of
-  // the loop.
-  baseValue.copy( remainder );
-  intMath.multiply( baseValue, base2 );
-  }
-*/
-}
-
-
 
 void Mod::makeExact( Integer& exact,
-                          IntegerMath& intMath )
+                     Integer& modulus,
+                     IntegerMath& intMath )
 {
 // Most of the time the math is not exact,
 // like in the modular exponentiation function
-// modularPower().  It leaves some small
+// toPower().  It leaves some small
 // multiple of currentBase.  So this gets rid
 // of that small left over multiple of
 // currentBase.
@@ -121,7 +38,7 @@ void Mod::makeExact( Integer& exact,
 Integer quotient;
 Integer remainder;
 
-Division::divide( exact, currentBase,
+Division::divide( exact, modulus,
                   quotient, remainder, intMath );
 
 exact.copy( remainder );
@@ -129,81 +46,36 @@ exact.copy( remainder );
 
 
 
+
 Uint32 Mod::reduce( // FileIO& mainIO,
                            Integer& result,
                            Integer& toReduce,
+                           Integer& modulus,
                            IntegerMath& intMath )
 {
 Integer quotient;
 Integer remainder;
 
-Division::divide( toReduce, currentBase,
+Integer toReduceTest;
+Integer resultTest;
+toReduceTest.copy( toReduce );
+numbSys.reduce( resultTest,
+                toReduceTest,
+                modulus,
+                intMath );
+
+makeExact( resultTest, modulus, intMath );
+
+Division::divide( toReduce, modulus,
                           quotient, remainder,
                           intMath );
 result.copy( remainder );
-return result.getIndex();
-}
-
-
-
-/*
-Uint32 Mod::reduce( FileIO& mainIO,
-                           Integer& result,
-                           Integer& toReduce,
-                           IntegerMath& intMath )
-{
-
-if( toReduce.paramIsGreater( currentBase ))
-  {
-  mainIO.appendChars(
-                "paramIsGreater in reduce().\n" );
-  result.copy( toReduce );
-  return result.getIndex();
-  }
-
-result.setToZero();
-
-Uint32 topOfToReduce = toReduce.getIndex() + 1;
-Uint32 highestCopyIndex = currentBase.getIndex();
-
-Integer accumBase;
-
-// Those parts that are less than the base are
-// still at some power of two.
-
-// If it's zero then minus 1 makes the Uint huge.
-result.copyUpTo( toReduce, highestCopyIndex );
-// result.copyUpTo( toReduce, highestCopyIndex - 1 );
-
-// But from here up they have to be added
-// up individually.
-Uint32 biggestIndex = 0;
-for( Uint32 count = highestCopyIndex; count <
-                        topOfToReduce; count++ )
-  {
-  // The size of the numbers in baseAr are all
-  // less than the size of currentBase.
-  // This multiplication by a uint is with a
-  // number that is not bigger than currentBase.
-  // Compare this with the two full muliply()
-  // calls done on each digit of the quotient
-  // in LongDivide3().
-
-  // accumBase is set to a new value here.
-  Uint32 checkIndex = intMath.
-            multiplyUIntFromCopy( accumBase,
-            baseAr[count],
-            toReduce.getD( count ));
-
-  if( checkIndex > biggestIndex )
-    biggestIndex = checkIndex;
-
-  result.add( accumBase );
-  }
+if( !result.isEqual( resultTest ))
+  throw "Mod is bad.";
 
 return result.getIndex();
 }
-*/
+
 
 
 
@@ -218,7 +90,6 @@ void Mod::toPower( FileIO& mainIO,
                         Integer& result,
                         Integer& exponent,
                         Integer& modulus,
-                        bool setUpBase,
                         IntegerMath& intMath )
 {
 if( result.isZero())
@@ -267,12 +138,6 @@ if( exponent.isOne())
   return;
   }
 
-if( setUpBase )
-  setupBaseArray( // mainIO,
-                  modulus
-                  //, intMath
-                  );
-
 Integer xForModPower;
 Integer exponentCopy;
 Integer tempForModPower;
@@ -294,7 +159,8 @@ for( Uint32 count = 0; count < 10000; count++ )
     {
     intMath.multiply( result, xForModPower );
     reduce( // mainIO,
-            tempForModPower, result, intMath );
+            tempForModPower, result, modulus,
+                                     intMath );
     result.copy( tempForModPower );
     }
 
@@ -307,7 +173,8 @@ for( Uint32 count = 0; count < 10000; count++ )
   // IntMath.square( xForModPower );
 
   reduce( // mainIO,
-          tempForModPower, xForModPower, intMath );
+          tempForModPower, xForModPower, modulus,
+                                        intMath );
   xForModPower.copy( tempForModPower );
   }
 
@@ -327,13 +194,13 @@ if( howBig > 2 )
   throw "This never happens. howBig.";
 
 reduce( // mainIO,
-     tempForModPower, result, intMath );
+     tempForModPower, result, modulus, intMath );
 result.copy( tempForModPower );
 
 // Notice that this Divide() is done once.
 // Not a thousand or two thousand times.
 
-makeExact( result, intMath );
+makeExact( result, modulus, intMath );
 }
 
 
