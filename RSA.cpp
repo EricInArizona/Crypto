@@ -142,7 +142,6 @@ for( Uint32 count = 0; count < 3; count++ )
   if( !testEncryption( mainIO ))
     throw "!testEncryption().\n";
 
-
   mainIO.appendChars( "Good pair.\n" );
   }
 
@@ -279,10 +278,13 @@ if( !toEncrypt.makeRandomOdd( (Uint32)
 Integer plainTextNumber;
 plainTextNumber.copy( toEncrypt );
 
+// numbSys.setupBaseArray( // mainIO,
+ //                       pubKeyN,
+ //                       intMath );
+
 mod.toPower( mainIO, toEncrypt,
                         pubKeyExponent,
                         pubKeyN,
-                        true,
                         intMath );
 
 Integer cipherTextNumber;
@@ -300,7 +302,7 @@ cipherTextNumber.copy( toEncrypt );
 
 mod.toPower( mainIO, toEncrypt,
                      privKInverseExponent,
-                     pubKeyN, true, intMath );
+                     pubKeyN, intMath );
 
 if( !plainTextNumber.isEqual( toEncrypt ))
   throw "PlainTextNumber not equal.\n";
@@ -315,7 +317,6 @@ plainTextNumber.copy( toEncrypt );
 mod.toPower( mainIO, toEncrypt,
                         pubKeyExponent,
                         pubKeyN,
-                        true,
                         intMath );
 
 cipherTextNumber.copy( toEncrypt );
@@ -335,12 +336,6 @@ if( !Euclid::multInverse( primeQ,
 decryptWithQInverse( mainIO,
              cipherTextNumber,
              toEncrypt );
-/*
-decryptWithQInverse( mainIO,
-                     cipherTextNumber,
-                     toEncrypt,
-                     plainTextNumber,
-*/
 
 return true;
 }
@@ -365,7 +360,7 @@ Integer testForDecrypt;
 testForDecrypt.copy( encryptedNumber );
 mod.toPower( mainIO, testForDecrypt,
                     privKInverseExponentDP,
-                    primeP, true, intMath );
+                    primeP, intMath );
 
 Integer m1ForInverse;
 Integer m2ForInverse;
@@ -376,7 +371,7 @@ testForDecrypt.copy( encryptedNumber );
 
 mod.toPower( mainIO, testForDecrypt,
                     privKInverseExponentDQ,
-                    primeQ, true, intMath );
+                    primeQ, intMath );
 
 m2ForInverse.copy( testForDecrypt );
 //      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
