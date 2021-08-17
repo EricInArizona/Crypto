@@ -196,6 +196,7 @@ if( divideBy.getIndex() == 0 )
   }
 
 
+/*
 Integer toDivideTest2;
 Integer divideByTest2;
 Integer quotientTest2;
@@ -219,10 +220,13 @@ longDivide1( toDivideTest2, divideByTest2,
 longDivide2( toDivideTest3, divideByTest3,
                 quotientTest3, remainderTest3,
                 intMath );
+*/
+
 longDivide3( toDivide, divideBy,
                 quotient, remainder,
                 intMath );
 
+/*
 if( !quotient.isEqual( quotientTest2 ))
   throw "!quotient.isEqual( quotientTest2 )";
 
@@ -234,7 +238,7 @@ if( !remainder.isEqual( remainderTest2 ))
 
 if( !remainder.isEqual( remainderTest3 ))
   throw "!remainder.isEqual( remainderTest3 )";
-
+*/
 }
 
 
