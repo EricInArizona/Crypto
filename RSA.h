@@ -8,6 +8,7 @@
 #include "BasicTypes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
+#include "NumbSys.h"
 #include "Mod.h"
 #include "FileIO.h"
 
@@ -40,7 +41,7 @@ class RSA
 
   // The index, which is the size of the prime.
   // static const int PrimeIndex = 0; // 32-bit
-  static const int PrimeIndex = 1; // 64-bit
+  // static const int PrimeIndex = 1; // 64-bit
   // static const Uint32 PrimeIndex = 2; // 96-bit
   // static const int PrimeIndex = 3; // 128-bit
   // static const int PrimeIndex = 4; // 160-bit
@@ -48,8 +49,8 @@ class RSA
   // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
 
-  // Seconds: 784
-  // static const int PrimeIndex = 15; // 512
+  // Seconds: 48 or so.
+  static const int PrimeIndex = 15; // 512
 
   // static const int PrimeIndex = 31; // 1024
   // static const int PrimeIndex = 63; // 2048
