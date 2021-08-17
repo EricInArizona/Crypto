@@ -57,7 +57,6 @@ for( Uint32 count = 0; count < 1000; count++ )
   return true; // With result.
   }
 
-
 mainIO.appendChars(
             "Loops ended in makeAPrime().\n" );
 
@@ -148,7 +147,7 @@ intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
 mod.toPower( mainIO, A, pMinus1, toTest, true,
-                                        intMath );
+                                      intMath );
 
 // mainIO.appendChars( "Value of A:\n" );
 // Str showS =  intMath.toString10( A );
