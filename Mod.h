@@ -6,6 +6,9 @@
 
 // Modular Arithmetic.
 
+//  Then mod.cpp becomes like it is in the
+//  Java code for Elliptic curve stuff.
+
 
 
 #include "BasicTypes.h"
