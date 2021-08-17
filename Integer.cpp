@@ -281,6 +281,27 @@ if( carry != 0 )
 }
 
 
+void Integer::cleanUp( void )
+{
+Uint64 carry = D[0] >> 32;
+D[0] = D[0] & 0xFFFFFFFF;
+for( Uint32 count = 1; count <= index; count++ )
+  {
+  Uint64 total = carry + D[count];
+  D[count] = total & 0xFFFFFFFF;
+  carry = total >> 32;
+  }
+
+if( carry != 0 )
+  {
+  index++;
+  if( index >= digitArraySize )
+    throw  "Integer.cleanUp() overflow.";
+
+  D[index] = carry;
+  }
+}
+
 
 
 void Integer::addULong( Uint64 toAdd )
