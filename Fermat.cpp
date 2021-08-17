@@ -146,8 +146,7 @@ pMinus1.copy( toTest );
 intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
-mod.toPower( mainIO, A, pMinus1, toTest, true,
-                                      intMath );
+mod.toPower( mainIO, A, pMinus1, toTest, intMath );
 
 // mainIO.appendChars( "Value of A:\n" );
 // Str showS =  intMath.toString10( A );
