@@ -8,7 +8,6 @@
 #include "BasicTypes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
-#include "NumbSys.h"
 #include "Mod.h"
 #include "FileIO.h"
 
@@ -49,10 +48,11 @@ class RSA
   // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
 
-  // Seconds: 48 or so.
-  static const int PrimeIndex = 15; // 512
+  // Seconds: 3 or 4
+  // static const int PrimeIndex = 15; // 512
 
-  // static const int PrimeIndex = 31; // 1024
+  // Seconds: 27, 23, 21, 17 or 19 or 8 or 7
+  static const int PrimeIndex = 31; // 1024
   // static const int PrimeIndex = 63; // 2048
   // static const int PrimeIndex = 127; // 4096
 
@@ -63,8 +63,8 @@ class RSA
   void makeRSAKeys( FileIO& mainIO );
   bool isGoodPair( FileIO& mainIO );
   bool setPrivateKeys( void ); // FileIO& mainIO );
-  bool testEncryption( FileIO& mainIO );
-  bool decryptWithQInverse( FileIO& mainIO,
+  bool testEncryption( void );
+  bool decryptWithQInverse(
                  Integer& encryptedNumber,
                  Integer& decryptedNumber );
 
