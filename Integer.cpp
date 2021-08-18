@@ -412,7 +412,6 @@ if( carry != 0 )
 
 
 
-/*
 // This is an optimization for small squares.
 void Integer::square0( void )
 {
@@ -607,7 +606,7 @@ if( carry != 0 )
   D[5] = carry;
   }
 }
-*/
+
 
 
 void Integer::shiftLeft( Uint32 shiftBy )
