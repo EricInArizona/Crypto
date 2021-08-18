@@ -32,13 +32,7 @@ class Mod
                   Integer& modulus,
                   IntegerMath& intMath );
 
-  Uint32 reduce( // FileIO& mainIO,
-                           Integer& result,
-                           Integer& toReduce,
-                           Integer& modulus,
-                           IntegerMath& intMath );
-
-  void toPower( FileIO& mainIO,
+  void toPower( // FileIO& mainIO,
                         Integer& result,
                         Integer& exponent,
                         Integer& modulus,
