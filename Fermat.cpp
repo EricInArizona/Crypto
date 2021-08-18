@@ -6,17 +6,14 @@
 
 
 
-bool Fermat::makeAPrime( // FileIO& mainIO,
-                          Integer& result,
-                          Uint32 setToIndex,
-                          // Uint32 howMany,
-                          SPrimes& sPrimes,
-                          IntegerMath& intMath,
-                          Mod& mod )
+void Fermat::makeAPrime( Integer& result,
+                         Uint32 setToIndex,
+                         SPrimes& sPrimes,
+                         IntegerMath& intMath,
+                         Mod& mod )
 {
-// mainIO.appendChars( "Top of makeAPrime().\n" );
-
-for( Uint32 count = 0; count < 1000; count++ )
+// for( Uint32 count = 0; count < 100; count++ )
+while( true )
   {
   // ThreadEC::sleep( 1 );
 
@@ -24,10 +21,6 @@ for( Uint32 count = 0; count < 1000; count++ )
     {
     throw "Error making random number.";
     }
-
-  // Str showS =  intMath.toString10( result );
-  // mainIO.appendStr( showS );
-  // mainIO.appendChars( "\n\n" );
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
@@ -47,19 +40,10 @@ for( Uint32 count = 0; count < 1000; count++ )
     continue;
     }
 
-  // mainIO.appendChars(
-  //            "\nFound a probable prime.\n" );
-  // mainIO.appendChars( "Attempts: " );
-  // Str attem( count );
-  // mainIO.appendStr( attem );
-  // mainIO.appendChars( "\n" );
-  return true; // With result.
+  // More tests?
+
+  return;
   }
-
-// mainIO.appendChars(
-//           "Loops ended in makeAPrime().\n" );
-
-return false;
 }
 
 
@@ -102,7 +86,8 @@ for( Uint32 count = startAt; count <
   }
 
 // It _might_ be a prime if it passed this test.
-// Increasing howMany increases the probability
+// Increasing how many loops it does, how many
+// tests it does, increases the probability
 // that it's a prime.
 
 return true;
@@ -143,11 +128,6 @@ intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
 mod.toPower( A, pMinus1, toTest, intMath );
-
-// mainIO.appendChars( "Value of A:\n" );
-// Str showS =  intMath.toString10( A );
-// mainIO.appendStr( showS );
-// mainIO.appendChars( "\n\n" );
 
 if( A.isOne())
   return true; // It _might_ be a prime.
