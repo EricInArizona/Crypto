@@ -780,7 +780,7 @@ for( Uint32 column = 1; column <= doubleIndex;
     if( column > (last + row) )
       continue;
 
-    Uint64 totalPart = M.getV( column, row ); 
+    Uint64 totalPart = M.getV( column, row );
     totalRight += totalPart & 0xFFFFFFFF;
     totalLeft += totalPart >> 32;
     }
