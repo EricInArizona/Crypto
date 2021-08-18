@@ -28,12 +28,10 @@ class IntegerMath
   void setMultiplySign( Integer& result,
                         Integer& toMul );
 
-/*
   void searchSqrtXPart( Uint32 testIndex,
                         Integer& fromSqr,
                         Integer& sqrRoot );
 
-*/
 
   public:
   IntegerMath( void );
@@ -67,17 +65,12 @@ class IntegerMath
 */
 
   Str toString10( Integer& from );
-
-/*
   void square( Integer& toSquare );
-*/
-
   Uint64 getMod32( Integer& in, Uint64 divisor );
   Uint64 getMod64( Integer& in, Uint64 divisor );
   static Uint64 mod64FromTwoULongs( Uint64 P1,
                                  Uint64 P0,
                                  Uint64 divisor );
-
   void multiplyTop( Integer& result,
                                Integer& toMul );
   void multiplyTopOne( Integer& result,
