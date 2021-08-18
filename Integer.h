@@ -18,10 +18,13 @@ class Integer
   // This many 32 bit integers.
   // 100 is 3,200 bits.
   // 200 is 6,400 bits.
-  // A 4096 bit number multiplied is 8192
+  // A 4096 bit number squared is 8192
   // bits.
 
+  // About 12,800 bits:
   static const Uint32 digitArraySize = 400;
+  // This would be about 400 times 8 bytes for
+  // the size on the stack.
   // See the /STACK option in BuildProj.bat
 
   private:
@@ -158,13 +161,9 @@ class Integer
   void increment( void );
   void addULong( Uint64 toAdd );
   void add( Integer& toAdd );
-
-/*
   void square0( void );
   void square1( void );
   void square2( void );
-*/
-
   void shiftLeft( Uint32 shiftBy );
   void shiftRight( Uint32 shiftBy );
   void setDigitAndClear( Uint32 where,
