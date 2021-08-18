@@ -40,8 +40,15 @@ class TwoDUint64
     {
     Uint32 where = (row * Integer::digitArraySize)
                    + column;
-    if( where >= last )
-      throw "TwoDUint64 get out of bounds.";
+
+    // The size of this array is created with
+    // the static const Integer::digitArraySize
+    // and for-loops are done with that same
+    // static const.  So it's not going to
+    // go out of range.
+    // For testig:
+    // if( where >= last )
+      // throw "TwoDUint64 get out of bounds.";
 
     return aR[where];
     }
@@ -52,8 +59,9 @@ class TwoDUint64
     Uint32 where = (row * Integer::digitArraySize)
                    + column;
 
-    if( where >= last )
-      throw "TwoDUint64 set out of bounds.";
+    // For testing:
+    // if( where >= last )
+      // throw "TwoDUint64 set out of bounds.";
 
     aR[where] = val;
     }
