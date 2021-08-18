@@ -19,20 +19,18 @@ class Fermat
 
   public:
 
-  static bool makeAPrime( FileIO& mainIO,
-                   Integer& result,
+  static bool makeAPrime( Integer& result,
                    Uint32 setToIndex,
                    SPrimes& sPrimes,
                    IntegerMath& intMath,
                    Mod& mod );
 
-  static bool isPrime( FileIO& mainIO,
-                Integer& toTest,
+  static bool isPrime( Integer& toTest,
                 SPrimes& sPrimes,
                 IntegerMath& intMath,
                 Mod& mod );
 
-  static bool isPrimeForOneValue( FileIO& mainIO,
+  static bool isPrimeForOneValue(
                       Integer& toTest,
                       Uint64 base,
                       IntegerMath& intMath,
