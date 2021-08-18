@@ -6,7 +6,7 @@
 
 
 
-bool Fermat::makeAPrime( FileIO& mainIO,
+bool Fermat::makeAPrime( // FileIO& mainIO,
                           Integer& result,
                           Uint32 setToIndex,
                           // Uint32 howMany,
@@ -40,11 +40,10 @@ for( Uint32 count = 0; count < 1000; count++ )
   if( 0 != testPrime)
     continue;
 
-  if( !isPrime( mainIO, result, sPrimes, intMath,
-                                         mod ))
+  if( !isPrime( result, sPrimes, intMath, mod ))
     {
-    mainIO.appendChars(
-                "Did not pass Fermat test.\n" );
+    // mainIO.appendChars(
+    //          "Did not pass Fermat test.\n" );
     continue;
     }
 
@@ -57,8 +56,8 @@ for( Uint32 count = 0; count < 1000; count++ )
   return true; // With result.
   }
 
-mainIO.appendChars(
-            "Loops ended in makeAPrime().\n" );
+// mainIO.appendChars(
+//           "Loops ended in makeAPrime().\n" );
 
 return false;
 }
@@ -66,9 +65,7 @@ return false;
 
 
 
-bool Fermat::isPrime( FileIO& mainIO,
-                      Integer& toTest,
-                      // Uint32 howMany,
+bool Fermat::isPrime( Integer& toTest,
                       SPrimes& sPrimes,
                       IntegerMath& intMath,
                       Mod& mod )
@@ -94,7 +91,7 @@ Uint32 startAt = SPrimes::arrayLength >> 1;
 for( Uint32 count = startAt; count <
                    (100 + startAt); count++ )
   {
-  if( !isPrimeForOneValue( mainIO, toTest,
+  if( !isPrimeForOneValue( toTest,
                    sPrimes.getPrimeAt( count ),
                    intMath,
                    mod ))
@@ -113,8 +110,7 @@ return true;
 
 
 
-bool Fermat::isPrimeForOneValue( FileIO& mainIO,
-                          Integer& toTest,
+bool Fermat::isPrimeForOneValue( Integer& toTest,
                           Uint64 base,
                           IntegerMath& intMath,
                           Mod& mod )
@@ -146,7 +142,7 @@ pMinus1.copy( toTest );
 intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
-mod.toPower( mainIO, A, pMinus1, toTest, intMath );
+mod.toPower( A, pMinus1, toTest, intMath );
 
 // mainIO.appendChars( "Value of A:\n" );
 // Str showS =  intMath.toString10( A );
