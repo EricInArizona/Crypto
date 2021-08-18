@@ -81,7 +81,7 @@ for( Uint32 count = 0; count < 3; count++ )
 
   // Make two prime factors.
 
-  if( !Fermat::makeAPrime( mainIO, primeP,
+  if( !Fermat::makeAPrime( primeP,
                                    PrimeIndex,
                                    sPrimes,
                                    intMath,
@@ -91,7 +91,7 @@ for( Uint32 count = 0; count < 3; count++ )
     return;
     }
 
-  if( !Fermat::makeAPrime( mainIO, primeQ,
+  if( !Fermat::makeAPrime( primeQ,
                                    PrimeIndex,
                                    sPrimes,
                                    intMath,
@@ -139,7 +139,7 @@ for( Uint32 count = 0; count < 3; count++ )
     throw "!setPrivateKeys().\n";
     // continue;
 
-  if( !testEncryption( mainIO ))
+  if( !testEncryption())
     throw "!testEncryption().\n";
 
   mainIO.appendChars( "Good pair.\n" );
@@ -261,7 +261,7 @@ return true;
 
 
 
-bool RSA::testEncryption( FileIO& mainIO )
+bool RSA::testEncryption( void )
 {
 // Make a random number to test
 // encryption/decryption.
@@ -282,10 +282,8 @@ plainTextNumber.copy( toEncrypt );
  //                       pubKeyN,
  //                       intMath );
 
-mod.toPower( mainIO, toEncrypt,
-                        pubKeyExponent,
-                        pubKeyN,
-                        intMath );
+mod.toPower( toEncrypt, pubKeyExponent,
+                        pubKeyN, intMath );
 
 Integer cipherTextNumber;
 cipherTextNumber.copy( toEncrypt );
@@ -300,7 +298,7 @@ cipherTextNumber.copy( toEncrypt );
 // mainIO.appendStr( showTime );
 // mainIO.appendChars( "\n\n" );
 
-mod.toPower( mainIO, toEncrypt,
+mod.toPower( toEncrypt,
                      privKInverseExponent,
                      pubKeyN, intMath );
 
@@ -314,10 +312,8 @@ if( !toEncrypt.makeRandomOdd( (Uint32)
   throw "Error making toEncrypt random number.";
 
 plainTextNumber.copy( toEncrypt );
-mod.toPower( mainIO, toEncrypt,
-                        pubKeyExponent,
-                        pubKeyN,
-                        intMath );
+mod.toPower( toEncrypt, pubKeyExponent,
+                      pubKeyN, intMath );
 
 cipherTextNumber.copy( toEncrypt );
 
@@ -333,8 +329,7 @@ if( !Euclid::multInverse( primeQ,
   throw "MultInverse() false with qInv.";
 
 
-decryptWithQInverse( mainIO,
-             cipherTextNumber,
+decryptWithQInverse( cipherTextNumber,
              toEncrypt );
 
 return true;
@@ -342,7 +337,7 @@ return true;
 
 
 
-bool RSA::decryptWithQInverse( FileIO& mainIO,
+bool RSA::decryptWithQInverse(
              Integer& encryptedNumber,
              Integer& decryptedNumber )
 {
@@ -358,7 +353,7 @@ bool RSA::decryptWithQInverse( FileIO& mainIO,
 
 Integer testForDecrypt;
 testForDecrypt.copy( encryptedNumber );
-mod.toPower( mainIO, testForDecrypt,
+mod.toPower( testForDecrypt,
                     privKInverseExponentDP,
                     primeP, intMath );
 
@@ -369,7 +364,7 @@ m1ForInverse.copy( testForDecrypt );
 //      2.3 Let m_2 = c^dQ mod q.
 testForDecrypt.copy( encryptedNumber );
 
-mod.toPower( mainIO, testForDecrypt,
+mod.toPower( testForDecrypt,
                     privKInverseExponentDQ,
                     primeQ, intMath );
 
