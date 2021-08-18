@@ -31,9 +31,9 @@ void Mod::makeExact( Integer& exact,
 // Most of the time the math is not exact,
 // like in the modular exponentiation function
 // toPower().  It leaves some small
-// multiple of currentBase.  So this gets rid
-// of that small left over multiple of
-// currentBase.
+// multiple of the modulus.  So this gets rid
+// of that small left over multiple of the
+// modulus.
 
 Integer quotient;
 Integer remainder;
@@ -46,39 +46,6 @@ exact.copy( remainder );
 
 
 
-
-Uint32 Mod::reduce( // FileIO& mainIO,
-                           Integer& result,
-                           Integer& toReduce,
-                           Integer& modulus,
-                           IntegerMath& intMath )
-{
-Integer quotient;
-Integer remainder;
-
-Integer toReduceTest;
-Integer resultTest;
-toReduceTest.copy( toReduce );
-numbSys.reduce( resultTest,
-                toReduceTest,
-                modulus,
-                intMath );
-
-makeExact( resultTest, modulus, intMath );
-
-Division::divide( toReduce, modulus,
-                          quotient, remainder,
-                          intMath );
-result.copy( remainder );
-if( !result.isEqual( resultTest ))
-  throw "Mod is bad.";
-
-return result.getIndex();
-}
-
-
-
-
 // This is the standard modular power algorithm
 // that you could find in any standard textbook,
 // or on Wikipedia, but its use of the new
@@ -86,7 +53,7 @@ return result.getIndex();
 
 // x^n = (x^2)^((n - 1)/2) if n is odd.
 // x^n = (x^2)^(n/2)       if n is even.
-void Mod::toPower( FileIO& mainIO,
+void Mod::toPower( // FileIO& mainIO,
                         Integer& result,
                         Integer& exponent,
                         Integer& modulus,
@@ -94,8 +61,8 @@ void Mod::toPower( FileIO& mainIO,
 {
 if( result.isZero())
   {
-  mainIO.appendChars(
-                "toPower() is zero at top.\n" );
+  // mainIO.appendChars(
+  //            "toPower() is zero at top.\n" );
 
   return; // With Result still zero.
   }
@@ -103,8 +70,8 @@ if( result.isZero())
 if( result.isEqual( modulus ))
   {
   // It is congruent to zero % ModN.
-  mainIO.appendChars(
-            "Congruent to zero in toPower().\n" );
+  // mainIO.appendChars(
+  //       "Congruent to zero in toPower().\n" );
   result.setToZero();
   return;
   }
@@ -112,8 +79,8 @@ if( result.isEqual( modulus ))
 // Result is not zero at this point.
 if( exponent.isZero() )
   {
-  mainIO.appendChars(
-            "Exponent is zero in toPower().\n" );
+  // mainIO.appendChars(
+  //       "Exponent is zero in toPower().\n" );
   result.setToOne();
   return;
   }
@@ -132,8 +99,8 @@ if( modulus.paramIsGreater( result ))
 
 if( exponent.isOne())
   {
-  mainIO.appendChars(
-            "Exponent is one in toPower().\n" );
+  // mainIO.appendChars(
+  //      "Exponent is one in toPower().\n" );
   // Result stays the same.
   return;
   }
@@ -149,18 +116,16 @@ exponentCopy.copy( exponent );
 result.setToOne();
 
 // For each bit.
-for( Uint32 count = 0; count < 10000; count++ )
-// while( true )
-  {  // If the bottom bit is 1.
-  // mainIO.appendChars(
-     //       "Top of loop in toPower().\n" );
-
+while( true )
+  {
   if( (exponentCopy.getD( 0 ) & 1) == 1 )
     {
     intMath.multiply( result, xForModPower );
-    reduce( // mainIO,
-            tempForModPower, result, modulus,
-                                     intMath );
+
+    // tempForModPower is the result of this
+    // reduce() operation.
+    numbSys.reduce( tempForModPower,
+                    result, modulus, intMath );
     result.copy( tempForModPower );
     }
 
@@ -169,19 +134,18 @@ for( Uint32 count = 0; count < 10000; count++ )
     break;
 
   // Square it.
-  intMath.multiply( xForModPower, xForModPower );
-  // IntMath.square( xForModPower );
+  // intMath.multiply( xForModPower, xForModPower );
+  intMath.square( xForModPower );
 
-  reduce( // mainIO,
-          tempForModPower, xForModPower, modulus,
-                                        intMath );
+  numbSys.reduce( tempForModPower,
+                xForModPower, modulus, intMath );
   xForModPower.copy( tempForModPower );
   }
 
-// When this gets called it multiplies a base
+// When reduce() gets called it multiplies a base
 // number by a uint sized digit.  So that can
-// make the result one digit bigger than
-// currentBase.  Then when they are added up
+// make the result one digit bigger than the
+// modulus.  Then when they are added up
 // you can get carry bits that can make it a
 // little bigger.
 
@@ -191,15 +155,14 @@ Int32 howBig = (Int32)result.getIndex() -
   // throw "This does happen.";
 
 if( howBig > 2 )
-  throw "This never happens. howBig.";
+  throw "This never happens yet. howBig.";
 
-reduce( // mainIO,
-     tempForModPower, result, modulus, intMath );
+numbSys.reduce( tempForModPower, result,
+                            modulus, intMath );
 result.copy( tempForModPower );
 
 // Notice that this Divide() is done once.
 // Not a thousand or two thousand times.
-
 makeExact( result, modulus, intMath );
 }
 
