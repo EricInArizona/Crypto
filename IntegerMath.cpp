@@ -12,14 +12,6 @@
 
 IntegerMath::IntegerMath( void )
 {
-// This is something like 8 bytes times
-// 1000 * 1000 which is 8 million bytes.
-// The maximum default stack size is 8 megabytes.
-
-// "For instance, to specify a 16MB stack
-// you could do the following:"
-// cc -Wl,-stack_size -Wl,0x1000000
-
 signedD = new Int64[Integer::digitArraySize];
 scratch = new Uint64[Integer::digitArraySize];
 }
@@ -578,17 +570,17 @@ if( toMul.isULong())
 // It could never get here if ToMul is zero
 // because getIsULong()
 // would be true for zero.
-Uint32 totalIndex = result.getIndex() +
+const Uint32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
 if( totalIndex >= Integer::digitArraySize )
   throw "Multiply() overflow.";
 
-Uint32 countTo = toMul.getIndex();
+const Uint32 countTo = toMul.getIndex();
 for( Uint32 row = 0; row <= countTo; row++ )
   {
   if( toMul.getD( row ) == 0 )
     {
-    Uint32 countZeros = result.getIndex();
+    const Uint32 countZeros = result.getIndex();
     for( Uint32 column = 0; column <= countZeros;
                                         column++ )
       {
@@ -597,7 +589,7 @@ for( Uint32 row = 0; row <= countTo; row++ )
     }
   else
     {
-    Uint32 countMult = result.getIndex();
+    const Uint32 countMult = result.getIndex();
     for( Uint32 column = 0; column <= countMult;
                                         column++ )
       {
@@ -609,10 +601,11 @@ for( Uint32 row = 0; row <= countTo; row++ )
   }
 
 // Add the columns up with a carry.
-result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
-Uint64 carry = M.getV( 0, 0 ) >> 32;
-Uint32 resultIndex = result.getIndex();
-Uint32 mulIndex = toMul.getIndex();
+const Uint64 zeroPart = M.getV( 0, 0 );
+result.setD( 0, zeroPart & 0xFFFFFFFF );
+Uint64 carry = zeroPart >> 32;
+const Uint32 resultIndex = result.getIndex();
+const Uint32 mulIndex = toMul.getIndex();
 for( Uint32 column = 1; column <= totalIndex;
                                       column++ )
   {
@@ -628,9 +621,10 @@ for( Uint32 column = 1; column <= totalIndex;
 
     // Split the ulongs into right and left sides
     // so that they don't overflow.
-    totalRight += M.getV( column, row )
-                                   & 0xFFFFFFFF;
-    totalLeft += M.getV( column, row ) >> 32;
+    const Uint64 totalPart =
+                          M.getV( column, row );
+    totalRight += totalPart & 0xFFFFFFFF;
+    totalLeft += totalPart >> 32;
     }
 
   totalRight += carry;
@@ -721,33 +715,33 @@ return result;
 
 
 
-/*
 void IntegerMath::square( Integer& toSquare )
 {
-if( toSquare.getIndex() == 0 )
+const Uint32 sqrIndex = toSquare.getIndex();
+if( sqrIndex == 0 )
   {
   toSquare.square0();
   return;
   }
 
-if( toSquare.getIndex() == 1 )
+if( sqrIndex == 1 )
   {
   toSquare.square1();
   return;
   }
 
-if( toSquare.getIndex() == 2 )
+if( sqrIndex == 2 )
   {
   toSquare.square2();
   return;
   }
 
 // Now Index is at least 3:
-Uint32 doubleIndex = toSquare.getIndex() << 1;
+const Uint32 doubleIndex = sqrIndex << 1;
 if( doubleIndex >= Integer::digitArraySize )
   throw "Square() overflowed.";
 
-const Uint32 last = toSquare.getIndex();
+const Uint32 last = sqrIndex;
 for( Uint32 row = 0; row <= last; row++ )
   {
   if( toSquare.getD( row ) == 0 )
@@ -755,7 +749,7 @@ for( Uint32 row = 0; row <= last; row++ )
     for( Uint32 column = 0; column <= last;
                                        column++ )
       {
-      M[column + row][row] = 0;
+      M.setV( column + row, row, 0 );
       }
     }
   else
@@ -763,16 +757,16 @@ for( Uint32 row = 0; row <= last; row++ )
     for( Uint32 column = 0; column <= last;
                                       column++ )
       {
-      M[column + row][row] =
+      M.setV( column + row, row,
                       toSquare.getD( row ) *
-                      toSquare.getD( column );
+                      toSquare.getD( column ));
       }
     }
   }
 
 // Add the columns up with a carry.
-toSquare.setD( 0, M[0][0] & 0xFFFFFFFF );
-Uint64 carry = M[0][0] >> 32;
+toSquare.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
+Uint64 carry = M.getV( 0, 0 ) >> 32;
 for( Uint32 column = 1; column <= doubleIndex;
                                        column++ )
   {
@@ -786,8 +780,9 @@ for( Uint32 column = 1; column <= doubleIndex;
     if( column > (last + row) )
       continue;
 
-    totalRight += M[column][row] & 0xFFFFFFFF;
-    totalLeft += M[column][row] >> 32;
+    Uint64 totalPart = M.getV( column, row ); 
+    totalRight += totalPart & 0xFFFFFFFF;
+    totalLeft += totalPart >> 32;
     }
 
   totalRight += carry;
@@ -803,7 +798,7 @@ if( carry != 0 )
   toSquare.setD( toSquare.getIndex(), carry );
   }
 }
-*/
+
 
 
 
@@ -825,7 +820,7 @@ Uint32 resultIndex = result.getIndex();
 for( Uint32 column = 0; column <= toMulIndex;
                                       column++ )
   M.setV( column + resultIndex,
-          resultIndex, 
+          resultIndex,
           result.getD( resultIndex ) *
           toMul.getD( column ));
 
