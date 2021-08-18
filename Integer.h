@@ -15,16 +15,22 @@
 class Integer
   {
   public:
-  // This many 32 bit integers.
-  // 100 is 3,200 bits.
-  // 200 is 6,400 bits.
-  // A 4096 bit number squared is 8192
-  // bits.
+  // digitArraySize = 100 is 3,200 bits.
+  // If RSA::PrimeIndex = 15 the size is 16,
+  // so then N, the modulus, has a size of
+  //about 32.  Squaring N makes it have an
+  // index of about 64.  So about 4 times
+  // the size of the primes.
+  // With a PrimeIndex of 15, a
+  // digitArraySize of 66 overflowed. But not
+  // at 67.  16 * 4 = 64.
+  // NumbSys is not exact.  It's a little
+  // bigger than the modulus.
 
-  // About 12,800 bits:
-  static const Uint32 digitArraySize = 400;
-  // This would be about 400 times 8 bytes for
-  // the size on the stack.
+  static const Uint32 digitArraySize = 515;
+
+  // This would be about 515 times 8 bytes for
+  // the size on the stack.  Over 4,000 bytes.
   // See the /STACK option in BuildProj.bat
 
   private:
