@@ -19,7 +19,7 @@ class Fermat
 
   public:
 
-  static bool makeAPrime( Integer& result,
+  static void makeAPrime( Integer& result,
                    Uint32 setToIndex,
                    SPrimes& sPrimes,
                    IntegerMath& intMath,
