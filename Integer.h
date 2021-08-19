@@ -99,6 +99,18 @@ class Integer
     return false;
     }
 
+  inline bool isMoreThanZero( void )
+    {
+    if( isNegative )
+      return false;
+
+    // If it is zero.
+    if( (index == 0) && (D[0] == 0) )
+      return false;
+
+    return true;
+    }
+
   inline bool getIsNegative( void )
     {
     return isNegative;
