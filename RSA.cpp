@@ -81,25 +81,15 @@ for( Uint32 count = 0; count < 3; count++ )
 
   // Make two prime factors.
 
-  if( !Fermat::makeAPrime( primeP,
-                                   PrimeIndex,
+  Fermat::makeAPrime( primeP, PrimeIndex,
                                    sPrimes,
                                    intMath,
-                                   mod ))
-    {
-    mainIO.appendChars( "makeAPrime is false.\n" );
-    return;
-    }
+                                   mod );
 
-  if( !Fermat::makeAPrime( primeQ,
-                                   PrimeIndex,
+  Fermat::makeAPrime( primeQ, PrimeIndex,
                                    sPrimes,
                                    intMath,
-                                   mod ))
-    {
-    mainIO.appendChars( "makeAPrime is false.\n" );
-    return;
-    }
+                                   mod );
 
   mainIO.appendChars( "\n" );
 
