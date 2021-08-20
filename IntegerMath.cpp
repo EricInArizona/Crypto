@@ -172,8 +172,8 @@ if( toAdd.isZero())
   return;
 
 // The most common form.  They are both positive.
-if( !result.getIsNegative() &&
-    !toAdd.getIsNegative() )
+if( !result.getNegative() &&
+    !toAdd.getNegative() )
   {
   result.add( toAdd );
   return;
@@ -182,11 +182,11 @@ if( !result.getIsNegative() &&
 Integer tempAdd1;
 Integer tempAdd2;
 
-if( !result.getIsNegative() &&
-     toAdd.getIsNegative() )
+if( !result.getNegative() &&
+     toAdd.getNegative() )
   {
   tempAdd1.copy( toAdd );
-  tempAdd1.setIsNegative( false );
+  tempAdd1.setNegative( false );
   if( tempAdd1.paramIsGreater( result ))
     {
     subtract( result, tempAdd1 );
@@ -196,16 +196,16 @@ if( !result.getIsNegative() &&
     {
     subtract( tempAdd1, result );
     result.copy( tempAdd1 );
-    result.setIsNegative( true );
+    result.setNegative( true );
     return;
     }
   }
 
-if( result.getIsNegative() &&
-    !toAdd.getIsNegative() )
+if( result.getNegative() &&
+    !toAdd.getNegative() )
   {
   tempAdd1.copy( result );
-  tempAdd1.setIsNegative( false );
+  tempAdd1.setNegative( false );
   tempAdd2.copy( toAdd );
   if( tempAdd1.paramIsGreater( tempAdd2 ))
     {
@@ -217,21 +217,21 @@ if( result.getIsNegative() &&
     {
     subtract( tempAdd1, tempAdd2 );
     result.copy( tempAdd2 );
-    result.setIsNegative( true );
+    result.setNegative( true );
     return;
     }
   }
 
-if( result.getIsNegative() &&
-    toAdd.getIsNegative() )
+if( result.getNegative() &&
+    toAdd.getNegative() )
   {
   tempAdd1.copy( result );
-  tempAdd1.setIsNegative( false );
+  tempAdd1.setNegative( false );
   tempAdd2.copy( toAdd );
-  tempAdd2.setIsNegative( false );
+  tempAdd2.setNegative( false );
   tempAdd1.add( tempAdd2 );
   result.copy( tempAdd1 );
-  result.setIsNegative( true );
+  result.setNegative( true );
   return;
   }
 }
@@ -257,8 +257,8 @@ Integer tempSub2;
 // more toward the positive side then it's
 // true.  It's greater.
 // The most common form.  They are both positive.
-if( !result.getIsNegative() &&
-    !toSub.getIsNegative() )
+if( !result.getNegative() &&
+    !toSub.getNegative() )
   {
   if( toSub.paramIsGreater( result ))
     {
@@ -271,51 +271,51 @@ if( !result.getIsNegative() &&
   tempSub2.copy( toSub );
   subtractPositive( tempSub2, tempSub1 );
   result.copy( tempSub2 );
-  result.setIsNegative( true );
+  result.setNegative( true );
   return;
   }
 
-if( result.getIsNegative() &&
-    !toSub.getIsNegative() )
+if( result.getNegative() &&
+    !toSub.getNegative() )
   {
   tempSub1.copy( result );
-  tempSub1.setIsNegative( false );
+  tempSub1.setNegative( false );
   tempSub1.add( toSub );
   result.copy( tempSub1 );
-  result.setIsNegative( true );
+  result.setNegative( true );
   return;
   }
 
-if( !result.getIsNegative() &&
-    toSub.getIsNegative() )
+if( !result.getNegative() &&
+    toSub.getNegative() )
   {
   tempSub1.copy( toSub );
-  tempSub1.setIsNegative( false );
+  tempSub1.setNegative( false );
   result.add( tempSub1 );
   return;
   }
 
-if( result.getIsNegative() &&
-    toSub.getIsNegative() )
+if( result.getNegative() &&
+    toSub.getNegative() )
   {
   tempSub1.copy( result );
-  tempSub1.setIsNegative( false );
+  tempSub1.setNegative( false );
   tempSub2.copy( toSub );
-  tempSub2.setIsNegative( false );
+  tempSub2.setNegative( false );
   // -12 - -7 = -12 + 7 = -5
   // Comparing the positive numbers here.
   if( tempSub2.paramIsGreater( tempSub1 ))
     {
     subtractPositive( tempSub1, tempSub2 );
     result.copy( tempSub1 );
-    result.setIsNegative( true );
+    result.setNegative( true );
     return;
     }
 
   // -7 - -12 = -7 + 12 = 5
   subtractPositive( tempSub2, tempSub1 );
   result.copy( tempSub2 );
-  result.setIsNegative( false );
+  result.setNegative( false );
   return;
   }
 }
@@ -544,11 +544,11 @@ void IntegerMath::setMultiplySign(
                                Integer& result,
                                Integer& toMul )
 {
-if( result.getIsNegative() ==
-    toMul.getIsNegative() )
-  result.setIsNegative( false );
+if( result.getNegative() ==
+    toMul.getNegative() )
+  result.setNegative( false );
 else
-  result.setIsNegative( true );
+  result.setNegative( true );
 
 }
 
@@ -679,7 +679,7 @@ if( from.isULong())
   {
   Uint64 N = from.getAsULong();
   Str nS( N );
-  if( from.getIsNegative() )
+  if( from.getNegative() )
     {
     Str sign( "-" );
     Str both( sign, nS );
@@ -705,7 +705,7 @@ while( !toDivide.isZero())
   cBuf.appendChar( (char)('0' + digit) );
   }
 
-if( from.getIsNegative() )
+if( from.getNegative() )
   cBuf.appendChar( '-' );
 
 Str result = cBuf.getStr();
