@@ -395,16 +395,16 @@ Integer m1MinusM2;
 
 m1MinusM2.copy( m1ForInverse );
 intMath.subtract( m1MinusM2, m2ForInverse );
-if( m1MinusM2.getIsNegative() )
+if( m1MinusM2.getNegative() )
   throw "m1MinusM2 is negative.";
 
-if( qInv.getIsNegative() )
+if( qInv.getNegative() )
   throw "qInv is negative.";
 
 Integer hForQInv;
 hForQInv.copy( m1MinusM2 );
 intMath.multiply( hForQInv, qInv );
-if( hForQInv.getIsNegative() )
+if( hForQInv.getNegative() )
   throw "hForQInv is negative.";
 
 if( primeP.paramIsGreater( hForQInv ))
