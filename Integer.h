@@ -35,7 +35,7 @@ class Integer
 
   private:
   Int32 testforCopy = 123;
-  bool isNegative = false;
+  bool negative = false;
   Uint32 index = 0;
 
   // It is Uint64 to hold multiplied values.
@@ -67,14 +67,14 @@ class Integer
 
   inline void setToZero( void )
     {
-    isNegative = false;
+    negative = false;
     index = 0;
     D[0] = 0;
     }
 
   inline void setToOne( void )
     {
-    isNegative = false;
+    negative = false;
     index = 0;
     D[0] = 1;
     }
@@ -82,6 +82,9 @@ class Integer
 
   inline bool isZero( void )
     {
+    // if( negative )
+    // throw ...
+
     if( (index == 0) && (D[0] == 0) )
       return true;
 
@@ -90,7 +93,7 @@ class Integer
 
   inline bool isOne( void )
     {
-    if( isNegative )
+    if( negative )
       return false;
 
     if( (index == 0) && (D[0] == 1) )
@@ -99,26 +102,28 @@ class Integer
     return false;
     }
 
-  inline bool isMoreThanZero( void )
+  inline bool isMoreThanUint( const Uint32 check )
     {
-    if( isNegative )
+    if( negative )
       return false;
 
-    // If it is zero.
-    if( (index == 0) && (D[0] == 0) )
-      return false;
+    if( index > 0 )
+      return true;
 
-    return true;
+    if( D[0] > check )
+      return true;
+
+    return false;
     }
 
-  inline bool getIsNegative( void )
+  inline bool getNegative( void )
     {
-    return isNegative;
+    return negative;
     }
 
-  inline void setIsNegative( bool setTo )
+  inline void setNegative( bool setTo )
     {
-    isNegative = setTo;
+    negative = setTo;
     }
 
   inline Uint32 getIndex( void )
@@ -135,7 +140,7 @@ class Integer
     }
 
 
-  inline Uint64 getD( Uint32 where )
+  inline Uint64 getD( const Uint32 where )
     {
     if( where >= digitArraySize )
       throw "getD() index out of bounds.";
@@ -143,7 +148,8 @@ class Integer
     return D[where];
     }
 
-  inline void setD( Uint32 where, Uint64 toSet )
+  inline void setD( const Uint32 where,
+                    const Uint64 toSet )
     {
     // I want to be able to use toSet values
     // that might be a full 64 bits long.
@@ -158,35 +164,34 @@ class Integer
   void cleanUp( void );
   void incrementIndex( void );
   void setToMaxValue( void );
-  inline void setFromUInt( Uint32 toSet )
+  inline void setFromUInt( const Uint32 toSet )
     {
-    isNegative = false;
+    negative = false;
     D[0] = toSet;
     index = 0;
     }
 
-  void setFromULong( Uint64 toSet );
-  void copy( Integer& copyFrom );
-  // void copyFromP( const Integer* copyFrom );
+  void setFromULong( const Uint64 toSet );
+  void copy( const Integer& copyFrom );
   void copyUpTo( const Integer& copyFrom,
-                                 Uint32 where );
-  bool isEqualToULong( Uint64 toTest );
-  bool isEqual( Integer& x );
+                            const Uint32 where );
+  bool isEqualToULong( const Uint64 toTest );
+  bool isEqual( const Integer& x );
   bool isULong( void );
   Uint64 getAsULong( void );
-  bool paramIsGreater( Integer& x );
-  bool paramIsGreaterOrEq( Integer& x );
+  bool paramIsGreater( const Integer& x );
+  bool paramIsGreaterOrEq( const Integer& x );
   void increment( void );
-  void addULong( Uint64 toAdd );
+  void addULong( const Uint64 toAdd );
   void add( Integer& toAdd );
   void square0( void );
   void square1( void );
   void square2( void );
-  void shiftLeft( Uint32 shiftBy );
-  void shiftRight( Uint32 shiftBy );
-  void setDigitAndClear( Uint32 where,
-                                  Uint64 toSet );
-  bool makeRandomOdd( Uint32 setToIndex );
+  void shiftLeft( const Uint32 shiftBy );
+  void shiftRight( const Uint32 shiftBy );
+  void setDigitAndClear( const Uint32 where,
+                            const Uint64 toSet );
+  bool makeRandomOdd( const Uint32 setToIndex );
 
 /*
   bool setFromAsciiStr( Str& in );
