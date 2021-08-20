@@ -1,6 +1,7 @@
 // Copyright Eric Chauvin 2021.
 
 
+
 #include "Euclid.h"
 #include "Division.h"
 
@@ -98,6 +99,13 @@ bool Euclid::multInverse( Integer& knownX,
 // Algorithm like you'd find in Wikipedia or
 // any text book.
 
+if( knownX.isOne())
+  {
+  // 1 * 1 = 1 mod anything.
+  inverse.setToOne();
+  return true;
+  }
+
 if( knownX.isZero())
   throw "MultInverse knownX is zero.\n";
 
@@ -154,6 +162,8 @@ for( Uint32 count = 0; count < 10000; count++ )
   if( V2.getIsNegative() )
     throw "V2 was negative.\n";
 
+  // Something divided by 1 is x / 1 = y
+  // x * 1/1 = y
   Division::divide( U2, V2, quotient,
                     remainder, intMath );
 
