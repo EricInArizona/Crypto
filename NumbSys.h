@@ -31,18 +31,18 @@ class NumbSys
   OneDUint64 numVal;
   Uint32 valIndex = 0;
 
-  void setValFromInt( Integer& toSet );
-  void setOneBaseFromInt( Uint32 row,
-                              Integer& toSet );
-  void setupBaseArray( Integer& setBase,
+  void setValFromInt( const Integer& toSet );
+  void setOneBaseFromInt( const Uint32 row,
+                          const Integer& toSet );
+  void setupBaseArray( const Integer& setBase,
                        IntegerMath& intMath );
 
   public:
   NumbSys( void );
   NumbSys( const NumbSys& in );
   void reduce( Integer& result,
-                 Integer& toReduce,
-                 Integer& modulus,
-                 IntegerMath& intMath );
+               const Integer& toReduce,
+               const Integer& modulus,
+               IntegerMath& intMath );
 
   };
