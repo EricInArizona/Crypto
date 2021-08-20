@@ -80,7 +80,7 @@ class Integer
     }
 
 
-  inline bool isZero( void )
+  inline bool isZero( void ) const
     {
     // if( negative )
     // throw ...
@@ -91,7 +91,7 @@ class Integer
     return false;
     }
 
-  inline bool isOne( void )
+  inline bool isOne( void ) const
     {
     if( negative )
       return false;
@@ -103,6 +103,7 @@ class Integer
     }
 
   inline bool isMoreThanUint( const Uint32 check )
+                                           const
     {
     if( negative )
       return false;
@@ -116,7 +117,7 @@ class Integer
     return false;
     }
 
-  inline bool getNegative( void )
+  inline bool getNegative( void ) const
     {
     return negative;
     }
@@ -126,7 +127,7 @@ class Integer
     negative = setTo;
     }
 
-  inline Uint32 getIndex( void )
+  inline Uint32 getIndex( void ) const
     {
     return index;
     }
@@ -140,7 +141,7 @@ class Integer
     }
 
 
-  inline Uint64 getD( const Uint32 where )
+  inline Uint64 getD( const Uint32 where ) const
     {
     if( where >= digitArraySize )
       throw "getD() index out of bounds.";
@@ -175,15 +176,20 @@ class Integer
   void copy( const Integer& copyFrom );
   void copyUpTo( const Integer& copyFrom,
                             const Uint32 where );
-  bool isEqualToULong( const Uint64 toTest );
-  bool isEqual( const Integer& x );
-  bool isULong( void );
-  Uint64 getAsULong( void );
-  bool paramIsGreater( const Integer& x );
-  bool paramIsGreaterOrEq( const Integer& x );
+  // The const on the end marks this function
+  // as not modifying the _this_ object that
+  // called it.
+  bool isEqualToUI( const Uint32 toTest ) const;
+  bool isEqualToUL( const Uint64 toTest ) const;
+  bool isEqual( const Integer& x ) const;
+  bool isULong( void ) const;
+  Uint64 getAsULong( void ) const;
+  bool paramIsGreater( const Integer& x ) const;
+  bool paramIsGreaterOrEq( const Integer& x )
+                                          const;
   void increment( void );
   void addULong( const Uint64 toAdd );
-  void add( Integer& toAdd );
+  void add( const Integer& toAdd );
   void square0( void );
   void square1( void );
   void square2( void );
