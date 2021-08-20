@@ -9,11 +9,17 @@
 
 
 
-bool Division::shortDivide( Integer& toDivide,
-                            Integer& divideBy,
-                            Integer& quotient,
-                            Integer& remainder )
+bool Division::shortDivide(
+               const Integer& toDivideOriginal,
+               const Integer& divideByOriginal,
+               Integer& quotient,
+               Integer& remainder )
 {
+Integer toDivide;
+Integer divideBy;
+toDivide.copy( toDivideOriginal );
+divideBy.copy( divideByOriginal );
+
 quotient.copy( toDivide );
 // DivideBy has an Index of zero:
 Uint64 divideByU = divideBy.getD( 0 );
@@ -79,9 +85,9 @@ else
 // the remainder.
 // Also, divideBy is a Uint64.
 Uint64 Division::shortDivideRem(
-                       Integer& toDivideOriginal,
-                       Uint64 divideByU,
-                       Integer& quotient )
+                  const Integer& toDivideOriginal,
+                  const Uint64 divideByU,
+                  Integer& quotient )
 {
 if( toDivideOriginal.isULong())
   {
@@ -141,11 +147,12 @@ return remainderU;
 
 
 
-void Division::divide( Integer& toDivideOriginal,
-                       Integer& divideByOriginal,
-                       Integer& quotient,
-                       Integer& remainder,
-                       IntegerMath& intMath )
+void Division::divide(
+               const Integer& toDivideOriginal,
+               const Integer& divideByOriginal,
+               Integer& quotient,
+               Integer& remainder,
+               IntegerMath& intMath )
 {
 if( toDivideOriginal.getNegative() )
   throw "Divide() is negative.";
@@ -244,11 +251,12 @@ if( !remainder.isEqual( remainderTest3 ))
 
 
 
-bool Division::longDivide1( Integer& toDivide,
-                            Integer& divideBy,
-                            Integer& quotient,
-                            Integer& remainder,
-                            IntegerMath& intMath )
+bool Division::longDivide1(
+                        const Integer& toDivide,
+                        const Integer& divideBy,
+                        Integer& quotient,
+                        Integer& remainder,
+                        IntegerMath& intMath )
 {
 // See divide(), which makes testIndex positive.
 Int32 testIndex = (Int32)toDivide.getIndex() -
@@ -317,14 +325,15 @@ return false;
 
 
 
-void Division::testDivideBits( Uint64 maxValue,
-                               bool isTop,
-                               Uint32 testIndex,
-                               Integer& toDivide,
-                           Integer& divideBy,
-                           Integer& quotient,
-                           // Integer& remainder,
-                           IntegerMath& intMath )
+void Division::testDivideBits(
+                     const Uint64 maxValue,
+                     const bool isTop,
+                     const Uint32 testIndex,
+                     const Integer& toDivide,
+                     const Integer& divideBy,
+                     Integer& quotient,
+                     // Integer& remainder,
+                     IntegerMath& intMath )
 {
 // For a particular value of TestIndex, this does
 // the for-loop to test each bit.
@@ -381,11 +390,12 @@ for( Int32 bitCount = 31; bitCount >= 0;
 // estimates the maximum value for the digit and
 // the for-loop for bit testing is called
 // as a separate function.
-bool Division::longDivide2( Integer& toDivide,
-                            Integer& divideBy,
-                            Integer& quotient,
-                            Integer& remainder,
-                            IntegerMath& intMath )
+bool Division::longDivide2(
+                        const Integer& toDivide,
+                        const Integer& divideBy,
+                        Integer& quotient,
+                        Integer& remainder,
+                        IntegerMath& intMath )
 {
 Integer test1;
 Int32 testIndex = (Int32)toDivide.getIndex() -
@@ -531,12 +541,18 @@ return shiftBy;
 
 
 
-void Division::longDivide3( Integer& toDivide,
-                            Integer& divideBy,
-                            Integer& quotient,
-                            Integer& remainder,
-                            IntegerMath& intMath )
+void Division::longDivide3(
+                 const Integer& toDivideOriginal,
+                 const Integer& divideByOriginal,
+                 Integer& quotient,
+                 Integer& remainder,
+                 IntegerMath& intMath )
 {
+Integer toDivide;
+Integer divideBy;
+toDivide.copy( toDivideOriginal );
+divideBy.copy( divideByOriginal );
+
 Integer test2;
 
 Int32 testIndex = (Int32)toDivide.getIndex() -
