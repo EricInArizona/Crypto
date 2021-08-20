@@ -6,8 +6,8 @@
 #include "Division.h"
 
 
-void Euclid::greatestComDiv( Integer& X,
-                             Integer& Y,
+void Euclid::greatestComDiv( const Integer& X,
+                             const Integer& Y,
                              Integer& gcd,
                              IntegerMath& intMath )
 {
@@ -88,8 +88,8 @@ while( true )
 
 // X is known.  X * inverse mod modulus = 1.
 
-bool Euclid::multInverse( Integer& knownX,
-                          Integer& modulus,
+bool Euclid::multInverse( const Integer& knownX,
+                          const Integer& modulus,
                           Integer& inverse,
                           IntegerMath& intMath )
 {
