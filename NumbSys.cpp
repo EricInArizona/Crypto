@@ -26,8 +26,9 @@ throw "Don't use copy constructor for NumbSys.";
 }
 
 
-void NumbSys::setupBaseArray( Integer& setBase,
-                          IntegerMath& intMath )
+void NumbSys::setupBaseArray(
+                        const Integer& setBase,
+                        IntegerMath& intMath )
 {
 currentBase.copy( setBase );
 
@@ -60,8 +61,9 @@ for( Uint32 count = 0; count <
 
 
 
-void NumbSys::setOneBaseFromInt( Uint32 row,
-                             Integer& toSet )
+void NumbSys::setOneBaseFromInt(
+                         const Uint32 row,
+                         const Integer& toSet )
 {
 const Uint32 last = toSet.getIndex();
 baseInd.setV( row, last );
@@ -73,7 +75,7 @@ for( Uint32 count = 0; count <= last; count++ )
 
 
 
-void NumbSys::setValFromInt( Integer& toSet )
+void NumbSys::setValFromInt( const Integer& toSet )
 {
 const Uint32 last = toSet.getIndex();
 valIndex = last;
@@ -86,9 +88,9 @@ for( Uint32 count = 0; count <= last; count++ )
 
 
 void NumbSys::reduce( Integer& result,
-                        Integer& toReduce,
-                        Integer& modulus,
-                        IntegerMath& intMath )
+                      const Integer& toReduce,
+                      const Integer& modulus,
+                      IntegerMath& intMath )
 {
 // currentBase would start out being set to
 // zero, so it has to be set the first time
