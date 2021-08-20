@@ -118,8 +118,25 @@ for( Uint32 count = 0; count <= where; count++ )
 }
 
 
+bool Integer::isEqualToUI( const Uint32 toTest )
+                                           const
+{
+if( negative )
+  return false;
 
-bool Integer::isEqualToULong( const Uint64 toTest )
+if( index > 0 )
+  return false;
+
+if( D[0] != toTest )
+  return false;
+
+return true;
+}
+
+
+
+bool Integer::isEqualToUL( const Uint64 toTest )
+                                    const
 {
 if( negative )
   return false;
@@ -148,7 +165,7 @@ return true;
 
 
 
-bool Integer::isEqual( const Integer& x )
+bool Integer::isEqual( const Integer& x ) const
 {
 if( negative != x.negative )
   return false;
@@ -177,7 +194,7 @@ return true;
 
 
 
-bool Integer::isULong( void )
+bool Integer::isULong( void ) const
 {
 if( negative )
   return false;
@@ -191,7 +208,7 @@ return true;
 
 
 
-Uint64 Integer::getAsULong( void )
+Uint64 Integer::getAsULong( void ) const
 {
 // This is normally used after calling isULong().
 // It is assumed here that it is a ulong.
@@ -206,6 +223,7 @@ return result;
 
 
 bool Integer::paramIsGreater( const Integer& x )
+                                           const
 {
 if( negative )
   throw "ParamIsGreater() can't be negative.";
@@ -242,7 +260,7 @@ return false; // It was equal, but not greater.
 
 
 bool Integer::paramIsGreaterOrEq(
-                            const Integer& x )
+                        const Integer& x ) const
 {
 if( isEqual( x ))
   return true;
@@ -354,7 +372,7 @@ if( carry != 0 )
 
 
 
-void Integer::add( Integer& toAdd )
+void Integer::add( const Integer& toAdd )
 {
 // There is a separate IntegerMath.Add() that
 // is a wrapper to handle negative numbers too.
