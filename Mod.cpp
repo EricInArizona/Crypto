@@ -26,7 +26,7 @@ throw "Don't copy Mod in a copy constructor.";
 
 
 void Mod::makeExact( Integer& exact,
-                     Integer& modulus,
+                     const Integer& modulus,
                      IntegerMath& intMath )
 {
 // Most of the time the math is not exact,
@@ -55,8 +55,8 @@ exact.copy( remainder );
 // x^n = (x^2)^((n - 1)/2) if n is odd.
 // x^n = (x^2)^(n/2)       if n is even.
 void Mod::toPower( Integer& result,
-                   Integer& exponent,
-                   Integer& modulus,
+                   const Integer& exponent,
+                   const Integer& modulus,
                    IntegerMath& intMath )
 {
 if( result.isZero())
@@ -166,10 +166,11 @@ makeExact( result, modulus, intMath );
 
 
 
-void Mod::verifyInBaseRange( Integer& toCheck,
-                             Integer& modulus )
+void Mod::verifyInBaseRange(
+                     const Integer& toCheck,
+                     const Integer& modulus )
 {
-if( toCheck.getIsNegative() )
+if( toCheck.getNegative() )
   throw "verifyInBaseRange() is negative.";
 
 if( modulus.paramIsGreaterOrEq( toCheck ))
@@ -179,9 +180,10 @@ if( modulus.paramIsGreaterOrEq( toCheck ))
 
 
 
-void Mod::verifyMoreThanZero( Integer& toCheck )
+void Mod::verifyMoreThanZero(
+                        const Integer& toCheck )
 {
-if( toCheck.getIsNegative() )
+if( toCheck.getNegative() )
   throw "verifyMoreThanZero() is negative.";
 
 if( toCheck.isZero() )
@@ -192,7 +194,8 @@ if( toCheck.isZero() )
 
 
 void Mod::add( Integer& result,
-               Integer& toAdd, Integer& modulus,
+               const Integer& toAdd,
+               const Integer& modulus,
                IntegerMath& intMath )
 {
 verifyInBaseRange( result, modulus );
@@ -208,8 +211,30 @@ makeExact( result, modulus, intMath );
 }
 
 
+void Mod::addUL( Integer& result,
+                 const Uint64 toAdd,
+                 const Integer& modulus,
+                 IntegerMath& intMath )
+{
+if( toAdd == 0 )
+  return;
+
+verifyInBaseRange( result, modulus );
+// verifyInBaseRange( toAdd, modulus );
+
+// Integer temp;
+
+result.addULong( toAdd );
+
+// numbSys.reduce( temp, result, modulus, intMath );
+// result.copy( temp );
+makeExact( result, modulus, intMath );
+}
+
+
+
 void Mod::negate( Integer& result,
-                  Integer& modulus,
+                  const Integer& modulus,
                   IntegerMath& intMath )
 {
 // If y was 1 and base was 5.
@@ -224,7 +249,7 @@ verifyInBaseRange( result, modulus );
 // Since it was checked to see if it's in
 // the base range, it is not negative.
 
-result.setIsNegative( true );
+result.setNegative( true );
 // Adding a positive number to a negative
 // number to make it positive.
 intMath.add( result, modulus );
@@ -233,15 +258,15 @@ intMath.add( result, modulus );
 
 
 void Mod::subtract( Integer& result,
-                    Integer& toSub,
-                    Integer& modulus,
+                    const Integer& toSub,
+                    const Integer& modulus,
                     IntegerMath& intMath )
 {
 verifyInBaseRange( result, modulus );
 verifyInBaseRange( toSub, modulus );
 
 intMath.subtract( result, toSub );
-if( result.getIsNegative())
+if( result.getNegative())
   result.add( modulus );
 
 verifyInBaseRange( result, modulus );
@@ -254,8 +279,8 @@ verifyInBaseRange( result, modulus );
 
 
 void Mod::multiply( Integer& result,
-                    Integer& toMul,
-                    Integer& modulus,
+                    const Integer& toMul,
+                    const Integer& modulus,
                     IntegerMath& intMath )
 {
 verifyInBaseRange( result, modulus );
@@ -271,9 +296,27 @@ makeExact( result, modulus, intMath );
 }
 
 
+void Mod::multiplyUL( Integer& result,
+                      const Uint64 toMul,
+                      const Integer& modulus,
+                      IntegerMath& intMath )
+{
+verifyInBaseRange( result, modulus );
+// verifyInBaseRange( toMul, modulus );
+
+intMath.multiplyULong( result, toMul );
+
+Integer temp;
+numbSys.reduce( temp, result, modulus, intMath );
+result.copy( temp );
+makeExact( result, modulus, intMath );
+}
+
+
+
 
 void Mod::square( Integer& result,
-                  Integer& modulus,
+                  const Integer& modulus,
                   IntegerMath& intMath )
 {
 verifyInBaseRange( result, modulus );
@@ -290,9 +333,9 @@ makeExact( result, modulus, intMath );
 
 
 void Mod::divide( Integer& result,
-                  Integer& numerator,
-                  Integer& divisor,
-                  Integer& modulus,
+                  const Integer& numerator,
+                  const Integer& divisor,
+                  const Integer& modulus,
                   IntegerMath& intMath )
 {
 verifyInBaseRange( divisor, modulus );
@@ -305,7 +348,7 @@ if( numerator.isZero())
   return;
   }
 
-if( divisor.isOne() )
+if( divisor.isOne())
   {
   result.copy( numerator );
   return;
@@ -316,9 +359,6 @@ if( divisor.isOne() )
 // You can't have a multiplicative inverse
 // of zero.  0 * anything = 0, so it can't
 // equal 1.
-
-// base should be a prime, so the GCD with
-// divisor is 1.
 
 Integer inverse;
 
