@@ -156,10 +156,10 @@ quotient.setToZero();
 // while( not forever )
 for( Uint32 count = 0; count < 10000; count++ )
   {
-  if( U2.getIsNegative() )
+  if( U2.getNegative() )
     throw "The U2 modulus was negative.\n";
 
-  if( V2.getIsNegative() )
+  if( V2.getNegative() )
     throw "V2 was negative.\n";
 
   // Something divided by 1 is x / 1 = y
@@ -200,7 +200,7 @@ for( Uint32 count = 0; count < 10000; count++ )
   }
 
 inverse.copy( T0 );
-if( inverse.getIsNegative() )
+if( inverse.getNegative() )
   intMath.add( inverse, modulus );
 
 testForModInverse1.copy( inverse );
