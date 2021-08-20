@@ -147,10 +147,10 @@ void Division::divide( Integer& toDivideOriginal,
                        Integer& remainder,
                        IntegerMath& intMath )
 {
-if( toDivideOriginal.getIsNegative() )
+if( toDivideOriginal.getNegative() )
   throw "Divide() is negative.";
 
-if( divideByOriginal.getIsNegative() )
+if( divideByOriginal.getNegative() )
   throw "Divide() is negative.";
 
 if( divideByOriginal.isZero() )
