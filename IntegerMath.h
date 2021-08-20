@@ -26,7 +26,7 @@ class IntegerMath
   Uint64* scratch;
 
   void setMultiplySign( Integer& result,
-                        Integer& toMul );
+                        const Integer& toMul );
 
   void searchSqrtXPart( Uint32 testIndex,
                         Integer& fromSqr,
@@ -39,42 +39,45 @@ class IntegerMath
   ~IntegerMath( void  );
   static Uint64 findULSqrRoot( Uint64 toMatch );
   Uint64 isDivisibleBySmallPrime(
-                              Integer& toTest,
-                              SPrimes& sPrimes );
+                           const Integer& toTest,
+                           SPrimes& sPrimes );
 
   void subtractULong( Integer& result,
-                                  Uint64 toSub );
-  void add( Integer& result, Integer& toAdd );
+                      const Uint64 toSub );
+  void add( Integer& result,
+                      const Integer& toAdd );
   void subtract( Integer& result,
-                               Integer& toSub );
+                         const Integer& toSub );
   void subtractPositive( Integer& result,
-                               Integer& toSub );
+                         const Integer& toSub );
 
   void multiplyUInt( Integer& result,
-                                Uint64 toMul );
+                     const Uint64 toMul );
   Uint32 multiplyUIntFromCopy( Integer& result,
                              Integer& from,
-                             Uint64 toMul );
+                       const Uint64 toMul );
   void multiplyULong( Integer& result,
-                           Uint64 toMul );
+                      const Uint64 toMul );
   void multiply( Integer& result,
-                               Integer& toMul );
+                 const Integer& toMul );
 
 /*
   void setFromStr( Integer& result, Str& in );
 */
 
-  Str toString10( Integer& from );
+  Str toString10( const Integer& from );
   void square( Integer& toSquare );
-  Uint64 getMod32( Integer& in, Uint64 divisor );
-  Uint64 getMod64( Integer& in, Uint64 divisor );
+  Uint64 getMod32( const Integer& in,
+                        const Uint64 divisor );
+  Uint64 getMod64( const Integer& in,
+                        const Uint64 divisor );
   static Uint64 mod64FromTwoULongs( Uint64 P1,
                                  Uint64 P0,
                                  Uint64 divisor );
   void multiplyTop( Integer& result,
-                               Integer& toMul );
+                    const Integer& toMul );
   void multiplyTopOne( Integer& result,
-                               Integer& toMul );
+                       const Integer& toMul );
 
 /*
   bool squareRoot( Integer& fromSqr,
