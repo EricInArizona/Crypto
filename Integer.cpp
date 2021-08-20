@@ -48,7 +48,7 @@ if( index >= digitArraySize )
 
 void Integer::setToMaxValue( void )
 {
-isNegative = false;
+negative = false;
 index = digitArraySize - 1;
 for( Uint32 count = 0; count <=
                     digitArraySize - 1; count++ )
@@ -58,9 +58,9 @@ for( Uint32 count = 0; count <=
 
 
 
-void Integer::setFromULong( Uint64 toSet )
+void Integer::setFromULong( const Uint64 toSet )
 {
-isNegative = false;
+negative = false;
 
 // If toSet was zero then D[0] would be zero and
 // index would be zero.
@@ -76,9 +76,9 @@ else
 
 
 
-void Integer::copy( Integer& from )
+void Integer::copy( const Integer& from )
 {
-isNegative = from.isNegative;
+negative = from.negative;
 
 const Uint32 last = from.index;
 
@@ -105,12 +105,12 @@ for( Uint32 count = 0; count <= last; count++ )
 
 
 void Integer::copyUpTo( const Integer& from,
-                        Uint32 where )
+                        const Uint32 where )
 {
 if( where >= digitArraySize )
   throw "copyUpTo where out of range.";
 
-isNegative = from.isNegative;
+negative = from.negative;
 index = where;
 for( Uint32 count = 0; count <= where; count++ )
   D[count] = from.D[count];
@@ -119,9 +119,9 @@ for( Uint32 count = 0; count <= where; count++ )
 
 
 
-bool Integer::isEqualToULong( Uint64 toTest )
+bool Integer::isEqualToULong( const Uint64 toTest )
 {
-if( isNegative )
+if( negative )
   return false;
 
 if( index > 1 )
@@ -148,9 +148,9 @@ return true;
 
 
 
-bool Integer::isEqual( Integer& x )
+bool Integer::isEqual( const Integer& x )
 {
-if( isNegative != x.isNegative )
+if( negative != x.negative )
   return false;
 
 // The quickest way to return false.
@@ -179,7 +179,7 @@ return true;
 
 bool Integer::isULong( void )
 {
-if( isNegative )
+if( negative )
   return false;
 
 if( index > 1 )
@@ -205,12 +205,12 @@ return result;
 
 
 
-bool Integer::paramIsGreater( Integer& x )
+bool Integer::paramIsGreater( const Integer& x )
 {
-if( isNegative )
+if( negative )
   throw "ParamIsGreater() can't be negative.";
 
-if( x.isNegative )
+if( x.negative )
   throw "ParamIsGreater() can't be negative (2).";
 
 if( index != x.index )
@@ -241,7 +241,8 @@ return false; // It was equal, but not greater.
 
 
 
-bool Integer::paramIsGreaterOrEq( Integer& x )
+bool Integer::paramIsGreaterOrEq(
+                            const Integer& x )
 {
 if( isEqual( x ))
   return true;
@@ -357,8 +358,8 @@ void Integer::add( Integer& toAdd )
 {
 // There is a separate IntegerMath.Add() that
 // is a wrapper to handle negative numbers too.
-// if( isNegative )
-// if( toAdd.isNegative )
+// if( negative )
+// if( toAdd.negative )
 
 if( toAdd.isULong() )
   {
@@ -698,9 +699,10 @@ for( Uint32 count = 0; count < index; count++ )
 
 
 
-bool Integer::makeRandomOdd( Uint32 setToIndex )
+bool Integer::makeRandomOdd(
+                        const Uint32 setToIndex )
 {
-isNegative = false;
+negative = false;
 if( setToIndex > (digitArraySize - 3))
   throw "MakeRandomOdd index is too high.";
 
