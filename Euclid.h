@@ -16,15 +16,17 @@ class Euclid
   private:
 
   public:
-  static void greatestComDiv( Integer& X,
-                       Integer& Y,
+  static void greatestComDiv(
+                       const Integer& X,
+                       const Integer& Y,
                        Integer& gcd,
                        IntegerMath& intMath );
 
 
-  static bool multInverse( Integer& knownX,
-                           Integer& modulus,
-                           Integer& inverse,
-                           IntegerMath& intMath );
+  static bool multInverse(
+                       const Integer& knownX,
+                       const Integer& modulus,
+                       Integer& inverse,
+                       IntegerMath& intMath );
 
   };
