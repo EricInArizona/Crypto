@@ -72,8 +72,8 @@ return result;
 
 
 Uint64 IntegerMath::isDivisibleBySmallPrime(
-                               Integer& toTest,
-                               SPrimes& sPrimes )
+                           const Integer& toTest,
+                           SPrimes& sPrimes )
 {
 if( (toTest.getD( 0 ) & 1) == 0 )
   return 2; // It's divisible by 2.
@@ -166,7 +166,7 @@ result.setIndex( 0 );
 
 
 void IntegerMath::add( Integer& result,
-                       Integer& toAdd )
+                       const Integer& toAdd )
 {
 if( toAdd.isZero())
   return;
@@ -240,7 +240,7 @@ if( result.getNegative() &&
 
 
 void IntegerMath::subtract( Integer& result,
-                            Integer& toSub )
+                         const Integer& toSub )
 {
 // This checks that the sign is equal too.
 if( result.isEqual( toSub ))
@@ -323,8 +323,8 @@ if( result.getNegative() &&
 
 
 void IntegerMath::subtractPositive(
-                                Integer& result,
-                                Integer& toSub )
+                           Integer& result,
+                           const Integer& toSub )
 {
 if( toSub.isULong() )
   {
@@ -541,8 +541,8 @@ if( carry != 0 )
 
 
 void IntegerMath::setMultiplySign(
-                               Integer& result,
-                               Integer& toMul )
+                           Integer& result,
+                           const Integer& toMul )
 {
 if( result.getNegative() ==
     toMul.getNegative() )
@@ -555,7 +555,7 @@ else
 
 
 void IntegerMath::multiply( Integer& result,
-                            Integer& toMul )
+                         const Integer& toMul )
 {
 if( result.isZero())
   return;
@@ -673,7 +673,7 @@ for( Uint32 count = 1; count <= last; count++ )
 */
 
 
-Str IntegerMath::toString10( Integer& from )
+Str IntegerMath::toString10( const Integer& from )
 {
 if( from.isULong())
   {
@@ -806,7 +806,7 @@ if( carry != 0 )
 // only the top digit of a number has been set
 // and all of the other digits are zero.
 void IntegerMath::multiplyTop( Integer& result,
-                               Integer& toMul )
+                          const Integer& toMul )
 {
 Uint32 totalIndex = result.getIndex() +
                              toMul.getIndex();
@@ -857,8 +857,9 @@ if( carry != 0 )
 // when the top digit is 1 and all of the other
 // digits are zero.  This is effectively just a
 // shift-left operation.
-void IntegerMath::multiplyTopOne( Integer& result,
-                                  Integer& toMul )
+void IntegerMath::multiplyTopOne(
+                          Integer& result,
+                          const Integer& toMul )
 {
 Uint32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
@@ -1054,7 +1055,7 @@ sqrRoot.setD( testIndex, xDigit );
 
 
 
-Uint64 IntegerMath::getMod32( Integer& in,
+Uint64 IntegerMath::getMod32( const Integer& in,
                               Uint64 divisor )
 {
 if( divisor == 0 )
@@ -1154,7 +1155,7 @@ return (part1 + p0) % divisor;
 
 
 
-Uint64 IntegerMath::getMod64( Integer& in,
+Uint64 IntegerMath::getMod64( const Integer& in,
                               Uint64 divisor )
 {
 if( divisor == 0 )
