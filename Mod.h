@@ -25,45 +25,58 @@ class Mod
   Mod( const Mod& in );
 
   void makeExact( Integer& exact,
-                  Integer& modulus,
+                  const Integer& modulus,
                   IntegerMath& intMath );
 
   void toPower( Integer& result,
-                Integer& exponent,
-                Integer& modulus,
+                const Integer& exponent,
+                const Integer& modulus,
                 IntegerMath& intMath );
 
-  void verifyInBaseRange( Integer& toCheck,
-                          Integer& modulus );
+  void verifyInBaseRange(
+                     const Integer& toCheck,
+                     const Integer& modulus );
 
-  void verifyMoreThanZero( Integer& toCheck );
+  void verifyMoreThanZero(
+                     const Integer& toCheck );
 
-  void add( Integer& result, Integer& toAdd,
-            Integer& modulus,
+  void add( Integer& result,
+            const Integer& toAdd,
+            const Integer& modulus,
             IntegerMath& intMath );
 
+  void addUL( Integer& result,
+              const Uint64 toAdd,
+              const Integer& modulus,
+              IntegerMath& intMath );
+
   void negate( Integer& result,
-               Integer& modulus,
+               const Integer& modulus,
                IntegerMath& intMath );
 
   void subtract( Integer& result,
-                 Integer& toSub,
-                 Integer& modulus,
+                 const Integer& toSub,
+                 const Integer& modulus,
                  IntegerMath& intMath );
 
   void multiply( Integer& result,
-                    Integer& toMul,
-                    Integer& modulus,
-                    IntegerMath& intMath );
+                 const Integer& toMul,
+                 const Integer& modulus,
+                 IntegerMath& intMath );
+
+  void multiplyUL( Integer& result,
+                   const Uint64 toMul,
+                   const Integer& modulus,
+                   IntegerMath& intMath );
 
   void square( Integer& result,
-               Integer& modulus,
+               const Integer& modulus,
                IntegerMath& intMath );
 
   void divide( Integer& result,
-                  Integer& numerator,
-                  Integer& divisor,
-                  Integer& modulus,
-                  IntegerMath& intMath );
+               const Integer& numerator,
+               const Integer& divisor,
+               const Integer& modulus,
+               IntegerMath& intMath );
 
   };
