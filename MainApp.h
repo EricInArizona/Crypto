@@ -2,9 +2,7 @@
 
 
 
-#ifndef ECMainApp_H
-#define ECMainApp_H
-
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -21,13 +19,10 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "8/14/2021";
+    return "8/21/2021";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );
   Int32 mainLoop( void );
 
   };
-
-
-#endif
