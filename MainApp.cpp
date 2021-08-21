@@ -6,6 +6,7 @@
 #include "StIO.h"
 #include "Str.h"
 #include "RSA.h"
+#include "Ellip.h"
 #include "ThreadEC.h"
 
 
@@ -41,8 +42,11 @@ mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
 mainIO.appendChars( "\n" );
 
-RSA rsa;
-rsa.test( mainIO );
+// RSA rsa;
+// rsa.test( mainIO );
+
+Ellip ellip;
+ellip.test( mainIO );
 
 mainIO.appendChars( "End of main app.\n" );
 
