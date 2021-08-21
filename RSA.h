@@ -48,14 +48,14 @@ class RSA
   static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
 
-  // Seconds: 3 or 4
+  // Seconds: 3 or 4 or 2
   // static const int PrimeIndex = 15; // 512
 
-  // Seconds: 27, 23, 21, 17 or 19 or 8 or 7
+  // Seconds: 27, 23, 21, 17 or 19,11, 12, 8, 7
   // static const int PrimeIndex = 31; // 1024
 
   // Seconds: 185 or 201   116 or 112 O2 91
-  // 97 on Ofast.  92  130
+  // 97 on Ofast.  92, 130, 77
   // static const int PrimeIndex = 63; // 2048
 
   // Seconds: 881
