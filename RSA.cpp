@@ -38,7 +38,7 @@ throw "Don't use copy constructor for RSA.\n";
 
 void RSA::test( FileIO& mainIO )
 {
-mainIO.appendChars( "Starting test.\n" );
+mainIO.appendChars( "Starting RSA test.\n" );
 
 TimeEC t1;
 
