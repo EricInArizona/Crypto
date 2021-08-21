@@ -145,7 +145,7 @@ return true;
 // Additive Identity:  P + -P = 0;
 // A curve like y^2 = x^3 + ax + b is
 // symmetric around the X axis.
-// Because -y^2 = y^2.
+// Because -y^2 equals y^2.
 // As the curve crosses the X axis it goes
 // directly vertical, which would be an
 // infinite slope, so to speak.
@@ -171,6 +171,10 @@ if( infin )
   return true;
 
 // The curve used in Bitcoin: y^2 = x^3 + 7
+
+// y^2 = x^3 + 7 mod prime.
+// x^3 + 7 has to be congruent to a square.
+
 Integer left;
 left.copy( Y );
 mod.square( left, modulus, intMath );
@@ -448,7 +452,7 @@ void EPoint::twoPowerDoubleP(
 // 32 times it's about 4 billion.
 // This has to be doubled like 1024 or 2048
 // times or something like that.
- 
+
 if( twoPower == 0 )
   throw "twoPower is zero.";
 
@@ -566,4 +570,3 @@ for( Uint32 count = 0; count < k; count++ )
 
 copy( accumP );
 }
-
