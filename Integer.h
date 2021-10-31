@@ -9,6 +9,8 @@
 #include "BasicTypes.h"
 #include "Str.h"
 #include "Uint8Array.h"
+#include "ProjConst.h"
+
 #include "IntBuf.h"
 
 
@@ -16,20 +18,6 @@
 class Integer
   {
   public:
-  // digitArraySize = 100 is 3,200 bits.
-  // If RSA::PrimeIndex = 15 the size is 16,
-  // so then N, the modulus, has a size of
-  //about 32.  Squaring N makes it have an
-  // index of about 64.  So about 4 times
-  // the size of the primes.
-  // With a PrimeIndex of 15, a
-  // digitArraySize of 66 overflowed. But not
-  // at 67.  16 * 4 = 64.
-  // NumbSys is not exact.  It's a little
-  // bigger than the modulus.
-
-  static const Uint32 digitArraySize = 515;
-
   // This would be about 515 times 8 bytes for
   // the size on the stack.  Over 4,000 bytes.
   // See the /STACK option in BuildProj.bat
@@ -45,7 +33,7 @@ class Integer
   // no memory allocation that gets done when
   // an Integer is created other than to move
   // the stack pointer.
-  Uint64 D[digitArraySize] = { 0,1,2 };
+  Uint64 D[ProjConst::digitArraySize] = { 0,1,2 };
   // Uint64* D;
 
 /*
@@ -135,7 +123,7 @@ class Integer
 
   inline void setIndex( Uint32 setTo )
     {
-    if( setTo >= digitArraySize )
+    if( setTo >= ProjConst::digitArraySize )
       throw "setIndex() index out of bounds.";
 
     index = setTo;
@@ -144,7 +132,7 @@ class Integer
 
   inline Uint64 getD( const Uint32 where ) const
     {
-    if( where >= digitArraySize )
+    if( where >= ProjConst::digitArraySize )
       throw "getD() index out of bounds.";
 
     return D[where];
@@ -157,7 +145,7 @@ class Integer
     // that might be a full 64 bits long.
     // See cleanUp().
 
-    if( where >= digitArraySize )
+    if( where >= ProjConst::digitArraySize )
       throw "setD() index out of bounds.";
 
     D[where] = toSet;
