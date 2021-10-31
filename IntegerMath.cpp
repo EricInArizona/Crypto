@@ -12,8 +12,8 @@
 
 IntegerMath::IntegerMath( void )
 {
-signedD = new Int64[Integer::digitArraySize];
-scratch = new Uint64[Integer::digitArraySize];
+signedD = new Int64[ProjConst::digitArraySize];
+scratch = new Uint64[ProjConst::digitArraySize];
 }
 
 
@@ -483,7 +483,7 @@ if( B1 == 0 )
 
 // Since B1 is not zero:
 if( (result.getIndex() + 1) >=
-                         Integer::digitArraySize )
+                        ProjConst::digitArraySize )
   throw "Overflow in MultiplyULong.";
 
 Uint32 countTo = result.getIndex();
@@ -572,7 +572,7 @@ if( toMul.isULong())
 // would be true for zero.
 const Uint32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
-if( totalIndex >= Integer::digitArraySize )
+if( totalIndex >= ProjConst::digitArraySize )
   throw "Multiply() overflow.";
 
 const Uint32 countTo = toMul.getIndex();
@@ -738,7 +738,7 @@ if( sqrIndex == 2 )
 
 // Now Index is at least 3:
 const Uint32 doubleIndex = sqrIndex << 1;
-if( doubleIndex >= Integer::digitArraySize )
+if( doubleIndex >= ProjConst::digitArraySize )
   throw "Square() overflowed.";
 
 const Uint32 last = sqrIndex;
@@ -810,7 +810,7 @@ void IntegerMath::multiplyTop( Integer& result,
 {
 Uint32 totalIndex = result.getIndex() +
                              toMul.getIndex();
-if( totalIndex >= Integer::digitArraySize )
+if( totalIndex >= ProjConst::digitArraySize )
   throw "MultiplyTop() overflow.";
 
 // Just like Multiply() except that all the
@@ -844,7 +844,7 @@ if( carry != 0 )
   {
   result.setIndex( result.getIndex() + 1 );
   if( result.getIndex() >=
-                        Integer::digitArraySize )
+                        ProjConst::digitArraySize )
     throw "MultiplyTop() overflow.";
 
   result.setD( result.getIndex(), carry );
@@ -863,7 +863,7 @@ void IntegerMath::multiplyTopOne(
 {
 Uint32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
-if( totalIndex >= Integer::digitArraySize )
+if( totalIndex >= ProjConst::digitArraySize )
   throw "MultiplyTopOne() overflow.";
 
 Uint32 toMulIndex = toMul.getIndex();
