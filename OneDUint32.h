@@ -7,7 +7,7 @@
 
 
 #include "BasicTypes.h"
-#include "Integer.h"
+#include "ProjConst.h"
 
 
 class OneDUint32
@@ -15,7 +15,7 @@ class OneDUint32
   private:
   Uint32* aR;
   static const Uint32 last =
-                      Integer::digitArraySize;
+                      ProjConst::digitArraySize;
 
   public:
   OneDUint32( void );
