@@ -1025,3 +1025,22 @@ toGet.reverse();
 }
 
 */
+
+
+void Integer::copyFromIntBuf( IntBuf& intBuf )
+{
+index = intBuf.getIndex();
+for( Uint32 count = 0; count < index; count++ )
+  D[count] = intBuf.getD( count );
+
+}
+
+
+void Integer::copyToIntBuf( IntBuf& intBuf )
+
+{
+intBuf.setIndex( index );
+for( Uint32 count = 0; count < index; count++ )
+  intBuf.setD( count, D[count] );
+
+}
