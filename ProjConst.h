@@ -5,13 +5,6 @@
 #pragma once
 
 
-// This is for copies of Integer objects, but
-// it has a dynamically allocated array.
-// As opposed to the array being on the stack.
-
-//   static const Uint32 digitArraySize = 515;
-
-
 #include "BasicTypes.h"
 
 
