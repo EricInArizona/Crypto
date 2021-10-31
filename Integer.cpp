@@ -39,7 +39,7 @@ delete[] D;
 void Integer::incrementIndex( void )
 {
 index++;
-if( index >= digitArraySize )
+if( index >= ProjConst::digitArraySize )
   throw "Integer IncrementIndex() overflow.";
 
 }
@@ -49,9 +49,10 @@ if( index >= digitArraySize )
 void Integer::setToMaxValue( void )
 {
 negative = false;
-index = digitArraySize - 1;
+index = ProjConst::digitArraySize - 1;
 for( Uint32 count = 0; count <=
-                    digitArraySize - 1; count++ )
+                    ProjConst::digitArraySize - 1;
+                    count++ )
   D[count] = 0xFFFFFFFF;
 
 }
@@ -107,7 +108,7 @@ for( Uint32 count = 0; count <= last; count++ )
 void Integer::copyUpTo( const Integer& from,
                         const Uint32 where )
 {
-if( where >= digitArraySize )
+if( where >= ProjConst::digitArraySize )
   throw "copyUpTo where out of range.";
 
 negative = from.negative;
@@ -292,7 +293,7 @@ for( Uint32 count = 1; count <= index; count++ )
 if( carry != 0 )
   {
   index++;
-  if( index >= digitArraySize )
+  if( index >= ProjConst::digitArraySize )
     throw  "Integer.Increment() overflow.";
 
   D[index] = carry;
@@ -314,7 +315,7 @@ for( Uint32 count = 1; count <= index; count++ )
 if( carry != 0 )
   {
   index++;
-  if( index >= digitArraySize )
+  if( index >= ProjConst::digitArraySize )
     throw  "Integer.cleanUp() overflow.";
 
   D[index] = carry;
@@ -362,7 +363,7 @@ for( Uint32 count = 1; count <= index; count++ )
 if( carry != 0 )
   {
   index++;
-  if( index >= digitArraySize )
+  if( index >= ProjConst::digitArraySize )
     throw "Integer.AddULong() overflow.";
 
   D[index] = carry;
@@ -422,7 +423,7 @@ for( Uint32 count = 1; count <= localIndex;
 if( carry != 0 )
   {
   index++;
-  if( index >= digitArraySize )
+  if( index >= ProjConst::digitArraySize )
     throw "Integer.add() overflow.";
 
   D[index] = carry;
@@ -651,7 +652,7 @@ for( Uint32 count = 0; count <= index; count++ )
 if( carry != 0 )
   {
   index++;
-  if( index >= digitArraySize )
+  if( index >= ProjConst::digitArraySize )
     throw "ShiftLeft overflowed.";
 
   D[index] = carry;
@@ -721,7 +722,7 @@ bool Integer::makeRandomOdd(
                         const Uint32 setToIndex )
 {
 negative = false;
-if( setToIndex > (digitArraySize - 3))
+if( setToIndex > (ProjConst::digitArraySize - 3))
   throw "MakeRandomOdd index is too high.";
 
 Uint32 howManyBytes = (setToIndex * 4) + 4;
@@ -772,7 +773,7 @@ void Integer::setOneDValueFromChar( Uint64 toSet,
 {
 // These are ASCII values so they're between 32
 // and 127.
-if( position >= digitArraySize )
+if( position >= ProjConst::digitArraySize )
   return;
 
 if( offset == 1 )
@@ -802,7 +803,7 @@ char Integer::getOneCharFromDValue(
 {
 // These are ASCII values so they're between 32
 // and 127.
-if( position >= digitArraySize )
+if( position >= ProjConst::digitArraySize )
   return (char)0;
 
 if( offset == 0 )
@@ -828,11 +829,12 @@ isNegative = false;
 index = 0;
 const Uint32 inLen = in.getSize();
 
-if( inLen > (digitArraySize - 3))
+if( inLen > (ProjConst::digitArraySize - 3))
   return false;
 
-for( Uint32 count = 0; count < digitArraySize;
-                                       count++ )
+for( Uint32 count = 0; count <
+                        ProjConst::digitArraySize;
+                        count++ )
   D[count] = 0;
 
 Uint32 oneChar = 0;
@@ -898,7 +900,7 @@ return cBuf.getStr();
 void Integer::setOneDValueFromByte( Uint64 toSet,
                   Uint32 setIndex, Uint32 offset )
 {
-if( setIndex >= digitArraySize )
+if( setIndex >= ProjConst::digitArraySize )
   throw "SetIndex >= digitArraySize. setOneVal";
 
 if( offset == 1 )
@@ -928,7 +930,7 @@ if( index < setIndex )
 char Integer::getOneByteFromDValue(
                   Uint32 atIndex, Uint32 offset )
 {
-if( atIndex >= digitArraySize )
+if( atIndex >= ProjConst::digitArraySize )
   throw "atIndex >= digitArraySize getOneByte.";
 
 if( offset == 0 )
@@ -965,14 +967,15 @@ if( U8Ar.isAllZero())
 
 const Uint32 howMany = U8Ar.getLast();
 
-if( howMany > (digitArraySize - 3))
+if( howMany > (ProjConst::digitArraySize - 3))
   throw "digitArraySize SetFromBigEndian";
 
 isNegative = false;
 index = 0;
 
-for( Uint32 count = 0; count < digitArraySize;
-                                        count++ )
+for( Uint32 count = 0; count <
+                       ProjConst::digitArraySize;
+                       count++ )
   D[count] = 0;
 
 U8Ar.reverse(); // Now the least significant
