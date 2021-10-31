@@ -9,6 +9,7 @@
 #include "BasicTypes.h"
 #include "Str.h"
 #include "Uint8Array.h"
+#include "IntBuf.h"
 
 
 
@@ -132,12 +133,12 @@ class Integer
     return index;
     }
 
-  inline void setIndex( Uint32 where )
+  inline void setIndex( Uint32 setTo )
     {
-    if( where >= digitArraySize )
+    if( setTo >= digitArraySize )
       throw "setIndex() index out of bounds.";
 
-    index = where;
+    index = setTo;
     }
 
 
@@ -207,5 +208,8 @@ class Integer
   void getBigEndianByteArray(
                              Uint8Array& toGet );
 */
+
+  void copyFromIntBuf( IntBuf& intBuf );
+  void copyToIntBuf( IntBuf& intBuf );
 
   };
