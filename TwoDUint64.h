@@ -11,7 +11,7 @@
 // If it's the same row but the column is
 // incremented by one, then the values are
 // next to each other in ram.  And in the same
-// area of the RAM cache.  So on for loops
+// area of the RAM cache.  So on for-loops
 // of columns and rows, the outside loop should
 // be rows.  Then it's reading/writing to
 // adjacent areas in ram in sequence.
@@ -46,7 +46,7 @@ class TwoDUint64
     // and for-loops are done with that same
     // static const.  So it's not going to
     // go out of range.
-    // For testig:
+    // For testing:
     // if( where >= last )
       // throw "TwoDUint64 get out of bounds.";
 
