@@ -40,7 +40,7 @@ mainIO.appendChars(
 
 mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
-mainIO.appendChars( "\n" );
+mainIO.appendChars( "\n\n" );
 
 RSA rsa;
 rsa.test( mainIO );
@@ -61,6 +61,7 @@ catch( const char* in )
   {
   mainIO.appendChars( "Exception in main loop.\n" );
   mainIO.appendChars( in );
+  mainIO.appendChars( "\n" );
   mainIO.writeAll( outFile );
 
   ThreadEC::sleep( delay );
