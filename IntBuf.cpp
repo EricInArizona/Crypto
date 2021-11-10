@@ -3,7 +3,6 @@
 
 
 #include "IntBuf.h"
-// #include "Integer.h"
 
 
 IntBuf::IntBuf( void )
