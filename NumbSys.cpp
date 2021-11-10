@@ -2,7 +2,7 @@
 
 
 
-// Number System
+// Number System used for Modular Reduction.
 
 
 #include "NumbSys.h"
@@ -12,14 +12,14 @@
 
 NumbSys::NumbSys( void )
 {
-// intBuf = new IntBuf( ProjConst::digitArraySize );
+intBufAr = new IntBuf[last];
 }
 
 
 // The copy constructor.
 NumbSys::NumbSys( const NumbSys& in )
 {
-// intBuf = new IntBuf( Integer::digitArraySize );
+intBufAr = new IntBuf[last];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -31,7 +31,7 @@ throw "Don't use copy constructor for NumbSys.";
 
 NumbSys::~NumbSys( void )
 {
-// delete intBuf;
+delete[] intBufAr;
 }
 
 
@@ -50,8 +50,7 @@ Integer remainder;
 
 baseValue.setFromULong( 1 );
 
-for( Uint32 count = 0; count <
-             ProjConst::digitArraySize; count++ )
+for( Uint32 count = 0; count < last; count++ )
   {
   Division::divide( baseValue, currentBase,
                     quotient, remainder,
@@ -72,30 +71,16 @@ void NumbSys::setOneBaseFromInt(
                          const Uint32 row,
                          const Integer& toSet )
 {
-const Uint32 last = toSet.getIndex();
+const Uint32 ind = toSet.getIndex();
 
-for( Uint32 count = 0; count <= last; count++ )
+intBufAr[row].setIndex( ind );
+
+for( Uint32 count = 0; count <= ind; count++ )
   {
-/*
-  intBuf[count].
-===
-  baseAr.setV( count, row, toSet.getD( count ));
-*/
+  intBufAr[row].setD( count, toSet.getD( count ));
   }
 }
 
-
-
-void NumbSys::setValFromInt( const Integer& toSet )
-{
-/*
-const Uint32 last = toSet.getIndex();
-valIndex = last;
-
-for( Uint32 count = 0; count <= last; count++ )
-  numVal.setV( count, toSet.getD( count ));
-*/
-}
 
 
 
@@ -104,7 +89,6 @@ void NumbSys::reduce( Integer& result,
                       const Integer& modulus,
                       IntegerMath& intMath )
 {
-/*
 // currentBase would start out being set to
 // zero, so it has to be set the first time
 // it gets called.
@@ -117,21 +101,23 @@ if( toReduce.paramIsGreater( currentBase ))
   return;
   }
 
-setValFromInt( toReduce );
-const Uint32 last = valIndex;
+numVal.copy( toReduce );
+const Uint32 ind = numVal.getIndex();
 
 Integer accumRow;
 
 result.setToZero();
-for( Uint32 row = 0; row <= last; row++ )
+for( Uint32 row = 0; row <= ind; row++ )
   {
-  Uint64 val = numVal.getV( row );
-  const Uint32 lastBase = baseInd.getV( row );
+  Uint64 val = numVal.getD( row );
+  const Uint32 lastBase = intBufAr[row].
+                           getIndex();
+
   accumRow.setIndex( lastBase );
   for( Uint32 column = 0; column <= lastBase;
                                        column++ )
     {
-    Uint64 baseVal = baseAr.getV( column, row );
+    Uint64 baseVal = intBufAr[row].getD( column );
     Uint64 calc = baseVal * val;
     accumRow.setD( column, calc );
     }
@@ -139,5 +125,4 @@ for( Uint32 row = 0; row <= last; row++ )
   accumRow.cleanUp();
   result.add( accumRow );
   }
-*/
 }
