@@ -7,22 +7,31 @@
 
 #include "NumbSys.h"
 #include "Division.h"
+#include "IntegerMath.h"
 
 
 NumbSys::NumbSys( void )
 {
-
+// intBuf = new IntBuf( ProjConst::digitArraySize );
 }
 
 
 // The copy constructor.
 NumbSys::NumbSys( const NumbSys& in )
 {
+// intBuf = new IntBuf( Integer::digitArraySize );
+
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
   return;
 
 throw "Don't use copy constructor for NumbSys.";
+}
+
+
+NumbSys::~NumbSys( void )
+{
+// delete intBuf;
 }
 
 
@@ -42,15 +51,13 @@ Integer remainder;
 baseValue.setFromULong( 1 );
 
 for( Uint32 count = 0; count <
-               Integer::digitArraySize; count++ )
+             ProjConst::digitArraySize; count++ )
   {
   Division::divide( baseValue, currentBase,
                     quotient, remainder,
                     intMath );
 
   setOneBaseFromInt( count, remainder );
-
-  // Q + R is the whole base.
 
   // Done at the bottom for the next round of
   // the loop.
@@ -66,23 +73,28 @@ void NumbSys::setOneBaseFromInt(
                          const Integer& toSet )
 {
 const Uint32 last = toSet.getIndex();
-baseInd.setV( row, last );
 
 for( Uint32 count = 0; count <= last; count++ )
+  {
+/*
+  intBuf[count].
+===
   baseAr.setV( count, row, toSet.getD( count ));
-
+*/
+  }
 }
 
 
 
 void NumbSys::setValFromInt( const Integer& toSet )
 {
+/*
 const Uint32 last = toSet.getIndex();
 valIndex = last;
 
 for( Uint32 count = 0; count <= last; count++ )
   numVal.setV( count, toSet.getD( count ));
-
+*/
 }
 
 
@@ -92,6 +104,7 @@ void NumbSys::reduce( Integer& result,
                       const Integer& modulus,
                       IntegerMath& intMath )
 {
+/*
 // currentBase would start out being set to
 // zero, so it has to be set the first time
 // it gets called.
@@ -126,4 +139,5 @@ for( Uint32 row = 0; row <= last; row++ )
   accumRow.cleanUp();
   result.add( accumRow );
   }
+*/
 }
