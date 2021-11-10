@@ -9,15 +9,14 @@
 
 // An early version of this idea is in old code
 // I wrote from 2015 and earlier at:
-// https://github.com/Eric7Apps/OldCode/blob/master/ModularReduction.cs
+// https://github.com/Eric7Apps/OldCode/
+       //     blob/master/ModularReduction.cs
 
 
 #include "BasicTypes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
-#include "TwoDUint64.h"
-#include "OneDUint64.h"
-#include "OneDUint32.h"
+#include "ProjConst.h"
 
 
 
@@ -26,10 +25,12 @@ class NumbSys
   private:
   Int32 testForCopy = 123;
   Integer currentBase;
-  TwoDUint64 baseAr;
-  OneDUint32 baseInd;
-  OneDUint64 numVal;
-  Uint32 valIndex = 0;
+
+  // IntBuf* intBuf[];
+  // TwoDUint64 baseAr;  // Base Array
+  // OneDUint32 baseInd;
+  // OneDUint64 numVal;
+  // Uint32 valIndex = 0;
 
   void setValFromInt( const Integer& toSet );
   void setOneBaseFromInt( const Uint32 row,
@@ -40,6 +41,8 @@ class NumbSys
   public:
   NumbSys( void );
   NumbSys( const NumbSys& in );
+  ~NumbSys( void );
+
   void reduce( Integer& result,
                const Integer& toReduce,
                const Integer& modulus,
