@@ -32,7 +32,6 @@ class NumbSys
   Integer numVal;
   IntBuf* intBufAr;
 
-  void setValFromInt( const Integer& toSet );
   void setOneBaseFromInt( const Uint32 row,
                           const Integer& toSet );
   void setupBaseArray( const Integer& setBase,
