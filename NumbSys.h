@@ -17,6 +17,7 @@
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "ProjConst.h"
+#include "IntBuf.h"
 
 
 
@@ -24,13 +25,12 @@ class NumbSys
   {
   private:
   Int32 testForCopy = 123;
-  Integer currentBase;
+  static const Uint32 last =
+                      ProjConst::digitArraySize;
 
-  // IntBuf* intBuf[];
-  // TwoDUint64 baseAr;  // Base Array
-  // OneDUint32 baseInd;
-  // OneDUint64 numVal;
-  // Uint32 valIndex = 0;
+  Integer currentBase;
+  Integer numVal;
+  IntBuf* intBufAr;
 
   void setValFromInt( const Integer& toSet );
   void setOneBaseFromInt( const Uint32 row,
