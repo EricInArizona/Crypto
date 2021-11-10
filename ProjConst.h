@@ -5,6 +5,9 @@
 #pragma once
 
 
+// For project-wide constants.
+
+
 #include "BasicTypes.h"
 
 
@@ -17,7 +20,7 @@ class ProjConst
   // If RSA::PrimeIndex = 15 the size is 16,
   // so then N, the modulus, has a size of
   //about 32.  Squaring N makes it have an
-  // index of about 64.  So about 4 times
+  // index of about 64.  So it's about 4 times
   // the size of the primes.
   // With a PrimeIndex of 15, a
   // digitArraySize of 66 overflowed. But not
