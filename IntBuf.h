@@ -5,14 +5,15 @@
 #pragma once
 
 
-// This is for copies of Integer objects, but
-// it has a dynamically allocated array.
+// This is for copies of Integer.cpp objects,
+// but it has a dynamically allocated array.
 // As opposed to the array being on the stack.
-
-//   static const Uint32 digitArraySize = 515;
-
+// Also, it only keeps 32 bits for each digit,
+// so it's smaller than the working array used
+// in the Integer object.
 
 #include "BasicTypes.h"
+#include "ProjConst.h"
 
 
 class IntBuf
@@ -20,15 +21,12 @@ class IntBuf
   private:
   Int32 testForCopy = 123;
   Uint32 index = 0;
-  // static const Uint32 last =
-  //                    Integer::digitArraySize;
-  Uint32 last  = 0;
+  static const Uint32 last =
+                      ProjConst::digitArraySize;
   Uint32* D;
 
-  IntBuf( void );
-
   public:
-  IntBuf( const Uint32 setSize );
+  IntBuf( void );
   IntBuf( const IntBuf& in );
   ~IntBuf( void );
   inline Uint32 getIndex( void ) const
@@ -38,8 +36,8 @@ class IntBuf
 
   inline void setIndex( Uint32 setTo )
     {
-    // if( setTo >= last )
-      // throw "setIndex() index out of bounds.";
+    if( setTo >= last )
+      throw "IntBuf setIndex() out of bounds.";
 
     index = setTo;
     }
