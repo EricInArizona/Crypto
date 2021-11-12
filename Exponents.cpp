@@ -1,21 +1,21 @@
 // Copyright Eric Chauvin 2021.
 
 
-// Exponents and Discrete Logarithms
-
 
 #include "Exponents.h"
-#include "Division.h"
 
 
 Exponents::Exponents( void )
 {
+intBufAr = new IntBuf[last];
 }
 
 
 // Copy constructor.
 Exponents::Exponents( const Exponents& in )
 {
+intBufAr = new IntBuf[last];
+
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
   return;
@@ -24,21 +24,69 @@ throw "Don't copy Exponents in copy constructor.";
 }
 
 
+Exponents::~Exponents( void )
+{
+delete[] intBufAr;
+}
 
-// This is like the Mod::toPower() function
-// but ....
-// The doubled values go in to an array.
+
+
+void Exponents::setupBases( const Integer& base,
+                   const Integer& modulus,
+                   IntegerMath& intMath ) // ,
+                   // FileIO& mainIO )
+{
+// mainIO.appendChars( "Setting bases.\n" );
+
+if( base.isEqual( modulus ))
+  throw "Base = modulus in setupBase().";
+
+currentBase.copy( base );
+currentModulus.copy( modulus );
+
+if( currentModulus.paramIsGreater( currentBase ))
+  {
+  mod.makeExact( currentBase, currentModulus,
+                                      intMath );
+  }
+
+Integer X;
+Integer temp;
+
+// X is the number to be raised to exponent.
+X.copy( currentBase );
+
+// In toPower the result value starts out as
+// one.  So the first base value, at an index of
+// zero, gets multiplied by 1.
+
 // For each bit.
+for( Uint32 count = 0; count < last; count++ )
+  {
+  // intMath.multiply( X, X );
+  intMath.square( X );
+  numbSys.reduce( temp, X,
+                    currentModulus, intMath );
+  X.copy( temp );
+  mod.makeExact( X, currentModulus, intMath );
+  X.copyToIntBuf( intBufAr[count] );
+
+  // Str showP =  intMath.toString10( X );
+  // mainIO.appendStr( showP );
+  // mainIO.appendChars( "\n" );
+  }
+}
+
+
 
 void Exponents::toPower( Integer& result,
                    const Integer& exponent,
                    const Integer& modulus,
-                   IntegerMath& intMath )
+                   IntegerMath& intMath,
+                   FileIO& mainIO )
 {
-// result starts out as the number to be
-// raised to the exponent.
-// But it gets returned as the result.
-
+// Notice that this has precedence over
+// if the exponent is zero, which comes later.
 if( result.isZero())
   {
   // mainIO.appendChars(
@@ -65,17 +113,8 @@ if( exponent.isZero() )
   return;
   }
 
-Integer quotient;
-Integer remainder;
-
 if( modulus.paramIsGreater( result ))
-  {
-  Division::divide( result, modulus,
-                          quotient, remainder,
-                          intMath );
-  result.copy( remainder );
-  }
-
+  mod.makeExact( result, modulus, intMath );
 
 if( exponent.isOne())
   {
@@ -85,28 +124,48 @@ if( exponent.isOne())
   return;
   }
 
+// Only set up the base values when they
+// change to something different.
+if( !(currentBase.isEqual( result ) &&
+      currentModulus.isEqual( modulus )))
+  {
+  setupBases( result, modulus, intMath );
+                                 //, mainIO );
+  }
+
 Integer X;
 Integer expCopy;
 Integer temp;
 
-// X is the number to be raised to exponent.
 X.copy( result );
 expCopy.copy( exponent );
-// Uint32 testIndex = 0;
 
+// Notice how setting this to one makes it
+// multiply 1 with the first base value at
+// index zero.
 result.setToOne();
 
-Int32 howBig = 0;
+Integer oneBase;
+
+// Pretend like mainIO is being used.
+mainIO.appendChars( "" );
+
+// mainIO.appendChars(
+   //     "Top of loop.\n" );
 
 // For each bit.
-while( true )
+for( Uint32 count = 0; count < last; count++ )
   {
   if( (expCopy.getD( 0 ) & 1) == 1 )
     {
-    intMath.multiply( result, X );
+    oneBase.copyFromIntBuf( intBufAr[count] );
+    if( oneBase.isZero())
+      throw "oneBase is zero.";
 
-    // temp is the result of this
-    // reduce() operation.
+    intMath.multiply( result, oneBase );
+    if( result.isZero())
+      throw "result is zero.";
+
     numbSys.reduce( temp, result, modulus,
                                       intMath );
     result.copy( temp );
@@ -116,31 +175,12 @@ while( true )
   if( expCopy.isZero())
     break;
 
-  // intMath.multiply( X, X );
-  intMath.square( X );
-  numbSys.reduce( temp, X, modulus, intMath );
-  X.copy( temp );
   }
-
-// When reduce() gets called it multiplies a base
-// number by a uint sized digit.  So that can
-// make the result one digit bigger than the
-// modulus.  Then when they are added up
-// you can get carry bits that can make it a
-// little bigger.
-
-howBig = (Int32)result.getIndex() -
-               (Int32)modulus.getIndex();
-// if( howBig > 1 )
-  // throw "This does happen.";
-
-if( howBig > 2 )
-  throw "This never happens yet. howBig.";
 
 numbSys.reduce( temp, result, modulus, intMath );
 result.copy( temp );
 
 // Notice that this Divide() is done once.
-// Not a thousand or two thousand times.
+// Not a thousand times.
 mod.makeExact( result, modulus, intMath );
 }
