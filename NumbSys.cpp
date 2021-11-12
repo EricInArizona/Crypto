@@ -2,7 +2,7 @@
 
 
 
-// Number System used for Modular Reduction.
+// A Number System used for Modular Reduction.
 
 
 #include "NumbSys.h"
@@ -56,7 +56,8 @@ for( Uint32 count = 0; count < last; count++ )
                     quotient, remainder,
                     intMath );
 
-  setOneBaseFromInt( count, remainder );
+  // setOneBaseFromInt( count, remainder );
+  remainder.copyToIntBuf( intBufAr[count] );
 
   // Done at the bottom for the next round of
   // the loop.
@@ -64,23 +65,6 @@ for( Uint32 count = 0; count < last; count++ )
   intMath.multiply( baseValue, base2 );
   }
 }
-
-
-
-void NumbSys::setOneBaseFromInt(
-                         const Uint32 row,
-                         const Integer& toSet )
-{
-const Uint32 ind = toSet.getIndex();
-
-intBufAr[row].setIndex( ind );
-
-for( Uint32 count = 0; count <= ind; count++ )
-  {
-  intBufAr[row].setD( count, toSet.getD( count ));
-  }
-}
-
 
 
 
