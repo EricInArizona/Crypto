@@ -198,6 +198,6 @@ class Integer
 */
 
   void copyFromIntBuf( IntBuf& intBuf );
-  void copyToIntBuf( IntBuf& intBuf );
+  void copyToIntBuf( IntBuf& intBuf ) const;
 
   };
