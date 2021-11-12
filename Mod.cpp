@@ -52,8 +52,6 @@ exact.copy( remainder );
 // or on Wikipedia, but its use of the new
 // modular reduction algorithm is new (in 2015).
 
-// x^n = (x^2)^((n - 1)/2) if n is odd.
-// x^n = (x^2)^(n/2)       if n is even.
 void Mod::toPower( Integer& result,
                    const Integer& exponent,
                    const Integer& modulus,
@@ -85,15 +83,12 @@ if( exponent.isZero() )
   return;
   }
 
-Integer quotient;
-Integer remainder;
+// Integer quotient;
+// Integer remainder;
 
 if( modulus.paramIsGreater( result ))
   {
-  Division::divide( result, modulus,
-                          quotient, remainder,
-                          intMath );
-  result.copy( remainder );
+  makeExact( result, modulus, intMath );
   }
 
 
