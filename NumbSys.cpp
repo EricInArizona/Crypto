@@ -7,7 +7,6 @@
 
 #include "NumbSys.h"
 #include "Division.h"
-#include "IntegerMath.h"
 
 
 NumbSys::NumbSys( void )
@@ -68,7 +67,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void NumbSys::reduce( Integer& result,
+void NumbSys::privateReduce( Integer& result,
                       const Integer& toReduce,
                       const Integer& modulus,
                       IntegerMath& intMath )
