@@ -53,27 +53,27 @@ if( currentModulus.paramIsGreater( currentBase ))
 Integer X;
 Integer temp;
 
-// X is the number to be raised to exponent.
+// X starts out equal to current base for
+// the index at bit zero.
 X.copy( currentBase );
 
 // In toPower the result value starts out as
 // one.  So the first base value, at an index of
 // zero, gets multiplied by 1.
 
-// For each bit.
+// For each bit of the exponent.
 for( Uint32 count = 0; count < last; count++ )
   {
+  X.copyToIntBuf( intBufAr[count] );
+
   // intMath.multiply( X, X );
   intMath.square( X );
-  numbSys.reduce( temp, X,
+  // Reduce it first to speed up the division
+  // in makeExact().
+  mod.reduce( temp, X,
                     currentModulus, intMath );
   X.copy( temp );
   mod.makeExact( X, currentModulus, intMath );
-  X.copyToIntBuf( intBufAr[count] );
-
-  // Str showP =  intMath.toString10( X );
-  // mainIO.appendStr( showP );
-  // mainIO.appendChars( "\n" );
   }
 }
 
@@ -82,8 +82,8 @@ for( Uint32 count = 0; count < last; count++ )
 void Exponents::toPower( Integer& result,
                    const Integer& exponent,
                    const Integer& modulus,
-                   IntegerMath& intMath,
-                   FileIO& mainIO )
+                   IntegerMath& intMath ) // ,
+                   // FileIO& mainIO )
 {
 // Notice that this has precedence over
 // if the exponent is zero, which comes later.
@@ -133,11 +133,9 @@ if( !(currentBase.isEqual( result ) &&
                                  //, mainIO );
   }
 
-Integer X;
 Integer expCopy;
 Integer temp;
 
-X.copy( result );
 expCopy.copy( exponent );
 
 // Notice how setting this to one makes it
@@ -146,9 +144,6 @@ expCopy.copy( exponent );
 result.setToOne();
 
 Integer oneBase;
-
-// Pretend like mainIO is being used.
-mainIO.appendChars( "" );
 
 // mainIO.appendChars(
    //     "Top of loop.\n" );
@@ -166,8 +161,7 @@ for( Uint32 count = 0; count < last; count++ )
     if( result.isZero())
       throw "result is zero.";
 
-    numbSys.reduce( temp, result, modulus,
-                                      intMath );
+    mod.reduce( temp, result, modulus, intMath );
     result.copy( temp );
     }
 
@@ -177,10 +171,8 @@ for( Uint32 count = 0; count < last; count++ )
 
   }
 
-numbSys.reduce( temp, result, modulus, intMath );
+mod.reduce( temp, result, modulus, intMath );
 result.copy( temp );
 
-// Notice that this Divide() is done once.
-// Not a thousand times.
 mod.makeExact( result, modulus, intMath );
 }
