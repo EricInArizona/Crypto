@@ -10,6 +10,7 @@
 #include "IntegerMath.h"
 #include "Mod.h"
 #include "FileIO.h"
+// #include "Exponents.h"
 
 
 
@@ -20,6 +21,7 @@ class RSA
   IntegerMath intMath;
   SPrimes sPrimes;
   Mod mod;
+  // Exponents exp;
   Integer primeP;
   Integer primeQ;
   Integer primePMinus1;
@@ -45,11 +47,11 @@ class RSA
   // static const int PrimeIndex = 3; // 128-bit
   // static const int PrimeIndex = 4; // 160-bit
   // static const int PrimeIndex = 5; // 192-bit
-  static const int PrimeIndex = 6; // 224-bit
+  // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
 
   // Seconds: 3 or 4 or 2
-  // static const int PrimeIndex = 15; // 512
+  static const int PrimeIndex = 15; // 512
 
   // Seconds: 27, 23, 21, 17 or 19,11, 12, 8, 7
   // static const int PrimeIndex = 31; // 1024
