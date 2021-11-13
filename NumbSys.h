@@ -42,8 +42,10 @@ class NumbSys
   ~NumbSys( void );
 
   // This is meant to only be used within the
-  // Mod.cpp class.  Sort of like it's private
-  // to the Mod.cpp class.
+  // Mod.cpp class.  Sort of like it's a nested
+  // class within the Mod.cpp class, but without
+  // complicating things, and keeping them
+  // separate.
   void privateReduce( Integer& result,
                const Integer& toReduce,
                const Integer& modulus,
