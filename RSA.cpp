@@ -85,11 +85,15 @@ for( Uint32 count = 0; count < 3; count++ )
                                    sPrimes,
                                    intMath,
                                    mod );
+                                   // exp,
+                                   // mainIO );
 
   Fermat::makeAPrime( primeQ, PrimeIndex,
                                    sPrimes,
                                    intMath,
                                    mod );
+                                   // exp,
+                                   // mainIO );
 
   mainIO.appendChars( "\n" );
 
