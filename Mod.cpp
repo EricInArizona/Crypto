@@ -25,6 +25,19 @@ throw "Don't copy Mod in a copy constructor.";
 
 
 
+void Mod::reduce( Integer& result,
+               const Integer& toReduce,
+               const Integer& modulus,
+               IntegerMath& intMath )
+{
+numbSys.privateReduce( result,
+                       toReduce,
+                       modulus,
+                       intMath );
+
+}
+
+
 void Mod::makeExact( Integer& exact,
                      const Integer& modulus,
                      IntegerMath& intMath )
@@ -121,8 +134,7 @@ while( true )
 
     // temp is the result of this
     // reduce() operation.
-    numbSys.reduce( temp, result, modulus,
-                                      intMath );
+    reduce( temp, result, modulus, intMath );
     result.copy( temp );
     }
 
@@ -132,7 +144,7 @@ while( true )
 
   // intMath.multiply( X, X );
   intMath.square( X );
-  numbSys.reduce( temp, X, modulus, intMath );
+  reduce( temp, X, modulus, intMath );
   X.copy( temp );
   }
 
@@ -151,7 +163,7 @@ howBig = (Int32)result.getIndex() -
 if( howBig > 2 )
   throw "This never happens yet. howBig.";
 
-numbSys.reduce( temp, result, modulus, intMath );
+reduce( temp, result, modulus, intMath );
 result.copy( temp );
 
 // Notice that this Divide() is done once.
@@ -285,7 +297,7 @@ intMath.multiply( result, toMul );
 
 Integer temp;
 
-numbSys.reduce( temp, result, modulus, intMath );
+reduce( temp, result, modulus, intMath );
 result.copy( temp );
 makeExact( result, modulus, intMath );
 }
@@ -302,7 +314,7 @@ verifyInBaseRange( result, modulus );
 intMath.multiplyULong( result, toMul );
 
 Integer temp;
-numbSys.reduce( temp, result, modulus, intMath );
+reduce( temp, result, modulus, intMath );
 result.copy( temp );
 makeExact( result, modulus, intMath );
 }
@@ -320,7 +332,7 @@ intMath.square( result );
 
 Integer temp;
 
-numbSys.reduce( temp, result, modulus, intMath );
+reduce( temp, result, modulus, intMath );
 result.copy( temp );
 makeExact( result, modulus, intMath );
 }
@@ -371,7 +383,7 @@ intMath.multiply( result, inverse );
 
 Integer temp;
 
-numbSys.reduce( temp, result, modulus, intMath );
+reduce( temp, result, modulus, intMath );
 result.copy( temp );
 makeExact( result, modulus, intMath );
 }
