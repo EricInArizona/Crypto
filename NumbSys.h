@@ -5,7 +5,8 @@
 #pragma once
 
 
-// A number system.
+// A Number System used for Modular Reduction.
+
 
 // An early version of this idea is in old code
 // I wrote from 2015 and earlier at:
@@ -32,8 +33,6 @@ class NumbSys
   Integer numVal;
   IntBuf* intBufAr;
 
-  void setOneBaseFromInt( const Uint32 row,
-                          const Integer& toSet );
   void setupBaseArray( const Integer& setBase,
                        IntegerMath& intMath );
 
@@ -42,7 +41,10 @@ class NumbSys
   NumbSys( const NumbSys& in );
   ~NumbSys( void );
 
-  void reduce( Integer& result,
+  // This is meant to only be used within the
+  // Mod.cpp class.  Sort of like it's private
+  // to the Mod.cpp class.
+  void privateReduce( Integer& result,
                const Integer& toReduce,
                const Integer& modulus,
                IntegerMath& intMath );
