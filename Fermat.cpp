@@ -10,7 +10,9 @@ void Fermat::makeAPrime( Integer& result,
                          Uint32 setToIndex,
                          SPrimes& sPrimes,
                          IntegerMath& intMath,
-                         Mod& mod )
+                         Mod& mod ) // ,
+                         // Exponents& exp,
+                         // FileIO& mainIO )
 {
 // for( Uint32 count = 0; count < 100; count++ )
 while( true )
@@ -34,6 +36,7 @@ while( true )
     continue;
 
   if( !isPrime( result, sPrimes, intMath, mod ))
+                                   // exp, mainIO ))
     {
     // mainIO.appendChars(
     //          "Did not pass Fermat test.\n" );
@@ -52,7 +55,9 @@ while( true )
 bool Fermat::isPrime( Integer& toTest,
                       SPrimes& sPrimes,
                       IntegerMath& intMath,
-                      Mod& mod )
+                      Mod& mod ) // ,
+                      // Exponents& exp,
+                      // FileIO& mainIO )
 {
 // Use bigger primes for Fermat test because the
 // modulus can't be too small.  And also it's
@@ -79,6 +84,8 @@ for( Uint32 count = startAt; count <
                    sPrimes.getPrimeAt( count ),
                    intMath,
                    mod ))
+                   // exp,
+                   // mainIO ))
     {
     // It is definitely not a prime.
     return false;
@@ -98,7 +105,9 @@ return true;
 bool Fermat::isPrimeForOneValue( Integer& toTest,
                           Uint64 base,
                           IntegerMath& intMath,
-                          Mod& mod )
+                          Mod& mod ) // ,
+                          // Exponents& exp,
+                          // FileIO& mainIO )
 {
 // Assume toTest is not a small number.  (Not
 // the size of a small prime.)
@@ -127,7 +136,19 @@ pMinus1.copy( toTest );
 intMath.subtractULong( pMinus1, 1 );
 A.setFromULong( base );
 
+// Integer testA;
+// testA.copy( A );
+
 mod.toPower( A, pMinus1, toTest, intMath );
+
+// exp.toPower( testA, pMinus1, toTest, intMath );
+
+// if( !testA.isEqual( A ))
+  // {
+  // mainIO.appendChars( "For test: A != testA\n" );
+  // throw "Exponent toPower() didn't work.";
+  // }
+
 
 if( A.isOne())
   return true; // It _might_ be a prime.
