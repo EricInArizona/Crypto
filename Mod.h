@@ -28,6 +28,11 @@ class Mod
                   const Integer& modulus,
                   IntegerMath& intMath );
 
+  void reduce( Integer& result,
+               const Integer& toReduce,
+               const Integer& modulus,
+               IntegerMath& intMath );
+
   void toPower( Integer& result,
                 const Integer& exponent,
                 const Integer& modulus,
