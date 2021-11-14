@@ -12,19 +12,13 @@
 #include "IntBuf.h"
 
 
-// The size of this could be as much as the
-// number of bits times the size of an IntBuf.
-// An IntBuf takes up about
-// last = digitArraySize * 32
-// times 4 bytes, or about 2,000 bytes each.
-// So something like 2,000 times 1,000 bytes.
-
 
 class Exponents
   {
   private:
   Int32 testForCopy = 123;
-  static const Uint32 last = 2000;
+  static const Uint32 last =
+                     ProjConst::ExponentsLast;
   Mod mod;
   IntBuf* intBufAr;
   Integer currentBase;
