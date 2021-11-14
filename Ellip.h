@@ -24,7 +24,8 @@ class Ellip
   SPrimes sPrimes;
   Mod mod;
   EPoint* pArray;
-  static const Uint32 pArrayLength = 1024 * 8;
+  static const Uint32 last  =
+                          ProjConst::EllipseLast;
 
   public:
   Ellip( void );
@@ -36,4 +37,3 @@ class Ellip
                          const Uint32 prime );
 
   };
-
