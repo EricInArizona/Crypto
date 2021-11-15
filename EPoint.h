@@ -14,6 +14,7 @@
 
 // A point on an elliptic curve.
 
+
 class EPoint
   {
   private:
@@ -27,8 +28,10 @@ class EPoint
   EPoint( const Integer& setX,
           const Integer& setY );
 
+  // Domain parameters: (p, a, b, G, n, h )
+  // The A and B coeffients define the curve.
   // The curve used in Bitcoin: y^2 = x^3 + 7
-  static const Uint32 coefA = 0;
+  static const Uint32 coefA = 1;
   static const Uint32 coefB = 7;
 
   inline bool getInfin( void ) const
@@ -57,22 +60,5 @@ class EPoint
                 const Integer& modulus,
                 Mod& mod,
                 IntegerMath& intMath );
-  void scalarMultByAdd( const Uint32 k,
-                        const Integer& modulus,
-                        Mod& mod,
-                        IntegerMath& intMath );
-
-/*
-  void twoPowerByAdd( const EPoint& p,
-                      const Uint32 twoPower,
-                      const Integer& modulus,
-                      Mod& mod,
-                      IntegerMath& intMath );
-*/
-  void twoPowerDoubleP( const Uint32 twoPower,
-                        const EPoint p,
-                        const Integer& modulus,
-                        Mod& mod,
-                        IntegerMath& intMath );
 
   };
