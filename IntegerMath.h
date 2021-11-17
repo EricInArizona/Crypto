@@ -78,11 +78,10 @@ class IntegerMath
                     const Integer& toMul );
   void multiplyTopOne( Integer& result,
                        const Integer& toMul );
-
-/*
-  bool squareRoot( Integer& fromSqr,
+  bool squareRoot( const Integer& fromSqr,
                             Integer& sqrRoot );
-*/
-
+  void searchSqrtXPart( Uint32 testIndex,
+                        const Integer& fromSqr,
+                        Integer& sqrRoot );
 
   };
