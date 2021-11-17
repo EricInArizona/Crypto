@@ -27,6 +27,9 @@ delete[] scratch;
 // The copy constructor.
 IntegerMath::IntegerMath( const IntegerMath& in )
 {
+signedD = new Int64[ProjConst::digitArraySize];
+scratch = new Uint64[ProjConst::digitArraySize];
+
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
   return;
@@ -883,7 +886,7 @@ result.setIndex( totalIndex );
 
 
 
-/*
+
 // In the SquareRoot() method SqrRoot.Index is
 // half of Square.Index.  Compare this to the
 // Square() method where the Carry might or
@@ -896,7 +899,8 @@ result.setIndex( totalIndex );
 // part.  Then from there it goes on to a bit by
 // bit search with TestSqrtBits().
 
-bool IntegerMath::squareRoot( Integer& fromSqr,
+bool IntegerMath::squareRoot(
+                          const Integer& fromSqr,
                           Integer& sqrRoot )
 {
 Uint64 toMatch;
@@ -957,9 +961,9 @@ else
 
 
 void IntegerMath::searchSqrtXPart(
-                            Uint32 testIndex,
-                            Integer& fromSqr,
-                            Integer& sqrRoot )
+                          Uint32 testIndex,
+                          const Integer& fromSqr,
+                          Integer& sqrRoot )
 {
 // B is the Big part of the number that has
 // already been found.
@@ -1050,8 +1054,6 @@ for( Uint32 bitCount = 0; bitCount < 32;
 
 sqrRoot.setD( testIndex, xDigit );
 }
-
-*/
 
 
 
