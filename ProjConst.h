@@ -31,6 +31,9 @@ class ProjConst
   // See Integer.h:
   static const Uint32 digitArraySize = 515;
 
+  static const Uint32 CrtDigitArraySize =
+                             digitArraySize * 2;
+
 
   // See Exponents.h:
   // To match this with a full size Integer it
