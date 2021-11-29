@@ -8,6 +8,8 @@
 #include "BasicTypes.h"
 #include "ProjConst.h"
 #include "SPrimes.h"
+#include "Integer.h"
+#include "IntegerMath.h"
 
 
 class Crt
@@ -33,6 +35,12 @@ class Crt
   void decrement( SPrimes& sPrimes );
   void subtractUint( Uint32 toSub,
                      SPrimes& sPrimes );
+  void multiply( Crt& toMul, SPrimes& sPrimes );
+  void setFromInteger( Integer& setFrom,
+                       IntegerMath& intMath,
+                       SPrimes& sPrimes );
+  void setFromUInt( Uint32 setFrom,
+                       SPrimes& sPrimes );
 
 
   inline Int32 getD( Uint32 index )
