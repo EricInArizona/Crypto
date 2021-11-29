@@ -158,9 +158,10 @@ void Crt::subtractUint( Uint32 toSub,
 {
 for( Uint32 count = 0; count < last; count++ )
   {
-  Int32 prime = sPrimes.getPrimeAt( count );
-  toSub = toSub % prime;
-  digitAr[count] -= toSub;
+  Int32 sub = (Int32)toSub;
+  Int32 prime = (Int32)sPrimes.getPrimeAt( count );
+  sub = sub % prime;
+  digitAr[count] -= sub;
   if( digitAr[count] < 0 )
     digitAr[count] += prime;
 
@@ -168,59 +169,43 @@ for( Uint32 count = 0; count < last; count++ )
 }
 
 
+void Crt::multiply( Crt& toMul, SPrimes& sPrimes )
+{
+for( Uint32 count = 0; count < last; count++ )
+  {
+  // This beats the Karatsuba Multiplication
+  // algorithm easily.  It can be done on a GPU
+  // too.
 
-/*
-
-  // Copyright Eric Chauvin.
-  internal void Multiply( ChineseRemainder ToMul )
-    {
-    for( int Count = 0; Count < DigitsArraySize; Count++ )
-      {
-      // There is no Diffusion here either, like the
-      // kind that Claude Shannon wrote about in
-      // A Mathematical Theory of Cryptography.
-      DigitsArray[Count] *= ToMul.DigitsArray[Count];
-      DigitsArray[Count] %= (int)IntMath.GetPrimeAt( Count );
-      }
-    }
-
-
-
-  internal void SetFromTraditionalInteger( Integer SetFrom )
-    {
-    for( int Count = 0; Count < DigitsArraySize; Count++ )
-      {
-      DigitsArray[Count] = (int)IntMath.GetMod32( SetFrom, IntMath.GetPrimeAt( Count ));
-      }
-    }
-
-
-
-  internal void SetFromUInt( uint SetFrom )
-    {
-    for( int Count = 0; Count < DigitsArraySize; Count++ )
-      {
-      DigitsArray[Count] = (int)(SetFrom % (int)IntMath.GetPrimeAt( Count ));
-      }
-    }
-
-
-
-  internal string GetString()
-    {
-    StringBuilder SBuilder = new StringBuilder();
-    for( int Count = 20; Count >= 0; Count-- )
-      {
-      string ShowS = DigitsArray[Count].ToString() + ", ";
-      // DigitsArray[Count].Prime
-
-      SBuilder.Append( ShowS );
-      }
-
-    return SBuilder.ToString();
-    }
-
-
+  digitAr[count] *= toMul.digitAr[count];
+  digitAr[count] %= sPrimes.getPrimeAt( count );
   }
 }
-*/
+
+
+
+void Crt::setFromInteger( Integer& setFrom,
+                      IntegerMath& intMath,
+                      SPrimes& sPrimes )
+{
+for( Uint32 count = 0; count < last; count++ )
+  {
+  digitAr[count] = (Int32)intMath.getMod32(
+           setFrom, sPrimes.getPrimeAt( count ));
+  }
+}
+
+
+
+void Crt::setFromUInt( Uint32 setFrom,
+                       SPrimes& sPrimes )
+{
+for( Uint32 count = 0; count < last; count++ )
+  {
+  digitAr[count] = (Int32)setFrom %
+              (Int32)sPrimes.getPrimeAt( count );
+  }
+}
+
+
+
