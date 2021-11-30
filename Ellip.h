@@ -25,7 +25,7 @@ class Ellip
   Mod mod;
   EPoint* pArray;
   static const Uint32 last  =
-                          ProjConst::EllipseLast;
+                          ProjConst::ellipseLast;
 
   public:
   Ellip( void );
@@ -35,5 +35,24 @@ class Ellip
   void mainTest( FileIO& mainIO );
   void makeCurvePoints(  FileIO& mainIO,
                          const Uint32 prime );
+
+/*
+  void scalarMultByAdd( const Uint32 k,
+                        const Integer& modulus,
+                        Mod& mod,
+                        IntegerMath& intMath );
+
+  void twoPowerByAdd( const EPoint& p,
+                      const Uint32 twoPower,
+                      const Integer& modulus,
+                      Mod& mod,
+                      IntegerMath& intMath );
+
+  void twoPowerDoubleP( const Uint32 twoPower,
+                        const EPoint p,
+                        const Integer& modulus,
+                        Mod& mod,
+                        IntegerMath& intMath );
+*/
 
   };
