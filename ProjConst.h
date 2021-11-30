@@ -31,18 +31,18 @@ class ProjConst
   // See Integer.h:
   static const Uint32 digitArraySize = 515;
 
-  static const Uint32 CrtDigitArraySize =
+  static const Uint32 crtDigitArraySize =
                              digitArraySize * 2;
 
 
   // See Exponents.h:
   // To match this with a full size Integer it
   // should be digitArraySize * 32 bits.
-  static const Uint32 ExponentsLast = 2000;
+  static const Uint32 exponentsLast = 2000;
 
   // See Ellip.h:
   // The number of EPoints in an array.
-  static const Uint32 EllipseLast = 2000;
+  static const Uint32 ellipseLast = 2000;
 
 
   };
