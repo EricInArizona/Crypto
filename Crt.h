@@ -17,7 +17,7 @@ class Crt
   private:
   Int32 testForCopy = 123;
   static const Uint32 last =
-                   ProjConst::CrtDigitArraySize;
+                   ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
 
