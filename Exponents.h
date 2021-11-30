@@ -18,7 +18,7 @@ class Exponents
   private:
   Int32 testForCopy = 123;
   static const Uint32 last =
-                     ProjConst::ExponentsLast;
+                     ProjConst::exponentsLast;
   Mod mod;
   IntBuf* intBufAr;
   Integer currentBase;
