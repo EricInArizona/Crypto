@@ -1,8 +1,8 @@
 // Copyright Eric Chauvin, 2021.
 
 
-#pragma once
 
+#pragma once
 
 
 #include "BasicTypes.h"
@@ -19,6 +19,8 @@ class CrtMath
   private:
   Int32 testForCopy = 123;
   IntBuf* baseAr;
+  static const Uint32 last =
+                   ProjConst::crtDigitArraySize;
 
   void setupBaseArray( IntegerMath& intMath,
                        SPrimes& sPrimes );
