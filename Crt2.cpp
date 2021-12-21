@@ -107,3 +107,28 @@ return true;
 }
 
 
+
+bool Crt2::incrementRev( SPrimes& sPrimes,
+                         const Int32 top )
+{
+// Change the digits from the top so that
+// lower accumulate values can stay the same.
+
+for( Int32 count = top; count >= 0; count-- )
+  {
+  digitAr[count]++;
+  Uint32 prime = sPrimes.getPrimeAt((Uint32)count );
+
+  if( digitAr[count] < (Int32)prime )
+    return true; // Nothing more to do.
+
+  digitAr[count] = 0; // It wrapped around.
+  // Go around to the next lower digit.
+  }
+
+// If it got here then it got to the bottom
+// digit without returning and the bottom
+// digit wrapped around to zero.
+// So that's as far as it can go.
+return false;
+}
