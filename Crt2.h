@@ -8,8 +8,8 @@
 #include "BasicTypes.h"
 #include "ProjConst.h"
 #include "SPrimes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
+// #include "Integer.h"
+// #include "IntegerMath.h"
 
 
 class Crt2
@@ -20,6 +20,7 @@ class Crt2
                    ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
+  // Int32 lastIncIndex = 0;
 
   public:
   Crt2( void );
@@ -31,6 +32,8 @@ class Crt2
   bool isOne();
   void copy( Crt2& toCopy );
   bool isEqual( Crt2& toCheck );
+  bool incrementRev( SPrimes& sPrimes,
+                     const Int32 top );
 
   inline Int32 getD( Uint32 index )
     {
