@@ -87,7 +87,7 @@ return true;
 
 
 
-void Crt::copy( Crt& toCopy )
+void Crt::copy( const Crt& toCopy )
 {
 for( Uint32 count = 0; count < last; count++ )
   digitAr[count] = toCopy.digitAr[count];
@@ -96,7 +96,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-bool Crt::isEqual( Crt& toCheck )
+bool Crt::isEqual( const Crt& toCheck )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -109,7 +109,8 @@ return true;
 }
 
 
-void Crt::add( Crt& toAdd, SPrimes& sPrimes )
+void Crt::add( const Crt& toAdd,
+                              SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -118,22 +119,23 @@ for( Uint32 count = 0; count < last; count++ )
   digitAr[count] += toAdd.digitAr[count];
   Int32 prime = (Int32)sPrimes.getPrimeAt(
                                      count );
-  if( digitAr[count] >= prime )
-    digitAr[count] -= prime;
-
+  digitAr[count] = digitAr[count] % prime;
   }
 }
 
 
 
-void Crt::subtract( Crt& toSub, SPrimes& sPrimes )
+void Crt::subtract( const Crt& toSub,
+                               SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
   digitAr[count] -= toSub.digitAr[count];
+  Int32 prime = (Int32)sPrimes.getPrimeAt(
+                                     count );
+
   if( digitAr[count] < 0 )
-    digitAr[count] += (Int32)sPrimes.getPrimeAt(
-                                          count );
+    digitAr[count] += prime;
 
   }
 }
@@ -145,9 +147,11 @@ void Crt::decrement( SPrimes& sPrimes )
 for( Uint32 count = 0; count < last; count++ )
   {
   digitAr[count] -= 1;
+  Int32 prime = (Int32)sPrimes.getPrimeAt(
+                                     count );
   if( digitAr[count] < 0 )
-    digitAr[count] += (Int32)sPrimes.
-                            getPrimeAt( count );
+    digitAr[count] += prime;
+
   }
 }
 
@@ -169,7 +173,9 @@ for( Uint32 count = 0; count < last; count++ )
 }
 
 
-void Crt::multiply( Crt& toMul, SPrimes& sPrimes )
+
+void Crt::multiply( const Crt& toMul,
+                             SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -184,9 +190,9 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void Crt::setFromInteger( Integer& setFrom,
-                      IntegerMath& intMath,
-                      SPrimes& sPrimes )
+void Crt::setFromInteger( const Integer& setFrom,
+                          IntegerMath& intMath,
+                          SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -206,6 +212,3 @@ for( Uint32 count = 0; count < last; count++ )
               (Int32)sPrimes.getPrimeAt( count );
   }
 }
-
-
-
