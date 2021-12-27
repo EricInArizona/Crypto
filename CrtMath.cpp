@@ -31,7 +31,6 @@ CrtMath::~CrtMath( void )
 {
 delete[] baseAr;
 delete[] baseArCrt;
-
 }
 
 
@@ -48,6 +47,7 @@ void CrtMath::setupBaseArray( IntegerMath& intMath,
                     SPrimes& sPrimes )
 {
 // The first few numbers for the base:
+// 1             1
 // 2             2
 // 3             6
 // 5            30
@@ -63,8 +63,6 @@ Integer bigBase;
 bigBase.setToOne();
 bigBase.copyToIntBuf( baseAr[0] );
 baseArCrt[0].setToOne();
-
-// setBase.copyFromIntBuf( baseAr[0] );
 
 bigBase.setFromUInt( 2 );
 
@@ -91,8 +89,10 @@ for( Uint32 count = 1; count < last; count++ )
 }
 
 
-
-void CrtMath::crt2ToInteger( Crt2& from,
+// I could do this for only the bottom 8 bits
+// or mod anything.
+// Or to a top index below the current index.
+void CrtMath::crt2ToInteger( const Crt2& from,
                              Integer& toSet,
                              IntegerMath& intMath )
 {
@@ -108,86 +108,202 @@ for( Uint32 count = 1; count < last; count++ )
     continue;
 
   bigBase.copyFromIntBuf( baseAr[count] );
+
+  // Notice that the prime at this count,
+  // at this digit, is not in bigBase yet.
+  // sPrimes.getPrimeAt( count ));
+
   intMath.multiplyUInt( bigBase, digit );
+
   toSet.add( bigBase );
   }
 }
 
 
 
-void CrtMath::crtToCrt2( Crt& from, Crt2& toSet,
-                         SPrimes& sPrimes )
+void CrtMath::crtToCrt2( const Crt& from,
+                         Crt2& toSet,
+                         Integer& accum,
+                         SPrimes& sPrimes,
+                         IntegerMath& intMath )
 {
-Integer accum;
+crtToCrt2V1( from, toSet, accum, sPrimes,
+                                     intMath );
 
-// It's either zero or one.
-if( from.getD( 0 ) == 0 )
-  toSet.setToZero();
-else
+}
+
+
+
+
+// V1 is version 1 for the most basic
+// straight-forward version.
+void CrtMath::crtToCrt2V1( const Crt& from,
+                           Crt2& toSet,
+                           Integer& accum,
+                           SPrimes& sPrimes,
+                           IntegerMath& intMath )
+{
+if( from.getD( 0 ) == 1 )
+  {
   toSet.setToOne();
+  accum.setToOne();
+  }
+else
+  {
+  toSet.setToZero();
+  accum.setToZero();
+  }
 
 Integer bigBase;
-bigBase.setFromUInt( 2 );
 
 // Count starts at 1, so it's the prime 3.
 for( Uint32 count = 1; count < last; count++ )
   {
   Uint32 prime = sPrimes.getPrimeAt( count );
-
-  // uint AccumulateDigit = (uint)CRTAccumulate.GetDigitAt( Count );
+  Uint32 accumDigit = (Uint32)intMath.getMod32(
+                                  accum, prime );
 
   Uint32 testDigit = (Uint32)from.getD( count );
 
-/*
-      uint BaseDigit = (uint)CRTBaseArray[Count].GetDigitAt( Count );
-      if( BaseDigit == 0 )
-        throw( new Exception( "This never happens. BaseDigit == 0." ));
-
-      uint MatchingValue = CRTInputTestDigit;
-      if( MatchingValue < AccumulateDigit )
-        MatchingValue += Prime;
-
-      MatchingValue -= AccumulateDigit;
-      uint Inverse = (uint)MultInverseArray[Count, BaseDigit];
-      MatchingValue = (MatchingValue * Inverse) % Prime;
-      // This loop shows how it tries to find a matching
-      // CountPrime.  It is for bug testing.  It could
-      // just use the MatchingValue without using the
-      // loop to verify that it's valid.  But it shows
-      // clearly how it is trying to find a number that
-      // matches up with the CRTInput digit.
-
-
   for( Uint32 countP = 0; countP < prime;
-                                       countP++ )
+                                      countP++ )
     {
-        uint ToTestInt = BaseDigit;
-        ToTestInt *= CountPrime;
-        ToTestInt += AccumulateDigit;
-        ToTestInt %= Prime;
-        if( CRTInputTestDigit == ToTestInt )
-          {
-          if( MatchingValue != CountPrime )
-            {
-            throw( new Exception( "Bug: MatchingValue is not right." ));
-            }
+    bigBase.copyFromIntBuf( baseAr[count] );
 
-          // Notice that the first time through this loop it's zero, so the
-          // base part isn't added if it's already congruent to the Value.
-          // So even though it goes all the way up through the DigitsArray,
-          // this whole thing could add up to a small number like 7.
+    // countP might be zero here.
+    intMath.multiplyUInt( bigBase, countP );
 
-          ToTestForTraditionalInteger.Copy( BigBase );
-          CRTToTestForTraditionalInteger.Copy( CRTBaseArray[Count] );
-          IntMath.MultiplyUInt( ToTestForTraditionalInteger, CountPrime );
-          CRTToTestForTraditionalInteger.Multiply( NumbersArray[CountPrime] );
-          Accumulate.Add( ToTestForTraditionalInteger );
-          CRTAccumulate.Add( CRTToTestForTraditionalInteger );
-          break;
-          }
+    Uint32 test = (Uint32)intMath.getMod32(
+                                bigBase, prime );
+    test += accumDigit;
+    test = test % prime;
+    if( test == testDigit )
+      {
+      toSet.setD( (Int32)countP, count );
+      // It might add zero here.
+      accum.add( bigBase );
+      break;
+      }
+    }
+  }
+}
 
 
-*/
+
+void CrtMath::crtToCrt2V2( const Crt& from,
+                           Crt2& toSet,
+                           Integer& accum,
+                           SPrimes& sPrimes,
+                           IntegerMath& intMath )
+{
+// For testing the next V2 version.
+Crt accumCrt;
+
+if( from.getD( 0 ) == 1 )
+  {
+  toSet.setToOne();
+  accum.setToOne();
+  accumCrt.setToOne();
+  }
+else
+  {
+  toSet.setToZero();
+  accum.setToZero();
+  accumCrt.setToZero();
   }
 
+Integer bigBase;
+Crt crtBase;
+Crt crtCountP;
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumDigit = (Uint32)intMath.getMod32(
+                                  accum, prime );
+
+/*
+  Uint32 accumTest = addForAccum( toSet,
+                                   count - 1,
+                                  sPrimes );
+  if( accumTest != accumDigit )
+    throw "accumTest != accumDigit";
+*/
+
+  Uint32 testDigit = (Uint32)from.getD( count );
+
+  for( Uint32 countP = 0; countP < prime;
+                                      countP++ )
+    {
+    bigBase.copyFromIntBuf( baseAr[count] );
+    crtBase.setFromInteger( bigBase,
+                            intMath,
+                            sPrimes );
+
+    //    crtBase.copy( baseArCrt[count] )
+
+    // countP might be zero here.
+    intMath.multiplyUInt( bigBase, countP );
+
+
+==== Where am I with this?
+
+    crtCountP.setFromUInt( countP, sPrimes );
+
+
+    Uint32 test = (Uint32)intMath.getMod32(
+                                bigBase, prime );
+    test += accumDigit;
+    test = test % prime;
+    if( test == testDigit )
+      {
+      toSet.setD( (Int32)countP, count );
+      // It might add zero here.
+      accum.add( bigBase );
+
+      break;
+      }
+    }
+  }
+
+
+//  Uint32 baseDigit = (Uint32)
+//               baseArCrt[count].getD( count );
+//  if( baseDigit == 0 )
+//  throw "This never happens. baseDigit == 0.";
+
+//  uint Inverse = (uint)MultInverseArray[
+//                           Count, BaseDigit];
+// MatchingValue = (MatchingValue * Inverse)
+//                                   % Prime;
+
+}
+
+
+
+bool CrtMath::test( Integer& t1,
+                    IntegerMath& intMath,
+                    SPrimes& sPrimes )
+{
+Crt test1;
+test1.setFromInteger( t1, intMath, sPrimes );
+
+Integer accum;
+
+Crt2 test2;
+crtToCrt2( test1, test2, accum, sPrimes,
+                                    intMath );
+
+if( !accum.isEqual( t1 ))
+  return false;
+
+Integer result;
+
+crt2ToInteger( test2, result, intMath );
+
+if( !result.isEqual( t1 ))
+  return false;
+
+return true;
 }
