@@ -85,7 +85,7 @@ return true;
 
 
 
-void Crt2::copy( Crt2& toCopy )
+void Crt2::copy( const Crt2& toCopy )
 {
 for( Uint32 count = 0; count < last; count++ )
   digitAr[count] = toCopy.digitAr[count];
@@ -94,7 +94,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-bool Crt2::isEqual( Crt2& toCheck )
+bool Crt2::isEqual( const Crt2& toCheck )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
