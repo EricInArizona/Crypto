@@ -196,7 +196,6 @@ void CrtMath::crtToCrt2V2( const Crt& from,
                            SPrimes& sPrimes,
                            IntegerMath& intMath )
 {
-// For testing the next V2 version.
 Crt accumCrt;
 
 if( from.getD( 0 ) == 1 )
@@ -223,35 +222,21 @@ for( Uint32 count = 1; count < last; count++ )
   Uint32 accumDigit = (Uint32)intMath.getMod32(
                                   accum, prime );
 
-/*
-  Uint32 accumTest = addForAccum( toSet,
-                                   count - 1,
-                                  sPrimes );
-  if( accumTest != accumDigit )
-    throw "accumTest != accumDigit";
-*/
-
   Uint32 testDigit = (Uint32)from.getD( count );
 
   for( Uint32 countP = 0; countP < prime;
                                       countP++ )
     {
     bigBase.copyFromIntBuf( baseAr[count] );
-    crtBase.setFromInteger( bigBase,
-                            intMath,
-                            sPrimes );
-
-    //    crtBase.copy( baseArCrt[count] )
+    crtBase.copy( baseArCrt[count] );
 
     // countP might be zero here.
     intMath.multiplyUInt( bigBase, countP );
 
 
-==== Where am I with this?
-
     crtCountP.setFromUInt( countP, sPrimes );
-
-
+    crtBase.multiply( crtCountP, sPrimes );
+ 
     Uint32 test = (Uint32)intMath.getMod32(
                                 bigBase, prime );
     test += accumDigit;
