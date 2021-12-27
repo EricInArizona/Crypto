@@ -16,6 +16,9 @@
 #include "Fermat.h"
 #include "Euclid.h"
 #include "Division.h"
+#include "Crt.h"
+#include "Crt2.h"
+#include "CrtMath.h"
 
 
 
@@ -25,7 +28,6 @@ RSA::RSA( void )
 }
 
 
-// The copy constructor.
 RSA::RSA( const RSA& in )
 {
 // Make the compiler think in is being used.
@@ -59,6 +61,9 @@ mainIO.appendChars( "Finished test.\n" );
 
 void RSA::makeRSAKeys( FileIO& mainIO )
 {
+CrtMath crtMath;
+crtMath.init( intMath, sPrimes );
+
 pubKeyExponent.setFromULong( PubKeyExponentU );
 
 Uint32 showBits = (PrimeIndex + 1) * 32;
@@ -135,6 +140,11 @@ for( Uint32 count = 0; count < 3; count++ )
 
   if( !testEncryption())
     throw "!testEncryption().\n";
+
+  if( !crtMath.test( primeP,
+                     intMath,
+                     sPrimes ))
+    throw "!crtMath.test().";
 
   mainIO.appendChars( "Good pair.\n" );
   }
