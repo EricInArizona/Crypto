@@ -34,12 +34,27 @@ class CrtMath
   void init( IntegerMath& intMath,
                              SPrimes& sPrimes );
 
-  void crt2ToInteger( Crt2& from,
+  void crt2ToInteger( const Crt2& from,
                       Integer& toSet,
                       IntegerMath& intMath );
 
-  void crtToCrt2( Crt& from, Crt2& toSet,
-                  SPrimes& sPrimes );
+  void crtToCrt2( const Crt& from, Crt2& toSet,
+                  Integer& accum,
+                  SPrimes& sPrimes,
+                  IntegerMath& intMath );
+
+  void crtToCrt2V1( const Crt& from, Crt2& toSet,
+                    Integer& accum,
+                    SPrimes& sPrimes,
+                    IntegerMath& intMath );
+
+  void crtToCrt2V2( const Crt& from, Crt2& toSet,
+                    Integer& accum,
+                    SPrimes& sPrimes,
+                    IntegerMath& intMath );
+
+  bool test( Integer& t1, IntegerMath& intMath,
+                          SPrimes& sPrimes );
 
 
 
