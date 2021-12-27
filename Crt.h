@@ -29,22 +29,24 @@ class Crt
   void setToOne();
   bool isZero();
   bool isOne();
-  void copy( Crt& toCopy );
-  bool isEqual( Crt& toCheck );
-  void add( Crt& toAdd, SPrimes& sPrimes );
-  void subtract( Crt& toSub, SPrimes& sPrimes );
+  void copy( const Crt& toCopy );
+  bool isEqual( const Crt& toCheck );
+  void add( const Crt& toAdd, SPrimes& sPrimes );
+  void subtract( const Crt& toSub,
+                             SPrimes& sPrimes );
   void decrement( SPrimes& sPrimes );
   void subtractUint( Uint32 toSub,
                      SPrimes& sPrimes );
-  void multiply( Crt& toMul, SPrimes& sPrimes );
-  void setFromInteger( Integer& setFrom,
+  void multiply( const Crt& toMul,
+                           SPrimes& sPrimes );
+  void setFromInteger( const Integer& setFrom,
                        IntegerMath& intMath,
                        SPrimes& sPrimes );
   void setFromUInt( Uint32 setFrom,
                        SPrimes& sPrimes );
 
 
-  inline Int32 getD( Uint32 index )
+  inline Int32 getD( Uint32 index ) const
     {
     // Comment out after testing:
     if( index >= last )
