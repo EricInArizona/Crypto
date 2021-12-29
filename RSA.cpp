@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -18,7 +18,6 @@
 #include "Division.h"
 #include "Crt.h"
 #include "Crt2.h"
-#include "CrtMath.h"
 
 
 
@@ -141,10 +140,9 @@ for( Uint32 count = 0; count < 3; count++ )
   if( !testEncryption())
     throw "!testEncryption().\n";
 
-  if( !crtMath.test( primeP,
-                     intMath,
-                     sPrimes ))
-    throw "!crtMath.test().";
+  if( !crtTest( primeP, crtMath ))
+    throw "!crtTest().";
+
 
   mainIO.appendChars( "Good pair.\n" );
   }
@@ -152,6 +150,31 @@ for( Uint32 count = 0; count < 3; count++ )
 mainIO.appendChars( "End of makeRSAKeys().\n" );
 }
 
+
+bool RSA::crtTest( Integer& t1, CrtMath& crtMath )
+{
+Crt test1;
+test1.setFromInteger( t1, intMath, sPrimes );
+
+Integer accum;
+
+Crt2 test2;
+
+test2.setFromCrt( test1, accum, crtMath,
+                       sPrimes, intMath );
+
+if( !accum.isEqual( t1 ))
+  return false;
+
+Integer result;
+
+test2.toInteger( crtMath, result, intMath );
+
+if( !result.isEqual( t1 ))
+  return false;
+
+return true;
+}
 
 
 
