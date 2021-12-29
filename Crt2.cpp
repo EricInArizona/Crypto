@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -231,6 +231,29 @@ for( Uint32 count = 1; count < last; count++ )
 }
 
 
+Uint32 Crt2::getAccumMod( Uint32 row,
+                          Uint32 col,
+                          CrtMath& crtMath,
+                          SPrimes& sPrimes )
+{
+// It's either 1 or zero.
+Uint32 accum = crtMath.getCrtDigit( 0, col );
+Uint32 prime = sPrimes.getPrimeAt( col ); 
+
+for( Uint32 count = 1; count < row; count++ )
+  {
+  Uint32 digit = crtMath.getCrtDigit( 
+                                   count, col );
+  digit = digit * (Uint32)getD( count );
+  digit = digit % prime;
+  accum += digit;
+  }
+
+accum = accum % prime;
+return accum;
+}
+
+
 
 void Crt2::setFromCrtV2( const Crt& from,
                          Integer& accum,
@@ -267,9 +290,6 @@ for( Uint32 count = 1; count < last; count++ )
 
     // countP might be zero here.
     intMath.multiplyUInt( bigBase, countP );
-
-    // crtCountP.setFromUInt( countP, sPrimes );
-    // crtBase.multiply( crtCountP, sPrimes );
 
     Uint32 test = (Uint32)intMath.getMod32(
                                 bigBase, prime );
