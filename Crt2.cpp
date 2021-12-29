@@ -132,3 +132,156 @@ for( Int32 count = top; count >= 0; count-- )
 // So that's as far as it can go.
 return false;
 }
+
+
+// I could do this for only the bottom 8 bits
+// or mod anything.
+// Or to a top index below the current index.
+void Crt2::toInteger( const CrtMath& crtMath,
+                      Integer& toSet,
+                      IntegerMath& intMath )
+{
+// Set it to one or zero to start.
+toSet.setFromUInt( (Uint32)getD( 0 ));
+
+Integer bigBase;
+
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 digit = (Uint32)getD( count );
+  if( digit == 0 )
+    continue;
+
+  crtMath.copyFromIntBuf( bigBase, count );
+
+  // Notice that the prime at this count,
+  // at this digit, is not in bigBase yet.
+  // sPrimes.getPrimeAt( count ));
+
+  intMath.multiplyUInt( bigBase, digit );
+  toSet.add( bigBase );
+  }
+}
+
+
+
+void Crt2::setFromCrt( const Crt& from,
+                       Integer& accum,
+                       CrtMath& crtMath,
+                       SPrimes& sPrimes,
+                       IntegerMath& intMath )
+{
+setFromCrtV1( from, accum, crtMath, sPrimes,
+                                     intMath );
+}
+
+
+
+// V1 is version 1 for the most basic
+// straight-forward version.
+void Crt2::setFromCrtV1( const Crt& from,
+                         Integer& accum,
+                         CrtMath& crtMath,
+                         SPrimes& sPrimes,
+                         IntegerMath& intMath )
+{
+if( from.getD( 0 ) == 1 )
+  {
+  setToOne();
+  accum.setToOne();
+  }
+else
+  {
+  setToZero();
+  accum.setToZero();
+  }
+
+Integer bigBase;
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumDigit = (Uint32)intMath.getMod32(
+                                  accum, prime );
+
+  Uint32 testDigit = (Uint32)from.getD( count );
+
+  for( Uint32 countP = 0; countP < prime;
+                                      countP++ )
+    {
+    crtMath.copyFromIntBuf( bigBase, count );
+
+    // countP might be zero here.
+    intMath.multiplyUInt( bigBase, countP );
+
+    Uint32 test = (Uint32)intMath.getMod32(
+                                bigBase, prime );
+    test += accumDigit;
+    test = test % prime;
+    if( test == testDigit )
+      {
+      setD( (Int32)countP, count );
+      // It might add zero here.
+      accum.add( bigBase );
+      break;
+      }
+    }
+  }
+}
+
+
+
+void Crt2::setFromCrtV2( const Crt& from,
+                         Integer& accum,
+                         CrtMath& crtMath,
+                         SPrimes& sPrimes,
+                         IntegerMath& intMath )
+{
+if( from.getD( 0 ) == 1 )
+  {
+  setToOne();
+  accum.setToOne();
+  }
+else
+  {
+  setToZero();
+  accum.setToZero();
+  }
+
+Integer bigBase;
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumDigit = (Uint32)intMath.getMod32(
+                                  accum, prime );
+
+  Uint32 testDigit = (Uint32)from.getD( count );
+
+  for( Uint32 countP = 0; countP < prime;
+                                      countP++ )
+    {
+    crtMath.copyFromIntBuf( bigBase, count );
+
+    // countP might be zero here.
+    intMath.multiplyUInt( bigBase, countP );
+
+    // crtCountP.setFromUInt( countP, sPrimes );
+    // crtBase.multiply( crtCountP, sPrimes );
+
+    Uint32 test = (Uint32)intMath.getMod32(
+                                bigBase, prime );
+    test += accumDigit;
+    test = test % prime;
+    if( test == testDigit )
+      {
+      setD( (Int32)countP, count );
+      // It might add zero here.
+      accum.add( bigBase );
+      break;
+      }
+    }
+  }
+}
