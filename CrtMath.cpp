@@ -9,7 +9,7 @@
 CrtMath::CrtMath( void )
 {
 baseAr = new IntBuf[last];
-baseArCrt = new Crt[last];
+// baseArCrt = new Crt[last];
 }
 
 
@@ -17,7 +17,7 @@ baseArCrt = new Crt[last];
 CrtMath::CrtMath( const CrtMath& in )
 {
 baseAr = new IntBuf[last];
-baseArCrt = new Crt[last];
+// baseArCrt = new Crt[last];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -30,7 +30,7 @@ throw "Don't use copy constructor for CrtMath.\n";
 CrtMath::~CrtMath( void )
 {
 delete[] baseAr;
-delete[] baseArCrt;
+// delete[] baseArCrt;
 }
 
 
@@ -62,7 +62,7 @@ Integer bigBase;
 
 bigBase.setToOne();
 bigBase.copyToIntBuf( baseAr[0] );
-baseArCrt[0].setToOne();
+// baseArCrt[0].setToOne();
 
 bigBase.setFromUInt( 2 );
 
@@ -78,9 +78,9 @@ bigBase.setFromUInt( 2 );
 for( Uint32 count = 1; count < last; count++ )
   {
   bigBase.copyToIntBuf( baseAr[count] );
-  baseArCrt[count].setFromInteger( bigBase,
-                                   intMath,
-                                   sPrimes );
+  // baseArCrt[count].setFromInteger( bigBase,
+  //                                 intMath,
+  //                                 sPrimes );
 
   // Multiply it for the next bigBase.
   intMath.multiplyUInt( bigBase,
@@ -89,206 +89,8 @@ for( Uint32 count = 1; count < last; count++ )
 }
 
 
-// I could do this for only the bottom 8 bits
-// or mod anything.
-// Or to a top index below the current index.
-void CrtMath::crt2ToInteger( const Crt2& from,
-                             Integer& toSet,
-                             IntegerMath& intMath )
+void CrtMath::copyFromIntBuf( Integer& copyTo,
+                           Uint32 where ) const
 {
-// Set it to one or zero to start.
-toSet.setFromUInt( (Uint32)from.getD( 0 ));
-
-Integer bigBase;
-
-for( Uint32 count = 1; count < last; count++ )
-  {
-  Uint32 digit = (Uint32)from.getD( count );
-  if( digit == 0 )
-    continue;
-
-  bigBase.copyFromIntBuf( baseAr[count] );
-
-  // Notice that the prime at this count,
-  // at this digit, is not in bigBase yet.
-  // sPrimes.getPrimeAt( count ));
-
-  intMath.multiplyUInt( bigBase, digit );
-
-  toSet.add( bigBase );
-  }
-}
-
-
-
-void CrtMath::crtToCrt2( const Crt& from,
-                         Crt2& toSet,
-                         Integer& accum,
-                         SPrimes& sPrimes,
-                         IntegerMath& intMath )
-{
-crtToCrt2V1( from, toSet, accum, sPrimes,
-                                     intMath );
-
-}
-
-
-
-
-// V1 is version 1 for the most basic
-// straight-forward version.
-void CrtMath::crtToCrt2V1( const Crt& from,
-                           Crt2& toSet,
-                           Integer& accum,
-                           SPrimes& sPrimes,
-                           IntegerMath& intMath )
-{
-if( from.getD( 0 ) == 1 )
-  {
-  toSet.setToOne();
-  accum.setToOne();
-  }
-else
-  {
-  toSet.setToZero();
-  accum.setToZero();
-  }
-
-Integer bigBase;
-
-// Count starts at 1, so it's the prime 3.
-for( Uint32 count = 1; count < last; count++ )
-  {
-  Uint32 prime = sPrimes.getPrimeAt( count );
-  Uint32 accumDigit = (Uint32)intMath.getMod32(
-                                  accum, prime );
-
-  Uint32 testDigit = (Uint32)from.getD( count );
-
-  for( Uint32 countP = 0; countP < prime;
-                                      countP++ )
-    {
-    bigBase.copyFromIntBuf( baseAr[count] );
-
-    // countP might be zero here.
-    intMath.multiplyUInt( bigBase, countP );
-
-    Uint32 test = (Uint32)intMath.getMod32(
-                                bigBase, prime );
-    test += accumDigit;
-    test = test % prime;
-    if( test == testDigit )
-      {
-      toSet.setD( (Int32)countP, count );
-      // It might add zero here.
-      accum.add( bigBase );
-      break;
-      }
-    }
-  }
-}
-
-
-
-void CrtMath::crtToCrt2V2( const Crt& from,
-                           Crt2& toSet,
-                           Integer& accum,
-                           SPrimes& sPrimes,
-                           IntegerMath& intMath )
-{
-Crt accumCrt;
-
-if( from.getD( 0 ) == 1 )
-  {
-  toSet.setToOne();
-  accum.setToOne();
-  accumCrt.setToOne();
-  }
-else
-  {
-  toSet.setToZero();
-  accum.setToZero();
-  accumCrt.setToZero();
-  }
-
-Integer bigBase;
-Crt crtBase;
-Crt crtCountP;
-
-// Count starts at 1, so it's the prime 3.
-for( Uint32 count = 1; count < last; count++ )
-  {
-  Uint32 prime = sPrimes.getPrimeAt( count );
-  Uint32 accumDigit = (Uint32)intMath.getMod32(
-                                  accum, prime );
-
-  Uint32 testDigit = (Uint32)from.getD( count );
-
-  for( Uint32 countP = 0; countP < prime;
-                                      countP++ )
-    {
-    bigBase.copyFromIntBuf( baseAr[count] );
-    crtBase.copy( baseArCrt[count] );
-
-    // countP might be zero here.
-    intMath.multiplyUInt( bigBase, countP );
-
-
-    crtCountP.setFromUInt( countP, sPrimes );
-    crtBase.multiply( crtCountP, sPrimes );
- 
-    Uint32 test = (Uint32)intMath.getMod32(
-                                bigBase, prime );
-    test += accumDigit;
-    test = test % prime;
-    if( test == testDigit )
-      {
-      toSet.setD( (Int32)countP, count );
-      // It might add zero here.
-      accum.add( bigBase );
-
-      break;
-      }
-    }
-  }
-
-
-//  Uint32 baseDigit = (Uint32)
-//               baseArCrt[count].getD( count );
-//  if( baseDigit == 0 )
-//  throw "This never happens. baseDigit == 0.";
-
-//  uint Inverse = (uint)MultInverseArray[
-//                           Count, BaseDigit];
-// MatchingValue = (MatchingValue * Inverse)
-//                                   % Prime;
-
-}
-
-
-
-bool CrtMath::test( Integer& t1,
-                    IntegerMath& intMath,
-                    SPrimes& sPrimes )
-{
-Crt test1;
-test1.setFromInteger( t1, intMath, sPrimes );
-
-Integer accum;
-
-Crt2 test2;
-crtToCrt2( test1, test2, accum, sPrimes,
-                                    intMath );
-
-if( !accum.isEqual( t1 ))
-  return false;
-
-Integer result;
-
-crt2ToInteger( test2, result, intMath );
-
-if( !result.isEqual( t1 ))
-  return false;
-
-return true;
+copyTo.copyFromIntBuf( baseAr[where] );
 }
