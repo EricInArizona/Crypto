@@ -81,5 +81,9 @@ class Crt2
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
 
+  Uint32 getAccumMod( Uint32 row,
+                      Uint32 col,
+                      CrtMath& crtMath,
+                      SPrimes& sPrimes );
 
   };
