@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -8,6 +8,9 @@
 #include "BasicTypes.h"
 #include "ProjConst.h"
 #include "SPrimes.h"
+#include "Crt.h"
+#include "CrtMath.h"
+
 
 
 
@@ -19,6 +22,7 @@ class Crt2
                    ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
+  Uint32 length = 0;
 
   public:
   Crt2( void );
@@ -50,6 +54,32 @@ class Crt2
     digitAr[index] = setTo;
     }
 
+  inline Uint32 getLength( void ) const
+    {
+    return length;
+    }
+
+  void toInteger( const CrtMath& crtMath,
+                  Integer& toSet,
+                  IntegerMath& intMath );
+
+  void setFromCrt( const Crt& from,
+                   Integer& accum,
+                   CrtMath& crtMath,
+                   SPrimes& sPrimes,
+                   IntegerMath& intMath );
+
+  void setFromCrtV1( const Crt& from,
+                     Integer& accum,
+                     CrtMath& crtMath,
+                     SPrimes& sPrimes,
+                     IntegerMath& intMath );
+
+  void setFromCrtV2( const Crt& from,
+                     Integer& accum,
+                     CrtMath& crtMath,
+                     SPrimes& sPrimes,
+                     IntegerMath& intMath );
 
 
   };
