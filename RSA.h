@@ -1,4 +1,5 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 -2022.
+
 
 
 #pragma once
@@ -11,6 +12,7 @@
 #include "Mod.h"
 #include "FileIO.h"
 // #include "Exponents.h"
+#include "CrtMath.h"
 
 
 
@@ -46,6 +48,7 @@ class RSA
   // static const Uint32 PrimeIndex = 2; // 96-bit
   // static const int PrimeIndex = 3; // 128-bit
   // static const int PrimeIndex = 4; // 160-bit
+
   // static const int PrimeIndex = 5; // 192-bit
   // static const int PrimeIndex = 6; // 224-bit
   // static const int PrimeIndex = 7; // 256-bit
@@ -77,5 +80,6 @@ class RSA
   bool decryptWithQInverse(
                  Integer& encryptedNumber,
                  Integer& decryptedNumber );
+  bool crtTest( Integer& t1, CrtMath& crtMath );
 
   };
