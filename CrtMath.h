@@ -10,6 +10,7 @@
 #include "IntegerMath.h"
 #include "IntBuf.h"
 #include "SPrimes.h"
+#include "Crt.h"
 
 
 
@@ -18,6 +19,8 @@ class CrtMath
   private:
   Int32 testForCopy = 123;
   IntBuf* baseAr;
+  Crt* baseArCrt;
+
   static const Uint32 last =
                    ProjConst::crtDigitArraySize;
 
@@ -33,5 +36,11 @@ class CrtMath
 
   void copyFromIntBuf( Integer& copyTo,
                            Uint32 where ) const;
+
+  inline Uint32 getCrtDigit( Uint32 row,
+                                    Uint32 col )
+    {
+    return (Uint32)baseArCrt[row].getD( col );
+    }
 
   };
