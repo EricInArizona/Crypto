@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -9,7 +9,7 @@
 CrtMath::CrtMath( void )
 {
 baseAr = new IntBuf[last];
-// baseArCrt = new Crt[last];
+baseArCrt = new Crt[last];
 }
 
 
@@ -17,7 +17,7 @@ baseAr = new IntBuf[last];
 CrtMath::CrtMath( const CrtMath& in )
 {
 baseAr = new IntBuf[last];
-// baseArCrt = new Crt[last];
+baseArCrt = new Crt[last];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -30,7 +30,7 @@ throw "Don't use copy constructor for CrtMath.\n";
 CrtMath::~CrtMath( void )
 {
 delete[] baseAr;
-// delete[] baseArCrt;
+delete[] baseArCrt;
 }
 
 
@@ -62,7 +62,7 @@ Integer bigBase;
 
 bigBase.setToOne();
 bigBase.copyToIntBuf( baseAr[0] );
-// baseArCrt[0].setToOne();
+baseArCrt[0].setToOne();
 
 bigBase.setFromUInt( 2 );
 
@@ -78,9 +78,9 @@ bigBase.setFromUInt( 2 );
 for( Uint32 count = 1; count < last; count++ )
   {
   bigBase.copyToIntBuf( baseAr[count] );
-  // baseArCrt[count].setFromInteger( bigBase,
-  //                                 intMath,
-  //                                 sPrimes );
+  baseArCrt[count].setFromInteger( bigBase,
+                                   intMath,
+                                   sPrimes );
 
   // Multiply it for the next bigBase.
   intMath.multiplyUInt( bigBase,
@@ -94,3 +94,7 @@ void CrtMath::copyFromIntBuf( Integer& copyTo,
 {
 copyTo.copyFromIntBuf( baseAr[where] );
 }
+
+
+
+
