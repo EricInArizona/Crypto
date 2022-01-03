@@ -36,18 +36,15 @@ delete[] digitAr;
 
 void Crt2::setToZero()
 {
-for( Uint32 count = 0; count < last; count++ )
-  digitAr[count] = 0;
-
+length = 0;
+digitAr[0] = 0;
 }
 
 
 
 void Crt2::setToOne()
 {
-for( Uint32 count = 1; count < last; count++ )
-  digitAr[count] = 0;
-
+length = 0;
 digitAr[0] = 1;
 }
 
@@ -56,12 +53,11 @@ digitAr[0] = 1;
 
 bool Crt2::isZero()
 {
-for( Uint32 count = 0; count < last; count++ )
-  {
-  if( digitAr[count] != 0 )
-    return false;
+if( length != 0 )
+  return false;
 
-  }
+if( digitAr[0] != 0 )
+  return false;
 
 return true;
 }
@@ -70,15 +66,11 @@ return true;
 
 bool Crt2::isOne()
 {
-if( digitAr[0] != 1 )
+if( length != 0 )
   return false;
 
-for( Uint32 count = 1; count < last; count++ )
-  {
-  if( digitAr[count] != 0 )
-    return false;
-
-  }
+if( digitAr[0] != 1 )
+  return false;
 
 return true;
 }
@@ -87,7 +79,9 @@ return true;
 
 void Crt2::copy( const Crt2& toCopy )
 {
-for( Uint32 count = 0; count < last; count++ )
+length = toCopy.length;
+const Uint32 endAt = length;
+for( Uint32 count = 0; count <= endAt; count++ )
   digitAr[count] = toCopy.digitAr[count];
 
 }
@@ -96,7 +90,11 @@ for( Uint32 count = 0; count < last; count++ )
 
 bool Crt2::isEqual( const Crt2& toCheck )
 {
-for( Uint32 count = 0; count < last; count++ )
+if( length != toCheck.length )
+  return false;
+
+const Uint32 endAt = length;
+for( Uint32 count = 0; count <= endAt; count++ )
   {
   if( digitAr[count] != toCheck.digitAr[count] )
     return false;
@@ -107,7 +105,9 @@ return true;
 }
 
 
-
+/*
+Set the length too.
+Start small and go to a bigger number.
 bool Crt2::incrementRev( SPrimes& sPrimes,
                          const Int32 top )
 {
@@ -124,14 +124,19 @@ for( Int32 count = top; count >= 0; count-- )
 
   digitAr[count] = 0; // It wrapped around.
   // Go around to the next lower digit.
+
+
   }
 
 // If it got here then it got to the bottom
 // digit without returning and the bottom
 // digit wrapped around to zero.
-// So that's as far as it can go.
-return false;
+// So make the length bigger and set the digit
+// at the length to 1 and go around again.
+
+return what?;
 }
+*/
 
 
 // I could do this for only the bottom 8 bits
@@ -146,7 +151,8 @@ toSet.setFromUInt( (Uint32)getD( 0 ));
 
 Integer bigBase;
 
-for( Uint32 count = 1; count < last; count++ )
+const Uint32 endAt = length;
+for( Uint32 count = 1; count <= endAt; count++ )
   {
   Uint32 digit = (Uint32)getD( count );
   if( digit == 0 )
@@ -172,7 +178,9 @@ void Crt2::setFromCrt( const Crt& from,
                        IntegerMath& intMath )
 {
 setFromCrtV1( from, accum, crtMath, sPrimes,
-                                     intMath );
+                                    intMath );
+
+// setFromCrtV2( from, crtMath, sPrimes, intMath );
 }
 
 
@@ -221,9 +229,13 @@ for( Uint32 count = 1; count < last; count++ )
     test = test % prime;
     if( test == testDigit )
       {
+      if( countP != 0 )
+        {
+        length = count;
+        accum.add( bigBase );
+        }
+
       setD( (Int32)countP, count );
-      // It might add zero here.
-      accum.add( bigBase );
       break;
       }
     }
@@ -231,77 +243,3 @@ for( Uint32 count = 1; count < last; count++ )
 }
 
 
-Uint32 Crt2::getAccumMod( Uint32 row,
-                          Uint32 col,
-                          CrtMath& crtMath,
-                          SPrimes& sPrimes )
-{
-// It's either 1 or zero.
-Uint32 accum = crtMath.getCrtDigit( 0, col );
-Uint32 prime = sPrimes.getPrimeAt( col ); 
-
-for( Uint32 count = 1; count < row; count++ )
-  {
-  Uint32 digit = crtMath.getCrtDigit( 
-                                   count, col );
-  digit = digit * (Uint32)getD( count );
-  digit = digit % prime;
-  accum += digit;
-  }
-
-accum = accum % prime;
-return accum;
-}
-
-
-
-void Crt2::setFromCrtV2( const Crt& from,
-                         Integer& accum,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes,
-                         IntegerMath& intMath )
-{
-if( from.getD( 0 ) == 1 )
-  {
-  setToOne();
-  accum.setToOne();
-  }
-else
-  {
-  setToZero();
-  accum.setToZero();
-  }
-
-Integer bigBase;
-
-// Count starts at 1, so it's the prime 3.
-for( Uint32 count = 1; count < last; count++ )
-  {
-  Uint32 prime = sPrimes.getPrimeAt( count );
-  Uint32 accumDigit = (Uint32)intMath.getMod32(
-                                  accum, prime );
-
-  Uint32 testDigit = (Uint32)from.getD( count );
-
-  for( Uint32 countP = 0; countP < prime;
-                                      countP++ )
-    {
-    crtMath.copyFromIntBuf( bigBase, count );
-
-    // countP might be zero here.
-    intMath.multiplyUInt( bigBase, countP );
-
-    Uint32 test = (Uint32)intMath.getMod32(
-                                bigBase, prime );
-    test += accumDigit;
-    test = test % prime;
-    if( test == testDigit )
-      {
-      setD( (Int32)countP, count );
-      // It might add zero here.
-      accum.add( bigBase );
-      break;
-      }
-    }
-  }
-}
