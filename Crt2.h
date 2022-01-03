@@ -34,8 +34,8 @@ class Crt2
   bool isOne();
   void copy( const Crt2& toCopy );
   bool isEqual( const Crt2& toCheck );
-  bool incrementRev( SPrimes& sPrimes,
-                     const Int32 top );
+  // bool incrementRev( SPrimes& sPrimes,
+  //                   const Int32 top );
 
   inline Int32 getD( Uint32 index ) const
     {
@@ -74,16 +74,13 @@ class Crt2
                      CrtMath& crtMath,
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
-
+/*
   void setFromCrtV2( const Crt& from,
-                     Integer& accum,
+                     // Integer& accum,
                      CrtMath& crtMath,
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
+*/
 
-  Uint32 getAccumMod( Uint32 row,
-                      Uint32 col,
-                      CrtMath& crtMath,
-                      SPrimes& sPrimes );
 
   };
