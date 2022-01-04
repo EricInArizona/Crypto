@@ -74,13 +74,16 @@ class Crt2
                      CrtMath& crtMath,
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
-/*
+
+  Uint32 getAccumD( const Uint32 row,
+                    const Uint32 col,
+                    const Uint32 prime,
+                    CrtMath& crtMath );
+
   void setFromCrtV2( const Crt& from,
-                     // Integer& accum,
+                     Integer& accum,
                      CrtMath& crtMath,
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
-*/
-
 
   };
