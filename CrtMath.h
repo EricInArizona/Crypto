@@ -37,8 +37,8 @@ class CrtMath
   void copyFromIntBuf( Integer& copyTo,
                            Uint32 where ) const;
 
-  inline Uint32 getCrtDigit( Uint32 row,
-                                    Uint32 col )
+  inline Uint32 getCrtDigit( const Uint32 row,
+                             const Uint32 col )
     {
     return (Uint32)baseArCrt[row].getD( col );
     }
