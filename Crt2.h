@@ -64,10 +64,11 @@ class Crt2
                   IntegerMath& intMath );
 
   void setFromCrt( const Crt& from,
-                   Integer& accum,
+                   // Integer& accum,
                    CrtMath& crtMath,
-                   SPrimes& sPrimes,
-                   IntegerMath& intMath );
+                   SPrimes& sPrimes // ,
+                   // IntegerMath& intMath
+                   );
 
   void setFromCrtV1( const Crt& from,
                      Integer& accum,
@@ -85,5 +86,9 @@ class Crt2
                      CrtMath& crtMath,
                      SPrimes& sPrimes,
                      IntegerMath& intMath );
+
+  void setFromCrtV3( const Crt& from,
+                     CrtMath& crtMath,
+                     SPrimes& sPrimes );
 
   };
