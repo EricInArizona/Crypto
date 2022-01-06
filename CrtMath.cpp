@@ -90,7 +90,7 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 void CrtMath::copyFromIntBuf( Integer& copyTo,
-                           Uint32 where ) const
+                  const Uint32 where ) const
 {
 copyTo.copyFromIntBuf( baseAr[where] );
 }
