@@ -35,10 +35,10 @@ class CrtMath
                              SPrimes& sPrimes );
 
   void copyFromIntBuf( Integer& copyTo,
-                           Uint32 where ) const;
+                    const Uint32 where ) const;
 
   inline Uint32 getCrtDigit( const Uint32 row,
-                             const Uint32 col )
+                       const Uint32 col ) const
     {
     return (Uint32)baseArCrt[row].getD( col );
     }
