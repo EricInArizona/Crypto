@@ -172,17 +172,19 @@ for( Uint32 count = 1; count <= endAt; count++ )
 
 
 void Crt2::setFromCrt( const Crt& from,
-                       Integer& accum,
+                       // Integer& accum,
                        CrtMath& crtMath,
-                       SPrimes& sPrimes,
-                       IntegerMath& intMath )
+                       SPrimes& sPrimes // ,
+                       // IntegerMath& intMath
+                       )
 {
 // setFromCrtV1( from, accum, crtMath, sPrimes,
 //                                    intMath );
 
-setFromCrtV2( from, accum, crtMath, sPrimes,
-                                    intMath );
+// setFromCrtV2( from, accum, crtMath, sPrimes,
+//                                    intMath );
 
+setFromCrtV3( from, crtMath, sPrimes );
 }
 
 
@@ -310,11 +312,21 @@ for( Uint32 count = 1; count < last; count++ )
     {
     crtMath.copyFromIntBuf( bigBase, count );
 
+    Uint32 baseMod = crtMath.getCrtDigit( count,
+                                      count );
+
+    baseMod = baseMod * countP;
+
     // countP might be zero here.
     intMath.multiplyUInt( bigBase, countP );
 
     Uint32 test = (Uint32)intMath.getMod32(
                                 bigBase, prime );
+
+    baseMod = baseMod % prime;
+    if( baseMod != test )
+      throw "baseMod != test";
+
     test += accumDigit;
     test = test % prime;
     if( test == testDigit )
@@ -323,6 +335,52 @@ for( Uint32 count = 1; count < last; count++ )
         {
         length = count;
         accum.add( bigBase );
+        }
+
+      setD( (Int32)countP, count );
+      break;
+      }
+    }
+  }
+}
+
+
+
+void Crt2::setFromCrtV3( const Crt& from,
+                         CrtMath& crtMath,
+                         SPrimes& sPrimes )
+{
+if( from.getD( 0 ) == 1 )
+  setToOne();
+else
+  setToZero();
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumD = getAccumD( count - 1,
+                             count,
+                             prime,
+                             crtMath );
+
+  Uint32 testDigit = (Uint32)from.getD( count );
+
+  for( Uint32 countP = 0; countP < prime;
+                                      countP++ )
+    {
+    Uint32 baseMod = crtMath.getCrtDigit( count,
+                                          count );
+
+    baseMod = baseMod * countP;
+    baseMod = baseMod % prime;
+    baseMod += accumD;
+    baseMod = baseMod % prime;
+    if( baseMod == testDigit )
+      {
+      if( countP != 0 )
+        {
+        length = count;
         }
 
       setD( (Int32)countP, count );
