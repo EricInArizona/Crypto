@@ -140,7 +140,7 @@ for( Uint32 count = 0; count < 3; count++ )
   if( !testEncryption())
     throw "!testEncryption().\n";
 
-  if( !crtTest( primeP, crtMath ))
+  if( !crtTest( primeP, crtMath, mainIO ))
     throw "!crtTest().";
 
 
@@ -151,20 +151,34 @@ mainIO.appendChars( "End of makeRSAKeys().\n" );
 }
 
 
-bool RSA::crtTest( Integer& t1, CrtMath& crtMath )
+bool RSA::crtTest( const Integer& t1,
+                   CrtMath& crtMath,
+                   FileIO& mainIO )
 {
+Uint32 prime = sPrimes.getPrimeAt(
+           ProjConst::crtDigitArraySize - 1 );
+
+mainIO.appendChars( "\n\nLast prime is: " );
+Str showIt( prime );
+mainIO.appendStr( showIt );
+mainIO.appendChars( "\n\n" );
+
+
 Crt test1;
 test1.setFromInteger( t1, intMath, sPrimes );
 
-Integer accum;
+// Integer accum;
 
 Crt2 test2;
 
-test2.setFromCrt( test1, accum, crtMath,
-                       sPrimes, intMath );
+test2.setFromCrt( test1,
+                  // accum,
+                  crtMath,
+                  sPrimes // , intMath
+                  );
 
-if( !accum.isEqual( t1 ))
-  return false;
+// if( !accum.isEqual( t1 ))
+  // return false;
 
 Integer result;
 
