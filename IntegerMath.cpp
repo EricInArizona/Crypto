@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -82,7 +82,7 @@ if( (toTest.getD( 0 ) & 1) == 0 )
   return 2; // It's divisible by 2.
 
 for( Uint32 count = 1; count <
-                  SPrimes::arrayLength; count++ )
+             ProjConst::primesArraySize; count++ )
   {
   // Is the prime a 32 bit number?
   // getMod32 would throw an exception.
