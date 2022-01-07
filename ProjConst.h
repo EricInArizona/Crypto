@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -31,8 +31,12 @@ class ProjConst
   // See Integer.h:
   static const Uint32 digitArraySize = 515;
 
+  // Test how big this can be without overflowing
+  // an Integer.  It's more than twice
+  // digitArraySize but less than 3 times that
+  // size.
   static const Uint32 crtDigitArraySize =
-                          digitArraySize * 2;
+                          digitArraySize; // * 2;
 
   static const Uint32 primesArraySize = 1024 * 32;
 
