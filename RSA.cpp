@@ -143,7 +143,8 @@ for( Uint32 count = 0; count < 3; count++ )
   if( !testEncryption())
     throw "!testEncryption().\n";
 
-  if( !crtTest( primeP, crtMath, mainIO ))
+  if( !crtTest( primeP, crtMath, mainIO,
+                                  multInv ))
     throw "!crtTest().";
 
 
@@ -156,7 +157,8 @@ mainIO.appendChars( "End of makeRSAKeys().\n" );
 
 bool RSA::crtTest( const Integer& t1,
                    CrtMath& crtMath,
-                   FileIO& mainIO )
+                   FileIO& mainIO,
+                   MultInv& multInv )
 {
 Uint32 prime = sPrimes.getPrimeAt(
            ProjConst::crtDigitArraySize - 1 );
@@ -177,7 +179,9 @@ Crt2 test2;
 test2.setFromCrt( test1,
                   // accum,
                   crtMath,
-                  sPrimes // , intMath
+                  sPrimes,
+                  // intMath
+                  multInv
                   );
 
 // if( !accum.isEqual( t1 ))
