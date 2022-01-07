@@ -18,6 +18,9 @@ class Crt2
   {
   private:
   Int32 testForCopy = 123;
+
+  // If last is too small then toInteger()
+  // will come out too small.
   static const Uint32 last =
                    ProjConst::crtDigitArraySize;
 
