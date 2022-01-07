@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -75,7 +75,7 @@ bool Fermat::isPrime( Integer& toTest,
 
 
 // Halfway down the array.
-Uint32 startAt = SPrimes::arrayLength >> 1;
+Uint32 startAt = ProjConst::primesArraySize >> 1;
 
 for( Uint32 count = startAt; count <
                    (100 + startAt); count++ )
