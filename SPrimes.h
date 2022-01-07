@@ -10,6 +10,7 @@
 
 
 #include "BasicTypes.h"
+#include "ProjConst.h"
 
 
 class SPrimes
@@ -19,13 +20,23 @@ class SPrimes
   Uint32* pArray;
   void makePrimeArray( void );
 
+  static const Uint32 last =
+                   ProjConst::primesArraySize;
+
+
   public:
-  static const Uint32 arrayLength = 1024 * 32;
   SPrimes( void );
   SPrimes( const SPrimes& in );
   ~SPrimes( void );
   Uint32 getFirstPrimeFactor( Uint32 toTest );
   Uint32 getBiggestPrime( void );
-  Uint32 getPrimeAt( Uint32 where );
+
+  inline Uint32 getPrimeAt( Uint32 where )
+    {
+    if( where >= last )
+      throw "getPrimeAt() out of bounds.";
+
+    return pArray[where];
+    }
 
   };
