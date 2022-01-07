@@ -8,7 +8,7 @@
 
 SPrimes::SPrimes( void )
 {
-pArray = new Uint32[arrayLength];
+pArray = new Uint32[last];
 makePrimeArray();
 }
 
@@ -33,17 +33,7 @@ throw "Copy constructor for SPrimes called.\n";
 
 Uint32 SPrimes::getBiggestPrime( void )
 {
-return pArray[arrayLength - 1];
-}
-
-
-
-Uint32 SPrimes::getPrimeAt( Uint32 where )
-{
-if( where >= arrayLength )
-  throw "getPrimeAt() out of bounds.";
-
-return pArray[where];
+return pArray[last - 1];
 }
 
 
@@ -65,8 +55,7 @@ const Uint64 max = IntegerMath::
 if( max == 0 )
   throw "SPrimes. Max was zero.";
 
-for( Uint32 count = 0; count < arrayLength;
-                                         count++ )
+for( Uint32 count = 0; count < last; count++ )
   {
   Uint32 testN = pArray[count];
   if( testN < 1 )
@@ -98,7 +87,7 @@ pArray[6] = 17;
 pArray[7] = 19;
 pArray[8] = 23;
 
-Uint32 last = 9;
+Uint32 index = 9;
 for( Uint64 testN = 29; ; testN += 2 )
   {
   if( (testN % 3) == 0 )
@@ -110,9 +99,9 @@ for( Uint64 testN = 29; ; testN += 2 )
   // If it has no prime factors then add it.
   if( 0 == getFirstPrimeFactor( (Uint32)testN ))
     {
-    pArray[last] = (Uint32)testN;
-    last++;
-    if( last >= arrayLength )
+    pArray[index] = (Uint32)testN;
+    index++;
+    if( index >= last )
       return;
 
     }
