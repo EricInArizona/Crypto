@@ -60,6 +60,9 @@ mainIO.appendChars( "Finished test.\n" );
 
 void RSA::makeRSAKeys( FileIO& mainIO )
 {
+MultInv multInv;
+multInv.init( sPrimes );
+
 CrtMath crtMath;
 crtMath.init( intMath, sPrimes );
 
@@ -182,7 +185,12 @@ test2.setFromCrt( test1,
 
 Integer result;
 
+
 test2.toInteger( crtMath, result, intMath );
+
+// If ProjConst::crtDigitArraySize is too
+// small then toInteger() will come out too
+// small.
 
 if( !result.isEqual( t1 ))
   return false;
