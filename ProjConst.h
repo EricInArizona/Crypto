@@ -32,7 +32,9 @@ class ProjConst
   static const Uint32 digitArraySize = 515;
 
   static const Uint32 crtDigitArraySize =
-                             digitArraySize * 2;
+                          digitArraySize * 2;
+
+  static const Uint32 primesArraySize = 1024 * 32;
 
 
   // See Exponents.h:
