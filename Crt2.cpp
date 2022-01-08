@@ -174,8 +174,9 @@ for( Uint32 count = 1; count <= endAt; count++ )
 void Crt2::setFromCrt( const Crt& from,
                        // Integer& accum,
                        CrtMath& crtMath,
-                       SPrimes& sPrimes // ,
+                       SPrimes& sPrimes,
                        // IntegerMath& intMath
+                       MultInv& multInv
                        )
 {
 // setFromCrtV1( from, accum, crtMath, sPrimes,
@@ -184,7 +185,9 @@ void Crt2::setFromCrt( const Crt& from,
 // setFromCrtV2( from, accum, crtMath, sPrimes,
 //                                    intMath );
 
-setFromCrtV3( from, crtMath, sPrimes );
+// setFromCrtV3( from, crtMath, sPrimes );
+
+setFromCrtV4( from, crtMath, sPrimes, multInv );
 }
 
 
@@ -312,10 +315,10 @@ for( Uint32 count = 1; count < last; count++ )
     {
     crtMath.copyFromIntBuf( bigBase, count );
 
-    Uint32 baseMod = crtMath.getCrtDigit( count,
+    Uint32 baseDigit = crtMath.getCrtDigit( count,
                                       count );
 
-    baseMod = baseMod * countP;
+    baseDigit = baseDigit * countP;
 
     // countP might be zero here.
     intMath.multiplyUInt( bigBase, countP );
@@ -323,9 +326,9 @@ for( Uint32 count = 1; count < last; count++ )
     Uint32 test = (Uint32)intMath.getMod32(
                                 bigBase, prime );
 
-    baseMod = baseMod % prime;
-    if( baseMod != test )
-      throw "baseMod != test";
+    baseDigit = baseDigit % prime;
+    if( baseDigit != test )
+      throw "baseDigit != test";
 
     test += accumDigit;
     test = test % prime;
@@ -343,6 +346,7 @@ for( Uint32 count = 1; count < last; count++ )
     }
   }
 }
+
 
 
 
@@ -369,15 +373,97 @@ for( Uint32 count = 1; count < last; count++ )
   for( Uint32 countP = 0; countP < prime;
                                       countP++ )
     {
-    Uint32 baseMod = crtMath.getCrtDigit( count,
-                                          count );
+    Uint32 baseDigit = crtMath.getCrtDigit( count,
+                                      count );
 
-    baseMod = baseMod * countP;
-    baseMod = baseMod % prime;
-    baseMod += accumD;
-    baseMod = baseMod % prime;
-    if( baseMod == testDigit )
+    baseDigit = baseDigit * countP;
+
+    // countP might be zero here.
+
+    baseDigit = baseDigit % prime;
+    baseDigit += accumD;
+    baseDigit = baseDigit % prime;
+    if( baseDigit == testDigit )
       {
+      if( countP != 0 )
+        {
+        length = count;
+        }
+
+      setD( (Int32)countP, count );
+      break;
+      }
+    }
+  }
+}
+
+
+
+void Crt2::setFromCrtV4( const Crt& from,
+                         CrtMath& crtMath,
+                         SPrimes& sPrimes,
+                         MultInv& multInv )
+{
+if( from.getD( 0 ) == 1 )
+  setToOne();
+else
+  setToZero();
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumD = getAccumD( count - 1,
+                             count,
+                             prime,
+                             crtMath );
+
+  Uint32 testDigit = (Uint32)from.getD( count );
+  Uint32 testD = (Uint32)from.getD( count );
+
+  if( testD < accumD )
+    testD += prime;
+
+  testD = testD - accumD;
+
+  // baseD * something = testD
+
+  Uint32 baseD = crtMath.getCrtDigit( count,
+                                      count );
+  if( baseD == 0 )
+    throw "baseD == 0";
+
+  Uint32 inv = multInv.getInv( count, baseD );
+  if( inv == 0 )
+    throw "inv == 0";
+
+  // baseD * something = testD
+  // baseD * inv = 1
+  // baseD * inv * testD = testD
+
+  Uint32 testInv = inv * testD;
+  testInv = testInv % prime;
+
+  baseD = baseD * inv;
+  baseD = baseD % prime;
+  if( baseD != 1 )
+    throw "baseD != 1";
+
+  for( Uint32 countP = 0; countP < prime;
+                                      countP++ )
+    {
+    Uint32 baseDigit = crtMath.getCrtDigit( count,
+                                      count );
+    baseDigit = baseDigit * countP;
+
+    // countP might be zero here.
+    baseDigit += accumD;
+    baseDigit = baseDigit % prime;
+    if( baseDigit == testDigit )
+      {
+      if( testInv != countP )
+        throw "testInv != countP";
+
       if( countP != 0 )
         {
         length = count;
