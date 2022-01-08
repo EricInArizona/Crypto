@@ -10,6 +10,7 @@
 #include "SPrimes.h"
 #include "Crt.h"
 #include "CrtMath.h"
+#include "MultInv.h"
 
 
 
@@ -69,8 +70,9 @@ class Crt2
   void setFromCrt( const Crt& from,
                    // Integer& accum,
                    CrtMath& crtMath,
-                   SPrimes& sPrimes // ,
+                   SPrimes& sPrimes,
                    // IntegerMath& intMath
+                   MultInv& multInv
                    );
 
   void setFromCrtV1( const Crt& from,
@@ -93,5 +95,15 @@ class Crt2
   void setFromCrtV3( const Crt& from,
                      CrtMath& crtMath,
                      SPrimes& sPrimes );
+
+  void setFromCrtV4( const Crt& from,
+                     CrtMath& crtMath,
+                     SPrimes& sPrimes,
+                     MultInv& multInv );
+
+  void setFromCrtV5( const Crt& from,
+                     CrtMath& crtMath,
+                     SPrimes& sPrimes,
+                     MultInv& multInv );
 
   };
