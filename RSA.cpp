@@ -172,7 +172,7 @@ mainIO.appendChars( "\n\n" );
 Crt test1;
 test1.setFromInteger( t1, intMath, sPrimes );
 
-// Integer accum;
+Integer accum;
 
 Crt2 test2;
 
