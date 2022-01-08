@@ -187,7 +187,8 @@ void Crt2::setFromCrt( const Crt& from,
 
 // setFromCrtV3( from, crtMath, sPrimes );
 
-setFromCrtV4( from, crtMath, sPrimes, multInv );
+// setFromCrtV4( from, crtMath, sPrimes, multInv );
+setFromCrtV5( from, crtMath, sPrimes, multInv );
 }
 
 
@@ -475,3 +476,64 @@ for( Uint32 count = 1; count < last; count++ )
     }
   }
 }
+
+
+
+void Crt2::setFromCrtV5( const Crt& from,
+                         CrtMath& crtMath,
+                         SPrimes& sPrimes,
+                         MultInv& multInv )
+{
+if( from.getD( 0 ) == 1 )
+  setToOne();
+else
+  setToZero();
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumD = getAccumD( count - 1,
+                             count,
+                             prime,
+                             crtMath );
+
+  Uint32 testD = (Uint32)from.getD( count );
+
+  if( testD < accumD )
+    testD += prime;
+
+  testD = testD - accumD;
+
+  // baseD * something = testD
+
+  Uint32 baseD = crtMath.getCrtDigit( count,
+                                      count );
+  if( baseD == 0 )
+    throw "baseD == 0";
+
+  Uint32 inv = multInv.getInv( count, baseD );
+  if( inv == 0 )
+    throw "inv == 0";
+
+  // baseD * something = testD
+  // baseD * inv = 1
+  // baseD * inv * testD = testD
+
+  Uint32 testInv = inv * testD;
+  testInv = testInv % prime;
+
+  baseD = baseD * inv;
+  baseD = baseD % prime;
+  if( baseD != 1 )
+    throw "baseD != 1";
+
+  if( testInv != 0 )
+    {
+    length = count;
+    }
+
+  setD( (Int32)testInv, count );
+  }
+}
+
