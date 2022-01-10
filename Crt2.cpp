@@ -505,8 +505,6 @@ for( Uint32 count = 1; count < last; count++ )
 
   testD = testD - accumD;
 
-  // baseD * something = testD
-
   Uint32 baseD = crtMath.getCrtDigit( count,
                                       count );
   if( baseD == 0 )
@@ -516,17 +514,11 @@ for( Uint32 count = 1; count < last; count++ )
   if( inv == 0 )
     throw "inv == 0";
 
-  // baseD * something = testD
   // baseD * inv = 1
   // baseD * inv * testD = testD
 
   Uint32 testInv = inv * testD;
   testInv = testInv % prime;
-
-  baseD = baseD * inv;
-  baseD = baseD % prime;
-  if( baseD != 1 )
-    throw "baseD != 1";
 
   if( testInv != 0 )
     {
@@ -537,3 +529,23 @@ for( Uint32 count = 1; count < last; count++ )
   }
 }
 
+
+
+void Crt2::setCrt( Crt& toSet,
+                   CrtMath& crtMath,
+                   SPrimes& sPrimes )
+{
+toSet.setD( getD( 0 ), 0 );
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumD = getAccumD( count,
+                             count,
+                             prime,
+                             crtMath );
+
+  toSet.setD( (Int32)accumD, count );
+  }
+}
