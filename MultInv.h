@@ -31,6 +31,7 @@ class MultInv
   inline Uint32 getInv( Uint32 primeAt,
                         Uint32 value )
     {
+    // Get the inverse of value.
     return u32Arrays[primeAt].getVal( value );
     }
 
