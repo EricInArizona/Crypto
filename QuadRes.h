@@ -28,6 +28,12 @@ class QuadRes
   QuadRes( const QuadRes& in );
   ~QuadRes( void );
   void init( SPrimes& sPrimes );
+  inline bool getVal( Uint32 primeAt,
+                      Uint32 where )
+    {
+    return bArrays[primeAt].getVal( where );
+    }
+
 
   static bool bytesQR( const Uint32 test );
   static bool isSmallQR( const Uint32 number );
