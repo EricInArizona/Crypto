@@ -1,8 +1,65 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
 #include "QuadRes.h"
+
+
+QuadRes::QuadRes( void )
+{
+bArrays = new BoolArray[last];
+}
+
+
+QuadRes::QuadRes( const QuadRes& in )
+{
+bArrays = new BoolArray[last];
+
+// Make the compiler think in is being used.
+if( in.testForCopy == 7 )
+  return;
+
+throw "Don't use copy constructor for QuadRes.";
+}
+
+
+QuadRes::~QuadRes( void )
+{
+delete[] bArrays;
+}
+
+
+
+void QuadRes::init( SPrimes& sPrimes )
+{
+for( Uint32 count = 0; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  bArrays[count].setSize( prime );
+
+
+  bArrays[count].setVal( 0, true );
+
+  for( Uint32 countF = 1; countF < prime;
+                                    countF++ )
+    {
+    bArrays[count].setVal( countF, false );
+    }
+
+  for( Uint32 countP = 1; countP < prime;
+                                    countP++ )
+    {
+    Uint32 test = countP * countP;
+    test = test % prime;
+
+    // The one at test is a quadratic residue.
+    bArrays[count].setVal( test, true );
+    }
+  }
+}
+
+
+
 
 
 
