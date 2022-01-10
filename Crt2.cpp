@@ -537,12 +537,15 @@ void Crt2::setCrt( Crt& toSet,
 {
 toSet.setD( getD( 0 ), 0 );
 
+const Uint32 top = length;
+
 // Count starts at 1, so it's the prime 3.
 for( Uint32 count = 1; count < last; count++ )
   {
   Uint32 prime = sPrimes.getPrimeAt( count );
-  Uint32 accumD = getAccumD( count,
-                             count,
+
+  Uint32 accumD = getAccumD( top, // row
+                             count, // column
                              prime,
                              crtMath );
 
