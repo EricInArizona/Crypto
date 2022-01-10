@@ -28,7 +28,7 @@ class GoodX
   GoodX( void );
   GoodX( const GoodX& in );
   ~GoodX( void );
-  void init( void );
+  void init( SPrimes& sPrimes );
   inline bool getVal( Uint32 primeAt,
                       Uint32 where )
     {
