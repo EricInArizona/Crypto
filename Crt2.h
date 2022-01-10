@@ -106,4 +106,8 @@ class Crt2
                      SPrimes& sPrimes,
                      MultInv& multInv );
 
+  void setCrt( Crt& toSet,
+               CrtMath& crtMath,
+               SPrimes& sPrimes );
+
   };
