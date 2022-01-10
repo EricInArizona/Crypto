@@ -184,6 +184,13 @@ test2.setFromCrt( test1,
                   multInv
                   );
 
+Crt test3;
+test2.setCrt( test3, crtMath, sPrimes );
+
+if( !test3.isEqual( test1 ))
+  throw "!test3.isEqual( test1 )";
+
+
 // if( !accum.isEqual( t1 ))
   // return false;
 
