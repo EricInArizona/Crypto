@@ -110,4 +110,14 @@ class Crt2
                CrtMath& crtMath,
                SPrimes& sPrimes );
 
+  bool setInvCrt( Crt& crt,
+                  Crt& inv,
+                  SPrimes& sPrimes,
+                  MultInv& multInv,
+                  CrtMath& crtMath );
+
+  void setToIndex1( const Uint32 index );
+  bool incRev( SPrimes& sPrimes,
+               const Uint32 top );
+
   };
