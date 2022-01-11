@@ -50,6 +50,18 @@ digitAr[0] = 1;
 
 
 
+void Crt2::setToIndex1( const Uint32 index )
+{
+length = index;
+digitAr[0] = 1;
+
+for( Uint32 count = 1; count <= index; count++ )
+  {
+  digitAr[index] = 0;
+  }
+}
+
+
 
 bool Crt2::isZero()
 {
@@ -105,16 +117,13 @@ return true;
 }
 
 
-/*
-Set the length too.
-Start small and go to a bigger number.
-bool Crt2::incrementRev( SPrimes& sPrimes,
-                         const Int32 top )
+bool Crt2::incRev( SPrimes& sPrimes,
+                   const Uint32 top )
 {
 // Change the digits from the top so that
 // lower accumulate values can stay the same.
 
-for( Int32 count = top; count >= 0; count-- )
+for( Int32 count = (Int32)top; count >= 0; count-- )
   {
   digitAr[count]++;
   Uint32 prime = sPrimes.getPrimeAt((Uint32)count );
@@ -128,15 +137,9 @@ for( Int32 count = top; count >= 0; count-- )
 
   }
 
-// If it got here then it got to the bottom
-// digit without returning and the bottom
-// digit wrapped around to zero.
-// So make the length bigger and set the digit
-// at the length to 1 and go around again.
-
-return what?;
+return false;
 }
-*/
+
 
 
 // I could do this for only the bottom 8 bits
@@ -551,4 +554,41 @@ for( Uint32 count = 1; count < last; count++ )
 
   toSet.setD( (Int32)accumD, count );
   }
+}
+
+
+
+bool Crt2::setInvCrt( Crt& crt,
+                      Crt& inv,
+                      SPrimes& sPrimes,
+                      MultInv& multInv,
+                      CrtMath& crtMath )
+{
+if( getD( 0 ) == 0 )
+  return false;
+
+crt.setD( 1, 0 );
+inv.setD( 1, 0 );
+
+const Uint32 top = length;
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+
+  Uint32 accumD = getAccumD( top, // row
+                             count, // column
+                             prime,
+                             crtMath );
+
+  if( accumD == 0 )
+    return false;
+
+  crt.setD( (Int32)accumD, count );
+  inv.setD( (Int32)multInv.getInv(
+                        count, accumD ), count );
+  }
+
+return true;
 }
