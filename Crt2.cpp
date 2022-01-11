@@ -560,6 +560,7 @@ for( Uint32 count = 1; count < last; count++ )
 
 bool Crt2::setInvCrt( Crt& crt,
                       Crt& inv,
+                      const Crt& prod,
                       SPrimes& sPrimes,
                       MultInv& multInv,
                       CrtMath& crtMath )
@@ -586,9 +587,16 @@ for( Uint32 count = 1; count < last; count++ )
     return false;
 
   crt.setD( (Int32)accumD, count );
-  inv.setD( (Int32)multInv.getInv(
-                        count, accumD ), count );
+  Uint32 prodInv = multInv.getInv(
+                                count, accumD );
+  // accumD * prodInv = 1
+  // accumD * (prodInv * prod) = prod
+
+  prodInv = prodInv * (Uint32)prod.getD( count );
+
+  inv.setD( (Int32)prodInv, count );
   }
 
 return true;
 }
+
