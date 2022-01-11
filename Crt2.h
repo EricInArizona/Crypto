@@ -112,6 +112,7 @@ class Crt2
 
   bool setInvCrt( Crt& crt,
                   Crt& inv,
+                  const Crt& prod,
                   SPrimes& sPrimes,
                   MultInv& multInv,
                   CrtMath& crtMath );
