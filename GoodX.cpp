@@ -44,5 +44,3 @@ for( Uint32 count = 0; count < last; count++ )
     }
   }
 }
-
-
