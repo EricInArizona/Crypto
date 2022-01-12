@@ -49,20 +49,6 @@ digitAr[0] = 1;
 }
 
 
-
-void Crt2::setToIndex1( const Uint32 index )
-{
-length = index;
-digitAr[0] = 1;
-
-for( Uint32 count = 1; count <= index; count++ )
-  {
-  digitAr[index] = 0;
-  }
-}
-
-
-
 bool Crt2::isZero()
 {
 if( length != 0 )
@@ -117,24 +103,25 @@ return true;
 }
 
 
-bool Crt2::incRev( SPrimes& sPrimes,
-                   const Uint32 top )
-{
-// Change the digits from the top so that
-// lower accumulate values can stay the same.
 
-for( Int32 count = (Int32)top; count >= 0; count-- )
+bool Crt2::increment( SPrimes& sPrimes )
+{
+for( Uint32 count = 0; count < last; count++ )
   {
+  if( length < count )
+    {
+    length = count;
+    digitAr[count] = 0;
+    }
+
   digitAr[count]++;
-  Uint32 prime = sPrimes.getPrimeAt((Uint32)count );
+  Uint32 prime = sPrimes.getPrimeAt( count );
 
   if( digitAr[count] < (Int32)prime )
     return true; // Nothing more to do.
 
   digitAr[count] = 0; // It wrapped around.
-  // Go around to the next lower digit.
-
-
+  // Go around to the next digit.
   }
 
 return false;
@@ -600,3 +587,64 @@ for( Uint32 count = 1; count < last; count++ )
 return true;
 }
 
+
+
+/*
+bool Crt2::setPrimeFactor( const Crt& from,
+                           const Crt& prod,
+                           CrtMath& crtMath,
+                           SPrimes& sPrimes,
+                           MultInv& multInv )
+{
+if( from.getD( 0 ) == 0 )
+  return false;
+
+setToOne();
+
+// Count starts at 1, so it's the prime 3.
+for( Uint32 count = 1; count < last; count++ )
+  {
+  Uint32 prime = sPrimes.getPrimeAt( count );
+  Uint32 accumD = getAccumD( count - 1,
+                             count,
+                             prime,
+                             crtMath );
+
+  Uint32 testD = (Uint32)from.getD( count );
+  if( testD == 0 )
+    return false;
+
+===== Where am I with this?
+
+  if( testD < accumD )
+    testD += prime;
+
+  testD = testD - accumD;
+
+  Uint32 baseD = crtMath.getCrtDigit( count,
+                                      count );
+  if( baseD == 0 )
+    throw "baseD == 0";
+
+  Uint32 inv = multInv.getInv( count, baseD );
+  if( inv == 0 )
+    throw "inv == 0";
+
+  // baseD * inv = 1
+  // baseD * inv * testD = testD
+
+  Uint32 testInv = inv * testD;
+  testInv = testInv % prime;
+
+  if( testInv != 0 )
+    {
+    length = count;
+    if( length > prod.getLength())
+      return false;
+
+    }
+
+  setD( (Int32)testInv, count );
+  }
+}
+*/
