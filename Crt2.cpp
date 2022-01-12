@@ -250,8 +250,13 @@ Uint32 Crt2::getAccumD( const Uint32 row,
 // It is either zero or one.
 Uint32 result = (Uint32)getD( 0 );
 
+// row is sometimes top - 1.
+const Uint32 top = length;
 for( Uint32 count = 1; count <= row; count++ )
   {
+  if( count > top )
+    break;
+
   Uint32 accum = crtMath.getCrtDigit( count,
                                       col );
   accum = accum * (Uint32)getD( count );
@@ -555,8 +560,8 @@ bool Crt2::setInvCrt( Crt& crt,
 if( getD( 0 ) == 0 )
   return false;
 
-crt.setD( 1, 0 );
-inv.setD( 1, 0 );
+crt.setToOne();
+inv.setToOne();
 
 const Uint32 top = length;
 
@@ -569,6 +574,15 @@ for( Uint32 count = 1; count < last; count++ )
                              count, // column
                              prime,
                              crtMath );
+
+  // This will return false if the number is
+  // either one of the small primes in SPrimes,
+  // or if it is a composite number with at
+  // least one factor that is a small prime
+  // that is in SPrimes.
+  // So if the biggest prime in SPrimes is
+  // 3691, then the first number after 1 that
+  // it returns true on is 3697.
 
   if( accumD == 0 )
     return false;
