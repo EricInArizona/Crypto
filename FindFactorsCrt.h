@@ -13,6 +13,7 @@
 #include "IntegerMath.h"
 #include "MultInv.h"
 #include "CrtMath.h"
+#include "FileIO.h"
 
 
 class FindFactorsCrt
@@ -30,6 +31,7 @@ class FindFactorsCrt
                  IntegerMath& intMath,
                  SPrimes& sPrimes,
                  MultInv& multInv,
-                 CrtMath& crtMath );
-  
+                 CrtMath& crtMath,
+                 FileIO& mainIO );
+
   };
