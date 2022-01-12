@@ -38,8 +38,6 @@ class Crt2
   bool isOne();
   void copy( const Crt2& toCopy );
   bool isEqual( const Crt2& toCheck );
-  // bool incrementRev( SPrimes& sPrimes,
-  //                   const Int32 top );
 
   inline Int32 getD( Uint32 index ) const
     {
@@ -117,8 +115,6 @@ class Crt2
                   MultInv& multInv,
                   CrtMath& crtMath );
 
-  void setToIndex1( const Uint32 index );
-  bool incRev( SPrimes& sPrimes,
-               const Uint32 top );
+  bool increment( SPrimes& sPrimes );
 
   };
