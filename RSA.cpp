@@ -18,6 +18,7 @@
 #include "Division.h"
 #include "Crt.h"
 #include "Crt2.h"
+#include "FindFactorsCrt.h"
 
 
 
@@ -60,11 +61,19 @@ mainIO.appendChars( "Finished test.\n" );
 
 void RSA::makeRSAKeys( FileIO& mainIO )
 {
+QuadRes quadRes;
+quadRes.init( sPrimes );
+
+GoodX goodX;
+goodX.init( sPrimes );
+
 MultInv multInv;
 multInv.init( sPrimes );
 
 CrtMath crtMath;
 crtMath.init( intMath, sPrimes );
+
+FindFactorsCrt findFac;
 
 pubKeyExponent.setFromULong( PubKeyExponentU );
 
@@ -76,7 +85,7 @@ Str bits( showBits );
 mainIO.appendStr( bits );
 mainIO.appendChars( "\n" );
 
-for( Uint32 count = 0; count < 3; count++ )
+for( Uint32 count = 0; count < 1; count++ )
   {
   mainIO.appendChars( "makeRSAKeys count: " );
   Str showCount( count );
@@ -149,6 +158,22 @@ for( Uint32 count = 0; count < 3; count++ )
 
 
   mainIO.appendChars( "Good pair.\n" );
+
+  Integer test1;
+  Integer test2;
+
+  if( findFac.getSmall( pubKeyN, test1, test2,
+                        intMath, sPrimes,
+                        multInv, crtMath,
+                        mainIO ))
+    {
+    if( !( test1.isEqual( primeP ) ||
+           test2.isEqual( primeP )))
+      {
+
+      }
+    }
+
   }
 
 mainIO.appendChars( "End of makeRSAKeys().\n" );
