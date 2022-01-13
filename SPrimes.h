@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -33,8 +33,8 @@ class SPrimes
 
   inline Uint32 getPrimeAt( Uint32 where )
     {
-    if( where >= last )
-      throw "getPrimeAt() out of bounds.";
+    // if( where >= last )
+      // throw "getPrimeAt() out of bounds.";
 
     return pArray[where];
     }
