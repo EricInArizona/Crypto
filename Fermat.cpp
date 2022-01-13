@@ -28,6 +28,16 @@ while( true )
   if( result.getIndex() < setToIndex )
     throw "Size of random prime is wrong.";
 
+  if( setToIndex == 0 )
+    {
+    Uint64 shortVal = result.getD( 0 );
+    // This has to be bigger than the biggest
+    // prime in SPrimes.
+    shortVal = shortVal & 0xFFFFFF;
+    result.setD( 0, shortVal );
+    }
+
+
   Uint64 testPrime = intMath.
                      isDivisibleBySmallPrime(
                                       result,
