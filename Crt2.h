@@ -42,16 +42,16 @@ class Crt2
   inline Int32 getD( Uint32 index ) const
     {
     // Comment out after testing:
-    if( index >= last )
-      throw "Crt2 GetD Index is too big.";
+    // if( index >= last )
+      // throw "Crt2 GetD Index is too big.";
 
     return digitAr[index];
     }
 
   inline void setD( Int32 setTo, Uint32 index )
     {
-    if( index >= last )
-      throw "Crt2 SetD Index is too big.";
+    // if( index >= last )
+      // throw "Crt2 SetD Index is too big.";
 
     digitAr[index] = setTo;
     }
@@ -115,6 +115,15 @@ class Crt2
                   MultInv& multInv,
                   CrtMath& crtMath );
 
+  bool setPrimeFactor( const Crt& from,
+                       const Uint32 maxLen,
+                       // const Crt& prod,
+                       CrtMath& crtMath,
+                       SPrimes& sPrimes,
+                       MultInv& multInv );
+
   bool increment( SPrimes& sPrimes );
+  bool incAt( SPrimes& sPrimes,
+                         const Uint32 where );
 
   };
