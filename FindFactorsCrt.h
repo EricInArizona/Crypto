@@ -25,7 +25,7 @@ class FindFactorsCrt
   FindFactorsCrt( void );
   FindFactorsCrt( const FindFactorsCrt& in );
   ~FindFactorsCrt( void );
-  bool getSmall( Integer& pubKeyN,
+  bool getSmall( const Integer& pubKeyN,
                  Integer& find1,
                  Integer& find2,
                  IntegerMath& intMath,
