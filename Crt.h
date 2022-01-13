@@ -49,16 +49,16 @@ class Crt
   inline Int32 getD( Uint32 index ) const
     {
     // Comment out after testing:
-    if( index >= last )
-      throw "Crt GetD Index is too big.";
+    // if( index >= last )
+      // throw "Crt GetD Index is too big.";
 
     return digitAr[index];
     }
 
   inline void setD( Int32 setTo, Uint32 index )
     {
-    if( index >= last )
-      throw "Crt SetD Index is too big.";
+    // if( index >= last )
+      // throw "Crt SetD Index is too big.";
 
     digitAr[index] = setTo;
     }
