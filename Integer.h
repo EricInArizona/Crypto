@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -10,7 +10,6 @@
 #include "Str.h"
 #include "Uint8Array.h"
 #include "ProjConst.h"
-
 #include "IntBuf.h"
 
 
@@ -132,8 +131,8 @@ class Integer
 
   inline Uint64 getD( const Uint32 where ) const
     {
-    if( where >= ProjConst::digitArraySize )
-      throw "getD() index out of bounds.";
+    // if( where >= ProjConst::digitArraySize )
+      // throw "getD() index out of bounds.";
 
     return D[where];
     }
@@ -145,8 +144,8 @@ class Integer
     // that might be a full 64 bits long.
     // See cleanUp().
 
-    if( where >= ProjConst::digitArraySize )
-      throw "setD() index out of bounds.";
+    // if( where >= ProjConst::digitArraySize )
+      // throw "setD() index out of bounds.";
 
     D[where] = toSet;
     }
