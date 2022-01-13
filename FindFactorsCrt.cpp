@@ -29,7 +29,8 @@ FindFactorsCrt::~FindFactorsCrt( void )
 
 
 
-bool FindFactorsCrt::getSmall( Integer& pubKeyN,
+bool FindFactorsCrt::getSmall(
+                         const Integer& pubKeyN,
                          Integer& find1,
                          Integer& find2,
                          IntegerMath& intMath,
@@ -38,30 +39,49 @@ bool FindFactorsCrt::getSmall( Integer& pubKeyN,
                          CrtMath& crtMath,
                          FileIO& mainIO )
 {
+Integer sqrRoot;
+intMath.squareRoot( pubKeyN, sqrRoot );
+
+mainIO.appendChars( "\nSquare root: " );
+Str showRoot =  intMath.toString10( sqrRoot );
+mainIO.appendStr( showRoot );
+mainIO.appendChars( "\n\n" );
+
+
 Crt prod;
 prod.setFromInteger( pubKeyN,
                      intMath,
                      sPrimes );
 
+Crt2 prodCrt2;
+prodCrt2.setFromCrt( prod,
+                     crtMath,
+                     sPrimes,
+                     multInv );
+
+const Uint32 prodLength = prodCrt2.getLength();
+
 Crt2 prime1;
 Crt2 prime2;
 Crt prime1Crt;
 Crt inv;
-Crt testProd;
+// Crt testProd;
 
 Integer showIt;
 
-prime1.setToZero();
+prime1.setToOne();
 
 // See the note in Crt2::setInvCrt() to see
 // why this count goes up above a certain
 // prime number.
-for( Uint32 count = 0; count < 4500; count++ )
+for( Uint32 count = 0; count < 10000000; count++ )
   {
-  if( !prime1.increment( sPrimes ))
+  // Count by twos.
+  if( !prime1.incAt( sPrimes, 1 ))
     break;
 
-  if( prime1.getD( 0 ) == 0 )
+  // This would make it congruent to zero mod 3.
+  if( prime1.getD( 1 ) == 1 )
     continue;
 
   if( !prime1.setInvCrt( prime1Crt,
@@ -71,20 +91,6 @@ for( Uint32 count = 0; count < 4500; count++ )
                          multInv,
                          crtMath ))
     continue;
-
-
-
-  mainIO.appendChars( "Prime1: " );
-  prime1.toInteger( crtMath,
-                    showIt,
-                    intMath );
-
-
-
-
-  Str showP =  intMath.toString10( showIt );
-  mainIO.appendStr( showP );
-  mainIO.appendChars( "\n" );
 
   // At this point crt and inv have no small
   // prime factors in them.
@@ -96,17 +102,57 @@ for( Uint32 count = 0; count < 4500; count++ )
   // It is unlikely to be an actual prime
   // factor of prod.  But it could be.
 
-  Crt testProd;
-  testProd.copy( prime1Crt );
-  testProd.multiply( inv, sPrimes );
+  // Test that it is the multiplicative inverse.
+  // testProd.copy( prime1Crt );
+  // testProd.multiply( inv, sPrimes );
+  // if( !testProd.isEqual( prod ))
+    // throw "!testProd.isEquprime1Crtal( prod )";
 
-  if( !testProd.isEqual( prod ))
-    throw "!testProd.isEquprime1Crtal( prod )";
+  if( !prime2.setPrimeFactor( inv,
+                              prodLength,
+                              crtMath,
+                              sPrimes,
+                              multInv ))
+    continue;
 
+  mainIO.appendChars( "\nFound it.\n" );
+  mainIO.appendChars( "Prime1: " );
+  prime1.toInteger( crtMath,
+                    showIt,
+                    intMath );
+
+  Str showP =  intMath.toString10( showIt );
+  mainIO.appendStr( showP );
+  mainIO.appendChars( "\n" );
+
+  mainIO.appendChars( "Prime2:" );
+  prime2.toInteger( crtMath,
+                    showIt,
+                    intMath );
+  Str showP2 =  intMath.toString10( showIt );
+  mainIO.appendStr( showP2 );
+  mainIO.appendChars( "\n\n\n" );
+
+
+  prime1.toInteger( crtMath,
+                    find1,
+                    intMath );
+
+  prime2.toInteger( crtMath,
+                    find2,
+                    intMath );
+
+  Integer testMult;
+  testMult.copy( find1 );
+  intMath.multiply( testMult, find2 );
+  if( !testMult.isEqual( pubKeyN ))
+    throw "!testMult.isEqual( pubKeyN ))";
+
+
+  return true;
   }
 
-find1.setToOne();
-find2.setToOne();
+mainIO.appendChars( "\nWent to end.\n\n" );
 
-return true;
+return false;
 }
