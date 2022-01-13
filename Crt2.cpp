@@ -129,6 +129,35 @@ return false;
 
 
 
+bool Crt2::incAt( SPrimes& sPrimes,
+                            const Uint32 where )
+{
+if( (length + 1) < where )
+  throw "(length + 1) < where";
+
+for( Uint32 count = where; count < last; count++ )
+  {
+  if( length < count )
+    {
+    length = count;
+    digitAr[count] = 0;
+    }
+
+  digitAr[count]++;
+  Uint32 prime = sPrimes.getPrimeAt( count );
+
+  if( digitAr[count] < (Int32)prime )
+    return true; // Nothing more to do.
+
+  digitAr[count] = 0; // It wrapped around.
+  // Go around to the next digit.
+  }
+
+return false;
+}
+
+
+
 // I could do this for only the bottom 8 bits
 // or mod anything.
 // Or to a top index below the current index.
@@ -576,13 +605,12 @@ for( Uint32 count = 1; count < last; count++ )
                              crtMath );
 
   // This will return false if the number is
-  // either one of the small primes in SPrimes,
-  // or if it is a composite number with at
-  // least one factor that is a small prime
-  // that is in SPrimes.
-  // So if the biggest prime in SPrimes is
-  // 3691, then the first number after 1 that
-  // it returns true on is 3697.
+  // either one of the small primes in a Crt
+  // number, or if it is a composite number
+  // with at least one factor that is a small
+  // prime.  So if the biggest prime in a Crt
+  // number is 3691, then the first number
+  // after 1 that it returns true on is 3697.
 
   if( accumD == 0 )
     return false;
@@ -594,6 +622,7 @@ for( Uint32 count = 1; count < last; count++ )
   // accumD * (prodInv * prod) = prod
 
   prodInv = prodInv * (Uint32)prod.getD( count );
+  prodInv = prodInv % prime;
 
   inv.setD( (Int32)prodInv, count );
   }
@@ -603,16 +632,14 @@ return true;
 
 
 
-/*
+
 bool Crt2::setPrimeFactor( const Crt& from,
-                           const Crt& prod,
+                           const Uint32 maxLen,
+                           // Crt& prod,
                            CrtMath& crtMath,
                            SPrimes& sPrimes,
                            MultInv& multInv )
 {
-if( from.getD( 0 ) == 0 )
-  return false;
-
 setToOne();
 
 // Count starts at 1, so it's the prime 3.
@@ -627,8 +654,6 @@ for( Uint32 count = 1; count < last; count++ )
   Uint32 testD = (Uint32)from.getD( count );
   if( testD == 0 )
     return false;
-
-===== Where am I with this?
 
   if( testD < accumD )
     testD += prime;
@@ -645,7 +670,7 @@ for( Uint32 count = 1; count < last; count++ )
     throw "inv == 0";
 
   // baseD * inv = 1
-  // baseD * inv * testD = testD
+  // baseD * (inv * testD) = testD
 
   Uint32 testInv = inv * testD;
   testInv = testInv % prime;
@@ -653,12 +678,13 @@ for( Uint32 count = 1; count < last; count++ )
   if( testInv != 0 )
     {
     length = count;
-    if( length > prod.getLength())
+    if( length > maxLen )
       return false;
 
     }
 
   setD( (Int32)testInv, count );
   }
+
+return true;
 }
-*/
