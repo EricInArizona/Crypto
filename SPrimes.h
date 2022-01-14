@@ -31,7 +31,8 @@ class SPrimes
   Uint32 getFirstPrimeFactor( Uint32 toTest );
   Uint32 getBiggestPrime( void );
 
-  inline Uint32 getPrimeAt( Uint32 where )
+  inline Uint32 getPrimeAt(
+                      const Uint32 where ) const
     {
     // if( where >= last )
       // throw "getPrimeAt() out of bounds.";
