@@ -48,7 +48,7 @@ return 0;
 
 
 
-void MultInv::init( SPrimes& sPrimes )
+void MultInv::init( const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
