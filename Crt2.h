@@ -141,5 +141,11 @@ class Crt2
     return result;
     }
 
+  Uint32 getInvDigit( const Uint32 where,
+                      const Uint32 prime,
+                      const Crt& from,
+                      const CrtMath& crtMath,
+                      const MultInv& multInv );
+
 
   };
