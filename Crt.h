@@ -1,6 +1,7 @@
 // Copyright Eric Chauvin, 2021 - 2022.
 
 
+
 #pragma once
 
 
@@ -27,26 +28,27 @@ class Crt
   ~Crt( void );
   void setToZero();
   void setToOne();
-  bool isZero();
-  bool isOne();
+  bool isZero() const;
+  bool isOne() const;
   void copy( const Crt& toCopy );
-  bool isEqual( const Crt& toCheck );
-  void add( const Crt& toAdd, SPrimes& sPrimes );
+  bool isEqual( const Crt& toCheck ) const;
+  void add( const Crt& toAdd,
+            const SPrimes& sPrimes );
   void subtract( const Crt& toSub,
-                             SPrimes& sPrimes );
-  void decrement( SPrimes& sPrimes );
-  void subtractUint( Uint32 toSub,
-                     SPrimes& sPrimes );
+                 const SPrimes& sPrimes );
+  void decrement( const SPrimes& sPrimes );
+  void subtractUint( const Uint32 toSub,
+                     const SPrimes& sPrimes );
   void multiply( const Crt& toMul,
-                           SPrimes& sPrimes );
+                 const SPrimes& sPrimes );
   void setFromInteger( const Integer& setFrom,
                        IntegerMath& intMath,
-                       SPrimes& sPrimes );
-  void setFromUInt( Uint32 setFrom,
-                       SPrimes& sPrimes );
+                       const SPrimes& sPrimes );
+  void setFromUInt( const Uint32 setFrom,
+                    const SPrimes& sPrimes );
 
 
-  inline Int32 getD( Uint32 index ) const
+  inline Int32 getD( const Uint32 index ) const
     {
     // Comment out after testing:
     // if( index >= last )
@@ -55,7 +57,8 @@ class Crt
     return digitAr[index];
     }
 
-  inline void setD( Int32 setTo, Uint32 index )
+  inline void setD( const Int32 setTo,
+                    const Uint32 index )
     {
     // if( index >= last )
       // throw "Crt SetD Index is too big.";
