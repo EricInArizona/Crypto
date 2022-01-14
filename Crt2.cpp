@@ -104,7 +104,7 @@ return true;
 
 
 
-bool Crt2::increment( SPrimes& sPrimes )
+bool Crt2::increment( const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -129,7 +129,7 @@ return false;
 
 
 
-bool Crt2::incAt( SPrimes& sPrimes,
+bool Crt2::incAt( const SPrimes& sPrimes,
                             const Uint32 where )
 {
 if( (length + 1) < where )
@@ -158,9 +158,6 @@ return false;
 
 
 
-// I could do this for only the bottom 8 bits
-// or mod anything.
-// Or to a top index below the current index.
 void Crt2::toInteger( const CrtMath& crtMath,
                       Integer& toSet,
                       IntegerMath& intMath )
@@ -192,10 +189,10 @@ for( Uint32 count = 1; count <= endAt; count++ )
 
 void Crt2::setFromCrt( const Crt& from,
                        // Integer& accum,
-                       CrtMath& crtMath,
-                       SPrimes& sPrimes,
+                       const CrtMath& crtMath,
+                       const SPrimes& sPrimes,
                        // IntegerMath& intMath
-                       MultInv& multInv
+                       const MultInv& multInv
                        )
 {
 // setFromCrtV1( from, accum, crtMath, sPrimes,
@@ -216,8 +213,8 @@ setFromCrtV5( from, crtMath, sPrimes, multInv );
 // straight-forward version.
 void Crt2::setFromCrtV1( const Crt& from,
                          Integer& accum,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes,
+                         const CrtMath& crtMath,
+                         const SPrimes& sPrimes,
                          IntegerMath& intMath )
 {
 if( from.getD( 0 ) == 1 )
@@ -271,37 +268,10 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 
-Uint32 Crt2::getAccumD( const Uint32 row,
-                        const Uint32 col,
-                        const Uint32 prime,
-                        CrtMath& crtMath )
-{
-// It is either zero or one.
-Uint32 result = (Uint32)getD( 0 );
-
-// row is sometimes top - 1.
-const Uint32 top = length;
-for( Uint32 count = 1; count <= row; count++ )
-  {
-  if( count > top )
-    break;
-
-  Uint32 accum = crtMath.getCrtDigit( count,
-                                      col );
-  accum = accum * (Uint32)getD( count );
-  result += accum;
-  result = result % prime;
-  }
-
-return result;
-}
-
-
-
 void Crt2::setFromCrtV2( const Crt& from,
                          Integer& accum,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes,
+                         const CrtMath& crtMath,
+                         const SPrimes& sPrimes,
                          IntegerMath& intMath )
 {
 if( from.getD( 0 ) == 1 )
@@ -376,8 +346,8 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 void Crt2::setFromCrtV3( const Crt& from,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes )
+                         const CrtMath& crtMath,
+                         const SPrimes& sPrimes )
 {
 if( from.getD( 0 ) == 1 )
   setToOne();
@@ -425,9 +395,9 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 void Crt2::setFromCrtV4( const Crt& from,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes,
-                         MultInv& multInv )
+                         const CrtMath& crtMath,
+                         const SPrimes& sPrimes,
+                         const MultInv& multInv )
 {
 if( from.getD( 0 ) == 1 )
   setToOne();
@@ -504,9 +474,9 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 void Crt2::setFromCrtV5( const Crt& from,
-                         CrtMath& crtMath,
-                         SPrimes& sPrimes,
-                         MultInv& multInv )
+                         const CrtMath& crtMath,
+                         const SPrimes& sPrimes,
+                         const MultInv& multInv )
 {
 if( from.getD( 0 ) == 1 )
   setToOne();
@@ -556,8 +526,8 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 void Crt2::setCrt( Crt& toSet,
-                   CrtMath& crtMath,
-                   SPrimes& sPrimes )
+                   const CrtMath& crtMath,
+                   const SPrimes& sPrimes )
 {
 toSet.setD( getD( 0 ), 0 );
 
@@ -582,9 +552,9 @@ for( Uint32 count = 1; count < last; count++ )
 bool Crt2::setInvCrt( Crt& crt,
                       Crt& inv,
                       const Crt& prod,
-                      SPrimes& sPrimes,
-                      MultInv& multInv,
-                      CrtMath& crtMath )
+                      const SPrimes& sPrimes,
+                      const MultInv& multInv,
+                      const CrtMath& crtMath )
 {
 if( getD( 0 ) == 0 )
   return false;
@@ -636,9 +606,9 @@ return true;
 bool Crt2::setPrimeFactor( const Crt& from,
                            const Uint32 maxLen,
                            // Crt& prod,
-                           CrtMath& crtMath,
-                           SPrimes& sPrimes,
-                           MultInv& multInv )
+                           const CrtMath& crtMath,
+                           const SPrimes& sPrimes,
+                           const MultInv& multInv )
 {
 setToOne();
 
@@ -688,3 +658,6 @@ for( Uint32 count = 1; count < last; count++ )
 
 return true;
 }
+
+
+
