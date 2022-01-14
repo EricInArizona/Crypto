@@ -27,9 +27,9 @@ class MultInv
   MultInv( void );
   MultInv( const MultInv& in );
   ~MultInv( void );
-  void init( SPrimes& sPrimes );
-  inline Uint32 getInv( Uint32 primeAt,
-                        Uint32 value )
+  void init( const SPrimes& sPrimes );
+  inline Uint32 getInv( const Uint32 primeAt,
+                        const Uint32 value ) const
     {
     // Get the inverse of value.
     return u32Arrays[primeAt].getVal( value );
