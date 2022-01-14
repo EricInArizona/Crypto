@@ -162,7 +162,8 @@ for( Uint32 count = 0; count < 1; count++ )
   Integer test1;
   Integer test2;
 
-  if( findFac.getSmall( pubKeyN, test1, test2,
+  if( findFac.getSmallFactor(
+                        pubKeyN, test1, test2,
                         intMath, sPrimes,
                         multInv, crtMath,
                         mainIO ))
