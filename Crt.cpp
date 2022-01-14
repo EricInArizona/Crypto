@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -59,7 +59,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-bool Crt::isZero()
+bool Crt::isZero() const
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -73,7 +73,7 @@ return true;
 
 
 
-bool Crt::isOne()
+bool Crt::isOne() const
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -96,7 +96,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-bool Crt::isEqual( const Crt& toCheck )
+bool Crt::isEqual( const Crt& toCheck ) const
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -110,7 +110,7 @@ return true;
 
 
 void Crt::add( const Crt& toAdd,
-                              SPrimes& sPrimes )
+               const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -126,7 +126,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 void Crt::subtract( const Crt& toSub,
-                               SPrimes& sPrimes )
+                    const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -142,7 +142,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void Crt::decrement( SPrimes& sPrimes )
+void Crt::decrement( const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -157,8 +157,8 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void Crt::subtractUint( Uint32 toSub,
-                       SPrimes& sPrimes )
+void Crt::subtractUint( const Uint32 toSub,
+                        const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -175,7 +175,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 void Crt::multiply( const Crt& toMul,
-                             SPrimes& sPrimes )
+                    const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -192,7 +192,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 void Crt::setFromInteger( const Integer& setFrom,
                           IntegerMath& intMath,
-                          SPrimes& sPrimes )
+                          const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
@@ -203,8 +203,8 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void Crt::setFromUInt( Uint32 setFrom,
-                       SPrimes& sPrimes )
+void Crt::setFromUInt( const Uint32 setFrom,
+                       const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
