@@ -653,6 +653,16 @@ for( Uint32 count = 1; count < last; count++ )
 
     }
 
+
+  Uint32 testDigit = getInvDigit( count,
+                                  prime,
+                                  from,
+                                  crtMath,
+                                  multInv );
+
+  if( testDigit != testInv )
+    throw "testDigit != testInv";
+
   setD( (Int32)testInv, count );
   }
 
@@ -660,4 +670,41 @@ return true;
 }
 
 
+
+
+Uint32 Crt2::getInvDigit( const Uint32 where,
+                          const Uint32 prime,
+                          const Crt& from,
+                          const CrtMath& crtMath,
+                          const MultInv& multInv )
+{
+Uint32 accumD = getAccumD( where - 1,
+                           where,
+                           prime,
+                           crtMath );
+
+Uint32 testD = (Uint32)from.getD( where );
+if( testD == 0 )
+  return 0xFFFFFFFF;
+
+if( testD < accumD )
+  testD += prime;
+
+testD = testD - accumD;
+
+Uint32 baseD = crtMath.getCrtDigit( where,
+                                    where );
+if( baseD == 0 )
+  throw "baseD == 0";
+
+Uint32 inv = multInv.getInv( where, baseD );
+
+// baseD * inv = 1
+// baseD * (inv * testD) = testD
+
+Uint32 testInv = inv * testD;
+testInv = testInv % prime;
+
+return testInv;
+}
 
