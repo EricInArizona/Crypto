@@ -67,63 +67,79 @@ class Crt2
 
   void setFromCrt( const Crt& from,
                    // Integer& accum,
-                   CrtMath& crtMath,
-                   SPrimes& sPrimes,
+                   const CrtMath& crtMath,
+                   const SPrimes& sPrimes,
                    // IntegerMath& intMath
-                   MultInv& multInv
+                   const MultInv& multInv
                    );
 
   void setFromCrtV1( const Crt& from,
                      Integer& accum,
-                     CrtMath& crtMath,
-                     SPrimes& sPrimes,
+                     const CrtMath& crtMath,
+                     const SPrimes& sPrimes,
                      IntegerMath& intMath );
-
-  Uint32 getAccumD( const Uint32 row,
-                    const Uint32 col,
-                    const Uint32 prime,
-                    CrtMath& crtMath );
 
   void setFromCrtV2( const Crt& from,
                      Integer& accum,
-                     CrtMath& crtMath,
-                     SPrimes& sPrimes,
+                     const CrtMath& crtMath,
+                     const SPrimes& sPrimes,
                      IntegerMath& intMath );
 
   void setFromCrtV3( const Crt& from,
-                     CrtMath& crtMath,
-                     SPrimes& sPrimes );
+                     const CrtMath& crtMath,
+                     const SPrimes& sPrimes );
 
   void setFromCrtV4( const Crt& from,
-                     CrtMath& crtMath,
-                     SPrimes& sPrimes,
-                     MultInv& multInv );
+                     const CrtMath& crtMath,
+                     const SPrimes& sPrimes,
+                     const MultInv& multInv );
 
   void setFromCrtV5( const Crt& from,
-                     CrtMath& crtMath,
-                     SPrimes& sPrimes,
-                     MultInv& multInv );
+                     const CrtMath& crtMath,
+                     const SPrimes& sPrimes,
+                     const MultInv& multInv );
 
   void setCrt( Crt& toSet,
-               CrtMath& crtMath,
-               SPrimes& sPrimes );
+               const CrtMath& crtMath,
+               const SPrimes& sPrimes );
 
   bool setInvCrt( Crt& crt,
                   Crt& inv,
                   const Crt& prod,
-                  SPrimes& sPrimes,
-                  MultInv& multInv,
-                  CrtMath& crtMath );
+                  const SPrimes& sPrimes,
+                  const MultInv& multInv,
+                  const CrtMath& crtMath );
 
   bool setPrimeFactor( const Crt& from,
                        const Uint32 maxLen,
                        // const Crt& prod,
-                       CrtMath& crtMath,
-                       SPrimes& sPrimes,
-                       MultInv& multInv );
+                       const CrtMath& crtMath,
+                       const SPrimes& sPrimes,
+                       const MultInv& multInv );
 
-  bool increment( SPrimes& sPrimes );
-  bool incAt( SPrimes& sPrimes,
+  bool increment( const SPrimes& sPrimes );
+  bool incAt( const SPrimes& sPrimes,
                          const Uint32 where );
+
+  inline Uint32 getAccumD( const Uint32 row,
+                           const Uint32 col,
+                           const Uint32 prime,
+                           const CrtMath& crtMath )
+    {
+    // It is either zero or one.
+    Uint32 result = (Uint32)digitAr[0];
+
+    for( Uint32 count = 1; count <= row; count++ )
+      {
+      Uint32 accum = crtMath.getCrtDigit( count,
+                                          col );
+      accum = accum * (Uint32)digitAr[count];
+      result += accum;
+      result = result % prime;
+      }
+
+    return result;
+    }
+
 
   };
