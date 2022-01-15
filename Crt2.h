@@ -103,23 +103,12 @@ class Crt2
                const CrtMath& crtMath,
                const SPrimes& sPrimes );
 
-  bool setInvCrt( Crt& crt,
-                  Crt& inv,
-                  Crt2& prime2Crt2,
+  bool setInvCrt( Crt2& prime2Crt2,
                   const Uint32 maxLen,
                   const Crt& prod,
                   const SPrimes& sPrimes,
                   const MultInv& multInv,
                   const CrtMath& crtMath );
-
-/*
-  bool setPrimeFactor( const Crt& from,
-                       const Uint32 maxLen,
-                       // const Crt& prod,
-                       const CrtMath& crtMath,
-                       const SPrimes& sPrimes,
-                       const MultInv& multInv );
-*/
 
   bool increment( const SPrimes& sPrimes );
   bool incAt( const SPrimes& sPrimes,
