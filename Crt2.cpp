@@ -551,6 +551,8 @@ for( Uint32 count = 1; count < last; count++ )
 
 bool Crt2::setInvCrt( Crt& crt,
                       Crt& inv,
+                      Crt2& prime2Crt2,
+                      const Uint32 maxLen,
                       const Crt& prod,
                       const SPrimes& sPrimes,
                       const MultInv& multInv,
@@ -561,6 +563,7 @@ if( getD( 0 ) == 0 )
 
 crt.setToOne();
 inv.setToOne();
+prime2Crt2.setToOne();
 
 const Uint32 top = length;
 
@@ -595,6 +598,15 @@ for( Uint32 count = 1; count < last; count++ )
   prodInv = prodInv % prime;
 
   inv.setD( (Int32)prodInv, count );
+
+  if( !prime2Crt2.setInvDigit( count,
+                      prime,
+                      (Uint32)inv.getD( count ),
+                      maxLen,
+                      crtMath,
+                      multInv ))
+    return false;
+
   }
 
 return true;
@@ -602,10 +614,9 @@ return true;
 
 
 
-
+/*
 bool Crt2::setPrimeFactor( const Crt& from,
                            const Uint32 maxLen,
-                           // Crt& prod,
                            const CrtMath& crtMath,
                            const SPrimes& sPrimes,
                            const MultInv& multInv )
@@ -616,76 +627,37 @@ setToOne();
 for( Uint32 count = 1; count < last; count++ )
   {
   Uint32 prime = sPrimes.getPrimeAt( count );
-  Uint32 accumD = getAccumD( count - 1,
-                             count,
-                             prime,
-                             crtMath );
 
-  Uint32 testD = (Uint32)from.getD( count );
-  if( testD == 0 )
+  if( !setInvDigit( count, prime,
+               (Uint32)from.getD( count ),
+               maxLen,
+               crtMath,
+               multInv ))
     return false;
 
-  if( testD < accumD )
-    testD += prime;
-
-  testD = testD - accumD;
-
-  Uint32 baseD = crtMath.getCrtDigit( count,
-                                      count );
-  if( baseD == 0 )
-    throw "baseD == 0";
-
-  Uint32 inv = multInv.getInv( count, baseD );
-  if( inv == 0 )
-    throw "inv == 0";
-
-  // baseD * inv = 1
-  // baseD * (inv * testD) = testD
-
-  Uint32 testInv = inv * testD;
-  testInv = testInv % prime;
-
-  if( testInv != 0 )
-    {
-    length = count;
-    if( length > maxLen )
-      return false;
-
-    }
-
-
-  Uint32 testDigit = getInvDigit( count,
-                                  prime,
-                                  from,
-                                  crtMath,
-                                  multInv );
-
-  if( testDigit != testInv )
-    throw "testDigit != testInv";
-
-  setD( (Int32)testInv, count );
   }
 
 return true;
 }
+*/
 
 
 
-
-Uint32 Crt2::getInvDigit( const Uint32 where,
-                          const Uint32 prime,
-                          const Crt& from,
-                          const CrtMath& crtMath,
-                          const MultInv& multInv )
+bool Crt2::setInvDigit( const Uint32 where,
+                        const Uint32 prime,
+                        const Uint32 fromDigit,
+                        const Uint32 maxLen,
+                        const CrtMath& crtMath,
+                        const MultInv& multInv )
 {
 Uint32 accumD = getAccumD( where - 1,
                            where,
                            prime,
                            crtMath );
 
-Uint32 testD = (Uint32)from.getD( where );
+Uint32 testD = fromDigit;
 if( testD == 0 )
-  return 0xFFFFFFFF;
+  return false;
 
 if( testD < accumD )
   testD += prime;
@@ -704,7 +676,12 @@ Uint32 inv = multInv.getInv( where, baseD );
 
 Uint32 testInv = inv * testD;
 testInv = testInv % prime;
+setD( (Int32)testInv, where );
+if( testInv != 0 )
+  length = where;
 
-return testInv;
+if( length > maxLen )
+  return false;
+
+return true;
 }
-
