@@ -105,17 +105,21 @@ class Crt2
 
   bool setInvCrt( Crt& crt,
                   Crt& inv,
+                  Crt2& prime2Crt2,
+                  const Uint32 maxLen,
                   const Crt& prod,
                   const SPrimes& sPrimes,
                   const MultInv& multInv,
                   const CrtMath& crtMath );
 
+/*
   bool setPrimeFactor( const Crt& from,
                        const Uint32 maxLen,
                        // const Crt& prod,
                        const CrtMath& crtMath,
                        const SPrimes& sPrimes,
                        const MultInv& multInv );
+*/
 
   bool increment( const SPrimes& sPrimes );
   bool incAt( const SPrimes& sPrimes,
@@ -141,11 +145,12 @@ class Crt2
     return result;
     }
 
-  Uint32 getInvDigit( const Uint32 where,
-                      const Uint32 prime,
-                      const Crt& from,
-                      const CrtMath& crtMath,
-                      const MultInv& multInv );
+  bool setInvDigit( const Uint32 where,
+                    const Uint32 prime,
+                    const Uint32 fromDigit,
+                    const Uint32 maxLen,
+                    const CrtMath& crtMath,
+                    const MultInv& multInv );
 
 
   };
