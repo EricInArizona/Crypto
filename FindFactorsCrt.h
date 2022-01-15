@@ -25,13 +25,34 @@ class FindFactorsCrt
   FindFactorsCrt( void );
   FindFactorsCrt( const FindFactorsCrt& in );
   ~FindFactorsCrt( void );
-  bool getSmall( const Integer& pubKeyN,
+  bool getSmallFactor(
+                 const Integer& pubKeyN,
                  Integer& find1,
                  Integer& find2,
                  IntegerMath& intMath,
-                 SPrimes& sPrimes,
-                 MultInv& multInv,
-                 CrtMath& crtMath,
+                 const SPrimes& sPrimes,
+                 const MultInv& multInv,
+                 const CrtMath& crtMath,
+                 FileIO& mainIO );
+
+  bool getSmallFactor1(
+                 const Integer& pubKeyN,
+                 Integer& find1,
+                 Integer& find2,
+                 IntegerMath& intMath,
+                 const SPrimes& sPrimes,
+                 const MultInv& multInv,
+                 const CrtMath& crtMath,
+                 FileIO& mainIO );
+
+  bool getSmallFactor2(
+                 const Integer& pubKeyN,
+                 Integer& find1,
+                 Integer& find2,
+                 IntegerMath& intMath,
+                 const SPrimes& sPrimes,
+                 const MultInv& multInv,
+                 const CrtMath& crtMath,
                  FileIO& mainIO );
 
   };
