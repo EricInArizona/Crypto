@@ -549,9 +549,7 @@ for( Uint32 count = 1; count < last; count++ )
 
 
 
-bool Crt2::setInvCrt( Crt& crt,
-                      Crt& inv,
-                      Crt2& prime2Crt2,
+bool Crt2::setInvCrt( Crt2& prime2Crt2,
                       const Uint32 maxLen,
                       const Crt& prod,
                       const SPrimes& sPrimes,
@@ -561,8 +559,6 @@ bool Crt2::setInvCrt( Crt& crt,
 if( getD( 0 ) == 0 )
   return false;
 
-crt.setToOne();
-inv.setToOne();
 prime2Crt2.setToOne();
 
 const Uint32 top = length;
@@ -588,7 +584,6 @@ for( Uint32 count = 1; count < last; count++ )
   if( accumD == 0 )
     return false;
 
-  crt.setD( (Int32)accumD, count );
   Uint32 prodInv = multInv.getInv(
                                 count, accumD );
   // accumD * prodInv = 1
@@ -597,11 +592,9 @@ for( Uint32 count = 1; count < last; count++ )
   prodInv = prodInv * (Uint32)prod.getD( count );
   prodInv = prodInv % prime;
 
-  inv.setD( (Int32)prodInv, count );
-
   if( !prime2Crt2.setInvDigit( count,
                       prime,
-                      (Uint32)inv.getD( count ),
+                      prodInv,
                       maxLen,
                       crtMath,
                       multInv ))
@@ -611,35 +604,6 @@ for( Uint32 count = 1; count < last; count++ )
 
 return true;
 }
-
-
-
-/*
-bool Crt2::setPrimeFactor( const Crt& from,
-                           const Uint32 maxLen,
-                           const CrtMath& crtMath,
-                           const SPrimes& sPrimes,
-                           const MultInv& multInv )
-{
-setToOne();
-
-// Count starts at 1, so it's the prime 3.
-for( Uint32 count = 1; count < last; count++ )
-  {
-  Uint32 prime = sPrimes.getPrimeAt( count );
-
-  if( !setInvDigit( count, prime,
-               (Uint32)from.getD( count ),
-               maxLen,
-               crtMath,
-               multInv ))
-    return false;
-
-  }
-
-return true;
-}
-*/
 
 
 
