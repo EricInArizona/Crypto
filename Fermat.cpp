@@ -33,7 +33,7 @@ while( true )
     Uint64 shortVal = result.getD( 0 );
     // This has to be bigger than the biggest
     // prime in SPrimes.
-    shortVal = shortVal & 0xFFFFFF;
+    shortVal = shortVal & 0x7FFFFFF;
     result.setD( 0, shortVal );
     }
 
