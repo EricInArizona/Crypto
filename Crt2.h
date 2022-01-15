@@ -11,6 +11,7 @@
 #include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
+#include "GoodX.h"
 
 
 
@@ -113,6 +114,14 @@ class Crt2
   bool increment( const SPrimes& sPrimes );
   bool incAt( const SPrimes& sPrimes,
                          const Uint32 where );
+
+  bool incRev( const SPrimes& sPrimes,
+               const Uint32 where,
+               const GoodX& goodX );
+
+  bool incRevOneVal( const Uint32 where,
+                     const Uint32 prime,
+                     const GoodX& goodX );
 
   inline Uint32 getAccumD( const Uint32 row,
                            const Uint32 col,
