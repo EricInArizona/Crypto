@@ -157,6 +157,56 @@ return false;
 }
 
 
+bool Crt2::incRevOneVal( const Uint32 where,
+                         const Uint32 prime,
+                         const GoodX& goodX )
+{
+for( Uint32 count = 0; count < prime; count++ )
+  {
+  digitAr[where]++;
+  if( (Uint32)digitAr[where] >= prime )
+    {
+    digitAr[where] = 0;
+    return false;
+    }
+
+  if( goodX.getVal( where,
+                      (Uint32)digitAr[where] ))
+    return true;
+
+  }
+
+// It would never get here.
+return false;
+}
+
+
+
+
+bool Crt2::incRev( const SPrimes& sPrimes,
+                   const Uint32 where,
+                   const GoodX& goodX )
+{
+for( Int32 count = (Int32)where; count >= 0;
+                                       count-- )
+  {
+  if( length < (Uint32)count )
+    throw "invRev() length < count";
+
+  Uint32 prime = sPrimes.getPrimeAt(
+                              (Uint32)count );
+
+  if( incRevOneVal( (Uint32)count, prime, goodX ))
+    return true;
+
+  digitAr[count] = 0; // It wrapped around.
+  // Go around to the next digit.
+  }
+
+return false;
+}
+
+
 
 void Crt2::toInteger( const CrtMath& crtMath,
                       Integer& toSet,
