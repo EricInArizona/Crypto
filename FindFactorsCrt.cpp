@@ -28,15 +28,39 @@ FindFactorsCrt::~FindFactorsCrt( void )
 }
 
 
-
-bool FindFactorsCrt::getSmall(
+bool FindFactorsCrt::getSmallFactor(
                          const Integer& pubKeyN,
                          Integer& find1,
                          Integer& find2,
                          IntegerMath& intMath,
-                         SPrimes& sPrimes,
-                         MultInv& multInv,
-                         CrtMath& crtMath,
+                         const SPrimes& sPrimes,
+                         const MultInv& multInv,
+                         const CrtMath& crtMath,
+                         FileIO& mainIO )
+{
+return getSmallFactor1( pubKeyN,
+                        find1,
+                        find2,
+                        intMath,
+                        sPrimes,
+                        multInv,
+                        crtMath,
+                        mainIO );
+
+}
+
+
+
+// Very basic version that just increments
+// through possible factors.
+bool FindFactorsCrt::getSmallFactor1(
+                         const Integer& pubKeyN,
+                         Integer& find1,
+                         Integer& find2,
+                         IntegerMath& intMath,
+                         const SPrimes& sPrimes,
+                         const MultInv& multInv,
+                         const CrtMath& crtMath,
                          FileIO& mainIO )
 {
 Integer sqrRoot;
@@ -74,46 +98,32 @@ prime1.setToOne();
 // See the note in Crt2::setInvCrt() to see
 // why this count goes up above a certain
 // prime number.
-for( Uint32 count = 0; count < 10000000; count++ )
+for( Uint32 count = 0; count < 200000000; count++ )
   {
   // Count by twos.
   if( !prime1.incAt( sPrimes, 1 ))
     break;
 
+  // It is at least 3 when it gets here.
   // This would make it congruent to zero mod 3.
   if( prime1.getD( 1 ) == 1 )
     continue;
 
   if( !prime1.setInvCrt( prime1Crt,
                          inv,
+                         prime2,
+                         prodLength,
                          prod,
                          sPrimes,
                          multInv,
                          crtMath ))
     continue;
 
-  // At this point crt and inv have no small
-  // prime factors in them.
-
-  // There is a big number Big = 2 * 3 * 5 * ...
-  // all the way up to the last prime in a
-  // CRT number.  The value of inv is the
-  // multiplicative inverse mod Big.
-  // It is unlikely to be an actual prime
-  // factor of prod.  But it could be.
-
   // Test that it is the multiplicative inverse.
   // testProd.copy( prime1Crt );
   // testProd.multiply( inv, sPrimes );
   // if( !testProd.isEqual( prod ))
-    // throw "!testProd.isEquprime1Crtal( prod )";
-
-  if( !prime2.setPrimeFactor( inv,
-                              prodLength,
-                              crtMath,
-                              sPrimes,
-                              multInv ))
-    continue;
+    // throw "!testProd.isEqual( prod )";
 
   mainIO.appendChars( "\nFound it.\n" );
   mainIO.appendChars( "Prime1: " );
@@ -125,7 +135,7 @@ for( Uint32 count = 0; count < 10000000; count++ )
   mainIO.appendStr( showP );
   mainIO.appendChars( "\n" );
 
-  mainIO.appendChars( "Prime2:" );
+  mainIO.appendChars( "Prime2: " );
   prime2.toInteger( crtMath,
                     showIt,
                     intMath );
