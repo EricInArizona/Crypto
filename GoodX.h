@@ -30,7 +30,7 @@ class GoodX
   ~GoodX( void );
   void init( SPrimes& sPrimes );
   inline bool getVal( Uint32 primeAt,
-                      Uint32 where )
+                      Uint32 where ) const
     {
     return bArrays[primeAt].getVal( where );
     }
