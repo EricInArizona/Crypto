@@ -88,7 +88,6 @@ const Uint32 prodLength = prodCrt2.getLength();
 Crt2 prime1;
 Crt2 prime2;
 Crt prime1Crt;
-Crt inv;
 // Crt testProd;
 
 Integer showIt;
@@ -109,9 +108,7 @@ for( Uint32 count = 0; count < 200000000; count++ )
   if( prime1.getD( 1 ) == 1 )
     continue;
 
-  if( !prime1.setInvCrt( prime1Crt,
-                         inv,
-                         prime2,
+  if( !prime1.setInvCrt( prime2,
                          prodLength,
                          prod,
                          sPrimes,
