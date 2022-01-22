@@ -117,11 +117,50 @@ class Crt2
 
   bool incRev( const SPrimes& sPrimes,
                const Uint32 where,
-               const GoodX& goodX );
+               const GoodX& goodX,
+               const CrtMath& crtMath );
 
-  bool incRevOneVal( const Uint32 where,
-                     const Uint32 prime,
-                     const GoodX& goodX );
+  inline bool incRevOneVal( const Uint32 where,
+                       const Uint32 prime,
+                       const Uint32 accum,
+                       const GoodX& goodX,
+                       const CrtMath& crtMath )
+    {
+    // You'd have to do setFirstValues() first
+    // because this will get the _next_ good
+    // value.  
+    // digitAr[where] starts at an unknown value.
+
+    for( Uint32 count = 0; count < prime; count++ )
+      {
+      digitAr[where]++;
+      if( (Uint32)digitAr[where] >= prime )
+        {
+        // digitAr[where] = 0;
+        // It's false so it goes to the next row.
+        return false;
+        }
+
+      Uint32 test = crtMath.getCrtDigit( where,
+                                         where );
+      test = test * (Uint32)digitAr[where];
+
+      test  += accum;
+      test = test % prime;
+      if( goodX.getVal( where, test ))
+        return true;
+
+      }
+
+    // throw "It will never get here.";
+    return false;
+    }
+
+
+  bool setFirstValues( // const SPrimes& sPrimes,
+                   // const Uint32 where,
+                   // const GoodX& goodX
+                   );
 
   inline Uint32 getAccumD( const Uint32 row,
                            const Uint32 col,
