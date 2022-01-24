@@ -30,7 +30,7 @@ delete[] bArrays;
 
 
 
-void GoodX::init( SPrimes& sPrimes )
+void GoodX::init( const SPrimes& sPrimes )
 {
 for( Uint32 count = 0; count < last; count++ )
   {
