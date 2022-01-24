@@ -28,16 +28,16 @@ class GoodX
   GoodX( void );
   GoodX( const GoodX& in );
   ~GoodX( void );
-  void init( SPrimes& sPrimes );
-  inline bool getVal( Uint32 primeAt,
-                      Uint32 where ) const
+  void init( const SPrimes& sPrimes );
+  inline bool getVal( const Uint32 primeAt,
+                      const Uint32 where ) const
     {
     return bArrays[primeAt].getVal( where );
     }
 
-  inline void setVal( Uint32 primeAt,
-                      Uint32 where,
-                      bool toSet )
+  inline void setVal( const Uint32 primeAt,
+                      const Uint32 where,
+                      const bool toSet )
     {
     return bArrays[primeAt].setVal( where, toSet );
     }
