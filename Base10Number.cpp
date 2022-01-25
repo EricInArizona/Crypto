@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -8,7 +8,7 @@
 
 Base10Number::Base10Number( Str& toSet )
 {
-D = new Uint16[digitArraySize];
+D = new Int32[digitArraySize];
 setFromStr( toSet );
 }
 
@@ -17,9 +17,9 @@ setFromStr( toSet );
 Base10Number::Base10Number(
                         const Base10Number& obj )
 {
-D = new Uint16[digitArraySize];
+D = new Int32[digitArraySize];
 
-for( Uint32 count = 0; count < digitArraySize;
+for( Int32 count = 0; count < digitArraySize;
                                         count++ )
   {
   D[count] = obj.D[count];
@@ -37,7 +37,7 @@ delete[] D;
 
 
 
-Uint32 Base10Number::getD( Uint32 where )
+Int32 Base10Number::getD( Int32 where )
 {
 if( where >= digitArraySize )
   throw "getD() index out of bounds.";
@@ -46,12 +46,12 @@ return D[where];
 }
 
 
-Uint16 Base10Number::convertDigit( Uint16 digit )
+Int32 Base10Number::convertDigit( Int32 digit )
 {
 if( (digit > '9') || (digit < '0') )
   throw "Base10Number: convertDigit().";
 
-return (Uint16)(digit - '0');
+return (digit - '0');
 }
 
 
@@ -61,23 +61,23 @@ void Base10Number::setFromStr( Str& toSet )
 index = 0;
 D[0] = 0;
 
-const Uint32 last = toSet.getSize();
+const Int32 last = toSet.getSize();
 if( last < 1 )
   return;
 
-Uint32 where = 0;
-for( Int32 count = (Int32)(last - 1); count >= 0; count-- )
+Int32 where = 0;
+for( Int32 count = last - 1; count >= 0; count-- )
   {
   if( where >= digitArraySize )
     throw "Base10Number: Too big for array.";
 
-  Uint16 c = (Uint16)toSet.charAt( (Uint16)count );
+  Int32 c = toSet.charAt( count );
 
   // Ignore white space, commas, non digits.
   if( (c < '0') || (c > '9'))
     continue;
 
-  Uint16 digit = convertDigit( c );
+  Int32 digit = convertDigit( c );
 
   // Test what convertDigit() returned.
   if( digit > 9 )
