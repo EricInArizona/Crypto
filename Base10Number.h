@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -25,23 +25,23 @@ class Base10Number
 
   private:
   // For 1024 bits it's about 309 decimal digits.
-  static const Uint32 digitArraySize =
+  static const Int32 digitArraySize =
                                    (310 * 4) + 2;
-  Uint32 index = 0;
-  Uint16* D;
+  Int32 index = 0;
+  Int32* D;
 
   public:
   Base10Number( Str& toSet );
   Base10Number( const Base10Number& obj );
   ~Base10Number( void );
-  Uint32 getD( Uint32 where );
+  Int32 getD( Int32 where );
 
-  inline Uint32 getIndex( void )
+  inline Int32 getIndex( void )
     {
     return index;
     }
 
-  Uint16 convertDigit( Uint16 digit );
+  Int32 convertDigit( Int32 digit );
   void setFromStr( Str& toSet );
 
   };
