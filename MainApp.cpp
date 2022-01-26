@@ -1,12 +1,12 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
 #include "MainApp.h"
 #include "StIO.h"
 #include "Str.h"
-#include "RSA.h"
-#include "Ellip.h"
+// #include "RSA.h"
+// #include "Ellip.h"
 #include "ThreadEC.h"
 
 
@@ -14,7 +14,7 @@
 // int MainApp::mainLoop( int argc, char* argv[] )
 int MainApp::mainLoop( void )
 {
-Uint32 delay = 200; // milliseconds.
+Int32 delay = 200; // milliseconds.
 const char* outFile =
              "\\Eric\\Main\\Crypto\\ExeOut.txt";
 
@@ -45,8 +45,8 @@ mainIO.appendChars( "\n\n" );
 // RSA rsa;
 // rsa.test( mainIO );
 
-Ellip ellip;
-ellip.test( mainIO );
+// Ellip ellip;
+// ellip.test( mainIO );
 
 mainIO.appendChars( "End of main app.\n" );
 
@@ -119,8 +119,8 @@ if( sizeof( Int8 ) != 1 )
 // if( sizeof( Char16 ) != 2 )
   // return false;
 
-if( sizeof( Int16 ) != 2 )
-  return false;
+// if( sizeof( Int16 ) != 2 )
+  // return false;
 
 if( sizeof( Uint16 ) != 2 )
   return false;
@@ -128,13 +128,13 @@ if( sizeof( Uint16 ) != 2 )
 if( sizeof( Int32 ) != 4 )
   return false;
 
-if( sizeof( Uint32 ) != 4 )
-  return false;
+// if( sizeof( Uint32 ) != 4 )
+  // return false;
 
 if( sizeof( Int64 ) != 8 )
   return false;
 
-if( sizeof( Uint64 ) != 8 )
+if( sizeof( AddressU64 ) != 8 )
   return false;
 
 if( sizeof( Float32 ) != 4 )
