@@ -39,4 +39,30 @@ class CastE
     return result;
     }
 
+  inline static Int32 i64ToI32( Int64 x )
+    {
+    if( x < 0 )
+      throw "Truncating from a negative x.";
+
+    if( x > 0x7FFFFFFF )
+      throw "Truncating too big of an x.";
+
+    Int32 result = static_cast<Int32>( x );
+    return result;
+    }
+
+
+  inline static char i32ToChar( Int32 x )
+    {
+    if( x < 0 )
+      throw "Truncating from a negative char x.";
+
+    if( x >= 0x7F )
+      throw "Truncating too big of an char x.";
+
+    char result = static_cast<char>( x );
+    return result;
+    }
+
+
   };
