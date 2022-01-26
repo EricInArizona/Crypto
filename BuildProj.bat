@@ -4,9 +4,6 @@ rem 1> is standard out and 2> is standard error.
 
 cd \Eric\Main\Crypto
 
-rem Command line reference:
-rem https://clang.llvm.org/docs/ClangCommandLineReference.html
-
 rem @CommandLine.txt
 rem Use -v to see how it gets called.
 rem Using -v shows that Clang is using
@@ -17,15 +14,18 @@ rem Visual C++ C Runtime (CRT)
 rem Universal C Runtime
 
 rem C:\LLVM\bin\clang++ --help
-rem C:\LLVM\bin\clang++ main.cpp MainApp.cpp Base10Number.cpp FileUtil.cpp Base10Number.cpp -o main.exe -Wall -O1 2> Build.log
 
 rem -MAP goes to main.map.
 
 rem -Weverything
 rem -Wall
 
+rem Don't use old style casting.
+rem -Wno-old-style-cast
+
 rem -Ofast
-C:\LLVM\bin\clang++ *.cpp -o main.exe -Weverything -Wno-old-style-cast -Wno-c++98-compat-pedantic -Ofast -Wl,-MAP -Wl,-STACK:100000000 2> Build.log
+
+C:\LLVM\bin\clang++ *.cpp -o main.exe -Weverything -Wno-c++98-compat-pedantic -Ofast -Wl,-MAP -Wl,-STACK:100000000 2> Build.log
 
 rem https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations?view=msvc-160
 rem Tell the linker to use this max stack size.
