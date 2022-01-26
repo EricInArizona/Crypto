@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -13,7 +13,7 @@ class FileIO
   {
   private:
   CharBuf cBuf;
-  Uint32 testForCopy = 123;
+  Int32 testForCopy = 123;
   public:
   FileIO( void );
   FileIO( const FileIO &in );
