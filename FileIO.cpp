@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include "StIO.h"
+#include "CastE.h"
 
 
 // using namespace std;
@@ -42,7 +43,7 @@ FileIO::~FileIO( void )
 
 void FileIO::writeAll( const char* fileName )
 {
-Uint32 howMany = cBuf.getLast();
+Int32 howMany = cBuf.getLast();
 const char* buffer = cBuf.getBufPoint();
 
 std::ofstream outFile( fileName,
@@ -70,10 +71,12 @@ if( howMany > 4000000000 )
 
 inFile.seekg( 0 );
 
-char* buffer = new char[(Uint64)howMany];
+char* buffer = new char[CastE::i64ToU64(
+                                     howMany )];
 inFile.read( buffer, howMany );
 
-cBuf.appendCharBuf( buffer, (Uint32)howMany );
+cBuf.appendCharBuf( buffer, CastE::i64ToI32(
+                                   howMany ));
 
 delete[] buffer;
 inFile.close();
