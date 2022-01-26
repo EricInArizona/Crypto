@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -12,27 +12,26 @@
 class Str
   {
   private:
-  Uint32 arraySize = 0;
+  Int32 arraySize = 0;
   char* cArray;
 
   public:
   Str( const char* pStr );
-  Str( char ar[], Uint32 howMany );
-  Str( Uint8 ar[], const Uint32 howMany );
+  Str( char ar[], const Int32 howMany );
   Str( const Str& in );
   Str( const Str& in1, const Str& in2 );
-  Str( Uint64 n );
+  Str( Int64 n );
   ~Str( void );
-  inline Uint32 getSize()
+  inline Int32 getSize()
     {
     return arraySize;
     }
 
   void copy( Str& in );
-  char charAt( Uint32 where );
+  char charAt( Int32 where );
   // void print();
   // void printLine();
-  static Uint32 charsLength( const char* pStr );
+  static Int32 charsLength( const char* pStr );
   void reverse( void );
 
   };
