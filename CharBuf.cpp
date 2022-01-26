@@ -1,22 +1,22 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
 #include "CharBuf.h"
 #include "StIO.h"
+#include "CastE.h"
 
 
 CharBuf::CharBuf( void )
 {
 arraySize = 1024 * 64;
-cArray = new char[arraySize];
+cArray = new char[CastE::i32ToU64( arraySize )];
 
 // StIO::printFS(
 //         "CharBuf constructor called.\n" );
 }
 
 
-// The copy constructor.
 CharBuf::CharBuf( const CharBuf &in )
 {
 // Make the compiler think the in value is
@@ -43,20 +43,21 @@ delete[] cArray;
 
 
 
-void CharBuf::increaseSize( Uint32 howMuch )
+void CharBuf::increaseSize( Int32 howMuch )
 {
 arraySize = arraySize + howMuch;
-char* tempArray = new char[arraySize];
+char* tempArray = new char[CastE::i32ToU64(
+                                 arraySize )];
 
-const Uint32 max = last;
+const Int32 max = last;
 
-for( Uint32 count = 0; count < max; count++ )
+for( Int32 count = 0; count < max; count++ )
   tempArray[count] = cArray[count];
 
 delete[] cArray;
-cArray = new char[arraySize];
+cArray = new char[CastE::i32ToU64( arraySize )];
 
-for( Uint32 count = 0; count < max; count++ )
+for( Int32 count = 0; count < max; count++ )
   cArray[count] = tempArray[count];
 
 delete[] tempArray;
@@ -87,8 +88,8 @@ last++;
 void CharBuf::appendChars( const char* pStr )
 {
 const char* sizePoint = pStr;
-Uint32 strSize = 0;
-for( Uint32 count = 0; count < 10000; count++ )
+Int32 strSize = 0;
+for( Int32 count = 0; count < 10000; count++ )
   {
   char c = *sizePoint;
   if( c == 0 )
@@ -101,7 +102,7 @@ for( Uint32 count = 0; count < 10000; count++ )
 if( (arraySize + strSize + 2) <= arraySize )
   increaseSize( strSize + (1024 * 64) );
 
-for( Uint32 count = 0; count < strSize; count++ )
+for( Int32 count = 0; count < strSize; count++ )
   {
   cArray[last] = *pStr;
   last++;
@@ -112,12 +113,12 @@ for( Uint32 count = 0; count < strSize; count++ )
 
 
 void CharBuf::appendCharBuf( const char* buf,
-                             const Uint32 howMany )
+                             const Int32 howMany )
 {
 if( (arraySize + howMany + 2) <= arraySize )
   increaseSize( howMany + (1024 * 64) );
 
-for( Uint32 count = 0; count < howMany; count++ )
+for( Int32 count = 0; count < howMany; count++ )
   {
   cArray[last] = *buf;
   last++;
@@ -129,11 +130,11 @@ for( Uint32 count = 0; count < howMany; count++ )
 
 void CharBuf::appendStr( Str& in )
 {
-Uint32 howMany = in.getSize();
+Int32 howMany = in.getSize();
 if( ((last + 2) + howMany) <= arraySize )
   increaseSize( howMany + (1024 * 64) );
 
-for( Uint32 count = 0; count < howMany; count++ )
+for( Int32 count = 0; count < howMany; count++ )
   {
   cArray[last] = in.charAt( count );
   last++;
