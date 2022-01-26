@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -20,15 +20,15 @@ class CharBuf
   {
   private:
   char* cArray;
-  Uint32 arraySize = 0;
-  Uint32 last = 0;
-  void increaseSize( Uint32 howMuch );
+  Int32 arraySize = 0;
+  Int32 last = 0;
+  void increaseSize( Int32 howMuch );
 
   public:
   CharBuf( void );
   CharBuf( const CharBuf &in );
   ~CharBuf( void );
-  inline Uint32 getLast( void )
+  inline Int32 getLast( void )
     {
     return last;
     }
@@ -37,10 +37,11 @@ class CharBuf
     {
     return cArray;
     }
+
   void appendChar( const char toSet );
   void appendChars( const char* pStr );
   void appendCharBuf( const char* buf,
-                      const Uint32 howMany );
+                      const Int32 howMany );
 
   void appendStr( Str& in );
   Str getStr( void );
