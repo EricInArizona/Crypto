@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 #include "ThreadEC.h"
@@ -6,10 +6,9 @@
 #include <chrono>
 
 
-void ThreadEC::sleep( Uint32 milli )
+void ThreadEC::sleep( Int32 milli )
 {
 std::this_thread::sleep_for(
                       std::chrono::milliseconds(
                       milli ));
 }
-
