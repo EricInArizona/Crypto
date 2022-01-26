@@ -1,9 +1,9 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
 #include "Str.h"
-// #include "StIO.h"
+#include "CastE.h"
 
 
 
@@ -12,7 +12,7 @@ Str::Str( const char* pStr )
 const char* sizePoint = pStr;
 
 arraySize = 0;
-for( Uint32 count = 0; count < 10000; count++ )
+for( Int32 count = 0; count < 10000; count++ )
   {
   char c = *sizePoint;
   if( c == 0 )
@@ -28,8 +28,8 @@ if( arraySize == 0 )
   return;
   }
 
-cArray = new char[arraySize];
-for( Uint32 count = 0; count < arraySize;
+cArray = new char[CastE::i32ToU64( arraySize )];
+for( Int32 count = 0; count < arraySize;
                                        count++ )
   {
   char c = *pStr;
@@ -39,7 +39,7 @@ for( Uint32 count = 0; count < arraySize;
 }
 
 
-Str::Str( char ar[], const Uint32 howMany )
+Str::Str( char ar[], const Int32 howMany )
 {
 arraySize = howMany;
 if( arraySize == 0 )
@@ -48,8 +48,8 @@ if( arraySize == 0 )
   return;
   }
 
-cArray = new char[arraySize];
-for( Uint32 count = 0; count < arraySize;
+cArray = new char[CastE::i32ToU64( arraySize )];
+for( Int32 count = 0; count < arraySize;
                                         count++ )
   cArray[count] = ar[count];
 
@@ -57,25 +57,6 @@ for( Uint32 count = 0; count < arraySize;
 
 
 
-Str::Str( Uint8 ar[], const Uint32 howMany )
-{
-arraySize = howMany;
-if( arraySize == 0 )
-  {
-  cArray = new char[1];
-  return;
-  }
-
-cArray = new char[arraySize];
-for( Uint32 count = 0; count < arraySize;
-                                        count++ )
-  cArray[count] = (char)ar[count];
-
-}
-
-
-
-// The copy constructor.
 Str::Str( const Str& in )
 {
 arraySize = in.arraySize;
@@ -85,8 +66,8 @@ if( arraySize == 0 )
   return;
   }
 
-cArray = new char[arraySize];
-for( Uint32 count = 0; count < arraySize; count++ )
+cArray = new char[CastE::i32ToU64( arraySize )];
+for( Int32 count = 0; count < arraySize; count++ )
   cArray[count] = in.cArray[count];
 
 }
@@ -101,17 +82,17 @@ if( arraySize == 0 )
   return;
   }
 
-cArray = new char[arraySize];
+cArray = new char[CastE::i32ToU64( arraySize )];
 
-Uint32 last = 0;
-for( Uint32 count = 0; count < in1.arraySize;
+Int32 last = 0;
+for( Int32 count = 0; count < in1.arraySize;
                                      count++ )
   {
   cArray[last] = in1.cArray[count];
   last++;
   }
 
-for( Uint32 count = 0; count < in2.arraySize;
+for( Int32 count = 0; count < in2.arraySize;
                                      count++ )
   {
   cArray[last] = in2.cArray[count];
@@ -121,39 +102,38 @@ for( Uint32 count = 0; count < in2.arraySize;
 
 
 
-Str::Str( Uint64 n )
+Str::Str( Int64 n )
 {
 if( n == 0 )
   {
   arraySize = 1;
-  cArray = new char[arraySize];
+  cArray = new char[CastE::i32ToU64( arraySize )];
   cArray[0] = '0';
   return;
   }
 
 char tempBuf[100] = { 1,2,3 };
 
-Uint32 last = 0;
-// ==== cast warning.
+Int32 last = 0;
 
-Uint64 toDivide = n;
+Int64 toDivide = n;
 while( toDivide != 0 )
   {
-// ===  cast this?  Warning
-  Uint32 digit = toDivide % 10;
+  Int64 digit = toDivide % 10;
   // Ascii values go from '0' up to '9'.
-  tempBuf[last] = (char)('0' + digit);
+  tempBuf[last] = CastE::i32ToChar(
+                  CastE::i64ToI32(('0' + digit)));
   last++;
 
   toDivide = toDivide / 10;
   }
 
 arraySize = last;
-cArray = new char[arraySize];
+cArray = new char[CastE::i32ToU64( arraySize )];
 
 // Reverse it.
-Uint32 where = 0;
-for( Int32 count = (Int32)last - 1; count >= 0;
+Int32 where = 0;
+for( Int32 count = last - 1; count >= 0;
                                        count-- )
   {
   cArray[where] = tempBuf[count];
@@ -181,15 +161,15 @@ if( arraySize == 0 )
   return;
   }
 
-cArray = new char[arraySize];
-for( Uint32 count = 0; count < arraySize; count++ )
+cArray = new char[CastE::i32ToU64( arraySize )];
+for( Int32 count = 0; count < arraySize; count++ )
   cArray[count] = in.cArray[count];
 
 }
 
 
 
-char Str::charAt( Uint32 where )
+char Str::charAt( Int32 where )
 {
 if( where >= arraySize )
   throw "In charAt() index out of bounds.";
@@ -230,12 +210,12 @@ StIO::putC( '\n' );
 
 
 
-Uint32 Str::charsLength( const char* pStr )
+Int32 Str::charsLength( const char* pStr )
 {
 const char* sizePoint = pStr;
 
-Uint32 howMany = 0;
-for( Uint32 count = 0; count < 10000; count++ )
+Int32 howMany = 0;
+for( Int32 count = 0; count < 10000; count++ )
   {
   char c = *sizePoint;
   if( c == 0 )
@@ -253,18 +233,19 @@ return howMany;
 void Str::reverse( void )
 {
 
-char* tempBuf = new char[arraySize];
+char* tempBuf = new char[CastE::i32ToU64(
+                                 arraySize )];
 
 // Reverse it.
-Uint32 where = 0;
-for( Int32 count = (Int32)arraySize - 1;
+Int32 where = 0;
+for( Int32 count = arraySize - 1;
                               count >= 0; count-- )
   {
   tempBuf[where] = cArray[count];
   where++;
   }
 
-for( Uint32 count = 0; count < arraySize; count++ )
+for( Int32 count = 0; count < arraySize; count++ )
   cArray[count] = tempBuf[count];
 
 delete[] tempBuf;
