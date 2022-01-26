@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -14,6 +14,6 @@ class ThreadEC
   private:
 
   public:
-  static void sleep( Uint32 milli );
+  static void sleep( Int32 milli );
 
   };
