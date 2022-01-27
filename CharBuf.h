@@ -1,6 +1,8 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+// This should be merged with Int8Array.
+
 
 #pragma once
 
