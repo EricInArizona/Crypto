@@ -149,7 +149,7 @@ delete[] cArray;
 }
 
 
-void Str::copy( Str& in )
+void Str::copy( const Str& in )
 {
 delete[] cArray;
 
@@ -165,16 +165,6 @@ cArray = new char[CastE::i32ToU64( arraySize )];
 for( Int32 count = 0; count < arraySize; count++ )
   cArray[count] = in.cArray[count];
 
-}
-
-
-
-char Str::charAt( Int32 where )
-{
-if( where >= arraySize )
-  throw "In charAt() index out of bounds.";
-
-return cArray[where];
 }
 
 
