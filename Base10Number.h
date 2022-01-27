@@ -34,14 +34,27 @@ class Base10Number
   Base10Number( Str& toSet );
   Base10Number( const Base10Number& obj );
   ~Base10Number( void );
-  Int32 getD( Int32 where );
+  inline Int32 getD( const Int32 where )
+    {
+    if( where >= digitArraySize )
+      throw "getD() index out of bounds.";
+
+    return D[where];
+    }
 
   inline Int32 getIndex( void )
     {
     return index;
     }
 
-  Int32 convertDigit( Int32 digit );
-  void setFromStr( Str& toSet );
+  inline Int32 convertDigit( const Int32 digit )
+    {
+    if( (digit > '9') || (digit < '0') )
+      throw "Base10Number: convertDigit().";
+
+    return (digit - '0');
+    }
+
+  void setFromStr( const Str& toSet );
 
   };
