@@ -22,13 +22,22 @@ class Str
   Str( const Str& in1, const Str& in2 );
   Str( Int64 n );
   ~Str( void );
-  inline Int32 getSize()
+  inline Int32 getSize() const
     {
     return arraySize;
     }
 
-  void copy( Str& in );
-  char charAt( Int32 where );
+  void copy( const Str& in );
+  inline char charAt( const Int32 where ) const
+    {
+    if( where >= arraySize )
+      throw "In charAt() index out of bounds.";
+
+    return cArray[where];
+    }
+
+
+
   // void print();
   // void printLine();
   static Int32 charsLength( const char* pStr );
