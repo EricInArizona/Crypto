@@ -17,10 +17,10 @@ class SPrimes
   {
   private:
   Int32 testForCopy = 123;
-  Uint32* pArray;
+  Int32* pArray;
   void makePrimeArray( void );
 
-  static const Uint32 last =
+  static const Int32 last =
                    ProjConst::primesArraySize;
 
 
@@ -28,11 +28,11 @@ class SPrimes
   SPrimes( void );
   SPrimes( const SPrimes& in );
   ~SPrimes( void );
-  Uint32 getFirstPrimeFactor( Uint32 toTest );
-  Uint32 getBiggestPrime( void );
+  Int32 getFirstPrimeFactor( Int32 toTest );
+  Int32 getBiggestPrime( void );
 
-  inline Uint32 getPrimeAt(
-                      const Uint32 where ) const
+  inline Int32 getPrimeAt(
+                      const Int32 where ) const
     {
     // if( where >= last )
       // throw "getPrimeAt() out of bounds.";
