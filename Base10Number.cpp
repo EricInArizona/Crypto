@@ -13,7 +13,6 @@ setFromStr( toSet );
 }
 
 
-// The copy constructor.
 Base10Number::Base10Number(
                         const Base10Number& obj )
 {
@@ -24,9 +23,6 @@ for( Int32 count = 0; count < digitArraySize;
   {
   D[count] = obj.D[count];
   }
-
-// StIO::printFS(
-  // "Base10Number copy constructor called.\n" );
 }
 
 
@@ -37,26 +33,7 @@ delete[] D;
 
 
 
-Int32 Base10Number::getD( Int32 where )
-{
-if( where >= digitArraySize )
-  throw "getD() index out of bounds.";
-
-return D[where];
-}
-
-
-Int32 Base10Number::convertDigit( Int32 digit )
-{
-if( (digit > '9') || (digit < '0') )
-  throw "Base10Number: convertDigit().";
-
-return (digit - '0');
-}
-
-
-
-void Base10Number::setFromStr( Str& toSet )
+void Base10Number::setFromStr( const Str& toSet )
 {
 index = 0;
 D[0] = 0;
