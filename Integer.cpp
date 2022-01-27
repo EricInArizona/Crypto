@@ -1,17 +1,16 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
 #include "Integer.h"
 #include "CharBuf.h"
 #include "RandomCrypto.h"
-#include "Uint8Array.h"
+#include "Int8Array.h"
+#include "CastE.h"
 
 
 Integer::Integer( void )
 {
-// D = new Uint64[digitArraySize];
-
 setToZero();
 }
 
@@ -50,23 +49,25 @@ void Integer::setToMaxValue( void )
 {
 negative = false;
 index = ProjConst::digitArraySize - 1;
-for( Uint32 count = 0; count <=
+for( Int32 count = 0; count <=
                     ProjConst::digitArraySize - 1;
                     count++ )
-  D[count] = 0xFFFFFFFF;
+  D[count] = 0xFFFFFF;
 
 }
 
 
 
-void Integer::setFromULong( const Uint64 toSet )
+void Integer::setFromLong( const Int64 toSet )
 {
 negative = false;
 
 // If toSet was zero then D[0] would be zero and
 // index would be zero.
-D[0] = toSet & 0xFFFFFFFF;
-D[1] = toSet >> 32;
+
+// For 24 bits
+D[0] = toSet & 0xFFFFFF;
+D[1] = toSet >> 24;
 
 if( D[1] == 0 )
   index = 0;
@@ -81,45 +82,32 @@ void Integer::copy( const Integer& from )
 {
 negative = from.negative;
 
-const Uint32 last = from.index;
+const Int32 last = from.index;
 
 index = last;
-for( Uint32 count = 0; count <= last; count++ )
+for( Int32 count = 0; count <= last; count++ )
       D[count] = from.D[count];
 
 }
 
 
-/*
-void Integer::copyFromP( const Integer* copyFrom )
-{
-// Like: copyFromP( this );
-
-isNegative = copyFrom->isNegative;
-index = copyFrom->index;
-const Uint32 last = copyFrom->index;
-for( Uint32 count = 0; count <= last; count++ )
-      D[count] = copyFrom->D[count];
-
-}
-*/
-
 
 void Integer::copyUpTo( const Integer& from,
-                        const Uint32 where )
+                        const Int32 where )
 {
 if( where >= ProjConst::digitArraySize )
   throw "copyUpTo where out of range.";
 
 negative = from.negative;
 index = where;
-for( Uint32 count = 0; count <= where; count++ )
+for( Int32 count = 0; count <= where; count++ )
   D[count] = from.D[count];
 
 }
 
 
-bool Integer::isEqualToUI( const Uint32 toTest )
+/*
+bool Integer::isEqualToI( const Int32 toTest )
                                            const
 {
 if( negative )
@@ -127,6 +115,9 @@ if( negative )
 
 if( index > 0 )
   return false;
+
+if( toTest > 0xFFFFFF )
+  throw "Integer: toTest > 0xFFFFFF";
 
 if( D[0] != toTest )
   return false;
@@ -163,6 +154,7 @@ if( shifted != D[1] )
 
 return true;
 }
+*/
 
 
 
@@ -183,7 +175,7 @@ if( index != x.index )
 // the smaller digits are usually different.
 // So it can find digits that are different
 // sooner this way.
-for( Uint32 count = 1; count <= index; count++ )
+for( Int32 count = 1; count <= index; count++ )
   {
   if( D[count] != x.D[count] )
     return false;
@@ -195,7 +187,7 @@ return true;
 
 
 
-bool Integer::isULong( void ) const
+bool Integer::isLong( void ) const
 {
 if( negative )
   return false;
@@ -209,14 +201,16 @@ return true;
 
 
 
-Uint64 Integer::getAsULong( void ) const
+Int64 Integer::getAsLong( void ) const
 {
-// This is normally used after calling isULong().
-// It is assumed here that it is a ulong.
+// This returns a number that is at most
+// 48 bits.
+// This is normally used after calling isLong().
+// It is assumed here that it is a long.
 if( index == 0 ) // Then D[1] is undefined.
   return D[0];
 
-Uint64 result = D[1] << 32;
+Int64 result = D[1] << 24;
 result |= D[0];
 return result;
 }
@@ -242,8 +236,7 @@ if( index != x.index )
   }
 
 // Indexes are the same:
-for( Int32 count = (Int32)index; count >= 0;
-                                       count-- )
+for( Int32 count = index; count >= 0; count-- )
   {
   if( D[count] != x.D[count] )
     {
@@ -274,20 +267,20 @@ return paramIsGreater( x );
 void Integer::increment( void )
 {
 D[0] += 1;
-if( (D[0] >> 32) == 0 )
+if( (D[0] >> 24) == 0 )
   {
   // If there's nothing to Carry then no
   // reorganization is needed.
   return;
   }
 
-Uint64 carry = D[0] >> 32;
-D[0] = D[0] & 0xFFFFFFFF;
-for( Uint32 count = 1; count <= index; count++ )
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+for( Int32 count = 1; count <= index; count++ )
   {
-  Uint64 total = carry + D[count];
-  D[count] = total & 0xFFFFFFFF;
-  carry = total >> 32;
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -303,13 +296,13 @@ if( carry != 0 )
 
 void Integer::cleanUp( void )
 {
-Uint64 carry = D[0] >> 32;
-D[0] = D[0] & 0xFFFFFFFF;
-for( Uint32 count = 1; count <= index; count++ )
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+for( Int32 count = 1; count <= index; count++ )
   {
-  Uint64 total = carry + D[count];
-  D[count] = total & 0xFFFFFFFF;
-  carry = total >> 32;
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -324,40 +317,40 @@ if( carry != 0 )
 
 
 
-void Integer::addULong( Uint64 toAdd )
+void Integer::addLong( Int64 toAdd )
 {
-D[0] += toAdd & 0xFFFFFFFF;
+D[0] += toAdd & 0xFFFFFF;
 if( index == 0 ) // Then D[1] would be an
   {              // undefined value.
-  D[1] = toAdd >> 32;
+  D[1] = toAdd >> 24;
   if( D[1] != 0 )
     index = 1;
 
   }
 else
   {
-  D[1] += toAdd >> 32;
+  D[1] += toAdd >> 24;
   }
 
-if( (D[0] >> 32) == 0 )
+if( (D[0] >> 24) == 0 )
   {
   // If there's nothing to Carry then no
   // reorganization is needed.
   if( index == 0 )
     return; // Nothing to Carry.
 
-  if( (D[1] >> 32) == 0 )
+  if( (D[1] >> 24) == 0 )
     return; // Nothing to Carry.
 
   }
 
-Uint64 carry = D[0] >> 32;
-D[0] = D[0] & 0xFFFFFFFF;
-for( Uint32 count = 1; count <= index; count++ )
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+for( Int32 count = 1; count <= index; count++ )
   {
-  Uint64 total = carry + D[count];
-  D[count] = total & 0xFFFFFFFF;
-  carry = total >> 32;
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -380,21 +373,21 @@ void Integer::add( const Integer& toAdd )
 // if( negative )
 // if( toAdd.negative )
 
-if( toAdd.isULong() )
+if( toAdd.isLong() )
   {
-  addULong( toAdd.getAsULong() );
+  addLong( toAdd.getAsLong() );
   return;
   }
 
-Uint32 localIndex = index;
-const Uint32 localToAddIndex = toAdd.index;
+Int32 localIndex = index;
+const Int32 localToAddIndex = toAdd.index;
 if( localIndex < toAdd.index )
   {
-  for( Uint32 count = localIndex + 1;
+  for( Int32 count = localIndex + 1;
               count <= localToAddIndex; count++ )
     D[count] = toAdd.D[count];
 
-  for( Uint32 count = 0; count <= localIndex;
+  for( Int32 count = 0; count <= localIndex;
                                       count++ )
     D[count] += toAdd.D[count];
 
@@ -402,22 +395,22 @@ if( localIndex < toAdd.index )
   }
 else
   {
-  for( Uint32 count = 0; count <= localToAddIndex;
+  for( Int32 count = 0; count <= localToAddIndex;
                                          count++ )
     D[count] += toAdd.D[count];
 
   }
 
 // After they've been added, reorganize it.
-Uint64 carry = D[0] >> 32;
-D[0] = D[0] & 0xFFFFFFFF;
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
 localIndex = index;
-for( Uint32 count = 1; count <= localIndex;
+for( Int32 count = 1; count <= localIndex;
                                         count++ )
   {
-  Uint64 total = carry + D[count];
-  D[count] = total & 0xFFFFFFFF;
-  carry = total >> 32;
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -436,9 +429,9 @@ if( carry != 0 )
 void Integer::square0( void )
 {
 // If this got called then Index is 0.
-Uint64 square = D[0] * D[0];
-D[0] = square & 0xFFFFFFFF;
-D[1] = square >> 32;
+Int64 square = D[0] * D[0];
+D[0] = square & 0xFFFFFF;
+D[1] = square >> 24;
 if( D[1] != 0 )
   index = 1;
 
@@ -449,8 +442,8 @@ if( D[1] != 0 )
 void Integer::square1( void )
 {
 // If this got called then Index is 1.
-Uint64 D0 = D[0];
-Uint64 D1 = D[1];
+Int64 D0 = D[0];
+Int64 D1 = D[1];
 
 // If you were multiplying 23 * 23 on paper
 // it would look like:
@@ -466,16 +459,16 @@ Uint64 D1 = D[1];
 //                   M2_1  M1_1
 
 // Top row:
-Uint64 M0_0 = D0 * D0;
-Uint64 M1_0 = D0 * D1;
+Int64 M0_0 = D0 * D0;
+Int64 M1_0 = D0 * D1;
 
 // Second row:
 // ulong M1_1 = M1_0; // Avoiding D1 * D0 again.
-Uint64 M2_1 = D1 * D1;
+Int64 M2_1 = D1 * D1;
 
 // Add them up:
-D[0] = M0_0 & 0xFFFFFFFF;
-Uint64 carry = M0_0 >> 32;
+D[0] = M0_0 & 0xFFFFFF;
+Int64 carry = M0_0 >> 24;
 
 // This test will cause an overflow exception:
 // ulong TestBits = checked( (ulong)0xFFFFFFFF *
@@ -486,8 +479,8 @@ Uint64 carry = M0_0 >> 32;
 // To avoid an overflow, split the ulongs into
 // left and right halves and then add them up.
 // D[1] = M1_0 + M1_1
-Uint64 M0Right = M1_0 & 0xFFFFFFFF;
-Uint64 M0Left = M1_0 >> 32;
+Int64 M0Right = M1_0 & 0xFFFFFF;
+Int64 M0Left = M1_0 >> 24;
 
 // Avoiding a redundancy:
 // M1_1 is the same as M1_0.
@@ -495,14 +488,14 @@ Uint64 M0Left = M1_0 >> 32;
 // ulong M1Left = M1_1 >> 32;
 // ulong Total = M0Right + M1Right + Carry;
 
-Uint64 total = M0Right + M0Right + carry;
-D[1] = total & 0xFFFFFFFF;
-carry = total >> 32;
+Int64 total = M0Right + M0Right + carry;
+D[1] = total & 0xFFFFFF;
+carry = total >> 24;
 carry += M0Left + M0Left;
-total = (M2_1 & 0xFFFFFFFF) + carry;
-D[2] = total & 0xFFFFFFFF;
-carry = total >> 32;
-carry += (M2_1 >> 32);
+total = (M2_1 & 0xFFFFFF) + carry;
+D[2] = total & 0xFFFFFF;
+carry = total >> 24;
+carry += (M2_1 >> 24);
 index = 2;
 if( carry != 0 )
   {
@@ -553,71 +546,71 @@ if( carry != 0 )
 void Integer::square2( void )
 {
 // If this got called then Index is 2.
-Uint64 D0 = D[0];
-Uint64 D1 = D[1];
-Uint64 D2 = D[2];
+Int64 D0 = D[0];
+Int64 D1 = D[1];
+Int64 D2 = D[2];
 
 //                   M2_0   M1_0  M0_0
 //            M3_1   M2_1   M1_1
 //     M4_2   M3_2   M2_2
 
 // Top row:
-Uint64 M0_0 = D0 * D0;
-Uint64 M1_0 = D0 * D1;
-Uint64 M2_0 = D0 * D2;
+Int64 M0_0 = D0 * D0;
+Int64 M1_0 = D0 * D1;
+Int64 M2_0 = D0 * D2;
 
 // Second row:
 // ulong M1_1 = M1_0;
-Uint64 M2_1 = D1 * D1;
-Uint64 M3_1 = D1 * D2;
+Int64 M2_1 = D1 * D1;
+Int64 M3_1 = D1 * D2;
 
 // Third row:
 // ulong M2_2 = M2_0;
 // ulong M3_2 = M3_1;
-Uint64 M4_2 = D2 * D2;
+Int64 M4_2 = D2 * D2;
 
 // Add them up:
-D[0] = M0_0 & 0xFFFFFFFF;
-Uint64 carry = M0_0 >> 32;
+D[0] = M0_0 & 0xFFFFFF;
+Int64 carry = M0_0 >> 24;
 
 // D[1]
-Uint64 M0Right = M1_0 & 0xFFFFFFFF;
-Uint64 M0Left = M1_0 >> 32;
-// ulong M1Right = M1_1 & 0xFFFFFFFF;
-// ulong M1Left = M1_1 >> 32;
-Uint64 total = M0Right + M0Right + carry;
-D[1] = total & 0xFFFFFFFF;
-carry = total >> 32;
+Int64 M0Right = M1_0 & 0xFFFFFF;
+Int64 M0Left = M1_0 >> 24;
+// M1Right = M1_1 & 0xFFFFFF;
+// M1Left = M1_1 >> 24;
+Int64 total = M0Right + M0Right + carry;
+D[1] = total & 0xFFFFFF;
+carry = total >> 24;
 carry += M0Left + M0Left;
 
 // D[2]
-M0Right = M2_0 & 0xFFFFFFFF;
-M0Left = M2_0 >> 32;
-Uint64 M1Right = M2_1 & 0xFFFFFFFF;
-Uint64 M1Left = M2_1 >> 32;
-// ulong M2Right = M2_2 & 0xFFFFFFFF;
-// ulong M2Left = M2_2 >> 32;
+M0Right = M2_0 & 0xFFFFFF;
+M0Left = M2_0 >> 24;
+Int64 M1Right = M2_1 & 0xFFFFFF;
+Int64 M1Left = M2_1 >> 24;
+// M2Right = M2_2 & 0xFFFFFF;
+// M2Left = M2_2 >> 24;
 total = M0Right + M1Right + M0Right + carry;
-D[2] = total & 0xFFFFFFFF;
-carry = total >> 32;
+D[2] = total & 0xFFFFFF;
+carry = total >> 24;
 carry += M0Left + M1Left + M0Left;
 
 // D[3]
-M1Right = M3_1 & 0xFFFFFFFF;
-M1Left = M3_1 >> 32;
-// M2Right = M3_2 & 0xFFFFFFFF;
-// M2Left = M3_2 >> 32;
+M1Right = M3_1 & 0xFFFFFF;
+M1Left = M3_1 >> 24;
+// M2Right = M3_2 & 0xFFFFFF;
+// M2Left = M3_2 >> 24;
 total = M1Right + M1Right + carry;
-D[3] = total & 0xFFFFFFFF;
-carry = total >> 32;
+D[3] = total & 0xFFFFFF;
+carry = total >> 24;
 carry += M1Left + M1Left;
 
 // D[4]
-Uint64 M2Right = M4_2 & 0xFFFFFFFF;
-Uint64 M2Left = M4_2 >> 32;
+Int64 M2Right = M4_2 & 0xFFFFFF;
+Int64 M2Left = M4_2 >> 24;
 total = M2Right + carry;
-D[4] = total & 0xFFFFFFFF;
-carry = total >> 32;
+D[4] = total & 0xFFFFFF;
+carry = total >> 24;
 carry += M2Left;
 index = 4;
 if( carry != 0 )
@@ -629,24 +622,24 @@ if( carry != 0 )
 
 
 
-void Integer::shiftLeft( Uint32 shiftBy )
+void Integer::shiftLeft( Int32 shiftBy )
 {
 // This one is not meant to shift more than 32
 // bits at a time.  Obviously you could call it
 // several times.
 // Or put a wrapper function around this that
 // calls it several times.
-if( shiftBy > 32 )
-      throw "ShiftBy > 32 on ShiftLeft.";
+if( shiftBy > 24 )
+      throw "ShiftBy > 24 on ShiftLeft.";
 
-Uint64 carry = 0;
-for( Uint32 count = 0; count <= index; count++ )
+Int64 carry = 0;
+for( Int32 count = 0; count <= index; count++ )
   {
-  Uint64 digit = D[count];
+  Int64 digit = D[count];
   digit <<= shiftBy;
-  D[count] = digit & 0xFFFFFFFF;
+  D[count] = digit & 0xFFFFFF;
   D[count] |= carry;
-  carry = digit >> 32;
+  carry = digit >> 24;
   }
 
 if( carry != 0 )
@@ -662,20 +655,19 @@ if( carry != 0 )
 
 
 
-void Integer::shiftRight( Uint32 shiftBy )
+void Integer::shiftRight( Int32 shiftBy )
 {
-if( shiftBy > 32 )
-  throw "ShiftBy > 32 on ShiftRight.";
+if( shiftBy > 24 )
+  throw "ShiftBy > 24 on ShiftRight.";
 
-Uint64 carry = 0;
-for( Int32 count = (Int32)index; count >= 0;
-                                        count-- )
+Int64 carry = 0;
+for( Int32 count = index; count >= 0; count-- )
   {
-  Uint64 digit = D[count] << 32;
+  Int64 digit = D[count] << 24;
   digit >>= shiftBy;
-  D[count] = digit >> 32;
+  D[count] = digit >> 24;
   D[count] |= carry;
-  carry = digit & 0xFFFFFFFF;
+  carry = digit & 0xFFFFFF;
   }
 
 if( D[index] == 0 )
@@ -697,8 +689,8 @@ if( D[index] == 0 )
 // This is used in some algorithms to set one
 // particular digit and have all other digits set
 // to zero.
-void Integer::setDigitAndClear( Uint32 where,
-                                   Uint64 toSet )
+void Integer::setDigitAndClear( Int32 where,
+                                Int64 toSet )
 {
 // For testing:
 // This would lead to an undefined number that's
@@ -706,12 +698,12 @@ void Integer::setDigitAndClear( Uint32 where,
 if( (toSet == 0) && (where != 0) )
   throw "setDigitAndClear() with bad zero.";
 
-if( (toSet >> 32) != 0 )
+if( (toSet >> 24) != 0 )
   throw "setDigitAndClear() Bad stuff...";
 
 index = where;
 D[index] = toSet;
-for( Uint32 count = 0; count < index; count++ )
+for( Int32 count = 0; count < index; count++ )
   D[count] = 0;
 
 }
@@ -719,45 +711,43 @@ for( Uint32 count = 0; count < index; count++ )
 
 
 bool Integer::makeRandomOdd(
-                        const Uint32 setToIndex )
+                        const Int32 setToIndex )
 {
 negative = false;
 if( setToIndex > (ProjConst::digitArraySize - 3))
   throw "MakeRandomOdd index is too high.";
 
-Uint32 howManyBytes = (setToIndex * 4) + 4;
+Int32 howManyBytes = (setToIndex * 3) + 3;
 
-Uint8Array u8a;
-RandomCrypto::makeRandomBytes( u8a,
+Int8Array i8a;
+RandomCrypto::makeRandomBytes( i8a,
                                 howManyBytes );
 
 index = setToIndex;
-Uint32 where = 0;
-for( Uint32 count = 0; count <= index; count++ )
+Int32 where = 0;
+for( Int32 count = 0; count <= index; count++ )
   {
-  Uint64 digit = u8a.valAt( where );
+  Int64 digit = i8a.valAt( where );
   digit <<= 8;
-  digit |= u8a.valAt( where + 1 );
+  digit |= i8a.valAt( where + 1 );
   digit <<= 8;
-  digit |= u8a.valAt( where + 2 );
+  digit |= i8a.valAt( where + 2 );
   digit <<= 8;
-  digit |= u8a.valAt( where + 3 );
-  D[count] = digit;
-  where += 4;
+  where += 3;
   }
 
 // Make sure there isn't a zero at the top.
 if( D[index] == 0 )
   throw "zero at top of random bytes.";
 
-if( (D[index] >> 24) == 0 )
+if( (D[index] >> 16) == 0 )
   throw "zero at very top of random bytes.";
 
 // Test:
-for( Uint32 count = 0; count <= index; count++ )
+for( Int32 count = 0; count <= index; count++ )
   {
-  if( (D[count] >> 32) != 0 )
-    throw "(D[Count] >> 32) != 0 MakeRandom().";
+  if( (D[count] >> 24) != 0 )
+    throw "(D[Count] >> 24) != 0 MakeRandom().";
 
   }
 
@@ -1034,7 +1024,7 @@ void Integer::copyFromIntBuf( IntBuf& intBuf )
 {
 negative = false;
 index = intBuf.getIndex();
-for( Uint32 count = 0; count <= index; count++ )
+for( Int32 count = 0; count <= index; count++ )
   D[count] = intBuf.getD( count );
 
 }
@@ -1044,7 +1034,8 @@ void Integer::copyToIntBuf( IntBuf& intBuf ) const
 
 {
 intBuf.setIndex( index );
-for( Uint32 count = 0; count <= index; count++ )
-  intBuf.setD( count, D[count] );
+for( Int32 count = 0; count <= index; count++ )
+  intBuf.setD( count, CastE::i64ToI32(
+                                   D[count] ));
 
 }
