@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -8,9 +8,6 @@
 // This is for copies of Integer.cpp objects,
 // but it has a dynamically allocated array.
 // As opposed to the array being on the stack.
-// Also, it only keeps 32 bits for each digit,
-// so it's smaller than the working array used
-// in the Integer object.
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
@@ -20,21 +17,21 @@ class IntBuf
   {
   private:
   Int32 testForCopy = 123;
-  Uint32 index = 0;
-  static const Uint32 last =
+  Int32 index = 0;
+  static const Int32 last =
                       ProjConst::digitArraySize;
-  Uint32* D;
+  Int32* D;
 
   public:
   IntBuf( void );
   IntBuf( const IntBuf& in );
   ~IntBuf( void );
-  inline Uint32 getIndex( void ) const
+  inline Int32 getIndex( void ) const
     {
     return index;
     }
 
-  inline void setIndex( Uint32 setTo )
+  inline void setIndex( Int32 setTo )
     {
     if( setTo >= last )
       throw "IntBuf setIndex() out of bounds.";
@@ -42,7 +39,7 @@ class IntBuf
     index = setTo;
     }
 
-  inline Uint32 getD( const Uint32 where ) const
+  inline Int32 getD( const Int32 where ) const
     {
     if( where >= last )
       throw "IntBuf.getD() index out of bounds.";
@@ -51,16 +48,17 @@ class IntBuf
     }
 
 
-  inline void setD( const Uint32 where,
-                    const Uint64 toSet )
+  inline void setD( const Int32 where,
+                    const Int32 toSet )
     {
     if( where >= last )
       throw "IntBuf.getD() index out of bounds.";
 
-    if( toSet > 0xFFFFFFFFUL )
+    // 24 bits.
+    if( toSet > 0xFFFFFF )
       throw "IntBuf.setD() setTo is too big.";
 
-    D[where] = (Uint32)toSet;
+    D[where] = toSet;
     }
 
   };
