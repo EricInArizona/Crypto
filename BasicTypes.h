@@ -14,11 +14,11 @@
 
 
 typedef char Int8;
-typedef unsigned char Uint8;
+// typedef unsigned char Uint8;
 // typedef unsigned char Char8;
 // typedef unsigned short Char16;
 // typedef short Int16;
-typedef unsigned short Uint16;
+// typedef unsigned short Uint16;
 typedef int Int32;
 // typedef unsigned int Uint32;
 typedef long long Int64; // A constant 123LL
