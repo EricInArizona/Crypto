@@ -1,14 +1,15 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
 #include "SPrimes.h"
 #include "IntegerMath.h"
+#include "CastE.h"
 
 
 SPrimes::SPrimes( void )
 {
-pArray = new Uint32[last];
+pArray = new Int32[last];
 makePrimeArray();
 }
 
@@ -20,7 +21,6 @@ delete[] pArray;
 }
 
 
-// The copy constructor.
 SPrimes::SPrimes( const SPrimes& in )
 {
 // Make the compiler think in is being used.
@@ -31,15 +31,15 @@ throw "Copy constructor for SPrimes called.\n";
 }
 
 
-Uint32 SPrimes::getBiggestPrime( void )
+Int32 SPrimes::getBiggestPrime( void )
 {
 return pArray[last - 1];
 }
 
 
 
-Uint32 SPrimes::getFirstPrimeFactor(
-                                 Uint32 toTest )
+Int32 SPrimes::getFirstPrimeFactor(
+                                Int32 toTest )
 {
 if( toTest < 2 )
   return 0;
@@ -50,14 +50,14 @@ if( toTest == 2 )
 if( toTest == 3 )
   return 3;
 
-const Uint64 max = IntegerMath::
-                         findULSqrRoot( toTest );
+const Int64 max = IntegerMath::
+                         findLSqrRoot( toTest );
 if( max == 0 )
   throw "SPrimes. Max was zero.";
 
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
-  Uint32 testN = pArray[count];
+  Int32 testN = pArray[count];
   if( testN < 1 )
     return 0;
 
@@ -87,19 +87,20 @@ pArray[6] = 17;
 pArray[7] = 19;
 pArray[8] = 23;
 
-Uint32 index = 9;
-for( Uint64 testN = 29; ; testN += 2 )
+Int32 index = 9;
+for( Int64 testN = 29; ; testN += 2 )
   {
   if( (testN % 3) == 0 )
     continue;
 
-  if( (testN >> 32) != 0 )
-    throw "SPrimes. A small prime is a Uint64.";
+  if( (testN >> 31) != 0 )
+    throw "SPrimes. A small prime is an Int64.";
 
   // If it has no prime factors then add it.
-  if( 0 == getFirstPrimeFactor( (Uint32)testN ))
+  if( 0 == getFirstPrimeFactor( CastE::i64ToI32(
+                                        testN )))
     {
-    pArray[index] = (Uint32)testN;
+    pArray[index] = CastE::i64ToI32( testN );
     index++;
     if( index >= last )
       return;
