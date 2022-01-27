@@ -8,7 +8,6 @@
 
 #include "BasicTypes.h"
 #include "Str.h"
-#include "Uint8Array.h"
 #include "ProjConst.h"
 #include "IntBuf.h"
 
@@ -24,15 +23,15 @@ class Integer
   private:
   Int32 testforCopy = 123;
   bool negative = false;
-  Uint32 index = 0;
+  Int32 index = 0;
 
-  // It is Uint64 to hold multiplied values.
+  // It is Int64 to hold multiplied values.
   // I want a fixed array that gets pushed on
   // to the stack.  In other words there is
   // no memory allocation that gets done when
   // an Integer is created other than to move
   // the stack pointer.
-  Uint64 D[ProjConst::digitArraySize] = { 0,1,2 };
+  Int64 D[ProjConst::digitArraySize] = { 0,1,2 };
   // Uint64* D;
 
 /*
@@ -90,7 +89,7 @@ class Integer
     return false;
     }
 
-  inline bool isMoreThanUint( const Uint32 check )
+  inline bool isMoreThanInt( const Int32 check )
                                            const
     {
     if( negative )
@@ -115,12 +114,12 @@ class Integer
     negative = setTo;
     }
 
-  inline Uint32 getIndex( void ) const
+  inline Int32 getIndex( void ) const
     {
     return index;
     }
 
-  inline void setIndex( Uint32 setTo )
+  inline void setIndex( Int32 setTo )
     {
     if( setTo >= ProjConst::digitArraySize )
       throw "setIndex() index out of bounds.";
@@ -129,7 +128,7 @@ class Integer
     }
 
 
-  inline Uint64 getD( const Uint32 where ) const
+  inline Int64 getD( const Int32 where ) const
     {
     // if( where >= ProjConst::digitArraySize )
       // throw "getD() index out of bounds.";
@@ -137,11 +136,11 @@ class Integer
     return D[where];
     }
 
-  inline void setD( const Uint32 where,
-                    const Uint64 toSet )
+  inline void setD( const Int32 where,
+                    const Int64 toSet )
     {
     // I want to be able to use toSet values
-    // that might be a full 64 bits long.
+    // that might be a full 48 bits long.
     // See cleanUp().
 
     // if( where >= ProjConst::digitArraySize )
@@ -153,43 +152,46 @@ class Integer
   void cleanUp( void );
   void incrementIndex( void );
   void setToMaxValue( void );
-  inline void setFromUInt( const Uint32 toSet )
+  inline void setFromInt( const Int32 toSet )
     {
     negative = false;
     D[0] = toSet;
     index = 0;
     }
 
-  void setFromULong( const Uint64 toSet );
+  void setFromLong( const Int64 toSet );
   void copy( const Integer& copyFrom );
   void copyUpTo( const Integer& copyFrom,
-                            const Uint32 where );
+                 const Int32 where );
   // The const on the end marks this function
   // as not modifying the _this_ object that
   // called it.
-  bool isEqualToUI( const Uint32 toTest ) const;
-  bool isEqualToUL( const Uint64 toTest ) const;
+  // bool isEqualToInt( const Int32 toTest ) const;
+  // bool isEqualToInt64( const Int64 toTest )
+  //                                     const;
   bool isEqual( const Integer& x ) const;
-  bool isULong( void ) const;
-  Uint64 getAsULong( void ) const;
+  bool isLong( void ) const;
+  Int64 getAsLong( void ) const;
   bool paramIsGreater( const Integer& x ) const;
   bool paramIsGreaterOrEq( const Integer& x )
                                           const;
   void increment( void );
-  void addULong( const Uint64 toAdd );
+  void addLong( const Int64 toAdd );
   void add( const Integer& toAdd );
   void square0( void );
   void square1( void );
   void square2( void );
-  void shiftLeft( const Uint32 shiftBy );
-  void shiftRight( const Uint32 shiftBy );
-  void setDigitAndClear( const Uint32 where,
-                            const Uint64 toSet );
-  bool makeRandomOdd( const Uint32 setToIndex );
+  void shiftLeft( const Int32 shiftBy );
+  void shiftRight( const Int32 shiftBy );
+  void setDigitAndClear( const Int32 where,
+                            const Int64 toSet );
+  bool makeRandomOdd( const Int32 setToIndex );
 
 /*
   bool setFromAsciiStr( Str& in );
   Str getAsciiStr( void );
+
+  do char arrays.
   void setFromBigEndianByteArray(
                               Uint8Array& U8Ar );
   void getBigEndianByteArray(
