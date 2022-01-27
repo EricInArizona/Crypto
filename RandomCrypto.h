@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -12,7 +12,7 @@
 
 
 #include "BasicTypes.h"
-#include "Uint8Array.h"
+#include "Int8Array.h"
 
 
 class RandomCrypto
@@ -20,7 +20,7 @@ class RandomCrypto
   private:
 
   public:
-  static void makeRandomBytes( Uint8Array& u8a,
-                               Uint32 howMany );
+  static void makeRandomBytes( Int8Array& i8a,
+                           const Int32 howMany );
 
   };
