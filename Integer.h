@@ -10,6 +10,7 @@
 #include "Str.h"
 #include "ProjConst.h"
 #include "IntBuf.h"
+#include "RangeC.h"
 
 
 
@@ -121,8 +122,8 @@ class Integer
 
   inline void setIndex( Int32 setTo )
     {
-    if( setTo >= ProjConst::digitArraySize )
-      throw "setIndex() index out of bounds.";
+    RangeC::test( setTo, 0,
+               ProjConst::digitArraySize - 1 );
 
     index = setTo;
     }
@@ -130,8 +131,8 @@ class Integer
 
   inline Int64 getD( const Int32 where ) const
     {
-    // if( where >= ProjConst::digitArraySize )
-      // throw "getD() index out of bounds.";
+    RangeC::test( where, 0,
+               ProjConst::digitArraySize - 1 );
 
     return D[where];
     }
@@ -143,8 +144,8 @@ class Integer
     // that might be a full 48 bits long.
     // See cleanUp().
 
-    // if( where >= ProjConst::digitArraySize )
-      // throw "setD() index out of bounds.";
+    RangeC::test( where, 0,
+               ProjConst::digitArraySize - 1 );
 
     D[where] = toSet;
     }
