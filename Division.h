@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -22,9 +22,9 @@ class Division
             Integer& quotient,
             Integer& remainder );
 
-  static Uint64 shortDivideRem(
+  static Int64 shortDivideRem(
                 const Integer& toDivideOriginal,
-                const Uint64 divideByU,
+                const Int64 divideByU,
                 Integer& quotient );
 
   static void divide(
@@ -42,9 +42,9 @@ class Division
                     IntegerMath& intMath );
 
   static void testDivideBits(
-                      const Uint64 maxValue,
+                      const Int64 maxValue,
                       const bool isTop,
-                      const Uint32 testIndex,
+                      const Int32 testIndex,
                       const Integer& toDivide,
                       const Integer& divideBy,
                       Integer& quotient,
@@ -58,7 +58,7 @@ class Division
                       Integer& remainder,
                       IntegerMath& intMath );
 
-  static Uint32 findShiftBy( Uint64 toTest );
+  static Int32 findShiftBy( Int64 toTest );
 
   static void longDivide3(
                       const Integer& toDivide,
