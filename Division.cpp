@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 // To do:
@@ -22,8 +22,8 @@ divideBy.copy( divideByOriginal );
 
 quotient.copy( toDivide );
 // DivideBy has an Index of zero:
-Uint64 divideByU = divideBy.getD( 0 );
-Uint64 remainderU = 0;
+Int64 divideByU = divideBy.getD( 0 );
+Int64 remainderU = 0;
 
 // Get the first one set up.
 if( divideByU > quotient.getD( quotient.
@@ -33,7 +33,7 @@ if( divideByU > quotient.getD( quotient.
   }
 else
   {
-  Uint64 oneDigit = quotient.getD( quotient.
+  Int64 oneDigit = quotient.getD( quotient.
                                     getIndex() );
   quotient.setD( quotient.getIndex(),
                  oneDigit / divideByU );
@@ -42,30 +42,28 @@ else
   }
 
 // Now do the rest.
-for( Int32 count = (Int32)quotient.getIndex();
+for( Int32 count = quotient.getIndex();
                            count >= 1; count-- )
   {
-  Uint64 twoDigits = toDivide.getD(
-                                  (Uint32)count );
+  Int64 twoDigits = toDivide.getD( count );
   twoDigits <<= 32;
-  twoDigits |= toDivide.getD(
-                           (Uint32)(count - 1 ));
-  quotient.setD( (Uint32)(count - 1), twoDigits /
+  twoDigits |= toDivide.getD( count - 1 );
+  quotient.setD( count - 1, twoDigits /
                                     divideByU );
   remainderU = twoDigits % divideByU;
-  toDivide.setD( (Uint32)count, 0 );
-  toDivide.setD( (Uint32)(count - 1), remainderU );
+  toDivide.setD( count, 0 );
+  toDivide.setD( count - 1, remainderU );
   }
 
 // Set the index for the quotient.
 // The quotient would have to be at least 1 here,
 // so it will find where to set the index.
-for( Int32 count = (Int32)quotient.getIndex();
+for( Int32 count = quotient.getIndex();
                            count >= 0; count-- )
   {
-  if( quotient.getD( (Uint32)count ) != 0 )
+  if( quotient.getD( count ) != 0 )
     {
-    quotient.setIndex( (Uint32)count );
+    quotient.setIndex( count );
     break;
     }
   }
@@ -83,24 +81,23 @@ else
 
 // This is a variation on ShortDivide that returns
 // the remainder.
-// Also, divideBy is a Uint64.
-Uint64 Division::shortDivideRem(
+Int64 Division::shortDivideRem(
                   const Integer& toDivideOriginal,
-                  const Uint64 divideByU,
+                  const Int64 divideByU,
                   Integer& quotient )
 {
-if( toDivideOriginal.isULong())
+if( toDivideOriginal.isLong())
   {
-  Uint64 toDiv = toDivideOriginal.getAsULong();
-  Uint64 q = toDiv / divideByU;
-  quotient.setFromULong( q );
+  Int64 toDiv = toDivideOriginal.getAsLong();
+  Int64 q = toDiv / divideByU;
+  quotient.setFromLong( q );
   return toDiv % divideByU;
   }
 
 Integer toDivide;
 toDivide.copy( toDivideOriginal );
 quotient.copy( toDivide );
-Uint64 remainderU = 0;
+Int64 remainderU = 0;
 if( divideByU > quotient.getD( quotient.
                                     getIndex() ))
   {
@@ -108,7 +105,7 @@ if( divideByU > quotient.getD( quotient.
   }
 else
   {
-  Uint64 oneDigit = quotient.getD( quotient.
+  Int64 oneDigit = quotient.getD( quotient.
                                    getIndex() );
   quotient.setD( quotient.getIndex(), oneDigit /
                                      divideByU );
@@ -116,27 +113,25 @@ else
   toDivide.setD( toDivide.getIndex(), remainderU );
   }
 
-for( Int32 count = (Int32)quotient.getIndex();
+for( Int32 count = quotient.getIndex();
                            count >= 1; count-- )
   {
-  Uint64 twoDigits = toDivide.getD(
-                                  (Uint32)count );
+  Int64 twoDigits = toDivide.getD( count );
   twoDigits <<= 32;
-  twoDigits |= toDivide.getD(
-                            (Uint32)(count - 1 ));
-  quotient.setD( (Uint32)(count - 1),
+  twoDigits |= toDivide.getD( count - 1 );
+  quotient.setD( count - 1,
                          twoDigits / divideByU );
   remainderU = twoDigits % divideByU;
-  toDivide.setD( (Uint32)count, 0 );
-  toDivide.setD( (Uint32)(count - 1), remainderU );
+  toDivide.setD( count, 0 );
+  toDivide.setD( count - 1, remainderU );
   }
 
-for( Int32 count = (Int32)quotient.getIndex();
+for( Int32 count = quotient.getIndex();
                             count >= 0; count-- )
   {
-  if( quotient.getD( (Uint32)count ) != 0 )
+  if( quotient.getD( count ) != 0 )
     {
-    quotient.setIndex( (Uint32)count );
+    quotient.setIndex( count );
     break;
     }
   }
@@ -178,20 +173,20 @@ if( toDivide.paramIsGreater( divideBy ))
 
 if( toDivide.isEqual( divideBy ))
   {
-  quotient.setFromULong( 1 );
+  quotient.setToOne();
   remainder.setToZero();
   return;
   }
 
 // At this point divideBy is smaller than toDivide.
-if( toDivide.isULong() )
+if( toDivide.isLong() )
   {
-  Uint64 toDivideU = toDivide.getAsULong();
-  Uint64 divideByU = divideBy.getAsULong();
-  Uint64 quotientU = toDivideU / divideByU;
-  Uint64 remainderU = toDivideU % divideByU;
-  quotient.setFromULong( quotientU );
-  remainder.setFromULong( remainderU );
+  Int64 toDivideU = toDivide.getAsLong();
+  Int64 divideByU = divideBy.getAsLong();
+  Int64 quotientU = toDivideU / divideByU;
+  Int64 remainderU = toDivideU % divideByU;
+  quotient.setFromLong( quotientU );
+  remainder.setFromLong( remainderU );
   return;
   }
 
@@ -259,42 +254,41 @@ bool Division::longDivide1(
                         IntegerMath& intMath )
 {
 // See divide(), which makes testIndex positive.
-Int32 testIndex = (Int32)toDivide.getIndex() -
-                  (Int32)divideBy.getIndex();
+Int32 testIndex = toDivide.getIndex() -
+                  divideBy.getIndex();
 
 Integer test1;
 
 if( testIndex != 0 )
   {
   // Is 1 too high?
-  test1.setDigitAndClear( (Uint32)testIndex, 1 );
+  test1.setDigitAndClear( testIndex, 1 );
   intMath.multiplyTopOne( test1, divideBy );
   if( toDivide.paramIsGreater( test1 ))
     testIndex--;
 
   }
 
-quotient.setDigitAndClear( (Uint32)testIndex, 1 );
-quotient.setD( (Uint32)testIndex, 0 );
-Uint32 bitTest = 0x80000000;
+quotient.setDigitAndClear( testIndex, 1 );
+quotient.setD( testIndex, 0 );
+Int32 bitTest = 0x800000;
 while( true )
   {
-  for( Int32 bitCount = 31; bitCount >= 0;
+  for( Int32 bitCount = 23; bitCount >= 0;
                                      bitCount-- )
     {
     test1.copy( quotient );
-    Uint64 digit = test1.getD(
-                            (Uint32)testIndex ) |
+    Int64 digit = test1.getD( testIndex ) |
                                          bitTest;
-    test1.setD( (Uint32)testIndex, digit );
+    test1.setD( testIndex, digit );
     intMath.multiply( test1, divideBy );
     if( test1.paramIsGreaterOrEq( toDivide ))
       {
-      digit = quotient.getD( (Uint32)testIndex )
+      digit = quotient.getD( testIndex )
                                         | bitTest;
       // I want to keep this bit because it
       // passed the test.
-      quotient.setD( (Uint32)testIndex, digit );
+      quotient.setD( testIndex, digit );
       }
 
     bitTest >>= 1;
@@ -304,7 +298,7 @@ while( true )
     break;
 
   testIndex--;
-  bitTest = 0x80000000;
+  bitTest = 0x800000;
   }
 
 test1.copy( quotient );
@@ -326,9 +320,9 @@ return false;
 
 
 void Division::testDivideBits(
-                     const Uint64 maxValue,
+                     const Int64 maxValue,
                      const bool isTop,
-                     const Uint32 testIndex,
+                     const Int32 testIndex,
                      const Integer& toDivide,
                      const Integer& divideBy,
                      Integer& quotient,
@@ -340,7 +334,7 @@ void Division::testDivideBits(
 
 Integer testForBits;
 
-Uint32 bitTest = 0x80000000;
+Int32 bitTest = 0x800000;
 for( Int32 bitCount = 31; bitCount >= 0;
                                     bitCount-- )
   {
@@ -398,13 +392,13 @@ bool Division::longDivide2(
                         IntegerMath& intMath )
 {
 Integer test1;
-Int32 testIndex = (Int32)toDivide.getIndex() -
-                  (Int32)divideBy.getIndex();
+Int32 testIndex = toDivide.getIndex() -
+                  divideBy.getIndex();
 
 if( testIndex != 0 )
   {
   // Is 1 too high?
-  test1.setDigitAndClear( (Uint32)testIndex, 1 );
+  test1.setDigitAndClear( testIndex, 1 );
   intMath.multiplyTopOne( test1, divideBy );
   if( toDivide.paramIsGreater( test1 ))
     testIndex--;
@@ -418,28 +412,28 @@ if( testIndex != 0 )
 // digit is used to find the MaxValue.
 // Here it checks if it should use one digit or
 // two:
-Uint64 maxValue = 0;
-if( ((Int32)toDivide.getIndex() - 1) >
-        ((Int32)divideBy.getIndex() + testIndex))
+Int64 maxValue = 0;
+if( (toDivide.getIndex() - 1) >
+    (divideBy.getIndex() + testIndex))
   {
   maxValue = toDivide.getD( toDivide.getIndex());
   }
 else
   {
   maxValue = toDivide.getD( toDivide.getIndex() )
-                                            << 32;
+                                            << 24;
   maxValue |= toDivide.getD( toDivide.getIndex()
                                             - 1 );
   }
 
 maxValue = maxValue / divideBy.getD(
                           divideBy.getIndex() );
-quotient.setDigitAndClear( (Uint32)testIndex, 1 );
-quotient.setD( (Uint32)testIndex, 0 );
+quotient.setDigitAndClear( testIndex, 1 );
+quotient.setD( testIndex, 0 );
 
 testDivideBits( maxValue,
                     true,
-                    (Uint32)testIndex,
+                    testIndex,
                     toDivide,
                     divideBy,
                     quotient,
@@ -485,7 +479,7 @@ while( true )
                            divideBy.getIndex());
   testDivideBits( maxValue,
                       false,
-                      (Uint32)testIndex,
+                      testIndex,
                       toDivide,
                       divideBy,
                       quotient,
@@ -521,14 +515,14 @@ else
 // left (multiplying by twos) the MaxValue
 // upper limit is more accurate.
 // This is called normalization.
-Uint32 Division::findShiftBy( Uint64 toTest )
+Int32 Division::findShiftBy( Int64 toTest )
 {
-Uint32 shiftBy = 0;
+Int32 shiftBy = 0;
 // If it's not already shifted all the way over
 // to the left, shift it all the way over.
-for( Uint32 count = 0; count < 32; count++ )
+for( Int32 count = 0; count < 24; count++ )
   {
-  if( (toTest & 0x80000000) != 0 )
+  if( (toTest & 0x800000) != 0 )
     break;
 
   shiftBy++;
@@ -555,8 +549,8 @@ divideBy.copy( divideByOriginal );
 
 Integer test2;
 
-Int32 testIndex = (Int32)toDivide.getIndex() -
-                  (Int32)divideBy.getIndex();
+Int32 testIndex = toDivide.getIndex() -
+                  divideBy.getIndex();
 if( testIndex < 0 )
   throw "TestIndex < 0 in Divide3.";
 
@@ -566,7 +560,7 @@ if( testIndex != 0 )
   {
   // Is 1 too high?
   testForDivide1.setDigitAndClear(
-                          (Uint32)testIndex, 1 );
+                          testIndex, 1 );
   intMath.multiplyTopOne( testForDivide1,
                                       divideBy );
   if( toDivide.paramIsGreater( testForDivide1 ))
@@ -580,47 +574,47 @@ Integer divideByKeep;
 // Keep a copy of the originals.
 toDivideKeep.copy( toDivide );
 divideByKeep.copy( divideBy );
-Uint64 testBits = divideBy.getD( divideBy.
+Int64 testBits = divideBy.getD( divideBy.
                                       getIndex());
-Uint32 shiftBy = findShiftBy( testBits );
+Int32 shiftBy = findShiftBy( testBits );
 toDivide.shiftLeft( shiftBy );
 divideBy.shiftLeft( shiftBy );
-Uint64 maxValue = 0;
-if( ((Int32)toDivide.getIndex() - 1) >
-      ((Int32)divideBy.getIndex() + testIndex) )
+Int64 maxValue = 0;
+if( (toDivide.getIndex() - 1) >
+      (divideBy.getIndex() + testIndex) )
   {
   maxValue = toDivide.getD( toDivide.getIndex());
   }
 else
   {
   maxValue = toDivide.getD( toDivide.
-                               getIndex()) << 32;
+                               getIndex()) << 24;
   maxValue |= toDivide.getD( toDivide.getIndex()
                                           - 1 );
   }
 
-Uint64 denom = divideBy.getD( divideBy.getIndex());
+Int64 denom = divideBy.getD( divideBy.getIndex());
 if( denom != 0 )
   maxValue = maxValue / denom;
 else
-  maxValue = 0xFFFFFFFF;
+  maxValue = 0xFFFFFF;
 
-if( maxValue > 0xFFFFFFFF )
-  maxValue = 0xFFFFFFFF;
+if( maxValue > 0xFFFFFF )
+  maxValue = 0xFFFFFF;
 
 if( maxValue == 0 )
   throw "MaxValue zero at top in LongDivide3().";
 
-quotient.setDigitAndClear( (Uint32)testIndex, 1 );
-quotient.setD( (Uint32)testIndex, 0 );
+quotient.setDigitAndClear( testIndex, 1 );
+quotient.setD( testIndex, 0 );
 testForDivide1.copy( quotient );
-testForDivide1.setD( (Uint32)testIndex, maxValue );
+testForDivide1.setD( testIndex, maxValue );
 intMath.multiplyTop( testForDivide1, divideBy );
 
 
 // Test:
 test2.copy( quotient );
-test2.setD( (Uint32)testIndex, maxValue );
+test2.setD( testIndex, maxValue );
 intMath.multiply( test2, divideBy );
 if( !test2.isEqual( testForDivide1 ))
   throw "In Divide3() !IsEqual.";
@@ -632,7 +626,7 @@ if( testForDivide1.paramIsGreaterOrEq( toDivide ))
   // Most of the time (roughly 5 out of every 6
   // times) this MaxValue estimate is exactly
   // right:
-  quotient.setD( (Uint32)testIndex, maxValue );
+  quotient.setD( testIndex, maxValue );
   }
 else
   {
@@ -644,14 +638,14 @@ else
     throw "After decrement: MaxValue is zero.";
 
   testForDivide1.copy( quotient );
-  testForDivide1.setD( (Uint32)testIndex,
+  testForDivide1.setD( testIndex,
                                        maxValue );
   intMath.multiplyTop( testForDivide1, divideBy );
   if( testForDivide1.paramIsGreaterOrEq(
                                       toDivide ))
     {
     // ToMatchDecCount++;
-    quotient.setD( (Uint32)testIndex, maxValue );
+    quotient.setD( testIndex, maxValue );
     }
   else
     {
@@ -661,13 +655,13 @@ else
     // bits, rather than 4 billion or so
     // decrements.
     testDivideBits( maxValue,
-                        true,
-                        (Uint32)testIndex,
-                        toDivide,
-                        divideBy,
-                        quotient,
-                        // remainder,
-                        intMath );
+                    true,
+                    testIndex,
+                    toDivide,
+                    divideBy,
+                    quotient,
+                    // remainder,
+                    intMath );
     }
 
   // TestGap = MaxValue - LgQuotient.D[TestIndex];
@@ -705,25 +699,22 @@ while( true )
   remainder.copy( toDivide );
   intMath.subtract( remainder, testForDivide1 );
   maxValue = remainder.getD( remainder.
-                               getIndex()) << 32;
-  Int32 checkIndex = (Int32)remainder.
-                                 getIndex() - 1;
+                               getIndex()) << 24;
+  Int32 checkIndex = remainder.getIndex() - 1;
   if( checkIndex > 0 )
-    maxValue |= remainder.getD(
-                            (Uint32)checkIndex );
+    maxValue |= remainder.getD( checkIndex );
 
   denom = divideBy.getD( divideBy.getIndex());
   if( denom != 0 )
     maxValue = maxValue / denom;
   else
-    maxValue = 0xFFFFFFFF;
+    maxValue = 0xFFFFFF;
 
-  if( maxValue > 0xFFFFFFFF )
-    maxValue = 0xFFFFFFFF;
+  if( maxValue > 0xFFFFFF )
+    maxValue = 0xFFFFFF;
 
   testForDivide1.copy( quotient );
-  testForDivide1.setD( (Uint32)testIndex,
-                                       maxValue );
+  testForDivide1.setD( testIndex, maxValue );
   // There's a minimum of two full Multiply()
   // operations per digit.
   intMath.multiply( testForDivide1, divideBy );
@@ -733,31 +724,30 @@ while( true )
     // Most of the time this MaxValue estimate
     // is exactly right:
     // ToMatchExactCount++;
-    quotient.setD( (Uint32)testIndex, maxValue );
+    quotient.setD( testIndex, maxValue );
     }
   else
     {
     maxValue--;
     testForDivide1.copy( quotient );
-    testForDivide1.setD( (Uint32)testIndex,
-                                      maxValue );
+    testForDivide1.setD( testIndex, maxValue );
     intMath.multiply( testForDivide1, divideBy );
     if( testForDivide1.paramIsGreaterOrEq(
                                        toDivide ))
       {
       // ToMatchDecCount++;
-      quotient.setD( (Uint32)testIndex, maxValue );
+      quotient.setD( testIndex, maxValue );
       }
     else
       {
       testDivideBits( maxValue,
-                          false,
-                          (Uint32)testIndex,
-                          toDivide,
-                          divideBy,
-                          quotient,
-                          // remainder,
-                          intMath );
+                      false,
+                      testIndex,
+                      toDivide,
+                      divideBy,
+                      quotient,
+                      // remainder,
+                      intMath );
 
       // TestGap = MaxValue - LgQuotient.
                   //D[TestIndex];
