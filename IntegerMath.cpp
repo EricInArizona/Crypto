@@ -7,13 +7,13 @@
 #include "Base10Number.h"
 #include "CharBuf.h"
 #include "Division.h"
+#include "CastE.h"
 
 
 
 IntegerMath::IntegerMath( void )
 {
-signedD = new Int64[ProjConst::digitArraySize];
-scratch = new Uint64[ProjConst::digitArraySize];
+scratch = new Int64[ProjConst::digitArraySize];
 }
 
 
@@ -27,8 +27,7 @@ delete[] scratch;
 // The copy constructor.
 IntegerMath::IntegerMath( const IntegerMath& in )
 {
-signedD = new Int64[ProjConst::digitArraySize];
-scratch = new Uint64[ProjConst::digitArraySize];
+scratch = new Int64[ProjConst::digitArraySize];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -39,14 +38,13 @@ throw "Copy constructor: IntegerMath.\n";
 
 
 
-Uint64 IntegerMath::findULSqrRoot(
-                                 Uint64 toMatch )
+Int64 IntegerMath::findLSqrRoot( Int64 toMatch )
 {
-Uint64 oneBit = 0x80000000L; // 0x8000 0000
-Uint64 result = 0;
-for( Uint32 count = 0; count < 32; count++ )
+Int64 oneBit = 0x800000;
+Int64 result = 0;
+for( Int32 count = 0; count < 24; count++ )
   {
-  Uint64 toTry = result | oneBit;
+  Int64 toTry = result | oneBit;
   if( (toTry * toTry) <= toMatch )
     result |= oneBit; // Then I want the bit.
 
@@ -54,40 +52,32 @@ for( Uint32 count = 0; count < 32; count++ )
   }
 
 if( result == 0 )
-  throw "FindULSqrRoot() Result was zero.";
+  throw "FindLSqrRoot() Result was zero.";
 
 // Test:
 if( (result * result) > toMatch )
   throw "FindULSqrRoot() Result is too high.";
 
-// This would overflow if Answer was 0xFFFFFFFF.
-if( result < 0xFFFFFFFFL )
-  {
-  if( ((result + 1) * (result + 1)) <=
-                                        toMatch )
-    throw "FindULSqrRoot() Result is too low.";
-
-  }
+if( ((result + 1) * (result + 1)) <= toMatch )
+  throw "FindULSqrRoot() Result is too low.";
 
 return result;
 }
 
 
 
-Uint64 IntegerMath::isDivisibleBySmallPrime(
+Int64 IntegerMath::isDivisibleBySmallPrime(
                            const Integer& toTest,
                            SPrimes& sPrimes )
 {
 if( (toTest.getD( 0 ) & 1) == 0 )
   return 2; // It's divisible by 2.
 
-for( Uint32 count = 1; count <
+for( Int32 count = 1; count <
              ProjConst::primesArraySize; count++ )
   {
-  // Is the prime a 32 bit number?
-  // getMod32 would throw an exception.
-  Uint64 aPrime = sPrimes.getPrimeAt( count );
-  if( 0 == getMod32( toTest, aPrime ))
+  Int64 aPrime = sPrimes.getPrimeAt( count );
+  if( 0 == getMod24( toTest, aPrime ))
     return aPrime;
 
   }
@@ -98,18 +88,18 @@ return 0;
 
 
 
-void IntegerMath::subtractULong( Integer& result,
-                                 Uint64 toSub )
+void IntegerMath::subtractLong( Integer& result,
+                                Int64 toSub )
 {
-if( result.isULong())
+if( result.isLong())
   {
-  Uint64 resultU = result.getAsULong();
-  if( toSub > resultU )
-    throw "IsULong() and (toSub > tesult).";
+  Int64 resultL = result.getAsLong();
+  if( toSub > resultL )
+    throw "IsLong() and (toSub > result).";
 
-  resultU = resultU - toSub;
-  result.setD( 0, resultU & 0xFFFFFFFF );
-  result.setD( 1, resultU >> 32 );
+  resultL = resultL - toSub;
+  result.setD( 0, resultL & 0xFFFFFF );
+  result.setD( 1, resultL >> 24 );
   if( result.getD( 1 ) == 0 )
     result.setIndex( 0 );
   else
@@ -119,43 +109,42 @@ if( result.isULong())
   }
 
 // If it got this far then Index is at least 2.
-signedD[0] = (Int64)result.getD( 0 ) -
-             (Int64)(toSub & 0xFFFFFFFF);
-signedD[1] = (Int64)result.getD( 1 ) -
-             (Int64)(toSub >> 32);
-if( (signedD[0] >= 0) && (signedD[1] >= 0) )
+scratch[0] = result.getD( 0 ) -
+             (toSub & 0xFFFFFF);
+scratch[1] = result.getD( 1 ) -
+             (toSub >> 24);
+if( (scratch[0] >= 0) && (scratch[1] >= 0) )
   {
   // No need to reorganize it.
-  result.setD( 0, (Uint64)signedD[0] );
-  result.setD( 1, (Uint64)signedD[1] );
+  result.setD( 0, scratch[0] );
+  result.setD( 1, scratch[1] );
   return;
   }
 
-const Uint32 last = result.getIndex();
-for( Uint32 count = 2; count <= last; count++ )
-  signedD[count] = (Int64)result.getD( count );
+const Int32 last = result.getIndex();
+for( Int32 count = 2; count <= last; count++ )
+  scratch[count] = result.getD( count );
 
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
-  if( signedD[count] < 0 )
+  if( scratch[count] < 0 )
     {
-    signedD[count] += (Uint64)0xFFFFFFFF + 1;
-    signedD[count + 1]--;
+    scratch[count] += 0xFFFFFF + 1;
+    scratch[count + 1]--;
     }
   }
 
-if( signedD[last] < 0 )
-  throw "SubULong() SignedD[Index] < 0.";
+if( scratch[last] < 0 )
+  throw "SubLong() scratch[Index] < 0.";
 
-for( Uint32 count = 0; count <= last; count++ )
-  result.setD( count, (Uint64)signedD[count] );
+for( Int32 count = 0; count <= last; count++ )
+  result.setD( count, scratch[count] );
 
-for( Int32 count = (Int32)last; count >= 0;
-                                       count-- )
+for( Int32 count = last; count >= 0; count-- )
   {
-  if( result.getD( (Uint32)count ) != 0 )
+  if( result.getD( count ) != 0 )
     {
-    result.setIndex( (Uint32)count );
+    result.setIndex( count );
     return;
     }
   }
@@ -329,47 +318,46 @@ void IntegerMath::subtractPositive(
                            Integer& result,
                            const Integer& toSub )
 {
-if( toSub.isULong() )
+if( toSub.isLong() )
   {
-  subtractULong( result, toSub.getAsULong());
+  subtractLong( result, toSub.getAsLong());
   return;
   }
 
 if( toSub.getIndex() > result.getIndex() )
   throw "In Subtract() ToSub.Index > Index.";
 
-Uint32 const last = toSub.getIndex();
-for( Uint32 count = 0; count <= last; count++ )
-  signedD[count] = (Int64)result.getD( count )
-                  - (Int64)toSub.getD( count );
+Int32 const last = toSub.getIndex();
+for( Int32 count = 0; count <= last; count++ )
+  scratch[count] = result.getD( count )
+                 - toSub.getD( count );
 
-const Uint32 lastR = result.getIndex();
+const Int32 lastR = result.getIndex();
 
-for( Uint32 count = last + 1; count <= lastR;
+for( Int32 count = last + 1; count <= lastR;
                                        count++ )
-  signedD[count] = (Int64)result.getD( count );
+  scratch[count] = result.getD( count );
 
-for( Uint32 count = 0; count < lastR; count++ )
+for( Int32 count = 0; count < lastR; count++ )
   {
-  if( signedD[count] < 0 )
+  if( scratch[count] < 0 )
     {
-    signedD[count] += (Int64)0xFFFFFFFF + 1;
-    signedD[count + 1]--;
+    scratch[count] += 0xFFFFFF + 1;
+    scratch[count + 1]--;
     }
   }
 
-if( signedD[lastR] < 0 )
+if( scratch[lastR] < 0 )
   throw "Subtract() SignedD[Index] < 0.";
 
-for( Uint32 count = 0; count <= lastR; count++ )
-  result.setD( count, (Uint64)signedD[count] );
+for( Int32 count = 0; count <= lastR; count++ )
+  result.setD( count, scratch[count] );
 
-for( Int32 count = (Int32)lastR; count >= 0;
-                                        count-- )
+for( Int32 count = lastR; count >= 0; count-- )
   {
-  if( result.getD( (Uint32)count ) != 0 )
+  if( result.getD( count ) != 0 )
     {
-    result.setIndex( (Uint32)count );
+    result.setIndex( count );
     return;
     }
   }
@@ -381,8 +369,8 @@ result.setIndex( 0 );
 
 
 
-void IntegerMath::multiplyUInt( Integer& result,
-                                Uint64 toMul )
+void IntegerMath::multiplyInt( Integer& result,
+                               Int64 toMul )
 {
 if( toMul == 0 )
   {
@@ -393,25 +381,21 @@ if( toMul == 0 )
 if( toMul == 1 )
   return;
 
-const Uint32 last = result.getIndex();
-for( Uint32 column = 0; column <= last; column++ )
+const Int32 last = result.getIndex();
+for( Int32 column = 0; column <= last; column++ )
   {
   M.setV( column, 0, toMul *
                       result.getD( column ));
   }
 
 // Add these up with a carry.
-result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
-Uint64 carry = M.getV( 0, 0 ) >> 32;
-for( Uint32 column = 1; column <= last; column++ )
+result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFF );
+Int64 carry = M.getV( 0, 0 ) >> 24;
+for( Int32 column = 1; column <= last; column++ )
   {
-  // This Test value does not overflow:
-  // const ulong Test = ((ulong)0xFFFFFFFF *
-  //    (ulong)(0xFFFFFFFF)) + 0xFFFFFFFF;
-
-  Uint64 total = M.getV( column, 0 ) + carry;
-  result.setD( column, total & 0xFFFFFFFF );
-  carry = total >> 32;
+  Int64 total = M.getV( column, 0 ) + carry;
+  result.setD( column, total & 0xFFFFFF );
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -423,26 +407,28 @@ if( carry != 0 )
 
 
 
-Uint32 IntegerMath::multiplyUIntFromCopy(
+Int32 IntegerMath::multiplyIntFromCopy(
                              Integer& result,
                              Integer& from,
-                             Uint64 toMul )
+                             Int64 toMul )
 {
-const Uint32 fromCopyIndex = from.getIndex();
+// if( toMul > 0xFFFFFF )
+
+const Int32 fromCopyIndex = from.getIndex();
 result.setIndex( fromCopyIndex );
-for( Uint32 column = 0; column <= fromCopyIndex;
+for( Int32 column = 0; column <= fromCopyIndex;
                                        column++ )
   scratch[column] = toMul * from.getD( column );
 
 // Add these up with a carry.
-result.setD( 0, scratch[0] & 0xFFFFFFFF );
-Uint64 carry = scratch[0] >> 32;
-for( Uint32 column = 1; column <= fromCopyIndex;
+result.setD( 0, scratch[0] & 0xFFFFFF );
+Int64 carry = scratch[0] >> 24;
+for( Int32 column = 1; column <= fromCopyIndex;
                                        column++ )
   {
-  Uint64 total = scratch[column] + carry;
-  result.setD( column, total & 0xFFFFFFFF );
-  carry = total >> 32;
+  Int64 total = scratch[column] + carry;
+  result.setD( column, total & 0xFFFFFF );
+  carry = total >> 24;
   }
 
 if( carry != 0 )
@@ -457,16 +443,9 @@ return result.getIndex();
 
 
 
-void IntegerMath::multiplyULong( Integer& result,
-                                 Uint64 toMul )
+void IntegerMath::multiplyLong( Integer& result,
+                                Int64 toMul )
 {
-// Using compile-time checks, this one overflows:
-// const ulong Test = ((ulong)0xFFFFFFFF + 1) *
-// ((ulong)0xFFFFFFFF + 1);
-// This one doesn't:
-// const ulong Test = (ulong)0xFFFFFFFF *
-// ((ulong)0xFFFFFFFF + 1);
-
 if( result.isZero())
   return;
 
@@ -476,24 +455,24 @@ if( toMul == 0 )
   return;
   }
 
-Uint64 B0 = toMul & 0xFFFFFFFF;
-Uint64 B1 = toMul >> 32;
+Int64 B0 = toMul & 0xFFFFFF;
+Int64 B1 = toMul >> 24;
 if( B1 == 0 )
   {
-  multiplyUInt( result, B0 );
+  multiplyInt( result, B0 );
   return;
   }
 
 // Since B1 is not zero:
 if( (result.getIndex() + 1) >=
                         ProjConst::digitArraySize )
-  throw "Overflow in MultiplyULong.";
+  throw "Overflow in MultiplyLong.";
 
-Uint32 countTo = result.getIndex();
-for( Uint32 column = 0; column <= countTo;
+Int32 countTo = result.getIndex();
+for( Int32 column = 0; column <= countTo;
                                        column++ )
   {
-  Uint64 digit = result.getD( column );
+  Int64 digit = result.getD( column );
   M.setV( column, 0, B0 * digit );
   // Column + 1 and Row is 1, so it's just like
   // pen and paper.
@@ -506,31 +485,25 @@ result.incrementIndex();
 M.setV( result.getIndex(), 0, 0 );
 
 // Add these up with a carry.
-result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
-Uint64 carry = M.getV( 0, 0 ) >> 32;
+result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFF );
+Int64 carry = M.getV( 0, 0 ) >> 24;
 countTo = result.getIndex();
-for( Uint32 column = 1; column <= countTo;
+for( Int32 column = 1; column <= countTo;
                                        column++ )
   {
-  // This does overflow:
-  // const ulong Test = ((ulong)0xFFFFFFFF *
-  // (ulong)(0xFFFFFFFF))
-  // + ((ulong)0xFFFFFFFF * (ulong)(0xFFFFFFFF));
-  // Split the ulongs into right and left sides
-  // so that they don't overflow.
-  Uint64 totalLeft = 0;
-  Uint64 totalRight = 0;
+  Int64 totalLeft = 0;
+  Int64 totalRight = 0;
   // There's only the two rows for this.
-  for( Uint32 row = 0; row <= 1; row++ )
+  for( Int32 row = 0; row <= 1; row++ )
     {
-    Uint64 mValue = M.getV( column, row );
-    totalRight += mValue & 0xFFFFFFFF;
-    totalLeft += mValue >> 32;
+    Int64 mValue = M.getV( column, row );
+    totalRight += mValue & 0xFFFFFF;
+    totalLeft += mValue >> 24;
     }
 
   totalRight += carry;
-  result.setD( column, totalRight & 0xFFFFFFFF );
-  carry = totalRight >> 32;
+  result.setD( column, totalRight & 0xFFFFFF );
+  carry = totalRight >> 24;
   carry += totalLeft;
   }
 
@@ -563,9 +536,9 @@ void IntegerMath::multiply( Integer& result,
 if( result.isZero())
   return;
 
-if( toMul.isULong())
+if( toMul.isLong())
   {
-  multiplyULong( result, toMul.getAsULong());
+  multiplyLong( result, toMul.getAsLong());
   setMultiplySign( result, toMul );
   return;
   }
@@ -573,18 +546,18 @@ if( toMul.isULong())
 // It could never get here if ToMul is zero
 // because getIsULong()
 // would be true for zero.
-const Uint32 totalIndex = result.getIndex() +
+const Int32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
 if( totalIndex >= ProjConst::digitArraySize )
   throw "Multiply() overflow.";
 
-const Uint32 countTo = toMul.getIndex();
-for( Uint32 row = 0; row <= countTo; row++ )
+const Int32 countTo = toMul.getIndex();
+for( Int32 row = 0; row <= countTo; row++ )
   {
   if( toMul.getD( row ) == 0 )
     {
-    const Uint32 countZeros = result.getIndex();
-    for( Uint32 column = 0; column <= countZeros;
+    const Int32 countZeros = result.getIndex();
+    for( Int32 column = 0; column <= countZeros;
                                         column++ )
       {
       M.setV( column + row, row, 0 );
@@ -592,8 +565,8 @@ for( Uint32 row = 0; row <= countTo; row++ )
     }
   else
     {
-    const Uint32 countMult = result.getIndex();
-    for( Uint32 column = 0; column <= countMult;
+    const Int32 countMult = result.getIndex();
+    for( Int32 column = 0; column <= countMult;
                                         column++ )
       {
       M.setV( column + row, row,
@@ -604,17 +577,17 @@ for( Uint32 row = 0; row <= countTo; row++ )
   }
 
 // Add the columns up with a carry.
-const Uint64 zeroPart = M.getV( 0, 0 );
-result.setD( 0, zeroPart & 0xFFFFFFFF );
-Uint64 carry = zeroPart >> 32;
-const Uint32 resultIndex = result.getIndex();
-const Uint32 mulIndex = toMul.getIndex();
-for( Uint32 column = 1; column <= totalIndex;
+const Int64 zeroPart = M.getV( 0, 0 );
+result.setD( 0, zeroPart & 0xFFFFFF );
+Int64 carry = zeroPart >> 24;
+const Int32 resultIndex = result.getIndex();
+const Int32 mulIndex = toMul.getIndex();
+for( Int32 column = 1; column <= totalIndex;
                                       column++ )
   {
-  Uint64 totalLeft = 0;
-  Uint64 totalRight = 0;
-  for( Uint32 row = 0; row <= mulIndex; row++ )
+  Int64 totalLeft = 0;
+  Int64 totalRight = 0;
+  for( Int32 row = 0; row <= mulIndex; row++ )
     {
     if( row > column )
       break;
@@ -622,17 +595,15 @@ for( Uint32 column = 1; column <= totalIndex;
     if( column > (resultIndex + row) )
       continue;
 
-    // Split the ulongs into right and left sides
-    // so that they don't overflow.
-    const Uint64 totalPart =
+    const Int64 totalPart =
                           M.getV( column, row );
-    totalRight += totalPart & 0xFFFFFFFF;
-    totalLeft += totalPart >> 32;
+    totalRight += totalPart & 0xFFFFFF;
+    totalLeft += totalPart >> 24;
     }
 
   totalRight += carry;
-  result.setD( column, totalRight & 0xFFFFFFFF );
-  carry = totalRight >> 32;
+  result.setD( column, totalRight & 0xFFFFFF );
+  carry = totalRight >> 24;
   carry += totalLeft;
   }
 
@@ -678,9 +649,9 @@ for( Uint32 count = 1; count <= last; count++ )
 
 Str IntegerMath::toString10( const Integer& from )
 {
-if( from.isULong())
+if( from.isLong())
   {
-  Uint64 N = from.getAsULong();
+  Int64 N = from.getAsLong();
   Str nS( N );
   if( from.getNegative() )
     {
@@ -701,11 +672,12 @@ Integer quotient;
 CharBuf cBuf;
 while( !toDivide.isZero())
   {
-  Uint32 digit = (Uint32)Division::
-         shortDivideRem( toDivide, 10, quotient );
+  Int32 digit = CastE::i64ToI32( Division::
+       shortDivideRem( toDivide, 10, quotient ));
   toDivide.copy( quotient );
   // Ascii values go from '0' up to '9'.
-  cBuf.appendChar( (char)('0' + digit) );
+  cBuf.appendChar( CastE::i32ToChar(
+                              '0' + digit ));
   }
 
 if( from.getNegative() )
@@ -720,7 +692,7 @@ return result;
 
 void IntegerMath::square( Integer& toSquare )
 {
-const Uint32 sqrIndex = toSquare.getIndex();
+const Int32 sqrIndex = toSquare.getIndex();
 if( sqrIndex == 0 )
   {
   toSquare.square0();
@@ -740,16 +712,16 @@ if( sqrIndex == 2 )
   }
 
 // Now Index is at least 3:
-const Uint32 doubleIndex = sqrIndex << 1;
+const Int32 doubleIndex = sqrIndex << 1;
 if( doubleIndex >= ProjConst::digitArraySize )
   throw "Square() overflowed.";
 
-const Uint32 last = sqrIndex;
-for( Uint32 row = 0; row <= last; row++ )
+const Int32 last = sqrIndex;
+for( Int32 row = 0; row <= last; row++ )
   {
   if( toSquare.getD( row ) == 0 )
     {
-    for( Uint32 column = 0; column <= last;
+    for( Int32 column = 0; column <= last;
                                        column++ )
       {
       M.setV( column + row, row, 0 );
@@ -757,7 +729,7 @@ for( Uint32 row = 0; row <= last; row++ )
     }
   else
     {
-    for( Uint32 column = 0; column <= last;
+    for( Int32 column = 0; column <= last;
                                       column++ )
       {
       M.setV( column + row, row,
@@ -768,14 +740,14 @@ for( Uint32 row = 0; row <= last; row++ )
   }
 
 // Add the columns up with a carry.
-toSquare.setD( 0, M.getV( 0, 0 ) & 0xFFFFFFFF );
-Uint64 carry = M.getV( 0, 0 ) >> 32;
-for( Uint32 column = 1; column <= doubleIndex;
+toSquare.setD( 0, M.getV( 0, 0 ) & 0xFFFFFF );
+Int64 carry = M.getV( 0, 0 ) >> 24;
+for( Int32 column = 1; column <= doubleIndex;
                                        column++ )
   {
-  Uint64 totalLeft = 0;
-  Uint64 totalRight = 0;
-  for( Uint32 row = 0; row <= column; row++ )
+  Int64 totalLeft = 0;
+  Int64 totalRight = 0;
+  for( Int32 row = 0; row <= column; row++ )
     {
     if( row > last )
       break;
@@ -783,14 +755,14 @@ for( Uint32 column = 1; column <= doubleIndex;
     if( column > (last + row) )
       continue;
 
-    Uint64 totalPart = M.getV( column, row );
-    totalRight += totalPart & 0xFFFFFFFF;
-    totalLeft += totalPart >> 32;
+    Int64 totalPart = M.getV( column, row );
+    totalRight += totalPart & 0xFFFFFF;
+    totalLeft += totalPart >> 24;
     }
 
   totalRight += carry;
-  toSquare.setD( column, totalRight & 0xFFFFFFFF );
-  carry = totalRight >> 32;
+  toSquare.setD( column, totalRight & 0xFFFFFF );
+  carry = totalRight >> 24;
   carry += totalLeft;
   }
 
@@ -811,35 +783,35 @@ if( carry != 0 )
 void IntegerMath::multiplyTop( Integer& result,
                           const Integer& toMul )
 {
-Uint32 totalIndex = result.getIndex() +
+Int32 totalIndex = result.getIndex() +
                              toMul.getIndex();
 if( totalIndex >= ProjConst::digitArraySize )
   throw "MultiplyTop() overflow.";
 
 // Just like Multiply() except that all the
 // other rows are zero:
-Uint32 toMulIndex = toMul.getIndex();
-Uint32 resultIndex = result.getIndex();
-for( Uint32 column = 0; column <= toMulIndex;
+Int32 toMulIndex = toMul.getIndex();
+Int32 resultIndex = result.getIndex();
+for( Int32 column = 0; column <= toMulIndex;
                                       column++ )
   M.setV( column + resultIndex,
           resultIndex,
           result.getD( resultIndex ) *
           toMul.getD( column ));
 
-for( Uint32 column = 0; column < resultIndex;
+for( Int32 column = 0; column < resultIndex;
                                        column++ )
   result.setD( column, 0 );
 
-Uint64 carry = 0;
-for( Uint32 column = 0; column <= toMulIndex;
+Int64 carry = 0;
+for( Int32 column = 0; column <= toMulIndex;
                                        column++ )
   {
-  Uint64 total = M.getV( column + resultIndex,
+  Int64 total = M.getV( column + resultIndex,
                          resultIndex) + carry;
   result.setD( column + resultIndex,
-                           total & 0xFFFFFFFF );
-  carry = total >> 32;
+                           total & 0xFFFFFF );
+  carry = total >> 24;
   }
 
 result.setIndex( totalIndex );
@@ -864,19 +836,19 @@ void IntegerMath::multiplyTopOne(
                           Integer& result,
                           const Integer& toMul )
 {
-Uint32 totalIndex = result.getIndex() +
+Int32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
 if( totalIndex >= ProjConst::digitArraySize )
   throw "MultiplyTopOne() overflow.";
 
-Uint32 toMulIndex = toMul.getIndex();
-Uint32 resultIndex = result.getIndex();
-for( Uint32 column = 0; column <= toMulIndex;
+Int32 toMulIndex = toMul.getIndex();
+Int32 resultIndex = result.getIndex();
+for( Int32 column = 0; column <= toMulIndex;
                                        column++ )
   result.setD( column + resultIndex,
                             toMul.getD( column ));
 
-for( Uint32 column = 0; column < resultIndex;
+for( Int32 column = 0; column < resultIndex;
                                        column++ )
   result.setD( column, 0 );
 
@@ -903,11 +875,11 @@ bool IntegerMath::squareRoot(
                           const Integer& fromSqr,
                           Integer& sqrRoot )
 {
-Uint64 toMatch;
-if( fromSqr.isULong() )
+Int64 toMatch;
+if( fromSqr.isLong() )
   {
-  toMatch = fromSqr.getAsULong();
-  sqrRoot.setD( 0, findULSqrRoot( toMatch ));
+  toMatch = fromSqr.getAsLong();
+  sqrRoot.setD( 0, findLSqrRoot( toMatch ));
   sqrRoot.setIndex( 0 );
   if( (sqrRoot.getD(0 ) * sqrRoot.getD( 0 )) ==
                                         toMatch )
@@ -917,7 +889,7 @@ if( fromSqr.isULong() )
 
   }
 
-Uint32 testIndex = fromSqr.getIndex() >> 1;
+Int32 testIndex = fromSqr.getIndex() >> 1;
 sqrRoot.setDigitAndClear( testIndex, 1 );
 if( (testIndex << 1) > (fromSqr.getIndex() - 1) )
   {
@@ -925,11 +897,13 @@ if( (testIndex << 1) > (fromSqr.getIndex() - 1) )
   }
 else
   {
-  toMatch = fromSqr.getD( fromSqr.getIndex()) << 32;
-  toMatch |= fromSqr.getD( fromSqr.getIndex() - 1 );
+  toMatch = fromSqr.getD(
+                      fromSqr.getIndex()) << 32;
+  toMatch |= fromSqr.getD(
+                      fromSqr.getIndex() - 1 );
   }
 
-sqrRoot.setD( testIndex, findULSqrRoot( toMatch ));
+sqrRoot.setD( testIndex, findLSqrRoot( toMatch ));
 testIndex--;
 while( true )
   {
@@ -943,7 +917,7 @@ while( true )
 // Avoid squaring the whole thing to see if
 // it's an exact square root:
 if( ((sqrRoot.getD( 0 ) * sqrRoot.getD( 0 )) &
-               0xFFFFFFFF) != fromSqr.getD( 0 ))
+               0xFFFFFF) != fromSqr.getD( 0 ))
   return false;
 
 Integer testForSquareRoot;
@@ -961,7 +935,7 @@ else
 
 
 void IntegerMath::searchSqrtXPart(
-                          Uint32 testIndex,
+                          Int32 testIndex,
                           const Integer& fromSqr,
                           Integer& sqrRoot )
 {
@@ -988,15 +962,15 @@ subtract( sqrtXPartDiff, sqrtXPartTest1 );
 sqrtXPartTwoB.copy( sqrRoot ); // B
 sqrtXPartTwoB.shiftLeft( 1 ); // Times 2 for 2B.
 sqrtXPartTest1.copy( sqrtXPartTwoB );
-Uint64 testBits = sqrtXPartTest1.getD(
+Int64 testBits = sqrtXPartTest1.getD(
                       sqrtXPartTest1.getIndex());
-Uint32 shiftBy = Division::findShiftBy( testBits );
+Int32 shiftBy = Division::findShiftBy( testBits );
 sqrtXPartR2.copy( sqrtXPartDiff );
 // Multiply the numerator and the denominator
 sqrtXPartR2.shiftLeft( shiftBy );
 sqrtXPartTest1.shiftLeft( shiftBy );
 
-Uint64 highest = 0;
+Int64 highest = 0;
 if( sqrtXPartR2.getIndex() == 0 )
   {
   highest = sqrtXPartR2.getD(
@@ -1010,10 +984,10 @@ else
                     sqrtXPartR2.getIndex() - 1 );
   }
 
-Uint64 denom = sqrtXPartTest1.getD(
+Int64 denom = sqrtXPartTest1.getD(
                      sqrtXPartTest1.getIndex());
 if( denom == 0 )
-  highest = 0xFFFFFFFF;
+  highest = 0xFFFFFF;
 else
   highest = highest / denom;
 
@@ -1023,13 +997,13 @@ if( highest == 0 )
   return;
   }
 
-if( highest > 0xFFFFFFFF )
-  highest = 0xFFFFFFFF;
+if( highest > 0xFFFFFF )
+  highest = 0xFFFFFF;
 
-Uint32 bitTest = 0x80000000;
-Uint64 xDigit = 0;
-Uint64 tempXDigit = 0;
-for( Uint32 bitCount = 0; bitCount < 32;
+Int32 bitTest = 0x800000;
+Int64 xDigit = 0;
+Int64 tempXDigit = 0;
+for( Int32 bitCount = 0; bitCount < 24;
                                       bitCount++ )
   {
   tempXDigit = xDigit | bitTest;
@@ -1057,39 +1031,38 @@ sqrRoot.setD( testIndex, xDigit );
 
 
 
-Uint64 IntegerMath::getMod32( const Integer& in,
-                              Uint64 divisor )
+Int64 IntegerMath::getMod24( const Integer& in,
+                             const Int64 divisor )
 {
 if( divisor == 0 )
-  throw "getMod32: divisor == 0.";
+  throw "getMod24: divisor == 0.";
 
-if( (divisor >> 32) != 0 )
-  throw "getMod32: (DivideByU >> 32) != 0.";
+if( (divisor >> 24) != 0 )
+  throw "getMod24: (DivideByU >> 24) != 0.";
 
 if( in.getIndex() == 0 )
   {
-  Uint64 result = in.getD( 0 ) % divisor;
+  Int64 result = in.getD( 0 ) % divisor;
   return result;
   }
 
-const Uint32 last = in.getIndex();
+const Int32 last = in.getIndex();
 
-for( Uint32 count = 0; count <= last; count++ )
+for( Int32 count = 0; count <= last; count++ )
   scratch[count] = in.getD( count );
 
-Uint64 remainder = 0;
+Int64 remainder = 0;
 if( divisor <= scratch[last] )
   {
-  Uint64 oneDigit = scratch[last];
+  Int64 oneDigit = scratch[last];
   remainder = oneDigit % divisor;
   scratch[last] = remainder;
   }
 
-for( Int32 count = (Int32)last; count >= 1;
-                                        count-- )
+for( Int32 count = last; count >= 1; count-- )
   {
-  Uint64 twoDigits = scratch[count];
-  twoDigits <<= 32;
+  Int64 twoDigits = scratch[count];
+  twoDigits <<= 24;
   twoDigits |= scratch[count - 1];
   remainder = twoDigits % divisor;
 
@@ -1104,51 +1077,27 @@ return remainder;
 
 
 
-Uint64 IntegerMath::mod64FromTwoULongs( Uint64 p1,
-                                  Uint64 p0,
-                                  Uint64 divisor )
+Int64 IntegerMath::mod48FromTwoLongs( Int64 p1,
+                                  Int64 p0,
+                                  Int64 divisor )
 {
-if( divisor <= 0xFFFFFFFFL )
-  throw "mod64FromTwoULongs divisor <= ";
+if( divisor <= 0xFFFFFF )
+  throw "mod48FromTwoLongs divisor <= ";
 
 // This is never shifted more than 12 bits, so
 // check to make sure there's room to shift it.
-if( (divisor >> 52) != 0 )
-  throw "divisor too big in mod64FromTwoULongs.";
 
 if( p1 == 0 )
   return p0 % divisor;
 
-//////////////////////////////////////////////
-// (P1 * 2^64) + P0 is what the number is.
-// Uint64 base = 1 << 32;
-
-Uint64 part1 = p1 % divisor;
-if( (divisor >> 40) == 0 )
-  {
-  // Then this can be done 24 bits at a time.
-  part1 <<= 24;  // Times 2^24
-  part1 = part1 % divisor;
-  part1 <<= 24;  //  48
-  part1 = part1 % divisor;
-  part1 <<= 16;  // Brings it to 64
-  part1 = part1 % divisor;
-  }
-else
-  {
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12
-  part1 = part1 % divisor;
-  part1 <<= 12;  // Times 2^12 Brings it to 48.
-  part1 = part1 % divisor;
-  part1 <<= 8;  // Times 2^8
-  part1 = part1 % divisor;
-  part1 <<= 8;  // Times 2^8 Brings it to 64.
-  part1 = part1 % divisor;
-  }
+Int64 part1 = p1 % divisor;
+// This can be done 24 bits at a time.
+part1 <<= 24;  // Times 2^24
+part1 = part1 % divisor;
+part1 <<= 24;  //  48
+part1 = part1 % divisor;
+part1 <<= 16;  // Brings it to 64
+part1 = part1 % divisor;
 
 // All of the above was just to get the P1 part
 // of it, so now add P0:
@@ -1157,59 +1106,59 @@ return (part1 + p0) % divisor;
 
 
 
-Uint64 IntegerMath::getMod64( const Integer& in,
-                              Uint64 divisor )
+Int64 IntegerMath::getMod48( const Integer& in,
+                             const Int64 divisor )
 {
 if( divisor == 0 )
-  throw "getMod64: divisor == 0.";
+  throw "getMod48: divisor == 0.";
 
-if( (divisor & 0xFFFFFFFFL ) == 0 )
-  throw "getMod64: Divisor too small.";
+if( (divisor & 0xFFFFFF ) == 0 )
+  throw "getMod48: Divisor too small.";
 
-const Uint32 last = in.getIndex();
+const Int32 last = in.getIndex();
 
 if( last == 0 )
-  return in.getD( 0 ); // It's a 33+ bit divisor.
+  return in.getD( 0 ); // The divisor is bigger.
 
-Uint64 digit1 = 0;
-Uint64 digit0 = 0;
-Uint64 remainder = 0;
+Int64 digit1 = 0;
+Int64 digit0 = 0;
+Int64 remainder = 0;
 if( last == 2 )
   {
   digit1 = in.getD( 2 );
-  digit0 = in.getD( 1 ) << 32;
+  digit0 = in.getD( 1 ) << 24;
   digit0 |= in.getD( 0 );
-  return mod64FromTwoULongs( digit1, digit0,
+  return mod48FromTwoLongs( digit1, digit0,
                                       divisor );
   }
 
 if( last == 3 )
   {
-  digit1 = in.getD( 3 ) << 32;
+  digit1 = in.getD( 3 ) << 24;
   digit1 |= in.getD( 2 );
-  digit0 = in.getD( 1 ) << 32;
+  digit0 = in.getD( 1 ) << 24;
   digit0 |= in.getD( 0 );
-  return mod64FromTwoULongs( digit1, digit0,
+  return mod48FromTwoLongs( digit1, digit0,
                                      divisor );
   }
 
-for( Uint32 count = 0; count <= last; count++ )
+for( Int32 count = 0; count <= last; count++ )
   scratch[count] = in.getD( count );
 
-Uint32 where = last;
+Int32 where = last;
 while( true )
   {
   if( where <= 3 )
     {
     if( where < 2 ) // This can't happen.
-      throw "GetMod64(): Where < 2.";
+      throw "GetMod48(): Where < 2.";
 
     if( where == 2 )
       {
       digit1 = scratch[2];
       digit0 = scratch[1] << 32;
       digit0 |= scratch[0];
-      return mod64FromTwoULongs( digit1, digit0,
+      return mod48FromTwoLongs( digit1, digit0,
                                         divisor );
       }
 
@@ -1219,7 +1168,7 @@ while( true )
       digit1 |= scratch[2];
       digit0 = scratch[1] << 32;
       digit0 |= scratch[0];
-      return mod64FromTwoULongs( digit1, digit0,
+      return mod48FromTwoLongs( digit1, digit0,
                                        divisor );
       }
     }
@@ -1231,13 +1180,12 @@ while( true )
     digit1 |= scratch[where - 1];
     digit0 = scratch[where - 2] << 32;
     digit0 |= scratch[where - 3];
-    remainder = mod64FromTwoULongs( digit1, digit0,
+    remainder = mod48FromTwoLongs( digit1, digit0,
                                   divisor );
     scratch[where] = 0;
     scratch[where - 1] = 0;
-    scratch[where - 2] = remainder >> 32;
-    scratch[where - 3] = remainder &
-                                      0xFFFFFFFF;
+    scratch[where - 2] = remainder >> 24;
+    scratch[where - 3] = remainder & 0xFFFFFF;
     }
 
   where -= 2;
