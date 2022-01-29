@@ -9,12 +9,6 @@
 
 
 
-// This is my version of doing a type cast.
-// It's called Cast E for Cast Eric.
-// If you did something like cast from -1
-// to an unsigned type, you'd get a really
-// big number.  And that would be a big problem.
-
 class CastE
   {
   private:
@@ -39,6 +33,15 @@ class CastE
     return result;
     }
 
+  inline static Int32 U64ToI32( AddressU64 x )
+    {
+    if( x > 0x7FFFFFFF )
+      throw "Casting from to big of an x.";
+
+    Int32 result = static_cast<Int32>( x );
+    return result;
+    }
+
   inline static Int32 i64ToI32( Int64 x )
     {
     if( x < 0 )
@@ -58,7 +61,7 @@ class CastE
       throw "Truncating from a negative char x.";
 
     if( x >= 0x7F )
-      throw "Truncating too big of an char x.";
+      throw "Truncating too big of a char x.";
 
     char result = static_cast<char>( x );
     return result;
