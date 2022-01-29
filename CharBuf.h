@@ -1,8 +1,6 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
-// This should be merged with Int8Array.
-
 
 #pragma once
 
@@ -30,12 +28,17 @@ class CharBuf
   CharBuf( void );
   CharBuf( const CharBuf &in );
   ~CharBuf( void );
-  inline Int32 getLast( void )
+  inline Int32 getLast( void ) const
     {
     return last;
     }
 
-  const char* getBufPoint( void )
+  inline void clear( void )
+    {
+    last = 0;
+    }
+
+  const char* getBufPoint( void ) const
     {
     return cArray;
     }
@@ -47,5 +50,17 @@ class CharBuf
 
   void appendStr( Str& in );
   Str getStr( void );
+  inline char valAt( const Int32 where ) const
+    {
+    if( where >= arraySize )
+      throw "In valAt() index out of bounds.";
+
+    if( where >= last )
+      throw "In valAt() past last.";
+
+    return cArray[where];
+    }
+
+  void appendVal( const char toSet );
 
   };
