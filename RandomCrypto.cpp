@@ -4,14 +4,15 @@
 
 #include "RandomCrypto.h"
 #include <random>
+#include "CastE.h"
 
 
 
 void RandomCrypto::makeRandomBytes(
-                            Int8Array& i8a,
+                            CharBuf& cBuf,
                             const Int32 howMany )
 {
-i8a.clear();
+cBuf.clear();
 
 std::random_device rd;
 // rd.entropy()
@@ -29,11 +30,12 @@ Int32 gotCount = 0;
 for( Int32 count = 0; count < 100000; count++ )
   {
   // dist( gen())
-  Int8 c = gen();
+  char c = CastE::i32ToChar(
+              CastE::U64ToI32( gen()));
   if( c == 0 )
     continue;
 
-  i8a.appendVal( c );
+  cBuf.appendVal( c );
   gotCount++;
   if( gotCount >= howMany )
     return;
