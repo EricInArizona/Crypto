@@ -110,8 +110,8 @@ bool MainApp::basicThingsAreRight()
   // Float128
 */
 
-if( sizeof( Int8 ) != 1 )
-  return false;
+// if( sizeof( Int8 ) != 1 )
+  // return false;
 
 // if( sizeof( Char8 ) != 1 )
   // return false;
@@ -122,8 +122,8 @@ if( sizeof( Int8 ) != 1 )
 // if( sizeof( Int16 ) != 2 )
   // return false;
 
-if( sizeof( Uint16 ) != 2 )
-  return false;
+// if( sizeof( Uint16 ) != 2 )
+  // return false;
 
 if( sizeof( Int32 ) != 4 )
   return false;
