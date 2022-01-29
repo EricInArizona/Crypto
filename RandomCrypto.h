@@ -12,7 +12,7 @@
 
 
 #include "BasicTypes.h"
-#include "Int8Array.h"
+#include "CharBuf.h"
 
 
 class RandomCrypto
@@ -20,7 +20,7 @@ class RandomCrypto
   private:
 
   public:
-  static void makeRandomBytes( Int8Array& i8a,
+  static void makeRandomBytes( CharBuf& cBuf,
                            const Int32 howMany );
 
   };
