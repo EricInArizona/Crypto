@@ -5,7 +5,6 @@
 #include "Integer.h"
 #include "CharBuf.h"
 #include "RandomCrypto.h"
-#include "Int8Array.h"
 #include "CastE.h"
 
 
@@ -719,19 +718,19 @@ if( setToIndex > (ProjConst::digitArraySize - 3))
 
 Int32 howManyBytes = (setToIndex * 3) + 3;
 
-Int8Array i8a;
-RandomCrypto::makeRandomBytes( i8a,
-                                howManyBytes );
+CharBuf cBuf;
+RandomCrypto::makeRandomBytes( cBuf,
+                               howManyBytes );
 
 index = setToIndex;
 Int32 where = 0;
 for( Int32 count = 0; count <= index; count++ )
   {
-  Int64 digit = i8a.valAt( where );
+  Int64 digit = cBuf.valAt( where );
   digit <<= 8;
-  digit |= i8a.valAt( where + 1 );
+  digit |= cBuf.valAt( where + 1 );
   digit <<= 8;
-  digit |= i8a.valAt( where + 2 );
+  digit |= cBuf.valAt( where + 2 );
   digit <<= 8;
   where += 3;
   }
