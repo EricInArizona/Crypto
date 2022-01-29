@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -11,7 +11,7 @@
 #include "SPrimes.h"
 #include "Str.h"
 #include "FileIO.h"
-#include "TwoDUint64.h"
+#include "TwoDInt64.h"
 
 
 
@@ -22,13 +22,13 @@ class IntegerMath
   // Signed digits for use in subtraction.
   Int64* signedD;
   // Scratch pad, just like you would do on paper.
-  TwoDUint64 M;
-  Uint64* scratch;
+  TwoDInt64 M;
+  Int64* scratch;
 
   void setMultiplySign( Integer& result,
                         const Integer& toMul );
 
-  void searchSqrtXPart( Uint32 testIndex,
+  void searchSqrtXPart( Int32 testIndex,
                         Integer& fromSqr,
                         Integer& sqrRoot );
 
@@ -37,13 +37,13 @@ class IntegerMath
   IntegerMath( void );
   IntegerMath( const IntegerMath& in );
   ~IntegerMath( void  );
-  static Uint64 findULSqrRoot( Uint64 toMatch );
-  Uint64 isDivisibleBySmallPrime(
+  static Int64 findLSqrRoot( Int64 toMatch );
+  Int64 isDivisibleBySmallPrime(
                            const Integer& toTest,
                            SPrimes& sPrimes );
 
-  void subtractULong( Integer& result,
-                      const Uint64 toSub );
+  void subtractLong( Integer& result,
+                     const Int64 toSub );
   void add( Integer& result,
                       const Integer& toAdd );
   void subtract( Integer& result,
@@ -51,13 +51,13 @@ class IntegerMath
   void subtractPositive( Integer& result,
                          const Integer& toSub );
 
-  void multiplyUInt( Integer& result,
-                     const Uint64 toMul );
-  Uint32 multiplyUIntFromCopy( Integer& result,
-                             Integer& from,
-                       const Uint64 toMul );
-  void multiplyULong( Integer& result,
-                      const Uint64 toMul );
+  void multiplyInt( Integer& result,
+                    const Int64 toMul );
+  Int32 multiplyIntFromCopy( Integer& result,
+                              Integer& from,
+                         const Int64 toMul );
+  void multiplyLong( Integer& result,
+                      const Int64 toMul );
   void multiply( Integer& result,
                  const Integer& toMul );
 
@@ -67,20 +67,21 @@ class IntegerMath
 
   Str toString10( const Integer& from );
   void square( Integer& toSquare );
-  Uint64 getMod32( const Integer& in,
-                        const Uint64 divisor );
-  Uint64 getMod64( const Integer& in,
-                        const Uint64 divisor );
-  static Uint64 mod64FromTwoULongs( Uint64 P1,
-                                 Uint64 P0,
-                                 Uint64 divisor );
+  Int64 getMod24( const Integer& in,
+                  const Int64 divisor );
+  Int64 getMod48( const Integer& in,
+                  const Int64 divisor );
+  static Int64 mod48FromTwoLongs( Int64 P1,
+                                  Int64 P0,
+                                  Int64 divisor );
+
   void multiplyTop( Integer& result,
                     const Integer& toMul );
   void multiplyTopOne( Integer& result,
                        const Integer& toMul );
   bool squareRoot( const Integer& fromSqr,
                             Integer& sqrRoot );
-  void searchSqrtXPart( Uint32 testIndex,
+  void searchSqrtXPart( Int32 testIndex,
                         const Integer& fromSqr,
                         Integer& sqrRoot );
 
