@@ -122,8 +122,8 @@ bool MainApp::basicThingsAreRight()
 // if( sizeof( Int16 ) != 2 )
   // return false;
 
-// if( sizeof( Uint16 ) != 2 )
-  // return false;
+if( sizeof( UTF16 ) != 2 )
+  return false;
 
 if( sizeof( Int32 ) != 4 )
   return false;
@@ -134,7 +134,7 @@ if( sizeof( Int32 ) != 4 )
 if( sizeof( Int64 ) != 8 )
   return false;
 
-if( sizeof( AddressU64 ) != 8 )
+if( sizeof( ArrayU64 ) != 8 )
   return false;
 
 if( sizeof( Float32 ) != 4 )

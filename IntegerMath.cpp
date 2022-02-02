@@ -40,7 +40,14 @@ throw "Copy constructor: IntegerMath.\n";
 
 Int64 IntegerMath::findLSqrRoot( Int64 toMatch )
 {
+// The result has to be a 24 bit number max.
+// So toMatch can't be bigger than this.
+RangeC::test( toMatch, 0, 0xFFFFFFFFFFFFL,
+        "IntegerMath.findLSqrRoot() toMatch." );
+
+// For 24 bits.
 Int64 oneBit = 0x800000;
+
 Int64 result = 0;
 for( Int32 count = 0; count < 24; count++ )
   {
@@ -91,11 +98,11 @@ return 0;
 void IntegerMath::subtractLong( Integer& result,
                                 Int64 toSub )
 {
-if( result.isLong())
+if( result.isLong48())
   {
-  Int64 resultL = result.getAsLong();
+  Int64 resultL = result.getAsLong48();
   if( toSub > resultL )
-    throw "IsLong() and (toSub > result).";
+    throw "IsLong48() and (toSub > result).";
 
   resultL = resultL - toSub;
   result.setD( 0, resultL & 0xFFFFFF );
@@ -318,9 +325,9 @@ void IntegerMath::subtractPositive(
                            Integer& result,
                            const Integer& toSub )
 {
-if( toSub.isLong() )
+if( toSub.isLong48() )
   {
-  subtractLong( result, toSub.getAsLong());
+  subtractLong( result, toSub.getAsLong48());
   return;
   }
 
@@ -536,9 +543,9 @@ void IntegerMath::multiply( Integer& result,
 if( result.isZero())
   return;
 
-if( toMul.isLong())
+if( toMul.isLong48())
   {
-  multiplyLong( result, toMul.getAsLong());
+  multiplyLong( result, toMul.getAsLong48());
   setMultiplySign( result, toMul );
   return;
   }
@@ -649,9 +656,9 @@ for( Uint32 count = 1; count <= last; count++ )
 
 Str IntegerMath::toString10( const Integer& from )
 {
-if( from.isLong())
+if( from.isLong48())
   {
-  Int64 N = from.getAsLong();
+  Int64 N = from.getAsLong48();
   Str nS( N );
   if( from.getNegative() )
     {
@@ -876,9 +883,9 @@ bool IntegerMath::squareRoot(
                           Integer& sqrRoot )
 {
 Int64 toMatch;
-if( fromSqr.isLong() )
+if( fromSqr.isLong48() )
   {
-  toMatch = fromSqr.getAsLong();
+  toMatch = fromSqr.getAsLong48();
   sqrRoot.setD( 0, findLSqrRoot( toMatch ));
   sqrRoot.setIndex( 0 );
   if( (sqrRoot.getD(0 ) * sqrRoot.getD( 0 )) ==

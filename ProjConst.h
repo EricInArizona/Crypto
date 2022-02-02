@@ -16,15 +16,14 @@ class ProjConst
   private:
 
   public:
-  // digitArraySize = 100 is 3,200 bits.
+  // digitArraySize = 100 is 2,400 bits.
+  // For the prime factors used in RSA:
   // If RSA::PrimeIndex = 15 the size is 16,
   // so then N, the modulus, has a size of
-  //about 32.  Squaring N makes it have an
-  // index of about 64.  So it's about 4 times
-  // the size of the primes.
-  // With a PrimeIndex of 15, a
-  // digitArraySize of 66 overflowed. But not
-  // at 67.  16 * 4 = 64.
+  // about 32 since it is 16 + 16 long.
+  // Squaring N makes it have a size of about 64. 
+  // So I need numbers a little bigger than
+  // about 4 times the size of the RSA primes.
   // NumbSys is not exact.  It's a little
   // bigger than the modulus.
 
@@ -32,19 +31,18 @@ class ProjConst
   static const Int32 digitArraySize = 515;
 
   // Test how big this can be without overflowing
-  // an Integer.  It's more than twice
-  // digitArraySize but less than 3 times that
-  // size.
+  // an Integer. 
   static const Int32 crtDigitArraySize =
                           digitArraySize; // * 2;
 
+  // This is for 24 bit primes.
   static const Int32 primesArraySize =
                                      1024 * 32;
 
 
   // See Exponents.h:
   // To match this with a full size Integer it
-  // should be digitArraySize * 32 bits.
+  // should be digitArraySize * 24 bits.
   static const Int32 exponentsLast = 2000;
 
   // See Ellip.h:

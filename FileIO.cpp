@@ -9,17 +9,12 @@
 #include "CastE.h"
 
 
-// using namespace std;
-
 
 FileIO::FileIO( void )
 {
-// StIO::printFS(
-//        "FileIO constructor called.\n" );
 }
 
 
-// The copy constructor.
 FileIO::FileIO( const FileIO &in )
 {
 // Make the compiler think in is being used.
@@ -36,8 +31,6 @@ throw showS;
 
 FileIO::~FileIO( void )
 {
-// StIO::printFS(
-//       "FileIO destructor called.\n" );
 }
 
 
@@ -64,7 +57,7 @@ inFile.seekg( 0, inFile.end );
 Int64 howMany = inFile.tellg();
 // Error returns -1.
 if( howMany < 0 )
-  throw "Infile tellg() returned < 0.";
+  throw "FileIO.readAll() tellg() returned < 0.";
 
 if( howMany > 4000000000 )
   throw "Infile tellg() returned > 4000000000.";
@@ -84,7 +77,7 @@ inFile.close();
 
 
 
-void FileIO::appendStr( Str& in )
+void FileIO::appendStr( const Str& in )
 {
 cBuf.appendStr( in );
 }

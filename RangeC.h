@@ -9,6 +9,9 @@
 
 // Range checking.
 
+// I never use the C preprocessor except to use
+// #include statements.
+
 
 class RangeC
   {
@@ -16,14 +19,26 @@ class RangeC
 
   public:
 
-  inline static void test( Int32 index,
-                           Int32 min, Int32 max )
-    {
-    if( index < min )
-      throw "Range check less than min.";
+  // Changing the name of test() to something like
+  // test2() would make the compiler show where
+  // all of the range checks are.
+  // Same for testNothing().
 
-    if( index > max )
-      throw "Range check more than max.";
+  inline static void testNothing( void )
+    {
+    // Do nothing.
+    // This should be optimized away.
+    }
+
+  inline static void test( Int64 toTest,
+                           Int64 min, Int64 max,
+                           const char* showIt )
+    {
+    if( toTest < min )
+      throw showIt;
+
+    if( toTest > max )
+      throw showIt;
 
     }
 

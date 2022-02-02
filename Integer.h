@@ -16,11 +16,6 @@
 
 class Integer
   {
-  public:
-  // This would be about 515 times 8 bytes for
-  // the size on the stack.  Over 4,000 bytes.
-  // See the /STACK option in BuildProj.bat
-
   private:
   Int32 testforCopy = 123;
   bool negative = false;
@@ -32,19 +27,20 @@ class Integer
   // no memory allocation that gets done when
   // an Integer is created other than to move
   // the stack pointer.
+  // See the /STACK option in BuildProj.bat
   Int64 D[ProjConst::digitArraySize] = { 0,1,2 };
-  // Uint64* D;
+  // Int64* D;
 
 /*
-  void setOneDValueFromChar( Uint64 toSet,
-                Uint32 position, Uint32 offset );
+  void setOneDValueFromChar( Int64 toSet,
+                Int32 position, Int32 offset );
   char getOneCharFromDValue(
-                Uint32 position, Uint32 offset );
-  void setOneDValueFromByte( Uint64 toSet,
-                             Uint32 atIndex,
-                             Uint32 offset );
+                Int32 position, Int32 offset );
+  void setOneDValueFromByte( Int64 toSet,
+                             Int32 atIndex,
+                             Int32 offset );
   char getOneByteFromDValue(
-                  Uint32 atIndex, Uint32 offset );
+                  Int32 atIndex, Int32 offset );
 
 */
 
@@ -90,9 +86,12 @@ class Integer
     return false;
     }
 
-  inline bool isMoreThanInt( const Int32 check )
+  inline bool isMoreThanInt24( const Int32 check )
                                            const
     {
+    RangeC::test( check, 0, 0xFFFFFF,
+            "Integer.isMoreThanInt24() size." );
+
     if( negative )
       return false;
 
@@ -120,10 +119,11 @@ class Integer
     return index;
     }
 
-  inline void setIndex( Int32 setTo )
+  inline void setIndex( const Int32 setTo )
     {
     RangeC::test( setTo, 0,
-               ProjConst::digitArraySize - 1 );
+               ProjConst::digitArraySize - 1,
+                "Integer.setIndex() range." );
 
     index = setTo;
     }
@@ -132,7 +132,8 @@ class Integer
   inline Int64 getD( const Int32 where ) const
     {
     RangeC::test( where, 0,
-               ProjConst::digitArraySize - 1 );
+               ProjConst::digitArraySize - 1,
+                       "Integer.getD() range." );
 
     return D[where];
     }
@@ -145,39 +146,48 @@ class Integer
     // See cleanUp().
 
     RangeC::test( where, 0,
-               ProjConst::digitArraySize - 1 );
+               ProjConst::digitArraySize - 1,
+                     "Integer.setD() range." );
 
     D[where] = toSet;
     }
 
   void cleanUp( void );
-  void incrementIndex( void );
-  void setToMaxValue( void );
-  inline void setFromInt( const Int32 toSet )
+
+  inline void incrementIndex( void )
     {
+    index++;
+    if( index >= ProjConst::digitArraySize )
+      throw "Integer IncrementIndex() overflow.";
+
+    }
+
+  void setToMaxValue( void );
+
+  inline void setFromInt24( const Int32 toSet )
+    {
+    RangeC::test( toSet, 0, 0xFFFFFF,
+              "Integer.setFromInt24() size." );
+
     negative = false;
     D[0] = toSet;
     index = 0;
     }
 
-  void setFromLong( const Int64 toSet );
+  void setFromLong48( const Int64 toSet );
   void copy( const Integer& copyFrom );
   void copyUpTo( const Integer& copyFrom,
                  const Int32 where );
-  // The const on the end marks this function
-  // as not modifying the _this_ object that
-  // called it.
-  // bool isEqualToInt( const Int32 toTest ) const;
-  // bool isEqualToInt64( const Int64 toTest )
-  //                                     const;
+  bool isEqualToInt24( const Int32 toTest ) const;
+  bool isEqualToInt48( const Int64 toTest ) const;
   bool isEqual( const Integer& x ) const;
-  bool isLong( void ) const;
-  Int64 getAsLong( void ) const;
+  bool isLong48( void ) const;
+  Int64 getAsLong48( void ) const;
   bool paramIsGreater( const Integer& x ) const;
   bool paramIsGreaterOrEq( const Integer& x )
                                           const;
   void increment( void );
-  void addLong( const Int64 toAdd );
+  void addLong48( const Int64 toAdd );
   void add( const Integer& toAdd );
   void square0( void );
   void square1( void );
@@ -185,21 +195,21 @@ class Integer
   void shiftLeft( const Int32 shiftBy );
   void shiftRight( const Int32 shiftBy );
   void setDigitAndClear( const Int32 where,
-                            const Int64 toSet );
+                         const Int64 toSet );
   bool makeRandomOdd( const Int32 setToIndex );
 
 /*
   bool setFromAsciiStr( Str& in );
   Str getAsciiStr( void );
 
-  do char arrays.
+  do charBuf.
   void setFromBigEndianByteArray(
                               Uint8Array& U8Ar );
   void getBigEndianByteArray(
                              Uint8Array& toGet );
 */
 
-  void copyFromIntBuf( IntBuf& intBuf );
+  void copyFromIntBuf( const IntBuf& intBuf );
   void copyToIntBuf( IntBuf& intBuf ) const;
 
   };

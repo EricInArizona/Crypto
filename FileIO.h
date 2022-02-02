@@ -20,7 +20,7 @@ class FileIO
   ~FileIO( void );
   void readAll( const char* fileName );
   void writeAll( const char* fileName );
-  void appendStr( Str& in );
+  void appendStr( const Str& in );
   void appendChars( const char* pStr );
 
   };

@@ -11,6 +11,7 @@
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
+#include "RangeC.h"
 
 
 class IntBuf
@@ -33,16 +34,16 @@ class IntBuf
 
   inline void setIndex( Int32 setTo )
     {
-    if( setTo >= last )
-      throw "IntBuf setIndex() out of bounds.";
+    RangeC::test( setTo, 0, last - 1,
+                  "IntBuf.setIndex() range." );
 
     index = setTo;
     }
 
   inline Int32 getD( const Int32 where ) const
     {
-    if( where >= last )
-      throw "IntBuf.getD() index out of bounds.";
+    RangeC::test( where, 0, last - 1,
+                    "IntBuf.getD() range." );
 
     return D[where];
     }
@@ -51,12 +52,12 @@ class IntBuf
   inline void setD( const Int32 where,
                     const Int32 toSet )
     {
-    if( where >= last )
-      throw "IntBuf.getD() index out of bounds.";
+    RangeC::test( where, 0, last - 1,
+                     "IntBuf.setD() range." );
 
     // 24 bits.
-    if( toSet > 0xFFFFFF )
-      throw "IntBuf.setD() setTo is too big.";
+    RangeC::test( toSet, 0, 0xFFFFFF,
+                 "IntBuf.setD() setTo size." );
 
     D[where] = toSet;
     }

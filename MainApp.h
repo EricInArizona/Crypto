@@ -5,6 +5,12 @@
 #pragma once
 
 
+// I never use the C preprocessor except to use
+// #include statements.
+// Never ever.
+// The C preprocessor is bad.  Very bad.
+
+
 #include "BasicTypes.h"
 #include "FileIO.h"
 
@@ -19,7 +25,7 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "1/26/2022";
+    return "2/2/2022";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );
