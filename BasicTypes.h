@@ -18,12 +18,18 @@
 // typedef unsigned char Char8;
 // typedef unsigned short Char16;
 // typedef short Int16;
-// typedef unsigned short Uint16;
+
+// This might be a UTF16 character or a
+// byte that is not meant to have a sign bit.
+typedef unsigned short UTF16;
+
 typedef int Int32;
 // typedef unsigned int Uint32;
 typedef long long Int64; // A constant 123LL
                          // is Int64.
-typedef unsigned long long AddressU64; // 123ULL
+
+typedef unsigned long long ArrayU64; // 123ULL
+
 typedef float Float32;
 typedef double Float64;
 
