@@ -9,11 +9,8 @@
 
 CharBuf::CharBuf( void )
 {
-arraySize = 1024 * 64;
+arraySize = 1024 * 2;
 cArray = new char[CastE::i32ToU64( arraySize )];
-
-// StIO::printFS(
-//         "CharBuf constructor called.\n" );
 }
 
 
@@ -21,7 +18,7 @@ CharBuf::CharBuf( const CharBuf &in )
 {
 // Make the compiler think the in value is
 // being used.
-if( in.last == 2000000000 )
+if( in.last == 123 )
   return;
 
 // Don't copy a giant buffer.
@@ -36,14 +33,11 @@ throw showS;
 CharBuf::~CharBuf( void )
 {
 delete[] cArray;
-
-// StIO::printFS(
-//           "CharBuf destructor called.\n" );
 }
 
 
 
-void CharBuf::increaseSize( Int32 howMuch )
+void CharBuf::increaseSize( const Int32 howMuch )
 {
 arraySize = arraySize + howMuch;
 char* tempArray = new char[CastE::i32ToU64(
@@ -65,7 +59,7 @@ delete[] tempArray;
 
 
 
-Str CharBuf::getStr( void )
+Str CharBuf::getStr( void ) const
 {
 Str result( cArray, last );
 // It will do the copy constructor.
@@ -77,7 +71,7 @@ return result;
 void CharBuf::appendChar( const char toSet )
 {
 if( (last + 2) <= arraySize )
-  increaseSize( (1024 * 64) );
+  increaseSize( (1024 * 16) );
 
 cArray[last] = toSet;
 last++;
@@ -100,7 +94,7 @@ for( Int32 count = 0; count < 10000; count++ )
   }
 
 if( (arraySize + strSize + 2) <= arraySize )
-  increaseSize( strSize + (1024 * 64) );
+  increaseSize( strSize + (1024 * 16) );
 
 for( Int32 count = 0; count < strSize; count++ )
   {
@@ -116,7 +110,7 @@ void CharBuf::appendCharBuf( const char* buf,
                              const Int32 howMany )
 {
 if( (arraySize + howMany + 2) <= arraySize )
-  increaseSize( howMany + (1024 * 64) );
+  increaseSize( howMany + (1024 * 16) );
 
 for( Int32 count = 0; count < howMany; count++ )
   {
@@ -128,11 +122,11 @@ for( Int32 count = 0; count < howMany; count++ )
 
 
 
-void CharBuf::appendStr( Str& in )
+void CharBuf::appendStr( const Str& in )
 {
 Int32 howMany = in.getSize();
 if( ((last + 2) + howMany) <= arraySize )
-  increaseSize( howMany + (1024 * 64) );
+  increaseSize( howMany + (1024 * 16) );
 
 for( Int32 count = 0; count < howMany; count++ )
   {
@@ -142,104 +136,8 @@ for( Int32 count = 0; count < howMany; count++ )
 }
 
 
-void CharBuf::appendVal( const char toSet )
-{
-if( (last + 2) <= arraySize )
-  increaseSize( (1024 * 64) );
-
-cArray[last] = toSet;
-last++;
-}
 
 /*
-========
-
-Int8Array::Int8Array( void )
-{
-arraySize = 1024 * 64;
-cArray = new Int8[CastE::i32ToU64( arraySize )];
-}
-
-
-Int8Array::Int8Array( const Int8Array &in )
-{
-// Don't copy a giant buffer.
-
-// Make the compiler think in is being used.
-if( in.testForCopy == 7 )
-  return;
-
-const char* showS = "The Int8Array copy"
-      " constructor should not be getting"
-      " called.\n";
-
-throw showS;
-}
-
-
-
-Int8Array::~Int8Array( void )
-{
-delete[] cArray;
-}
-
-
-
-void Int8Array::increaseSize( const Int32 howMuch )
-{
-arraySize = arraySize + howMuch;
-Int8* tempArray = new Int8[CastE::i32ToU64(
-                                     arraySize )];
-
-const Int32 max = last;
-
-for( Int32 count = 0; count < max; count++ )
-  tempArray[count] = cArray[count];
-
-delete[] cArray;
-cArray = new Int8[CastE::i32ToU64( arraySize )];
-
-for( Int32 count = 0; count < max; count++ )
-  cArray[count] = tempArray[count];
-
-delete[] tempArray;
-}
-
-
-
-
-
-void Int8Array::appendArray(
-                           const Int8* fromBuf,
-                           const Int32 howMany )
-{
-if( ((last + 2) + howMany) <= arraySize )
-  increaseSize( howMany + (1024 * 64) );
-
-for( Int32 count = 0; count < howMany; count++ )
-  {
-  cArray[last] = *fromBuf;
-  last++;
-  fromBuf++;
-  }
-}
-
-
-
-void Int8Array::appendStr( Str& in )
-{
-Int32 howMany = in.getSize();
-if( ((last + 2) + howMany) <= arraySize )
-  increaseSize( howMany + (1024 * 64) );
-
-for( Int32 count = 0; count < howMany; count++ )
-  {
-  cArray[last] = in.charAt( count );
-  last++;
-  }
-}
-
-
 
 void Int8Array::reverse( void )
 {

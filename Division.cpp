@@ -86,11 +86,11 @@ Int64 Division::shortDivideRem(
                   const Int64 divideByU,
                   Integer& quotient )
 {
-if( toDivideOriginal.isLong())
+if( toDivideOriginal.isLong48())
   {
-  Int64 toDiv = toDivideOriginal.getAsLong();
+  Int64 toDiv = toDivideOriginal.getAsLong48();
   Int64 q = toDiv / divideByU;
-  quotient.setFromLong( q );
+  quotient.setFromLong48( q );
   return toDiv % divideByU;
   }
 
@@ -179,14 +179,14 @@ if( toDivide.isEqual( divideBy ))
   }
 
 // At this point divideBy is smaller than toDivide.
-if( toDivide.isLong() )
+if( toDivide.isLong48() )
   {
-  Int64 toDivideU = toDivide.getAsLong();
-  Int64 divideByU = divideBy.getAsLong();
+  Int64 toDivideU = toDivide.getAsLong48();
+  Int64 divideByU = divideBy.getAsLong48();
   Int64 quotientU = toDivideU / divideByU;
   Int64 remainderU = toDivideU % divideByU;
-  quotient.setFromLong( quotientU );
-  remainder.setFromLong( remainderU );
+  quotient.setFromLong48( quotientU );
+  remainder.setFromLong48( remainderU );
   return;
   }
 

@@ -6,14 +6,9 @@
 
 
 
-// This is really a byte buffer, for just any
-// bytes in general, but a byte is called a
-// char in C++.  It doesn't necessarily mean a
-// character like an ASCII character.
-
-
 #include "BasicTypes.h"
 #include "Str.h"
+#include "RangeC.h"
 
 
 class CharBuf
@@ -38,6 +33,9 @@ class CharBuf
     last = 0;
     }
 
+  // This is used with getLast() like in
+  // FileIO.writeAll() to pass the right size
+  // of the buffer being pointed to.
   const char* getBufPoint( void ) const
     {
     return cArray;
@@ -48,19 +46,17 @@ class CharBuf
   void appendCharBuf( const char* buf,
                       const Int32 howMany );
 
-  void appendStr( Str& in );
-  Str getStr( void );
+  void appendStr( const Str& in );
+  Str getStr( void ) const;
   inline char valAt( const Int32 where ) const
     {
-    if( where >= arraySize )
-      throw "In valAt() index out of bounds.";
+    RangeC::test( where, 0, arraySize - 1,
+             "CharBuf.valAt() arraySize." );
 
-    if( where >= last )
-      throw "In valAt() past last.";
+    RangeC::test( where, 0, last - 1,
+             "CharBuf.valAt() last." );
 
     return cArray[where];
     }
-
-  void appendVal( const char toSet );
 
   };

@@ -1,0 +1,33 @@
+buildfile	C:\Eric\Main\Crypto\BuildProj.bat
+executablefile	C:\Eric\Main\Crypto\RunMain.bat
+projectdirectory	C:\Eric\Main\Crypto
+recentfile1	C:\Eric\Main\Crypto\MainApp.h
+recentfile2	C:\Eric\Main\Docs\Notes.txt
+recentfile3	C:\Eric\Main\Crypto\MainApp.cpp
+recentfile4	C:\Eric\Main\Crypto\Division.cpp
+recentfile5	C:\Eric\Main\Crypto\IntegerMath.cpp
+recentfile6	C:\Eric\Main\Crypto\IntegerMath.h
+recentfile7	C:\Eric\Main\Crypto\SPrimes.cpp
+recentfile8	C:\Eric\Main\Crypto\SPrimes.h
+recentfile9	C:\Eric\Main\Crypto\RangeC.h
+recentfile10	C:\Eric\Main\Crypto\CastE.h
+recentfile11	C:\Eric\Main\Website\QuadResCrt.htm
+recentfile12	
+recentfile13	
+recentfile14	
+recentfile15	
+recentfile16	
+recentfile17	
+recentfile18	
+recentfile19	
+recentfile20	
+recentfile21	
+recentfile22	
+recentfile23	
+recentfile24	
+recentfile25	
+recentfile26	
+recentfile27	
+recentfile28	
+recentfile29	
+recentfile30	
