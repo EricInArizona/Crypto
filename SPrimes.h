@@ -5,12 +5,15 @@
 #pragma once
 
 
-// For small primes.
+// This is only for primes up to 24 bits so that
+// it matches up with one Integer digit.
+// I could do an SPrimes64 for bigger primes.
 
 
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
+#include "RangeC.h"
 
 
 class SPrimes
@@ -28,16 +31,22 @@ class SPrimes
   SPrimes( void );
   SPrimes( const SPrimes& in );
   ~SPrimes( void );
-  Int32 getFirstPrimeFactor( Int32 toTest );
-  Int32 getBiggestPrime( void );
-
+  Int32 getFirstPrimeFactor( const Int64 toTest )
+                                           const;
   inline Int32 getPrimeAt(
                       const Int32 where ) const
     {
-    // if( where >= last )
-      // throw "getPrimeAt() out of bounds.";
+    // RangeC::testNothing();
+
+    RangeC::test( where, 0, last - 1,
+            "SPrimes.getPrimeAt() range." );
 
     return pArray[where];
+    }
+
+  inline Int32 getBiggestPrime( void ) const
+    {
+    return pArray[last - 1];
     }
 
   };

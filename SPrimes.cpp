@@ -14,13 +14,6 @@ makePrimeArray();
 }
 
 
-
-SPrimes::~SPrimes( void )
-{
-delete[] pArray;
-}
-
-
 SPrimes::SPrimes( const SPrimes& in )
 {
 // Make the compiler think in is being used.
@@ -31,16 +24,23 @@ throw "Copy constructor for SPrimes called.\n";
 }
 
 
-Int32 SPrimes::getBiggestPrime( void )
+SPrimes::~SPrimes( void )
 {
-return pArray[last - 1];
+delete[] pArray;
 }
 
-
-
+=====
 Int32 SPrimes::getFirstPrimeFactor(
-                                Int32 toTest )
+                       const Int64 toTest ) const
 {
+// Use 24 bit primes only.
+RangeC::test( toTest, 0, 0xFFFFFFFFFFFFL,
+        "SPrimes.getFirstPrimeFactor() range." );
+
+// if( toTest == 1 )
+  // return 0 because it doesn't have prime
+  // factors.
+
 if( toTest < 2 )
   return 0;
 
@@ -50,8 +50,8 @@ if( toTest == 2 )
 if( toTest == 3 )
   return 3;
 
-const Int64 max = IntegerMath::
-                         findLSqrRoot( toTest );
+const Int32 max = CastE::i64ToI32(
+            IntegerMath::findLSqrRoot( toTest ));
 if( max == 0 )
   throw "SPrimes. Max was zero.";
 
