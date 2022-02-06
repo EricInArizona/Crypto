@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -15,7 +15,6 @@ intBufAr = new IntBuf[last];
 }
 
 
-// The copy constructor.
 NumbSys::NumbSys( const NumbSys& in )
 {
 intBufAr = new IntBuf[last];
@@ -40,16 +39,16 @@ void NumbSys::setupBaseArray(
 {
 currentBase.copy( setBase );
 
-Integer base2;   // 0x1 0000 0000
-base2.setFromULong( 0x100000000U );
+Integer base2;   // 0x1 00 00 00
+base2.setFromLong48( 0x1000000L );
 
 Integer baseValue;
 Integer quotient;
 Integer remainder;
 
-baseValue.setFromULong( 1 );
+baseValue.setToOne();
 
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
   Division::divide( baseValue, currentBase,
                     quotient, remainder,
@@ -67,7 +66,7 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 
-void NumbSys::privateReduce( Integer& result,
+void NumbSys::reduce( Integer& result,
                       const Integer& toReduce,
                       const Integer& modulus,
                       IntegerMath& intMath )
@@ -85,23 +84,23 @@ if( toReduce.paramIsGreater( currentBase ))
   }
 
 numVal.copy( toReduce );
-const Uint32 ind = numVal.getIndex();
+const Int32 ind = numVal.getIndex();
 
 Integer accumRow;
 
 result.setToZero();
-for( Uint32 row = 0; row <= ind; row++ )
+for( Int32 row = 0; row <= ind; row++ )
   {
-  Uint64 val = numVal.getD( row );
-  const Uint32 lastBase = intBufAr[row].
+  Int64 val = numVal.getD( row );
+  const Int32 lastBase = intBufAr[row].
                            getIndex();
 
   accumRow.setIndex( lastBase );
-  for( Uint32 column = 0; column <= lastBase;
+  for( Int32 column = 0; column <= lastBase;
                                        column++ )
     {
-    Uint64 baseVal = intBufAr[row].getD( column );
-    Uint64 calc = baseVal * val;
+    Int64 baseVal = intBufAr[row].getD( column );
+    Int64 calc = baseVal * val;
     accumRow.setD( column, calc );
     }
 

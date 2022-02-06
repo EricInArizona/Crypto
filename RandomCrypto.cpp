@@ -9,12 +9,13 @@
 
 
 void RandomCrypto::makeRandomBytes(
-                            UTF16Buf& cBuf,
+                            UTF16Buf& uBuf,
                             const Int32 howMany )
 {
-cBuf.clear();
+uBuf.clear();
 
 std::random_device rd;
+
 // rd.entropy()
 // rd.min()
 // rd.max()
@@ -32,11 +33,13 @@ Int32 gotCount = 0;
 for( Int32 count = 0; count < 100000; count++ )
   {
   // dist( gen())
-  UTF16 c = CastE::U64ToUTF16Byte( gen());
+
+  // Truncate the unsigned int to an 8 bit byte.
+  UTF16 c = CastE::U64ToUTF16ByteTruncate( gen());
   if( c == 0 )
     continue;
 
-  cBuf.appendVal( c );
+  uBuf.appendVal( c );
   gotCount++;
   if( gotCount >= howMany )
     return;

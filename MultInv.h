@@ -8,7 +8,7 @@
 #include "BasicTypes.h"
 #include "ProjConst.h"
 #include "SPrimes.h"
-#include "Uint32Array.h"
+#include "Int32Array.h"
 
 
 
@@ -16,25 +16,27 @@ class MultInv
   {
   private:
   Int32 testForCopy = 123;
-  static const Uint32 last =
+  static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
-  Uint32Array* u32Arrays;
-  Uint32 calcMultInv( const Uint32 prime,
-                             const Uint32 test );
+  Int32Array* i32Arrays;
+  Int32 calcMultInv( const Int32 prime,
+                     const Int32 test );
 
   public:
   MultInv( void );
   MultInv( const MultInv& in );
   ~MultInv( void );
   void init( const SPrimes& sPrimes );
-  inline Uint32 getInv( const Uint32 primeAt,
-                        const Uint32 value ) const
+  inline Int32 getInv( const Int32 primeAt,
+                       const Int32 value ) const
     {
-    // Get the inverse of value.
-    return u32Arrays[primeAt].getVal( value );
-    }
+    RangeC::test( primeAt, 0, last - 1,
+            "MultInv.getInv primeAt range." );
 
+    // Get the inverse of value.
+    return i32Arrays[primeAt].getVal( value );
+    }
 
 
   };

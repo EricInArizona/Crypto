@@ -21,7 +21,7 @@ class ProjConst
   // If RSA::PrimeIndex = 15 the size is 16,
   // so then N, the modulus, has a size of
   // about 32 since it is 16 + 16 long.
-  // Squaring N makes it have a size of about 64. 
+  // Squaring N makes it have a size of about 64.
   // So I need numbers a little bigger than
   // about 4 times the size of the RSA primes.
   // NumbSys is not exact.  It's a little
@@ -31,7 +31,7 @@ class ProjConst
   static const Int32 digitArraySize = 515;
 
   // Test how big this can be without overflowing
-  // an Integer. 
+  // an Integer.
   static const Int32 crtDigitArraySize =
                           digitArraySize; // * 2;
 

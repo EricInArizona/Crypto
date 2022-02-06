@@ -3,7 +3,7 @@
 
 
 #include "TimeEC.h"
-#include "Uint8Array.h"
+#include "CharBuf.h"
 #include <ctime>
 
 
@@ -51,20 +51,20 @@ return timeSeconds - in.timeSeconds;
 
 Str TimeEC::timeStr( void )
 {
-Uint8Array u8a;
+CharBuf cBuf;
 
 
 Str colon( ":" );
-Str secS( (Uint64)seconds );
-Str minS( (Uint64)minutes );
-Str hourS( (Uint64)hour );
+Str secS( seconds );
+Str minS( minutes );
+Str hourS( hour );
 
 // Close enough for now.
-u8a.appendStr( hourS );
-u8a.appendStr( colon );
-u8a.appendStr( minS );
-u8a.appendStr( colon );
-u8a.appendStr( secS );
+cBuf.appendStr( hourS );
+cBuf.appendStr( colon );
+cBuf.appendStr( minS );
+cBuf.appendStr( colon );
+cBuf.appendStr( secS );
 
-return u8a.makeStr();
+return cBuf.getStr();
 }

@@ -7,7 +7,7 @@
 
 // This is only for primes up to 24 bits so that
 // it matches up with one Integer digit.
-// I could do an SPrimes64 for bigger primes.
+// I could do an SPrimes48 for bigger primes.
 
 
 
@@ -21,7 +21,7 @@ class SPrimes
   private:
   Int32 testForCopy = 123;
   Int32* pArray;
-  void makePrimeArray( void );
+  void makeArray( void );
 
   static const Int32 last =
                    ProjConst::primesArraySize;
@@ -31,8 +31,8 @@ class SPrimes
   SPrimes( void );
   SPrimes( const SPrimes& in );
   ~SPrimes( void );
-  Int32 getFirstPrimeFactor( const Int64 toTest )
-                                           const;
+  Int32 getFirstFactor( const Int64 toTest )
+                                          const;
   inline Int32 getPrimeAt(
                       const Int32 where ) const
     {

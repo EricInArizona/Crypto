@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -50,8 +50,8 @@ class Mod
             const Integer& modulus,
             IntegerMath& intMath );
 
-  void addUL( Integer& result,
-              const Uint64 toAdd,
+  void addL( Integer& result,
+              const Int64 toAdd,
               const Integer& modulus,
               IntegerMath& intMath );
 
@@ -69,8 +69,8 @@ class Mod
                  const Integer& modulus,
                  IntegerMath& intMath );
 
-  void multiplyUL( Integer& result,
-                   const Uint64 toMul,
+  void multiplyL( Integer& result,
+                   const Int64 toMul,
                    const Integer& modulus,
                    IntegerMath& intMath );
 

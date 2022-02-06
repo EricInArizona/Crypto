@@ -10,7 +10,7 @@
 SPrimes::SPrimes( void )
 {
 pArray = new Int32[last];
-makePrimeArray();
+makeArray();
 }
 
 
@@ -29,17 +29,12 @@ SPrimes::~SPrimes( void )
 delete[] pArray;
 }
 
-=====
-Int32 SPrimes::getFirstPrimeFactor(
+
+Int32 SPrimes::getFirstFactor(
                        const Int64 toTest ) const
 {
-// Use 24 bit primes only.
 RangeC::test( toTest, 0, 0xFFFFFFFFFFFFL,
-        "SPrimes.getFirstPrimeFactor() range." );
-
-// if( toTest == 1 )
-  // return 0 because it doesn't have prime
-  // factors.
+        "SPrimes.getFirstFactor() range." );
 
 if( toTest < 2 )
   return 0;
@@ -52,20 +47,19 @@ if( toTest == 3 )
 
 const Int32 max = CastE::i64ToI32(
             IntegerMath::findLSqrRoot( toTest ));
-if( max == 0 )
-  throw "SPrimes. Max was zero.";
+
+RangeC::test( max, 1, 0xFFFFFFFFFFFFL,
+        "SPrimes. Max was zero." );
 
 for( Int32 count = 0; count < last; count++ )
   {
   Int32 testN = pArray[count];
-  if( testN < 1 )
+
+  if( testN > max )
     return 0;
 
   if( (toTest % testN) == 0 )
     return testN;
-
-  if( testN > max )
-    return 0;
 
   }
 
@@ -75,7 +69,7 @@ return 0;
 
 
 
-void SPrimes::makePrimeArray( void )
+void SPrimes::makeArray( void )
 {
 pArray[0] = 2;
 pArray[1] = 3;
@@ -88,19 +82,18 @@ pArray[7] = 19;
 pArray[8] = 23;
 
 Int32 index = 9;
-for( Int64 testN = 29; ; testN += 2 )
+for( Int32 testN = 29; ; testN += 2 )
   {
+  if( testN > 0xFFFFFF )
+    throw "SPrimes.makeArray() > 24 bits.";
+
   if( (testN % 3) == 0 )
     continue;
 
-  if( (testN >> 31) != 0 )
-    throw "SPrimes. A small prime is an Int64.";
-
   // If it has no prime factors then add it.
-  if( 0 == getFirstPrimeFactor( CastE::i64ToI32(
-                                        testN )))
+  if( 0 == getFirstFactor( testN ))
     {
-    pArray[index] = CastE::i64ToI32( testN );
+    pArray[index] = testN;
     index++;
     if( index >= last )
       return;

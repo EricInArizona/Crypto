@@ -5,12 +5,11 @@
 #pragma once
 
 
+// Range checking for testing.
+
+
+
 #include "BasicTypes.h"
-
-// Range checking.
-
-// I never use the C preprocessor except to use
-// #include statements.
 
 
 class RangeC
@@ -19,10 +18,17 @@ class RangeC
 
   public:
 
+
+  // I never use the C preprocessor except to
+  // use #include statements.
   // Changing the name of test() to something like
   // test2() would make the compiler show where
   // all of the range checks are.
   // Same for testNothing().
+  // So I can check the code that I am testing.
+  // It would be crazy to just change a macro
+  // definition without checking the code where
+  // the macro is used.
 
   inline static void testNothing( void )
     {

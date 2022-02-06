@@ -5,7 +5,7 @@
 #include "MainApp.h"
 #include "StIO.h"
 #include "Str.h"
-// #include "RSA.h"
+#include "RsaTest.h"
 // #include "Ellip.h"
 #include "ThreadEC.h"
 
@@ -42,8 +42,8 @@ mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
 mainIO.appendChars( "\n\n" );
 
-// RSA rsa;
-// rsa.test( mainIO );
+RsaTest rsaTest;
+rsaTest.test( mainIO );
 
 // Ellip ellip;
 // ellip.test( mainIO );

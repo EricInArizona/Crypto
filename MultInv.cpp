@@ -3,18 +3,21 @@
 
 
 #include "MultInv.h"
+#include "CastE.h"
 
 
 
 MultInv::MultInv( void )
 {
-u32Arrays = new Uint32Array[last];
+i32Arrays = new Int32Array[CastE::i32ToU64(
+                                      last )];
 }
 
 
 MultInv::MultInv( const MultInv& in )
 {
-u32Arrays = new Uint32Array[last];
+i32Arrays = new Int32Array[CastE::i32ToU64(
+                                      last )];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -26,17 +29,17 @@ throw "Don't use copy constructor for MultInv.";
 
 MultInv::~MultInv( void )
 {
-delete[] u32Arrays;
+delete[] i32Arrays;
 }
 
 
 
-Uint32 MultInv::calcMultInv( const Uint32 prime,
-                             const Uint32 test )
+Int32 MultInv::calcMultInv( const Int32 prime,
+                            const Int32 test )
 {
-for( Uint32 count = 1; count < prime; count++ )
+for( Int32 count = 1; count < prime; count++ )
   {
-  Uint32 check = test * count;
+  Int32 check = test * count;
   check = check % prime;
   if( check == 1 )
     return count;
@@ -50,17 +53,17 @@ return 0;
 
 void MultInv::init( const SPrimes& sPrimes )
 {
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
-  Uint32 prime = sPrimes.getPrimeAt( count );
-  u32Arrays[count].setSize( prime );
-  u32Arrays[count].setVal( 0, 0 );
+  Int32 prime = sPrimes.getPrimeAt( count );
+  i32Arrays[count].setSize( prime );
+  i32Arrays[count].setVal( 0, 0 );
 
-  for( Uint32 countP = 1; countP < prime;
+  for( Int32 countP = 1; countP < prime;
                                     countP++ )
     {
-    Uint32 inv = calcMultInv( prime, countP );
-    u32Arrays[count].setVal( countP, inv );
+    Int32 inv = calcMultInv( prime, countP );
+    i32Arrays[count].setVal( countP, inv );
     }
   }
 }

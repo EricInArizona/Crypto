@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -26,7 +26,7 @@ class NumbSys
   {
   private:
   Int32 testForCopy = 123;
-  static const Uint32 last =
+  static const Int32 last =
                       ProjConst::digitArraySize;
 
   Integer currentBase;
@@ -41,12 +41,7 @@ class NumbSys
   NumbSys( const NumbSys& in );
   ~NumbSys( void );
 
-  // This is meant to only be used within the
-  // Mod.cpp class.  Sort of like it's a nested
-  // class within the Mod.cpp class, but without
-  // complicating things, and keeping them
-  // separate.
-  void privateReduce( Integer& result,
+  void reduce( Integer& result,
                const Integer& toReduce,
                const Integer& modulus,
                IntegerMath& intMath );

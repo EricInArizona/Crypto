@@ -23,11 +23,13 @@
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
+#include "RangeC.h"
 
 
 class TwoDInt64
   {
   private:
+  Int32 testForCopy = 123;
   Int64* aR;
   static const Int32 last =
                       ProjConst::digitArraySize *
@@ -35,6 +37,7 @@ class TwoDInt64
 
   public:
   TwoDInt64( void );
+  TwoDInt64( const TwoDInt64& in );
   ~TwoDInt64( void );
   inline Int64 getV( const Int32 column,
                      const Int32 row ) const
@@ -43,14 +46,8 @@ class TwoDInt64
                    ProjConst::digitArraySize)
                    + column;
 
-    // The size of this array is created with
-    // the static const ProjConst::digitArraySize
-    // and for-loops are done with that same
-    // static const.  So it's not going to
-    // go out of range.
-    // For testing:
-    // if( where >= last )
-      // throw "TwoDUint64 get out of bounds.";
+    RangeC::test( where, 0, last - 1,
+            "TwoDInt64.getV() range for where." );
 
     return aR[where];
     }
@@ -63,9 +60,8 @@ class TwoDInt64
                     ProjConst::digitArraySize)
                     + column;
 
-    // For testing:
-    // if( where >= last )
-      // throw "TwoDUint64 set out of bounds.";
+    RangeC::test( where, 0, last - 1,
+            "TwoDInt64.setV() range for where." );
 
     aR[where] = val;
     }

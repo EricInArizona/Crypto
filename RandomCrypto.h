@@ -29,7 +29,7 @@ class RandomCrypto
   private:
 
   public:
-  static void makeRandomBytes( UTF16Buf& cBuf,
+  static void makeRandomBytes( UTF16Buf& uBuf,
                            const Int32 howMany );
 
   };

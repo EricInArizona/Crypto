@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -13,7 +13,6 @@ Mod::Mod( void )
 }
 
 
-// Copy constructor.
 Mod::Mod( const Mod& in )
 {
 // Make the compiler think in is being used.
@@ -30,10 +29,10 @@ void Mod::reduce( Integer& result,
                const Integer& modulus,
                IntegerMath& intMath )
 {
-numbSys.privateReduce( result,
-                       toReduce,
-                       modulus,
-                       intMath );
+numbSys.reduce( result,
+                toReduce,
+                modulus,
+                intMath );
 
 }
 
@@ -62,8 +61,8 @@ exact.copy( remainder );
 
 // This is the standard modular power algorithm
 // that you could find in any standard textbook,
-// or on Wikipedia, but its use of the new
-// modular reduction algorithm is new (in 2015).
+// but its use of the new modular reduction
+// algorithm is new (in 2015).
 
 void Mod::toPower( Integer& result,
                    const Integer& exponent,
@@ -155,8 +154,7 @@ while( true )
 // you can get carry bits that can make it a
 // little bigger.
 
-howBig = (Int32)result.getIndex() -
-               (Int32)modulus.getIndex();
+howBig = result.getIndex() - modulus.getIndex();
 // if( howBig > 1 )
   // throw "This does happen.";
 
@@ -218,20 +216,23 @@ makeExact( result, modulus, intMath );
 }
 
 
-void Mod::addUL( Integer& result,
-                 const Uint64 toAdd,
-                 const Integer& modulus,
-                 IntegerMath& intMath )
+void Mod::addL( Integer& result,
+                const Int64 toAdd,
+                const Integer& modulus,
+                IntegerMath& intMath )
 {
 if( toAdd == 0 )
   return;
+
+if( (toAdd >> 24) != 0 )
+  throw "Mod::addL() (toAdd >> 24) != 0";
 
 verifyInBaseRange( result, modulus );
 // verifyInBaseRange( toAdd, modulus );
 
 // Integer temp;
 
-result.addULong( toAdd );
+result.addLong48( toAdd );
 
 // numbSys.reduce( temp, result, modulus, intMath );
 // result.copy( temp );
@@ -303,15 +304,15 @@ makeExact( result, modulus, intMath );
 }
 
 
-void Mod::multiplyUL( Integer& result,
-                      const Uint64 toMul,
+void Mod::multiplyL( Integer& result,
+                      const Int64 toMul,
                       const Integer& modulus,
                       IntegerMath& intMath )
 {
 verifyInBaseRange( result, modulus );
 // verifyInBaseRange( toMul, modulus );
 
-intMath.multiplyULong( result, toMul );
+intMath.multiplyLong48( result, toMul );
 
 Integer temp;
 reduce( temp, result, modulus, intMath );

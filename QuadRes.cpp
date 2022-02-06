@@ -30,26 +30,26 @@ delete[] bArrays;
 
 
 
-void QuadRes::init( SPrimes& sPrimes )
+void QuadRes::init( const SPrimes& sPrimes )
 {
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
-  Uint32 prime = sPrimes.getPrimeAt( count );
+  Int32 prime = sPrimes.getPrimeAt( count );
   bArrays[count].setSize( prime );
 
 
   bArrays[count].setVal( 0, true );
 
-  for( Uint32 countF = 1; countF < prime;
+  for( Int32 countF = 1; countF < prime;
                                     countF++ )
     {
     bArrays[count].setVal( countF, false );
     }
 
-  for( Uint32 countP = 1; countP < prime;
+  for( Int32 countP = 1; countP < prime;
                                     countP++ )
     {
-    Uint32 test = countP * countP;
+    Int32 test = countP * countP;
     test = test % prime;
 
     // The one at test is a quadratic residue.
@@ -64,12 +64,12 @@ for( Uint32 count = 0; count < last; count++ )
 
 
 // isSmallQuadResidue().
-bool QuadRes::isSmallQR( const Uint32 number )
+bool QuadRes::isSmallQR( const Int32 number )
 {
 // For mod 2:
 // 1 * 1 = 1 % 2 = 1
 // 0 * 0 = 0 % 2 = 0
-Uint32 test = number % 3; // 0, 1, 1, 0
+Int32 test = number % 3; // 0, 1, 1, 0
 if( test == 2 )
   return false;
 
@@ -110,9 +110,9 @@ return true;
 
 
 
-bool QuadRes::isQR17( const Uint32 number )
+bool QuadRes::isQR17( const Int32 number )
 {
-Uint32 test = number % 17;
+Int32 test = number % 17;
 if( !((test == 0) ||
       (test == 1) ||
       (test == 4) ||
@@ -129,9 +129,9 @@ return true;
 
 
 
-bool QuadRes::isQR19( const Uint32 number )
+bool QuadRes::isQR19( const Int32 number )
 {
-Uint32 test = number % 19;
+Int32 test = number % 19;
 if( !((test == 0) ||
       (test == 1) ||
       (test == 4) ||
@@ -149,9 +149,9 @@ return true;
 
 
 
-bool QuadRes::isQR23( const Uint32 number )
+bool QuadRes::isQR23( const Int32 number )
 {
-Uint32 test = number % 23;
+Int32 test = number % 23;
 if( !((test == 0) ||
       (test == 1) ||
       (test == 4) ||
@@ -170,32 +170,32 @@ return true;
 }
 
 
-/*
-bool QuadRes::isQR29( const Uint32 number )
+
+bool QuadRes::isQR29( const Int32 number )
 {
-Uint32 Test = (uint)(Number % 29);
-    if( !((Test == 0) ||
-          (Test == 1) ||
-          (Test == 4) ||
-          (Test == 9) ||
-          (Test == 16) ||
-          (Test == 25) ||
-          (Test == 7) ||
-          (Test == 20) ||
-          (Test == 6) ||
-          (Test == 23) ||
-          (Test == 13) ||
-          (Test == 5) ||
-          (Test == 28) ||
-          (Test == 24) ||
-          (Test == 22)) )
+Int32 test = number % 29;
+    if( !((test == 0) ||
+          (test == 1) ||
+          (test == 4) ||
+          (test == 9) ||
+          (test == 16) ||
+          (test == 25) ||
+          (test == 7) ||
+          (test == 20) ||
+          (test == 6) ||
+          (test == 23) ||
+          (test == 13) ||
+          (test == 5) ||
+          (test == 28) ||
+          (test == 24) ||
+          (test == 22)) )
       return false;
 
     return true;
     }
 
 
-
+/*
   internal static bool IsQuadResidue31( ulong Number )
     {
     uint Test = (uint)(Number % 31);
@@ -252,13 +252,13 @@ Uint32 Test = (uint)(Number % 29);
 
 
 
-bool QuadRes::bytesQR( const Uint32 test )
+bool QuadRes::bytesQR( const Int32 test )
 {
 // Is this number a square mod 2^12?
 // (Quadratic residue mod 2^12)
-Uint32 firstByte = test;
+Int32 firstByte = test;
 
-// Uint32 secondByte = (firstByte & 0x0F00) >> 8;
+// Int32 secondByte = (firstByte & 0x0F00) >> 8;
 // The bottom 4 bits can only be 0, 1, 4 or 9
 // 0000, 0001, 0100 or 1001
 // The bottom 2 bits can only be 00 or 01
