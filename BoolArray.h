@@ -6,40 +6,35 @@
 
 
 #include "BasicTypes.h"
+#include "RangeC.h"
 
 
 class BoolArray
   {
   private:
   Int32 testForCopy = 123;
-  Uint32 arraySize = 0;
-  Uint32 last = 0;
+  Int32 arraySize = 1;
   bool* bArray;
 
   public:
   BoolArray( void );
-  BoolArray( const BoolArray& obj );
+  BoolArray( const BoolArray& in );
   ~BoolArray( void );
-  void setSize( const Uint32 howBig );
+  void setSize( const Int32 howBig );
 
-  inline Uint32 getLast( void ) const
+  inline bool getVal( const Int32 where ) const
     {
-    return last;
-    }
-
-  inline bool getVal( const Uint32 where ) const
-    {
-    if( where >= arraySize )
-      throw "In getVal() index out of bounds.";
+    RangeC::test( where, 0, arraySize - 1,
+            "BoolArray.getVal() where range." );
 
     return bArray[where];
     }
 
-  inline void setVal( const Uint32 where,
+  inline void setVal( const Int32 where,
                       const bool toSet )
     {
-    if( where >= arraySize )
-      throw "In setVal() index out of bounds.";
+    RangeC::test( where, 0, arraySize - 1,
+            "BoolArray.setVal() where range." );
 
     bArray[where] = toSet;
     }

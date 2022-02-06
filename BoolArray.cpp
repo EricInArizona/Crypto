@@ -3,20 +3,20 @@
 
 
 #include "BoolArray.h"
+#include "CastE.h"
 
 
 BoolArray::BoolArray( void )
 {
 arraySize = 1;
-bArray = new bool[arraySize];
+bArray = new bool[CastE::i32ToU64( arraySize )];
 }
 
 
-// The copy constructor.
 BoolArray::BoolArray( const BoolArray &in )
 {
 arraySize = 1;
-bArray = new bool[arraySize];
+bArray = new bool[CastE::i32ToU64( arraySize )];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -38,10 +38,14 @@ delete[] bArray;
 
 
 
-void BoolArray::setSize( const Uint32 howBig )
+void BoolArray::setSize( const Int32 howBig )
 {
+if( howBig < 0 )
+  throw "BoolArray array size < 0.";
+
 arraySize = howBig;
 
 delete[] bArray;
-bArray = new bool[arraySize];
+bArray = new bool[CastE::i32ToU64( arraySize )];
 }
+
