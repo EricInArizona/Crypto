@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -154,7 +154,7 @@ Integer testForModInverse2;
 
 quotient.setToZero();
 // while( not forever )
-for( Uint32 count = 0; count < 10000; count++ )
+for( Int32 count = 0; count < 10000; count++ )
   {
   if( U2.getNegative() )
     throw "The U2 modulus was negative.\n";
@@ -212,7 +212,7 @@ Division::divide( testForModInverse1,
 
 // By the definition of Multiplicative inverse:
 if( !remainder.isOne())
-  throw "multInverse() is wrong.\n";
+  throw "Euclid multInverse() is bad.\n";
 
 return true;
 }

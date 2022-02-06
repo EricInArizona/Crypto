@@ -36,7 +36,7 @@ delete[] baseArCrt;
 
 
 void CrtMath::init( IntegerMath& intMath,
-                    SPrimes& sPrimes )
+                    const SPrimes& sPrimes )
 {
 setupBaseArray( intMath, sPrimes );
 }
@@ -44,7 +44,7 @@ setupBaseArray( intMath, sPrimes );
 
 
 void CrtMath::setupBaseArray( IntegerMath& intMath,
-                    SPrimes& sPrimes )
+                    const SPrimes& sPrimes )
 {
 // The first few numbers for the base:
 // 1             1
@@ -64,7 +64,7 @@ bigBase.setToOne();
 bigBase.copyToIntBuf( baseAr[0] );
 baseArCrt[0].setToOne();
 
-bigBase.setFromUInt( 2 );
+bigBase.setFromInt24( 2 );
 
 // Count starts at 1, so it's the prime 3.
 // The first time through the loop the base
@@ -75,7 +75,7 @@ bigBase.setFromUInt( 2 );
 // BaseAr[3] = 30;
 // And so on...
 
-for( Uint32 count = 1; count < last; count++ )
+for( Int32 count = 1; count < last; count++ )
   {
   bigBase.copyToIntBuf( baseAr[count] );
   baseArCrt[count].setFromInteger( bigBase,
@@ -83,14 +83,14 @@ for( Uint32 count = 1; count < last; count++ )
                                    sPrimes );
 
   // Multiply it for the next bigBase.
-  intMath.multiplyUInt( bigBase,
+  intMath.multiplyInt24( bigBase,
                     sPrimes.getPrimeAt( count ));
   }
 }
 
 
 void CrtMath::copyFromIntBuf( Integer& copyTo,
-                  const Uint32 where ) const
+                  const Int32 where ) const
 {
 copyTo.copyFromIntBuf( baseAr[where] );
 }

@@ -11,13 +11,14 @@
 #include "SPrimes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
+#include "RangeC.h"
 
 
 class Crt
   {
   private:
   Int32 testForCopy = 123;
-  static const Uint32 last =
+  static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
@@ -37,35 +38,35 @@ class Crt
   void subtract( const Crt& toSub,
                  const SPrimes& sPrimes );
   void decrement( const SPrimes& sPrimes );
-  void subtractUint( const Uint32 toSub,
+  void subtractInt( const Int32 toSub,
                      const SPrimes& sPrimes );
   void multiply( const Crt& toMul,
                  const SPrimes& sPrimes );
   void setFromInteger( const Integer& setFrom,
                        IntegerMath& intMath,
                        const SPrimes& sPrimes );
-  void setFromUInt( const Uint32 setFrom,
+  void setFromInt( const Int32 setFrom,
                     const SPrimes& sPrimes );
 
 
-  inline Int32 getD( const Uint32 index ) const
+  inline Int32 getD( const Int32 index ) const
     {
-    // Comment out after testing:
-    // if( index >= last )
-      // throw "Crt GetD Index is too big.";
+    RangeC::test( index, 0, last - 1,
+            "Crt.getD() index range." );
 
     return digitAr[index];
     }
 
   inline void setD( const Int32 setTo,
-                    const Uint32 index )
+                    const Int32 index )
     {
-    // if( index >= last )
-      // throw "Crt SetD Index is too big.";
+    RangeC::test( index, 0, last - 1,
+            "Crt.setD() index range." );
+
+    RangeC::test( setTo, 0, 0xFFFFFF,
+            "Crt.setD() setTo range." );
 
     digitAr[index] = setTo;
     }
-
-
 
   };

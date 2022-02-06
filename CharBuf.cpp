@@ -137,6 +137,7 @@ for( Int32 count = 0; count < howMany; count++ )
 
 
 
+
 /*
 
 void Int8Array::reverse( void )
@@ -175,7 +176,7 @@ return true;
 
 
 
-
+// Use getStr()
 Str Int8Array::makeStr( void )
 {
 Str result( cArray, last );

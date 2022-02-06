@@ -1,9 +1,6 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
-// To do:
-// Make some better division algorithms.
-
 
 #include "Division.h"
 
@@ -24,6 +21,9 @@ quotient.copy( toDivide );
 // DivideBy has an Index of zero:
 Int64 divideByU = divideBy.getD( 0 );
 Int64 remainderU = 0;
+
+if( (divideByU >> 24) != 0 )
+  throw "shortDivide() (divideByU >> 24) != 0";
 
 // Get the first one set up.
 if( divideByU > quotient.getD( quotient.
@@ -46,7 +46,7 @@ for( Int32 count = quotient.getIndex();
                            count >= 1; count-- )
   {
   Int64 twoDigits = toDivide.getD( count );
-  twoDigits <<= 32;
+  twoDigits <<= 24;
   twoDigits |= toDivide.getD( count - 1 );
   quotient.setD( count - 1, twoDigits /
                                     divideByU );
@@ -86,6 +86,9 @@ Int64 Division::shortDivideRem(
                   const Int64 divideByU,
                   Integer& quotient )
 {
+if( (divideByU >> 24) != 0 )
+  throw "shortDivideRem() (divideByU >> 24) != 0";
+
 if( toDivideOriginal.isLong48())
   {
   Int64 toDiv = toDivideOriginal.getAsLong48();
@@ -117,7 +120,7 @@ for( Int32 count = quotient.getIndex();
                            count >= 1; count-- )
   {
   Int64 twoDigits = toDivide.getD( count );
-  twoDigits <<= 32;
+  twoDigits <<= 24;
   twoDigits |= toDivide.getD( count - 1 );
   quotient.setD( count - 1,
                          twoDigits / divideByU );
@@ -335,7 +338,7 @@ void Division::testDivideBits(
 Integer testForBits;
 
 Int32 bitTest = 0x800000;
-for( Int32 bitCount = 31; bitCount >= 0;
+for( Int32 bitCount = 23; bitCount >= 0;
                                     bitCount-- )
   {
   if( (quotient.getD( testIndex ) | bitTest) >
@@ -612,12 +615,14 @@ testForDivide1.setD( testIndex, maxValue );
 intMath.multiplyTop( testForDivide1, divideBy );
 
 
+/*
 // Test:
 test2.copy( quotient );
 test2.setD( testIndex, maxValue );
 intMath.multiply( test2, divideBy );
 if( !test2.isEqual( testForDivide1 ))
-  throw "In Divide3() !IsEqual.";
+  throw "Divide3() !test2.IsEqual().";
+*/
 
 
 if( testForDivide1.paramIsGreaterOrEq( toDivide ))
@@ -651,8 +656,8 @@ else
     {
     // TestDivideBits is done as a last resort,
     // but it's rare.  But it does at least limit
-    // it to a worst case scenario of trying 32
-    // bits, rather than 4 billion or so
+    // it to a worst case scenario of trying 24
+    // bits, rather than a few billion
     // decrements.
     testDivideBits( maxValue,
                     true,

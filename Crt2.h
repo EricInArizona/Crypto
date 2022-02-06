@@ -12,6 +12,7 @@
 #include "CrtMath.h"
 #include "MultInv.h"
 #include "GoodX.h"
+#include "RangeC.h"
 
 
 
@@ -23,11 +24,11 @@ class Crt2
 
   // If last is too small then toInteger()
   // will come out too small.
-  static const Uint32 last =
+  static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
-  Uint32 length = 0;
+  Int32 length = 0;
 
   public:
   Crt2( void );
@@ -40,24 +41,23 @@ class Crt2
   void copy( const Crt2& toCopy );
   bool isEqual( const Crt2& toCheck );
 
-  inline Int32 getD( Uint32 index ) const
+  inline Int32 getD( Int32 index ) const
     {
-    // Comment out after testing:
-    // if( index >= last )
-      // throw "Crt2 GetD Index is too big.";
+    RangeC::test( index, 0, last - 1,
+            "Crt2.getD index range." );
 
     return digitAr[index];
     }
 
-  inline void setD( Int32 setTo, Uint32 index )
+  inline void setD( Int32 setTo, Int32 index )
     {
-    // if( index >= last )
-      // throw "Crt2 SetD Index is too big.";
+    RangeC::test( index, 0, last - 1,
+            "Crt2.setD index range." );
 
     digitAr[index] = setTo;
     }
 
-  inline Uint32 getLength( void ) const
+  inline Int32 getLength( void ) const
     {
     return length;
     }
@@ -105,7 +105,7 @@ class Crt2
                const SPrimes& sPrimes );
 
   bool setInvCrt( Crt2& prime2Crt2,
-                  const Uint32 maxLen,
+                  const Int32 maxLen,
                   const Crt& prod,
                   const SPrimes& sPrimes,
                   const MultInv& multInv,
@@ -113,34 +113,34 @@ class Crt2
 
   bool increment( const SPrimes& sPrimes );
   bool incAt( const SPrimes& sPrimes,
-                         const Uint32 where );
+              const Int32 where );
 
   bool incRev( const SPrimes& sPrimes,
-               const Uint32 where,
+               const Int32 where,
                const GoodX& goodX,
                const CrtMath& crtMath );
 
-  inline bool incNextVal( const Uint32 where,
-                       const Uint32 prime,
-                       const Uint32 accum,
+  inline bool incNextVal( const Int32 where,
+                       const Int32 prime,
+                       const Int32 accum,
                        const GoodX& goodX,
                        const CrtMath& crtMath )
     {
     // This will get the _next_ good value.
     // digitAr[where] starts at an unknown value.
 
-    const Uint32 crtDigit = crtMath.getCrtDigit(
+    const Int32 crtDigit = crtMath.getCrtDigit(
                                   where, where );
 
-    for( Uint32 count = 0; count < prime; count++ )
+    for( Int32 count = 0; count < prime; count++ )
       {
       digitAr[where]++;
 
-      if( (Uint32)digitAr[where] >= prime )
+      if( digitAr[where] >= prime )
         return false;
 
-      Uint32 digit = (Uint32)digitAr[where];
-      Uint32 test = getTestAccum( prime,
+      Int32 digit = digitAr[where];
+      Int32 test = getTestAccum( prime,
                                   accum,
                                   crtDigit,
                                   digit );
@@ -154,40 +154,40 @@ class Crt2
     return false;
     }
 
-  inline Uint32 getTestAccum( const Uint32 prime,
-                         const Uint32 accum,
-                         const Uint32 crtDigit,
-                         const Uint32 digit )
+  inline Int32 getTestAccum( const Int32 prime,
+                         const Int32 accum,
+                         const Int32 crtDigit,
+                         const Int32 digit )
     {
-    Uint32 test = crtDigit;
+    Int32 test = crtDigit;
     test = test * digit;
     test  += accum;
     test = test % prime;
     return test;
     }
 
-  inline bool incCheckVal( const Uint32 where,
-                       const Uint32 prime,
-                       const Uint32 accum,
+  inline bool incCheckVal( const Int32 where,
+                       const Int32 prime,
+                       const Int32 accum,
                        const GoodX& goodX,
                        const CrtMath& crtMath )
     {
-    const Uint32 crtDigit = crtMath.getCrtDigit(
+    const Int32 crtDigit = crtMath.getCrtDigit(
                                   where, where );
 
-    for( Uint32 count = 0; count < prime; count++ )
+    for( Int32 count = 0; count < prime; count++ )
       {
-      Uint32 digit = (Uint32)digitAr[where];
-      Uint32 test = getTestAccum( prime,
-                                  accum,
-                                  crtDigit,
-                                  digit );
+      Int32 digit = digitAr[where];
+      Int32 test = getTestAccum( prime,
+                                 accum,
+                                 crtDigit,
+                                 digit );
 
       if( goodX.getVal( where, test ))
         return true;
 
       digitAr[where]++;
-      if( (Uint32)digitAr[where] >= prime )
+      if( digitAr[where] >= prime )
         return false;
 
       }
@@ -196,19 +196,25 @@ class Crt2
     return false;
     }
 
-  inline Uint32 getAccumD( const Uint32 row,
-                           const Uint32 col,
-                           const Uint32 prime,
-                           const CrtMath& crtMath )
+  inline Int32 getAccumD( const Int32 row,
+                          const Int32 col,
+                          const Int32 prime,
+                          const CrtMath& crtMath )
     {
-    // It is either zero or one.
-    Uint32 result = (Uint32)digitAr[0];
+    RangeC::test( row, 0, last - 1,
+            "Crt2.getAccumD() row range." );
 
-    for( Uint32 count = 1; count <= row; count++ )
+    RangeC::test( col, 0, last - 1,
+            "Crt2.getAccumD() col range." );
+
+    // It is either zero or one.
+    Int32 result = digitAr[0];
+
+    for( Int32 count = 1; count <= row; count++ )
       {
-      Uint32 accum = crtMath.getCrtDigit( count,
+      Int32 accum = crtMath.getCrtDigit( count,
                                           col );
-      accum = accum * (Uint32)digitAr[count];
+      accum = accum * digitAr[count];
       result += accum;
       result = result % prime;
       }
@@ -216,15 +222,15 @@ class Crt2
     return result;
     }
 
-  bool setInvDigit( const Uint32 where,
-                    const Uint32 prime,
-                    const Uint32 fromDigit,
-                    const Uint32 maxLen,
+  bool setInvDigit( const Int32 where,
+                    const Int32 prime,
+                    const Int32 fromDigit,
+                    const Int32 maxLen,
                     const CrtMath& crtMath,
                     const MultInv& multInv );
 
-  void resetUpward( const Uint32 where,
-                    const Uint32 max,
+  void resetUpward( const Int32 where,
+                    const Int32 max,
                     const SPrimes& sPrimes,
                     const GoodX& goodX,
                     const CrtMath& crtMath );

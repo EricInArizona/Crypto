@@ -5,6 +5,16 @@
 #pragma once
 
 
+// If I have to cast something to a different
+// type I want to make sure it does it right.
+// Like for example that it's not changing a
+// negative number into a very large unsigned
+// number or something bad like that.
+// Or that I'm not truncating a bigger
+// number into a smaller number unless that's
+// what I intend to do.
+
+
 #include "BasicTypes.h"
 
 
@@ -53,10 +63,13 @@ class CastE
     }
 
 
-  inline static UTF16 U64ToUTF16Byte( ArrayU64 x )
+  inline static UTF16 U64ToUTF16ByteTruncate(
+                                  ArrayU64 x )
     {
-    // This needs to be the full 8 bits.
-    // Just truncate anything over 8 bits.
+    // Just truncate anything over 8 bits
+    // and lose any higher bits without
+    // checking them.
+
     UTF16 result = x & 0xFF;
     return result;
     }
