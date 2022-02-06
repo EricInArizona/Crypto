@@ -83,7 +83,7 @@ prodCrt2.setFromCrt( prod,
                      sPrimes,
                      multInv );
 
-const Uint32 prodLength = prodCrt2.getLength();
+const Int32 prodLength = prodCrt2.getLength();
 
 Crt2 prime1;
 Crt2 prime2;
@@ -97,7 +97,7 @@ prime1.setToOne();
 // See the note in Crt2::setInvCrt() to see
 // why this count goes up above a certain
 // prime number.
-for( Uint32 count = 0; count < 200000000; count++ )
+for( Int32 count = 0; count < 200000000; count++ )
   {
   // Count by twos.
   if( !prime1.incAt( sPrimes, 1 ))
@@ -163,3 +163,76 @@ mainIO.appendChars( "\nWent to end.\n\n" );
 
 return false;
 }
+
+
+void FindFactorsCrt::setGoodValuesMult(
+                          GoodX& goodX,
+                          const SPrimes& sPrimes )
+{
+for( Int32 row = 0; row <
+            ProjConst::crtDigitArraySize; row++ )
+  {
+  Int32 prime = sPrimes.getPrimeAt( row );
+  goodX.setVal( row, 0, false );
+  for( Int32 col = 1; col < prime; col++ )
+    goodX.setVal( row, col, true );
+
+  }
+}
+
+
+
+/*
+bool FindFactorsCrt::getSmallFactor2(
+                         const Integer& pubKeyN,
+                         Integer& find1,
+                         Integer& find2,
+                         IntegerMath& intMath,
+                         const SPrimes& sPrimes,
+                         const MultInv& multInv,
+                         const CrtMath& crtMath,
+                         FileIO& mainIO )
+{
+Integer sqrRoot;
+intMath.squareRoot( pubKeyN, sqrRoot );
+
+mainIO.appendChars( "\nSquare root: " );
+Str showRoot =  intMath.toString10( sqrRoot );
+mainIO.appendStr( showRoot );
+mainIO.appendChars( "\n\n" );
+
+find1.setToOne();
+find2.setToOne();
+
+Crt prod;
+prod.setFromInteger( pubKeyN,
+                     intMath,
+                     sPrimes );
+
+GoodX goodX;
+goodX.init( sPrimes );
+
+setGoodValuesMult( goodX, sPrimes );
+
+Crt2 prime1;
+prime1.setToOne();
+
+
+prime1.resetUpward( 0, // start at
+                    7, // max,
+                    sPrimes,
+                    goodX,
+                    crtMath );
+
+
+mainIO.appendChars( "\nPrime1 at start: " );
+prime1.toInteger( crtMath,
+                  find1,
+                  intMath );
+Str showP1 =  intMath.toString10( find1 );
+mainIO.appendStr( showP1 );
+mainIO.appendChars( "\n\n" );
+
+return true;
+}
+*/

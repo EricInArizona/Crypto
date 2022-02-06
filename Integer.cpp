@@ -47,29 +47,6 @@ for( Int32 count = 0; count <=
 
 
 
-void Integer::setFromLong48( const Int64 toSet )
-{
-RangeC::test( toSet, 0, 0xFFFFFF,
-            "Integer.setFromLong48() size." );
-
-negative = false;
-
-// If toSet was zero then D[0] would be zero and
-// index would be zero.
-
-// For 24 bits
-D[0] = toSet & 0xFFFFFF;
-D[1] = toSet >> 24;
-
-if( D[1] == 0 )
-  index = 0;
-else
-  index = 1;
-
-}
-
-
-
 void Integer::copy( const Integer& from )
 {
 negative = from.negative;
@@ -286,33 +263,12 @@ if( carry != 0 )
 }
 
 
-void Integer::cleanUp( void )
-{
-Int64 carry = D[0] >> 24;
-D[0] = D[0] & 0xFFFFFF;
-
-const Int32 max = index;
-for( Int32 count = 1; count <= max; count++ )
-  {
-  Int64 total = carry + D[count];
-  D[count] = total & 0xFFFFFF;
-  carry = total >> 24;
-  }
-
-if( carry != 0 )
-  {
-  index++;
-  if( index >= ProjConst::digitArraySize )
-    throw  "Integer.cleanUp() overflow.";
-
-  D[index] = carry;
-  }
-}
-
-
 
 void Integer::addLong48( Int64 toAdd )
 {
+RangeC::test( toAdd, 0, 0xFFFFFFFFFFFFL,
+        "Integer.addLong48() toAdd range." );
+
 D[0] += toAdd & 0xFFFFFF;
 if( index == 0 ) // Then D[1] would be an
   {              // undefined value.
@@ -336,7 +292,25 @@ if( (D[0] >> 24) == 0 )
 
   }
 
-cleanUp();
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+
+const Int32 max = index;
+for( Int32 count = 1; count <= max; count++ )
+  {
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
+  }
+
+if( carry != 0 )
+  {
+  index++;
+  if( index >= ProjConst::digitArraySize )
+    throw  "Integer.addLong48() overflow.";
+
+  D[index] = carry;
+  }
 }
 
 
@@ -376,7 +350,25 @@ else
 
   }
 
-cleanUp();
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+
+const Int32 max = index;
+for( Int32 count = 1; count <= max; count++ )
+  {
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
+  }
+
+if( carry != 0 )
+  {
+  index++;
+  if( index >= ProjConst::digitArraySize )
+    throw  "Integer.add() overflow.";
+
+  D[index] = carry;
+  }
 }
 
 
@@ -566,7 +558,7 @@ if( carry != 0 )
 
 
 
-void Integer::shiftLeft( Int32 shiftBy )
+void Integer::shiftLeft( const Int32 shiftBy )
 {
 // This one is not meant to shift more than 24
 // bits at a time.  Obviously you could call it
@@ -599,7 +591,7 @@ if( carry != 0 )
 
 
 
-void Integer::shiftRight( Int32 shiftBy )
+void Integer::shiftRight( const Int32 shiftBy )
 {
 if( shiftBy > 24 )
   throw "ShiftBy > 24 on ShiftRight.";
@@ -672,12 +664,12 @@ Int32 where = 0;
 for( Int32 count = 0; count <= setToIndex;
                                         count++ )
   {
-  Int64 digit = CastE::UTF16ToI32( 
+  Int64 digit = CastE::UTF16ToI32(
                            cBuf.valAt( where ));
   // Test that it is getting that top bit
   // in the byte in some of them.
-  if( (digit & 0x80) != 0 )
-    throw "Yes, it got the bit.";
+  // if( (digit & 0x80) != 0 )
+    // throw "Yes, it got the bit.";
 
   digit <<= 8;
   digit |= CastE::UTF16ToI32(
@@ -977,7 +969,7 @@ toGet.reverse();
 
 
 
-void Integer::copyFromIntBuf( 
+void Integer::copyFromIntBuf(
                           const IntBuf& intBuf )
 {
 negative = false;
@@ -997,4 +989,28 @@ for( Int32 count = 0; count <= index; count++ )
   intBuf.setD( count, CastE::i64ToI32(
                                    D[count] ));
 
+}
+
+
+
+
+void Integer::cleanUp( void )
+{
+Int64 carry = D[0] >> 24;
+D[0] = D[0] & 0xFFFFFF;
+for( Int32 count = 1; count <= index; count++ )
+  {
+  Int64 total = carry + D[count];
+  D[count] = total & 0xFFFFFF;
+  carry = total >> 24;
+  }
+
+if( carry != 0 )
+  {
+  index++;
+  if( index >= ProjConst::digitArraySize )
+    throw  "Integer.cleanUp() overflow.";
+
+  D[index] = carry;
+  }
 }

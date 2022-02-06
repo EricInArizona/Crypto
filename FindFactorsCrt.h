@@ -14,6 +14,7 @@
 #include "MultInv.h"
 #include "CrtMath.h"
 #include "FileIO.h"
+#include "GoodX.h"
 
 
 class FindFactorsCrt
@@ -44,7 +45,7 @@ class FindFactorsCrt
                  const MultInv& multInv,
                  const CrtMath& crtMath,
                  FileIO& mainIO );
-
+/*
   bool getSmallFactor2(
                  const Integer& pubKeyN,
                  Integer& find1,
@@ -54,5 +55,9 @@ class FindFactorsCrt
                  const MultInv& multInv,
                  const CrtMath& crtMath,
                  FileIO& mainIO );
+*/
+
+  void setGoodValuesMult( GoodX& goodX,
+                       const SPrimes& sPrimes );
 
   };

@@ -19,7 +19,7 @@ class GoodX
   private:
   Int32 testForCopy = 123;
 
-  static const Uint32 last =
+  static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
   BoolArray* bArrays;
@@ -29,16 +29,22 @@ class GoodX
   GoodX( const GoodX& in );
   ~GoodX( void );
   void init( const SPrimes& sPrimes );
-  inline bool getVal( const Uint32 primeAt,
-                      const Uint32 where ) const
+  inline bool getVal( const Int32 primeAt,
+                      const Int32 where ) const
     {
+    RangeC::test( primeAt, 0, last - 1,
+            "GoodX.getVal primeAt range." );
+
     return bArrays[primeAt].getVal( where );
     }
 
-  inline void setVal( const Uint32 primeAt,
-                      const Uint32 where,
+  inline void setVal( const Int32 primeAt,
+                      const Int32 where,
                       const bool toSet )
     {
+    RangeC::test( primeAt, 0, last - 1,
+            "GoodX.setVal primeAt range." );
+
     return bArrays[primeAt].setVal( where, toSet );
     }
 

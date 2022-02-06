@@ -2,7 +2,6 @@
 
 
 
-
 #include "IntegerMath.h"
 #include "Base10Number.h"
 #include "CharBuf.h"
@@ -17,14 +16,7 @@ scratch = new Int64[ProjConst::digitArraySize];
 }
 
 
-IntegerMath::~IntegerMath( void )
-{
-delete[] signedD;
-delete[] scratch;
-}
 
-
-// The copy constructor.
 IntegerMath::IntegerMath( const IntegerMath& in )
 {
 scratch = new Int64[ProjConst::digitArraySize];
@@ -33,12 +25,19 @@ scratch = new Int64[ProjConst::digitArraySize];
 if( in.testForCopy == 7 )
   return;
 
-throw "Copy constructor: IntegerMath.\n";
+throw "Copy constructor: IntegerMath.";
 }
 
 
+IntegerMath::~IntegerMath( void )
+{
+delete[] scratch;
+}
 
-Int64 IntegerMath::findLSqrRoot( Int64 toMatch )
+
+// static
+Int64 IntegerMath::findLSqrRoot(
+                          const Int64 toMatch )
 {
 // The result has to be a 24 bit number max.
 // So toMatch can't be bigger than this.
@@ -58,34 +57,37 @@ for( Int32 count = 0; count < 24; count++ )
   oneBit >>= 1;
   }
 
-if( result == 0 )
-  throw "FindLSqrRoot() Result was zero.";
+RangeC::test( result, 1, 0xFFFFFFFFFFFFL,
+        "FindLSqrRoot() Result was zero." );
 
-// Test:
-if( (result * result) > toMatch )
-  throw "FindULSqrRoot() Result is too high.";
+RangeC::test( result * result, 0, toMatch,
+        "FindULSqrRoot() Result is too high." );
 
-if( ((result + 1) * (result + 1)) <= toMatch )
-  throw "FindULSqrRoot() Result is too low.";
+RangeC::test( (result + 1) * (result + 1),
+             toMatch + 1, 0xFFFFFFFFFFFFL,
+        "FindULSqrRoot() Result is too low." );
 
 return result;
 }
 
 
 
-Int64 IntegerMath::isDivisibleBySmallPrime(
-                           const Integer& toTest,
-                           SPrimes& sPrimes )
+Int32 IntegerMath::isDivisibleBySmallPrime(
+                         const Integer& toTest,
+                         const SPrimes& sPrimes )
 {
 if( (toTest.getD( 0 ) & 1) == 0 )
   return 2; // It's divisible by 2.
 
+// Don't make this smaller than primesArraySize.
+// Primality testing and other things depend
+// on it.
 for( Int32 count = 1; count <
              ProjConst::primesArraySize; count++ )
   {
-  Int64 aPrime = sPrimes.getPrimeAt( count );
-  if( 0 == getMod24( toTest, aPrime ))
-    return aPrime;
+  Int32 prime = sPrimes.getPrimeAt( count );
+  if( 0 == getMod24( toTest, prime ))
+    return prime;
 
   }
 
@@ -95,14 +97,29 @@ return 0;
 
 
 
-void IntegerMath::subtractLong( Integer& result,
-                                Int64 toSub )
+void IntegerMath::subLong48( Integer& result,
+                             const Int64 toSub )
 {
+if( toSub < 0 )
+  throw "subLong48() toSub < 0.";
+
+if( toSub > 0xFFFFFFFFFFFFL )
+  throw "subLong48() toSub > 0xFFFFFFFFFFFF.";
+
+if( result.getNegative())
+  throw "subLong48() result is negative.";
+
 if( result.isLong48())
   {
   Int64 resultL = result.getAsLong48();
+  if( toSub == resultL )
+    {
+    result.setToZero();
+    return;
+    }
+
   if( toSub > resultL )
-    throw "IsLong48() and (toSub > result).";
+    throw "IsLong48() and toSub > resultL.";
 
   resultL = resultL - toSub;
   result.setD( 0, resultL & 0xFFFFFF );
@@ -116,6 +133,9 @@ if( result.isLong48())
   }
 
 // If it got this far then Index is at least 2.
+// So it can't be equal to or less than the
+// long48.
+
 scratch[0] = result.getD( 0 ) -
              (toSub & 0xFFFFFF);
 scratch[1] = result.getD( 1 ) -
@@ -128,7 +148,9 @@ if( (scratch[0] >= 0) && (scratch[1] >= 0) )
   return;
   }
 
+// last is at least 2 here.
 const Int32 last = result.getIndex();
+
 for( Int32 count = 2; count <= last; count++ )
   scratch[count] = result.getD( count );
 
@@ -136,13 +158,18 @@ for( Int32 count = 0; count < last; count++ )
   {
   if( scratch[count] < 0 )
     {
+    // For subtracting on paper this would be
+    // called Borrowing from the next higher
+    // digit.
     scratch[count] += 0xFFFFFF + 1;
     scratch[count + 1]--;
     }
   }
 
+// This can't happen because result is bigger
+// than toSub.
 if( scratch[last] < 0 )
-  throw "SubLong() scratch[Index] < 0.";
+  throw "Overflow SubLong48() scratch[last] < 0.";
 
 for( Int32 count = 0; count <= last; count++ )
   result.setD( count, scratch[count] );
@@ -178,23 +205,29 @@ if( !result.getNegative() &&
   return;
   }
 
-Integer tempAdd1;
-Integer tempAdd2;
+Integer add1;
+Integer add2;
 
 if( !result.getNegative() &&
      toAdd.getNegative() )
   {
-  tempAdd1.copy( toAdd );
-  tempAdd1.setNegative( false );
-  if( tempAdd1.paramIsGreater( result ))
+  add1.copy( toAdd );
+  add1.setNegative( false );
+  if( add1.isEqual( result ))
     {
-    subtract( result, tempAdd1 );
+    result.setToZero();
+    return;
+    }
+
+  if( add1.paramIsGreater( result ))
+    {
+    subtract( result, add1 );
     return;
     }
   else
     {
-    subtract( tempAdd1, result );
-    result.copy( tempAdd1 );
+    subtract( add1, result );
+    result.copy( add1 );
     result.setNegative( true );
     return;
     }
@@ -203,19 +236,25 @@ if( !result.getNegative() &&
 if( result.getNegative() &&
     !toAdd.getNegative() )
   {
-  tempAdd1.copy( result );
-  tempAdd1.setNegative( false );
-  tempAdd2.copy( toAdd );
-  if( tempAdd1.paramIsGreater( tempAdd2 ))
+  add1.copy( result );
+  add1.setNegative( false );
+  if( add1.isEqual( toAdd ))
     {
-    subtract( tempAdd2, tempAdd1 );
-    result.copy( tempAdd2 );
+    result.setToZero();
+    return;
+    }
+
+  add2.copy( toAdd );
+  if( add1.paramIsGreater( add2 ))
+    {
+    subtract( add2, add1 );
+    result.copy( add2 );
     return;
     }
   else
     {
-    subtract( tempAdd1, tempAdd2 );
-    result.copy( tempAdd2 );
+    subtract( add1, add2 );
+    result.copy( add2 );
     result.setNegative( true );
     return;
     }
@@ -224,12 +263,12 @@ if( result.getNegative() &&
 if( result.getNegative() &&
     toAdd.getNegative() )
   {
-  tempAdd1.copy( result );
-  tempAdd1.setNegative( false );
-  tempAdd2.copy( toAdd );
-  tempAdd2.setNegative( false );
-  tempAdd1.add( tempAdd2 );
-  result.copy( tempAdd1 );
+  add1.copy( result );
+  add1.setNegative( false );
+  add2.copy( toAdd );
+  add2.setNegative( false );
+  add1.add( add2 );
+  result.copy( add1 );
   result.setNegative( true );
   return;
   }
@@ -241,12 +280,21 @@ if( result.getNegative() &&
 void IntegerMath::subtract( Integer& result,
                          const Integer& toSub )
 {
+if( toSub.isZero())
+  return;
+
 // This checks that the sign is equal too.
 if( result.isEqual( toSub ))
   {
+  //  3 -  3 = 0
+  // -3 - -3 = 0
   result.setToZero();
   return;
   }
+
+// Equal absolute value but opposite sign.
+//  3 - -3 = 6
+// -3 - 3 = -6
 
 Integer tempSub1;
 Integer tempSub2;
@@ -327,7 +375,7 @@ void IntegerMath::subtractPositive(
 {
 if( toSub.isLong48() )
   {
-  subtractLong( result, toSub.getAsLong48());
+  subLong48( result, toSub.getAsLong48());
   return;
   }
 
@@ -355,7 +403,7 @@ for( Int32 count = 0; count < lastR; count++ )
   }
 
 if( scratch[lastR] < 0 )
-  throw "Subtract() SignedD[Index] < 0.";
+  throw "Subtract() overflow.";
 
 for( Int32 count = 0; count <= lastR; count++ )
   result.setD( count, scratch[count] );
@@ -376,9 +424,12 @@ result.setIndex( 0 );
 
 
 
-void IntegerMath::multiplyInt( Integer& result,
-                               Int64 toMul )
+void IntegerMath::multiplyInt24( Integer& result,
+                             const Int64 toMul )
 {
+RangeC::test( toMul, 0, 0xFFFFFF,
+   "IntegerMath.multiplyInt24( toMul range." );
+
 if( toMul == 0 )
   {
   result.setToZero();
@@ -388,6 +439,8 @@ if( toMul == 0 )
 if( toMul == 1 )
   return;
 
+// If result was negative then it would just
+// stay negative.
 const Int32 last = result.getIndex();
 for( Int32 column = 0; column <= last; column++ )
   {
@@ -400,9 +453,14 @@ result.setD( 0, M.getV( 0, 0 ) & 0xFFFFFF );
 Int64 carry = M.getV( 0, 0 ) >> 24;
 for( Int32 column = 1; column <= last; column++ )
   {
-  Int64 total = M.getV( column, 0 ) + carry;
-  result.setD( column, total & 0xFFFFFF );
-  carry = total >> 24;
+  Int64 mValue = M.getV( column, 0 );
+  Int64 totalRight = mValue & 0xFFFFFF;
+  Int64 totalLeft = mValue >> 24;
+
+  totalRight += carry;
+  result.setD( column, totalRight & 0xFFFFFF );
+  carry = totalRight >> 24;
+  carry += totalLeft;
   }
 
 if( carry != 0 )
@@ -414,12 +472,13 @@ if( carry != 0 )
 
 
 
-Int32 IntegerMath::multiplyIntFromCopy(
-                             Integer& result,
-                             Integer& from,
-                             Int64 toMul )
+Int32 IntegerMath::multInt24FromCopy(
+                          Integer& result,
+                          const Integer& from,
+                          const Int64 toMul )
 {
-// if( toMul > 0xFFFFFF )
+RangeC::test( toMul, 0, 0xFFFFFF,
+  "IntegerMath.multInt24FromCopy() toMul range." );
 
 const Int32 fromCopyIndex = from.getIndex();
 result.setIndex( fromCopyIndex );
@@ -450,9 +509,12 @@ return result.getIndex();
 
 
 
-void IntegerMath::multiplyLong( Integer& result,
-                                Int64 toMul )
+void IntegerMath::multiplyLong48( Integer& result,
+                            const Int64 toMul )
 {
+RangeC::test( toMul, 0, 0xFFFFFFFFFFFFL,
+  "IntegerMath.multiplyLong48() toMul range." );
+
 if( result.isZero())
   return;
 
@@ -462,18 +524,21 @@ if( toMul == 0 )
   return;
   }
 
+if( toMul == 1 )
+  return;
+
 Int64 B0 = toMul & 0xFFFFFF;
 Int64 B1 = toMul >> 24;
 if( B1 == 0 )
   {
-  multiplyInt( result, B0 );
+  multiplyInt24( result, B0 );
   return;
   }
 
 // Since B1 is not zero:
 if( (result.getIndex() + 1) >=
                         ProjConst::digitArraySize )
-  throw "Overflow in MultiplyLong.";
+  throw "Overflow in MultiplyLong48().";
 
 Int32 countTo = result.getIndex();
 for( Int32 column = 0; column <= countTo;
@@ -500,7 +565,7 @@ for( Int32 column = 1; column <= countTo;
   {
   Int64 totalLeft = 0;
   Int64 totalRight = 0;
-  // There's only the two rows for this.
+  // There are only the two rows for this.
   for( Int32 row = 0; row <= 1; row++ )
     {
     Int64 mValue = M.getV( column, row );
@@ -545,13 +610,13 @@ if( result.isZero())
 
 if( toMul.isLong48())
   {
-  multiplyLong( result, toMul.getAsLong48());
+  multiplyLong48( result, toMul.getAsLong48());
   setMultiplySign( result, toMul );
   return;
   }
 
 // It could never get here if ToMul is zero
-// because getIsULong()
+// because getAsLong48()
 // would be true for zero.
 const Int32 totalIndex = result.getIndex() +
                                 toMul.getIndex();
@@ -628,7 +693,7 @@ setMultiplySign( result, toMul );
 
 /*
 void IntegerMath::setFromStr( Integer& result,
-                              Str& in )
+                              const Str& in )
 {
 if( in.getSize() < 1 )
   {
@@ -699,6 +764,11 @@ return result;
 
 void IntegerMath::square( Integer& toSquare )
 {
+if( toSquare.isZero())
+  return;
+
+toSquare.setNegative( false );
+
 const Int32 sqrIndex = toSquare.getIndex();
 if( sqrIndex == 0 )
   {
@@ -872,7 +942,7 @@ result.setIndex( totalIndex );
 // might not increment the index to an odd number.
 // (So if the Index was 5 its square root would
 // have an Index of 5 / 2 = 2.)
-// The SquareRoot1() method uses FindULSqrRoot()
+// The SquareRoot1() method uses FindLSqrRoot()
 // either to find the whole answer, if it's a
 // small number, or it uses it to find the top
 // part.  Then from there it goes on to a bit by
@@ -905,7 +975,7 @@ if( (testIndex << 1) > (fromSqr.getIndex() - 1) )
 else
   {
   toMatch = fromSqr.getD(
-                      fromSqr.getIndex()) << 32;
+                      fromSqr.getIndex()) << 24;
   toMatch |= fromSqr.getD(
                       fromSqr.getIndex() - 1 );
   }
@@ -942,7 +1012,7 @@ else
 
 
 void IntegerMath::searchSqrtXPart(
-                          Int32 testIndex,
+                          const Int32 testIndex,
                           const Integer& fromSqr,
                           Integer& sqrRoot )
 {
@@ -951,9 +1021,11 @@ void IntegerMath::searchSqrtXPart(
 // S = (B + x)^2
 // S = B^2 + 2Bx + x^2
 // S - B^2 = 2Bx + x^2
-// R = S - B^2
+// R = S - B^2  a square minus a square if
+//              S is a square.
 // R = 2Bx + x^2
 // R = x(2B + x)
+// What are the two factors of R?
 
 Integer sqrtXPartTest1;
 Integer sqrtXPartTest2;
@@ -1038,18 +1110,19 @@ sqrRoot.setD( testIndex, xDigit );
 
 
 
-Int64 IntegerMath::getMod24( const Integer& in,
+Int32 IntegerMath::getMod24( const Integer& in,
                              const Int64 divisor )
 {
-if( divisor == 0 )
-  throw "getMod24: divisor == 0.";
+if( divisor <= 0 )
+  throw "getMod24: divisor <= 0.";
 
 if( (divisor >> 24) != 0 )
-  throw "getMod24: (DivideByU >> 24) != 0.";
+  throw "getMod24: (divisor >> 24) != 0.";
 
 if( in.getIndex() == 0 )
   {
-  Int64 result = in.getD( 0 ) % divisor;
+  Int32 result = CastE::i64ToI32(
+                      in.getD( 0 ) % divisor );
   return result;
   }
 
@@ -1057,6 +1130,19 @@ const Int32 last = in.getIndex();
 
 for( Int32 count = 0; count <= last; count++ )
   scratch[count] = in.getD( count );
+
+// If you had a base-10 number and you wanted
+// to find the remainder when divided by a
+// single digit from 1 to 9 then you would
+// be doing this same thing.
+// 7123 divided by 6 is
+// 7 / 6 leaves remainder 1.
+// 1123 / 6 is
+// 11 / 6 leaves remainder 5.
+// 523 / 6 is
+// 52 / 6 leaves remainder 4.
+// 43 / 6 leave remainder 1.
+
 
 Int64 remainder = 0;
 if( divisor <= scratch[last] )
@@ -1079,7 +1165,7 @@ for( Int32 count = last; count >= 1; count-- )
   scratch[count - 1] = remainder;
   }
 
-return remainder;
+return CastE::i64ToI32( remainder );
 }
 
 
@@ -1088,26 +1174,37 @@ Int64 IntegerMath::mod48FromTwoLongs( Int64 p1,
                                   Int64 p0,
                                   Int64 divisor )
 {
+RangeC::test( p0, 0, 0xFFFFFFFFFFFFL,
+        "IntegerMath.mod48FromTwoLongs() p0." );
+
+RangeC::test( p1, 0, 0xFFFFFFFFFFFFL,
+        "IntegerMath.mod48FromTwoLongs() p1." );
+
 if( divisor <= 0xFFFFFF )
   throw "mod48FromTwoLongs divisor <= ";
 
-// This is never shifted more than 12 bits, so
-// check to make sure there's room to shift it.
+p0 = p0 % divisor;
 
 if( p1 == 0 )
-  return p0 % divisor;
+  return p0;
+
+// p1 times 2^48
+// p1 * (2^12 + 2^12 + 2^12 + 2^12)
+// (p1 * 2^12) + (p1 * 2^12) + (p1 * 2^12) +
+//                           (p1 * 2^12)
+
+// 48 + 12 = 60 so it fits in 63 bits.
 
 Int64 part1 = p1 % divisor;
-// This can be done 24 bits at a time.
-part1 <<= 24;  // Times 2^24
+part1 <<= 12;  // Times 2^12
 part1 = part1 % divisor;
-part1 <<= 24;  //  48
+part1 <<= 12;  // Times 2^12     24
 part1 = part1 % divisor;
-part1 <<= 16;  // Brings it to 64
+part1 <<= 12;  // Times 2^12     36
+part1 = part1 % divisor;
+part1 <<= 12;  // Times 2^12     48
 part1 = part1 % divisor;
 
-// All of the above was just to get the P1 part
-// of it, so now add P0:
 return (part1 + p0) % divisor;
 }
 
@@ -1119,8 +1216,9 @@ Int64 IntegerMath::getMod48( const Integer& in,
 if( divisor == 0 )
   throw "getMod48: divisor == 0.";
 
-if( (divisor & 0xFFFFFF ) == 0 )
-  throw "getMod48: Divisor too small.";
+if( (divisor >> 24 ) == 0 )
+  return getMod24( in, divisor );
+
 
 const Int32 last = in.getIndex();
 
@@ -1171,9 +1269,9 @@ while( true )
 
     if( where == 3 )
       {
-      digit1 = scratch[3] << 32;
+      digit1 = scratch[3] << 24;
       digit1 |= scratch[2];
-      digit0 = scratch[1] << 32;
+      digit0 = scratch[1] << 24;
       digit0 |= scratch[0];
       return mod48FromTwoLongs( digit1, digit0,
                                        divisor );
@@ -1183,9 +1281,9 @@ while( true )
     {
     // The index is bigger than 3.
     // This part would get called at least once.
-    digit1 = scratch[where] << 32;
+    digit1 = scratch[where] << 24;
     digit1 |= scratch[where - 1];
-    digit0 = scratch[where - 2] << 32;
+    digit0 = scratch[where - 2] << 24;
     digit0 |= scratch[where - 3];
     remainder = mod48FromTwoLongs( digit1, digit0,
                                   divisor );

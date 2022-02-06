@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -10,7 +10,6 @@
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "Mod.h"
-// #include "Exponents.h"
 
 
 
@@ -21,26 +20,23 @@ class Fermat
   public:
 
   static void makeAPrime( Integer& result,
-                   Uint32 setToIndex,
-                   SPrimes& sPrimes,
+                   const Int32 setToIndex,
+                   const SPrimes& sPrimes,
                    IntegerMath& intMath,
-                   Mod& mod ); // ,
-                   // Exponents& exp,
+                   Mod& mod );
                    // FileIO& mainIO );
 
-  static bool isPrime( Integer& toTest,
-                SPrimes& sPrimes,
+  static bool isPrime( const Integer& toTest,
+                const SPrimes& sPrimes,
                 IntegerMath& intMath,
-                Mod& mod ); // ,
-                // Exponents& exp,
+                Mod& mod );
                 // FileIO& mainIO );
 
   static bool isPrimeForOneValue(
-                      Integer& toTest,
-                      Uint64 base,
+                      const Integer& toTest,
+                      const Int64 base,
                       IntegerMath& intMath,
-                      Mod& mod ); // ,
-                      // Exponents& exp,
+                      Mod& mod );
                       // FileIO& mainIO );
 
 

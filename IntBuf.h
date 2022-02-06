@@ -32,7 +32,7 @@ class IntBuf
     return index;
     }
 
-  inline void setIndex( Int32 setTo )
+  inline void setIndex( const Int32 setTo )
     {
     RangeC::test( setTo, 0, last - 1,
                   "IntBuf.setIndex() range." );
@@ -57,7 +57,7 @@ class IntBuf
 
     // 24 bits.
     RangeC::test( toSet, 0, 0xFFFFFF,
-                 "IntBuf.setD() setTo size." );
+                 "IntBuf.setD() toSet size." );
 
     D[where] = toSet;
     }

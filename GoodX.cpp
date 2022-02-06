@@ -32,12 +32,12 @@ delete[] bArrays;
 
 void GoodX::init( const SPrimes& sPrimes )
 {
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
-  Uint32 prime = sPrimes.getPrimeAt( count );
+  Int32 prime = sPrimes.getPrimeAt( count );
   bArrays[count].setSize( prime );
 
-  for( Uint32 countF = 0; countF < prime;
+  for( Int32 countF = 0; countF < prime;
                                     countF++ )
     {
     bArrays[count].setVal( countF, false );

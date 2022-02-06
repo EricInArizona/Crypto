@@ -66,9 +66,6 @@ class Integer
 
   inline bool isZero( void ) const
     {
-    // if( negative )
-    // throw ...
-
     if( (index == 0) && (D[0] == 0) )
       return true;
 
@@ -111,6 +108,13 @@ class Integer
 
   inline void setNegative( bool setTo )
     {
+    if( setTo )
+      {
+      if( isZero())
+        throw "Setting zero to negative.";
+
+      }
+
     negative = setTo;
     }
 
@@ -143,16 +147,16 @@ class Integer
     {
     // I want to be able to use toSet values
     // that might be a full 48 bits long.
-    // See cleanUp().
 
     RangeC::test( where, 0,
                ProjConst::digitArraySize - 1,
-                     "Integer.setD() range." );
+               "Integer.setD() where range." );
+
+    RangeC::test( toSet, 0, 0xFFFFFFFFFFFFL,
+                "Integer.setD() toSet range." );
 
     D[where] = toSet;
     }
-
-  void cleanUp( void );
 
   inline void incrementIndex( void )
     {
@@ -174,7 +178,27 @@ class Integer
     index = 0;
     }
 
-  void setFromLong48( const Int64 toSet );
+  inline void setFromLong48( const Int64 toSet )
+    {
+    RangeC::test( toSet, 0, 0xFFFFFFFFFFFFL,
+        "Integer.setFromLong48() toSet range." );
+
+    negative = false;
+
+    // If toSet was zero then D[0] would be zero
+    // and index would be zero.
+
+    // For 24 bits
+    D[0] = toSet & 0xFFFFFF;
+    D[1] = toSet >> 24;
+
+    if( D[1] == 0 )
+      index = 0;
+    else
+      index = 1;
+
+    }
+
   void copy( const Integer& copyFrom );
   void copyUpTo( const Integer& copyFrom,
                  const Int32 where );
@@ -211,5 +235,6 @@ class Integer
 
   void copyFromIntBuf( const IntBuf& intBuf );
   void copyToIntBuf( IntBuf& intBuf ) const;
+  void cleanUp( void );
 
   };

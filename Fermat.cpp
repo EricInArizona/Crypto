@@ -7,38 +7,29 @@
 
 
 void Fermat::makeAPrime( Integer& result,
-                         Uint32 setToIndex,
-                         SPrimes& sPrimes,
+                         const Int32 setToIndex,
+                         const SPrimes& sPrimes,
                          IntegerMath& intMath,
-                         Mod& mod ) // ,
-                         // Exponents& exp,
+                         Mod& mod )
                          // FileIO& mainIO )
 {
-// for( Uint32 count = 0; count < 100; count++ )
+// for( Int32 count = 0; count < 100; count++ )
 while( true )
   {
   // ThreadEC::sleep( 1 );
 
   if( !result.makeRandomOdd( setToIndex ))
     {
-    throw "Error making random number.";
+    throw "Fermat: Error making random number.";
+    // return;
     }
 
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
     throw "Size of random prime is wrong.";
 
-  if( setToIndex == 0 )
-    {
-    Uint64 shortVal = result.getD( 0 );
-    // This has to be bigger than the biggest
-    // prime in SPrimes.
-    shortVal = shortVal & 0x7FFFFFF;
-    result.setD( 0, shortVal );
-    }
-
-
-  Uint64 testPrime = intMath.
+  // This tests all the primes in SPrimes.
+  Int32 testPrime = intMath.
                      isDivisibleBySmallPrime(
                                       result,
                                       sPrimes );
@@ -46,14 +37,12 @@ while( true )
     continue;
 
   if( !isPrime( result, sPrimes, intMath, mod ))
-                                   // exp, mainIO ))
+                                   // mainIO ))
     {
     // mainIO.appendChars(
     //          "Did not pass Fermat test.\n" );
     continue;
     }
-
-  // More tests?
 
   return;
   }
@@ -62,11 +51,10 @@ while( true )
 
 
 
-bool Fermat::isPrime( Integer& toTest,
-                      SPrimes& sPrimes,
+bool Fermat::isPrime( const Integer& toTest,
+                      const SPrimes& sPrimes,
                       IntegerMath& intMath,
-                      Mod& mod ) // ,
-                      // Exponents& exp,
+                      Mod& mod )
                       // FileIO& mainIO )
 {
 // Use bigger primes for Fermat test because the
@@ -85,16 +73,15 @@ bool Fermat::isPrime( Integer& toTest,
 
 
 // Halfway down the array.
-Uint32 startAt = ProjConst::primesArraySize >> 1;
+Int32 startAt = ProjConst::primesArraySize >> 1;
 
-for( Uint32 count = startAt; count <
+for( Int32 count = startAt; count <
                    (100 + startAt); count++ )
   {
   if( !isPrimeForOneValue( toTest,
                    sPrimes.getPrimeAt( count ),
                    intMath,
                    mod ))
-                   // exp,
                    // mainIO ))
     {
     // It is definitely not a prime.
@@ -112,11 +99,11 @@ return true;
 
 
 
-bool Fermat::isPrimeForOneValue( Integer& toTest,
-                          Uint64 base,
-                          IntegerMath& intMath,
-                          Mod& mod ) // ,
-                          // Exponents& exp,
+bool Fermat::isPrimeForOneValue(
+                         const Integer& toTest,
+                         const Int64 base,
+                         IntegerMath& intMath,
+                         Mod& mod )
                           // FileIO& mainIO )
 {
 // Assume toTest is not a small number.  (Not
@@ -143,22 +130,13 @@ Integer pMinus1;
 Integer A;
 
 pMinus1.copy( toTest );
-intMath.subtractULong( pMinus1, 1 );
-A.setFromULong( base );
+intMath.subLong48( pMinus1, 1 );
+A.setFromLong48( base );
 
 // Integer testA;
 // testA.copy( A );
 
 mod.toPower( A, pMinus1, toTest, intMath );
-
-// exp.toPower( testA, pMinus1, toTest, intMath );
-
-// if( !testA.isEqual( A ))
-  // {
-  // mainIO.appendChars( "For test: A != testA\n" );
-  // throw "Exponent toPower() didn't work.";
-  // }
-
 
 if( A.isOne())
   return true; // It _might_ be a prime.
