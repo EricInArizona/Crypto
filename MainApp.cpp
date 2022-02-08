@@ -6,6 +6,7 @@
 #include "StIO.h"
 #include "Str.h"
 #include "RsaTest.h"
+#include "CrtTest.h"
 // #include "Ellip.h"
 #include "ThreadEC.h"
 
@@ -42,8 +43,11 @@ mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
 mainIO.appendChars( "\n\n" );
 
-RsaTest rsaTest;
-rsaTest.test( mainIO );
+// RsaTest rsaTest;
+// rsaTest.test( mainIO );
+
+CrtTest crtTest;
+crtTest.test( mainIO );
 
 // Ellip ellip;
 // ellip.test( mainIO );

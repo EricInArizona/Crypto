@@ -33,11 +33,11 @@ class UTF16Buf
 
   inline UTF16 valAt( const Int32 where ) const
     {
-    RangeC::test( where, 0, arraySize - 1,
-                  "UTF16Buf.valAt() range." );
+    // RangeC::test( where, 0, arraySize - 1,
+      //        "UTF16Buf.valAt() range." );
 
-    RangeC::test( where, 0, last - 1,
-                "UTF16Buf.valAt() past last." );
+    // RangeC::test( where, 0, last - 1,
+      //       "UTF16Buf.valAt() past last." );
 
     return cArray[where];
     }

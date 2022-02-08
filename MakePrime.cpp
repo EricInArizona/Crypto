@@ -15,7 +15,6 @@ MakePrime::MakePrime( void )
 
 MakePrime::MakePrime( const MakePrime& in )
 {
-// new
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -39,15 +38,18 @@ void MakePrime::makeIt( Integer& result,
 {
 while( true )
   {
+  // This checks if it's divisible by any of
+  // the small primes in SPrimes and then it
+  // does a Fermat primality test.
   Fermat::makeAPrime( result,
                       indexSize,
                       sPrimes,
                       intMath,
                       mod );
 
-  // Make sure that primePMinus1 and
-  // primeQMinus1 don't have all small factors.
-  // Do Pollard's algorithm to test this.
+  // Make sure that the prime minus 1 doesn't
+  // have all small factors.
+  // Do Pollard's algorithm to test this?
 
   // primeMinus1.copy( result );
   //   intMath.subLong48( primePMinus1, 1 );
@@ -56,5 +58,13 @@ while( true )
   // until I have more tests.
   if( (result.getD( 0 ) & 1) == 1 )
     break;
+  else
+    continue;
+
+  // if( some other test )
+    // break;
+  // else
+    // continue;
+
   }
 }

@@ -60,15 +60,13 @@ for( Int32 count = 0; count < last; count++ )
 
 
 
-
-
-
 // isSmallQuadResidue().
 bool QuadRes::isSmallQR( const Int32 number )
 {
 // For mod 2:
 // 1 * 1 = 1 % 2 = 1
 // 0 * 0 = 0 % 2 = 0
+
 Int32 test = number % 3; // 0, 1, 1, 0
 if( test == 2 )
   return false;

@@ -33,7 +33,7 @@ delete[] pArray;
 Int32 SPrimes::getFirstFactor(
                        const Int64 toTest ) const
 {
-RangeC::test( toTest, 0, 0xFFFFFFFFFFFFL,
+RangeC::test2( toTest, 0, 0xFFFFFFFFFFFFL,
         "SPrimes.getFirstFactor() range." );
 
 if( toTest < 2 )
@@ -46,10 +46,10 @@ if( toTest == 3 )
   return 3;
 
 const Int32 max = CastE::i64ToI32(
-            IntegerMath::findLSqrRoot( toTest ));
+         IntegerMath::find64SqrRoot( toTest ));
 
-RangeC::test( max, 1, 0xFFFFFFFFFFFFL,
-        "SPrimes. Max was zero." );
+RangeC::test2( max, 1, 0xFFFFFFFFFFFFL,
+        "SPrimes.getFirstFactor Max was zero." );
 
 for( Int32 count = 0; count < last; count++ )
   {

@@ -23,7 +23,7 @@
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
-#include "RangeC.h"
+// #include "RangeC.h"
 
 
 class TwoDInt64
@@ -46,8 +46,8 @@ class TwoDInt64
                    ProjConst::digitArraySize)
                    + column;
 
-    RangeC::test( where, 0, last - 1,
-            "TwoDInt64.getV() range for where." );
+    // RangeC::test( where, 0, last - 1,
+       // "TwoDInt64.getV() range for where." );
 
     return aR[where];
     }
@@ -60,8 +60,8 @@ class TwoDInt64
                     ProjConst::digitArraySize)
                     + column;
 
-    RangeC::test( where, 0, last - 1,
-            "TwoDInt64.setV() range for where." );
+    // RangeC::test( where, 0, last - 1,
+       // "TwoDInt64.setV() range for where." );
 
     aR[where] = val;
     }

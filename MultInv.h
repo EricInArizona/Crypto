@@ -31,8 +31,8 @@ class MultInv
   inline Int32 getInv( const Int32 primeAt,
                        const Int32 value ) const
     {
-    RangeC::test( primeAt, 0, last - 1,
-            "MultInv.getInv primeAt range." );
+    // RangeC::test( primeAt, 0, last - 1,
+       //   "MultInv.getInv primeAt range." );
 
     // Get the inverse of value.
     return i32Arrays[primeAt].getVal( value );

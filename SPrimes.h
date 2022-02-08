@@ -13,7 +13,7 @@
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
-#include "RangeC.h"
+// #include "RangeC.h"
 
 
 class SPrimes
@@ -38,8 +38,8 @@ class SPrimes
     {
     // RangeC::testNothing();
 
-    RangeC::test( where, 0, last - 1,
-            "SPrimes.getPrimeAt() range." );
+    // RangeC::test( where, 0, last - 1,
+       //     "SPrimes.getPrimeAt() range." );
 
     return pArray[where];
     }

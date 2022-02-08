@@ -36,7 +36,7 @@ class RangeC
     // This should be optimized away.
     }
 
-  inline static void test( Int64 toTest,
+  inline static void test2( Int64 toTest,
                            Int64 min, Int64 max,
                            const char* showIt )
     {

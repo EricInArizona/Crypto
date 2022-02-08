@@ -11,9 +11,6 @@
 #include "IntegerMath.h"
 #include "Mod.h"
 #include "FileIO.h"
-// #include "MultInv.h"
-// #include "QuadRes.h"
-// #include "GoodX.h"
 
 
 

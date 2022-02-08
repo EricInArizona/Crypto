@@ -10,11 +10,8 @@
 // http://tools.ietf.org/html/rfc2437
 // http://tools.ietf.org/html/rfc3447
 
+
 #include "Rsa.h"
-
-// #include "TimeEC.h"
-// #include "Fermat.h"
-
 #include "Euclid.h"
 #include "Division.h"
 
@@ -37,13 +34,11 @@ throw "Don't use copy constructor for Rsa.";
 
 
 
-
-
 bool Rsa::makeKeys( FileIO& mainIO,
-                       const Integer& prime1,
-                       const Integer& prime2,
-                       IntegerMath& intMath,
-                       Mod& mod )
+                    const Integer& prime1,
+                    const Integer& prime2,
+                    IntegerMath& intMath,
+                    Mod& mod )
 {
 pubKeyExponent.setFromLong48( PubKeyExponentL );
 
@@ -86,7 +81,7 @@ if( !testEncryption( mod, intMath ))
   throw "!testEncryption().\n";
   // return false;
 
-mainIO.appendChars( "Good pair.\n" );
+mainIO.appendChars( "Good pair.\n\n" );
 return true;
 }
 
@@ -209,15 +204,13 @@ return true;
 bool Rsa::testEncryption( Mod& mod,
                           IntegerMath& intMath )
 {
-// This does not include the standard padding.
+// This does not include the standard padding
+// and all that.
 
 // Make a random number to test
 // encryption/decryption.
 
 Integer toEncrypt;
-
-// What is the maximum size of the bytes to
-// encrypt/decrypt?
 
 const Int32 testIndex = primeP.getIndex() - 2;
 if( testIndex < 0 )
@@ -318,6 +311,8 @@ mod.toPower( testForDecrypt,
 
 m2ForInverse.copy( testForDecrypt );
 //      2.4 Let h = qInv ( m_1 - m_2 ) mod p.
+
+// Fix up this stuff.
 
 // How many is optimal to avoid the division?
 const Int32 howManyIsOptimal =

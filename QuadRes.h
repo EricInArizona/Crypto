@@ -32,8 +32,8 @@ class QuadRes
   inline bool getVal( const Int32 primeAt,
                       const Int32 where ) const
     {
-    RangeC::test( primeAt, 0, last - 1,
-            "QuadRes.getVal() primeAt range." );
+    // RangeC::test( primeAt, 0, last - 1,
+      //      "QuadRes.getVal() primeAt range." );
 
     return bArrays[primeAt].getVal( where );
     }
@@ -45,6 +45,5 @@ class QuadRes
   static bool isQR19( const Int32 number );
   static bool isQR23( const Int32 number );
   static bool isQR29( const Int32 number );
-
 
   };

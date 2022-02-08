@@ -31,7 +31,7 @@ TimeEC t1;
 
 Int32 showBits = (PrimeIndex + 1) * 24;
 
-mainIO.appendChars( "Bits size is: " );
+mainIO.appendChars( "\nBits size is: " );
 Str bits( showBits );
 mainIO.appendStr( bits );
 mainIO.appendChars( "\n" );

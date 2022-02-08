@@ -34,15 +34,17 @@ class RsaTest
   // static const Int32 PrimeIndex = 4; // 120-bit
   // static const Int32 PrimeIndex = 5; // 144-bit
   // static const Int32 PrimeIndex = 6; // 168-bit
-  // static const Int32 PrimeIndex = 7; // 192-bit
+  static const Int32 PrimeIndex = 7; // 192-bit
   // static const Int32 PrimeIndex = 9; // 240
   // static const Int32 PrimeIndex = 19; // 480
   // static const Int32 PrimeIndex = 29; // 720
   // static const Int32 PrimeIndex = 39; // 960
   // static const Int32 PrimeIndex = 49; // 1,200
 
-  // Seconds 60?
-  static const Int32 PrimeIndex = 99; // 2.400
+  // Seconds 60, 88
+  // static const Int32 PrimeIndex = 99; // 2.400
+
+  // Takes too long now.
   // static const Int32 PrimeIndex = 199; // 4,800
   // static const Int32 PrimeIndex = 299; // 7.200
   // static const Int32 PrimeIndex = 399; // 9.600
