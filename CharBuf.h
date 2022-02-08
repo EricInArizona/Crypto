@@ -50,10 +50,10 @@ class CharBuf
   Str getStr( void ) const;
   inline char valAt( const Int32 where ) const
     {
-    RangeC::test( where, 0, arraySize - 1,
+    RangeC::test2( where, 0, arraySize - 1,
              "CharBuf.valAt() arraySize." );
 
-    RangeC::test( where, 0, last - 1,
+    RangeC::test2( where, 0, last - 1,
              "CharBuf.valAt() last." );
 
     return cArray[where];

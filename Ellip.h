@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -24,7 +24,7 @@ class Ellip
   SPrimes sPrimes;
   Mod mod;
   EPoint* pArray;
-  static const Uint32 last  =
+  static const Int32 last  =
                           ProjConst::ellipseLast;
 
   public:
@@ -34,7 +34,7 @@ class Ellip
   void test( FileIO& mainIO );
   void mainTest( FileIO& mainIO );
   void makeCurvePoints(  FileIO& mainIO,
-                         const Uint32 prime );
+                         const Int32 prime );
 
 /*
   void scalarMultByAdd( const Uint32 k,

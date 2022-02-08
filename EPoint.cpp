@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -190,9 +190,9 @@ mod.multiply( right, X, modulus, intMath );
 // Now right is x cubed.
 
 if( coefA != 1 )
-  mod.multiplyUL( right, coefA, modulus, intMath );
+  mod.multiplyL( right, coefA, modulus, intMath );
 
-right.addULong( coefB );
+right.addLong48( coefB );
 
 if( left.isEqual( right ))
   return true;
@@ -209,7 +209,7 @@ void EPoint::add( const EPoint& p,
                   IntegerMath& intMath  )
 
 {
-if( modulus.isEqualToUI( coefB ))
+if( modulus.isEqualToInt24( coefB ))
   throw "modulus can't be coefB.";
 
 // q + Infinity = q.
@@ -286,7 +286,7 @@ mod.subtract( denom, qX, modulus, intMath );
 // The x values are not equal, so denom can't
 // be zero, but it can be 1.
 Integer slope;
-if( denom.isMoreThanUint( 1 ))
+if( denom.isMoreThanInt24( 1 ))
   {
   // Avoid calling divide() if denominator is 1
   // because it would just return the
@@ -390,16 +390,16 @@ Integer numerator;
 // coefA is zero in Bitcoin.
 if( pX.isZero())
   {
-  numerator.setFromULong( coefA );
+  numerator.setFromLong48( coefA );
   }
 else
   {
   numerator.copy( pX );
   mod.square( numerator, modulus, intMath );
-  mod.multiplyUL( numerator, 3,
+  mod.multiplyL( numerator, 3,
                          modulus, intMath );
 
-  mod.addUL( numerator, coefA, modulus, intMath );
+  mod.addL( numerator, coefA, modulus, intMath );
   }
 
 // p.y is not zero here.
@@ -407,7 +407,7 @@ else
 // want to use a base == 2.
 Integer denom;
 denom.copy( pY );
-mod.multiplyUL( denom, 2, modulus, intMath );
+mod.multiplyL( denom, 2, modulus, intMath );
 
 Integer slope;
 mod.divide( slope, numerator, denom,
@@ -419,7 +419,7 @@ mod.square( slopeSqr, modulus, intMath );
 
 Integer rightSide;
 rightSide.copy( pX );
-mod.multiplyUL( rightSide, 2, modulus, intMath );
+mod.multiplyL( rightSide, 2, modulus, intMath );
 
 // x = slopeSqr - (2 * p.x);
 

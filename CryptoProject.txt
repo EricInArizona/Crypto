@@ -3,31 +3,15 @@ executablefile	C:\Eric\Main\Crypto\RunMain.bat
 projectdirectory	C:\Eric\Main\Crypto
 recentfile1	C:\Eric\Main\Crypto\MainApp.h
 recentfile2	C:\Eric\Main\Docs\Notes.txt
-recentfile3	C:\Eric\Main\Crypto\CastE.h
-recentfile4	C:\Eric\Main\Crypto\RsaTest.h
-recentfile5	C:\Eric\Main\Crypto\RsaTest.cpp
-recentfile6	C:\Eric\Main\Crypto\ProjConst.h
-recentfile7	C:\Eric\Main\Crypto\IntegerMath.h
-recentfile8	C:\Eric\Main\Crypto\IntegerMath.cpp
-recentfile9	C:\Eric\Main\Crypto\Mod.cpp
-recentfile10	C:\Eric\Main\Crypto\Division.cpp
-recentfile11	C:\Eric\Main\Crypto\MakePrime.h
-recentfile12	C:\Eric\Main\Crypto\MakePrime.cpp
-recentfile13	C:\Eric\Main\Crypto\Rsa.h
-recentfile14	C:\Eric\Main\Crypto\Rsa.cpp
-recentfile15	C:\Eric\Main\Crypto\CrtTest,h
-recentfile16	C:\Eric\Main\Crypto\CrtTest.cpp
-recentfile17	
-recentfile18	
-recentfile19	
-recentfile20	
-recentfile21	
-recentfile22	
-recentfile23	
-recentfile24	
-recentfile25	
-recentfile26	
-recentfile27	
-recentfile28	
-recentfile29	
-recentfile30	
+recentfile3	C:\Eric\Main\Crypto\CrtTest.cpp
+recentfile4	C:\Eric\Main\Crypto\CrtTest.h
+recentfile5	C:\Eric\Main\Crypto\Crt2.h
+recentfile6	C:\Eric\Main\Crypto\Crt2.cpp
+recentfile7	C:\Eric\Main\Crypto\Fermat.cpp
+recentfile8	C:\Eric\Main\Crypto\FindFacCrt.h
+recentfile10	C:\Eric\Main\Crypto\Ellip.h
+recentfile9	C:\Eric\Main\Crypto\FindFacCrt.cpp
+recentfile11	C:\Eric\Main\Crypto\Ellip.cpp
+recentfile12	C:\Eric\Main\Crypto\EPoint.h
+recentfile13	C:\Eric\Main\Crypto\EPoint.cpp
+recentfile14	C:\Eric\Main\Crypto\Integer.h

@@ -2,6 +2,20 @@
 
 
 
+// The first few numbers for the base:
+// 1             1
+// 2             2
+// 3             6
+// 5            30
+// 7           210
+// 11        2,310
+// 13       30,030
+// 17      510,510
+// 19    9,699,690
+// 23  223,092,870
+
+
+
 #include "Crt2.h"
 #include "CastE.h"
 
@@ -35,47 +49,6 @@ delete[] digitAr;
 
 
 
-void Crt2::setToZero()
-{
-length = 0;
-digitAr[0] = 0;
-}
-
-
-
-void Crt2::setToOne()
-{
-length = 0;
-digitAr[0] = 1;
-}
-
-
-bool Crt2::isZero()
-{
-if( length != 0 )
-  return false;
-
-if( digitAr[0] != 0 )
-  return false;
-
-return true;
-}
-
-
-
-bool Crt2::isOne()
-{
-if( length != 0 )
-  return false;
-
-if( digitAr[0] != 1 )
-  return false;
-
-return true;
-}
-
-
-
 void Crt2::copy( const Crt2& toCopy )
 {
 length = toCopy.length;
@@ -87,7 +60,7 @@ for( Int32 count = 0; count <= endAt; count++ )
 
 
 
-bool Crt2::isEqual( const Crt2& toCheck )
+bool Crt2::isEqual( const Crt2& toCheck ) const
 {
 if( length != toCheck.length )
   return false;
@@ -105,45 +78,14 @@ return true;
 
 
 
-bool Crt2::increment( const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  if( length < count )
-    {
-    length = count;
-    digitAr[count] = 0;
-    }
-
-  digitAr[count]++;
-  Int32 prime = sPrimes.getPrimeAt( count );
-
-  if( digitAr[count] < prime )
-    return true; // Nothing more to do.
-
-  digitAr[count] = 0; // It wrapped around.
-  // Go around to the next digit.
-  }
-
-return false;
-}
-
-
-
 bool Crt2::incAt( const SPrimes& sPrimes,
                   const Int32 where )
 {
-if( (length + 1) < where )
-  throw "(length + 1) < where";
+// RangeC::test( where, 0, length,
+   //          "Crt2::incAt where range." );
 
 for( Int32 count = where; count < last; count++ )
   {
-  if( length < count )
-    {
-    length = count;
-    digitAr[count] = 0;
-    }
-
   digitAr[count]++;
   Int32 prime = sPrimes.getPrimeAt( count );
 
@@ -154,73 +96,148 @@ for( Int32 count = where; count < last; count++ )
   // Go around to the next digit.
   }
 
+// It would never get this far.
 return false;
 }
 
 
 
-void Crt2::resetUpward( const Int32 where,
-                        const Int32 max,
-                        const SPrimes& sPrimes,
-                        const GoodX& goodX,
-                        const CrtMath& crtMath )
+void Crt2::revInc1( const SPrimes& sPrimes )
 {
-length = max;
+const Int32 top = length;
 
-for( Int32 count = where; count <= max; count++ )
+// RangeC::test( top, 1, last - 2,
+   //         "Crt2.revInc1 top range." );
+
+for( Int32 count = top; count >= 0; count-- )
   {
+  digitAr[count]++;
   Int32 prime = sPrimes.getPrimeAt( count );
-  digitAr[count] = 0;
 
-  Int32 accumD = getAccumD( count - 1,
-                             count,
-                             prime,
-                             crtMath );
+  if( digitAr[count] < prime )
+    return; // Nothing more to do.
 
-  // if( !
-  incCheckVal( count, prime,
-                    accumD, goodX, crtMath );
- // )
- //   throw "There are no good values.";
+  digitAr[count] = 0; // It wrapped around.
+  // Go around to the next digit.
   }
+
+// Zero at the top gets checked.
+length = top + 1;
+digitAr[top + 1] = 0;
 }
 
 
 
+// The first few numbers for the base:
+// 1             1
+// 2             2
+// 3             6
+// 5            30
+// 7           210
+// 11        2,310
+// 13       30,030
+// 17      510,510
+// 19    9,699,690
+// 23  223,092,870
 
-bool Crt2::incRev( const SPrimes& sPrimes,
-                   const Int32 where,
-                   const GoodX& goodX,
-                   const CrtMath& crtMath )
+
+
+void Crt2::revInc2( const Int32 prodByte,
+                    const SPrimes& sPrimes,
+                    const GoodX& goodX,
+                    const CrtMath& crtMath )
 {
-for( Int32 count = where; count >= 0; count-- )
+const Int32 top = length;
+
+Int32 prime = sPrimes.getPrimeAt( top );
+Int32 accum = getAccum( top - 1, top, prime,
+                                      crtMath );
+
+Int32 accumByte = getAccumByte( top - 1,
+                                      crtMath );
+
+if( incNextVal( top, prime, accum, accumByte,
+                prodByte, goodX, crtMath ))
+  return;
+
+digitAr[top] = 0; // It wrapped around.
+
+for( Int32 count = top - 1; count >= 0; count-- )
   {
-  if( length < count )
-    length = count;
+  prime = sPrimes.getPrimeAt( count );
 
-  Int32 prime = sPrimes.getPrimeAt( count );
-
-  Int32 accumD = getAccumD( where - 1,
-                           where,
-                           prime,
-                           crtMath );
-
-  if( !incNextVal( count, prime,
-                     accumD, goodX, crtMath ))
+  for( Int32 countD = 0; countD < prime;
+                                    countD++ )
     {
-    digitAr[count] = 0; // It wrapped around.
-    continue;     // Go around to the next digit.
+    digitAr[count]++;
+    if( digitAr[count] >= prime )
+      {
+      digitAr[count] = 0; // It wrapped around.
+      break;
+      }
+
+    if( isGoodXAt( count, goodX, crtMath,
+                                   sPrimes ))
+      {
+      // It only calls resetUpward once every
+      // time it gets down to this level.
+      // (count + 5) < top.  Like for
+      // example goodX would be checked
+      // 11 * 13 * 17 * 19 * 23 times before
+      // it calls this again.  But with bigger
+      // primes than this example.
+
+      if( (count + 5) < top )
+        resetUpward( sPrimes, goodX, crtMath );
+ 
+      return;
+      }
     }
   }
 
-return false;
+// Zero at the top gets checked.
+length = top + 1;
+digitAr[top + 1] = 0;
+
+resetUpward( sPrimes, goodX, crtMath );
+}
+
+
+
+void Crt2::resetUpward( const SPrimes& sPrimes,
+                        const GoodX& goodX,
+                        const CrtMath& crtMath )
+{
+const Int32 top = length;
+
+for( Int32 count = 0; (count + 1) < top;
+                                    count++ )
+  {
+  Int32 prime = sPrimes.getPrimeAt( count );
+
+  // If it wraps to zero, keep going if zero
+  // is not a goodX.
+  const Int32 makeSure = prime + 1;
+  for( Int32 countD = 0; countD <= makeSure;
+                                     countD++ )
+    {
+    if( isGoodXAt( count, goodX, crtMath,
+                                      sPrimes ))
+      break;
+
+    digitAr[count]++;
+    if( digitAr[count] >= prime )
+      digitAr[count] = 0;
+
+    }
+  }
 }
 
 
 
 void Crt2::toInteger( const CrtMath& crtMath,
                       Integer& toSet,
-                      IntegerMath& intMath )
+                      IntegerMath& intMath ) const
 {
 // Set it to one or zero to start.
 toSet.setFromInt24( getD( 0 ));
@@ -234,13 +251,16 @@ for( Int32 count = 1; count <= endAt; count++ )
   if( digit == 0 )
     continue;
 
+  RangeC::test2( digit, 0, 0xFFFFFF,
+            "Crt2.toInteger digit range." );
+
   crtMath.copyFromIntBuf( bigBase, count );
 
   // Notice that the prime at this count,
   // at this digit, is not in bigBase yet.
   // sPrimes.getPrimeAt( count ));
 
-  intMath.multiplyInt24( bigBase, digit );
+  intMath.multiplyInt( bigBase, digit );
   toSet.add( bigBase );
   }
 }
@@ -305,7 +325,7 @@ for( Int32 count = 1; count < last; count++ )
     crtMath.copyFromIntBuf( bigBase, count );
 
     // countP might be zero here.
-    intMath.multiplyInt24( bigBase, countP );
+    intMath.multiplyInt( bigBase, countP );
 
     Int32 test = intMath.getMod24(
                               bigBase, prime );
@@ -354,7 +374,7 @@ for( Int32 count = 1; count < last; count++ )
   Int32 accumDigit = intMath.getMod24(
                                   accum, prime );
 
-  Int32 accumD = getAccumD( count - 1,
+  Int32 accumD = getAccum( count - 1,
                              count,
                              prime,
                              crtMath );
@@ -376,7 +396,7 @@ for( Int32 count = 1; count < last; count++ )
     baseDigit = baseDigit * countP;
 
     // countP might be zero here.
-    intMath.multiplyInt24( bigBase, countP );
+    intMath.multiplyInt( bigBase, countP );
 
     Int32 test = intMath.getMod24(
                                 bigBase, prime );
@@ -418,7 +438,7 @@ else
 for( Int32 count = 1; count < last; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
-  Int32 accumD = getAccumD( count - 1,
+  Int32 accumD = getAccum( count - 1,
                              count,
                              prime,
                              crtMath );
@@ -468,7 +488,7 @@ else
 for( Int32 count = 1; count < last; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
-  Int32 accumD = getAccumD( count - 1,
+  Int32 accumD = getAccum( count - 1,
                              count,
                              prime,
                              crtMath );
@@ -547,7 +567,7 @@ else
 for( Int32 count = 1; count < last; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
-  Int32 accumD = getAccumD( count - 1,
+  Int32 accumD = getAccum( count - 1,
                              count,
                              prime,
                              crtMath );
@@ -593,18 +613,65 @@ toSet.setD( getD( 0 ), 0 );
 
 const Int32 top = length;
 
-// Count starts at 1, so it's the prime 3.
 for( Int32 count = 1; count < last; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
 
-  Int32 accumD = getAccumD( top, // row
+  Int32 accumD = getAccum( top, // row
                              count, // column
                              prime,
                              crtMath );
 
   toSet.setD( accumD, count );
   }
+}
+
+
+
+bool Crt2::isGoodXAt( const Int32 where,
+                  const GoodX& goodX,
+                  const CrtMath& crtMath,
+                  const SPrimes& sPrimes ) const
+{
+const Int32 top = length;
+Int32 row = top;
+if( row > where )
+  row = where;
+
+Int32 prime = sPrimes.getPrimeAt( where );
+
+Int32 accumD = getAccum( row, // row
+                         where, // column
+                         prime,
+                         crtMath );
+
+return goodX.getVal( where, accumD );
+}
+
+
+
+Int32 Crt2::isGoodX( const Int32 start,
+                const GoodX& goodX,
+                const CrtMath& crtMath,
+                const SPrimes& sPrimes ) const
+{
+// const Int32 top = length;
+
+for( Int32 where = start; where < last; where++ )
+  {
+  Int32 prime = sPrimes.getPrimeAt( where );
+
+  Int32 accumD = getAccum( where, // row
+                           where, // column
+                           prime,
+                           crtMath );
+
+  if( !goodX.getVal( where, accumD ))
+    return where;
+
+  }
+
+return last + 1;
 }
 
 
@@ -616,19 +683,18 @@ bool Crt2::setInvCrt( Crt2& prime2Crt2,
                       const MultInv& multInv,
                       const CrtMath& crtMath )
 {
-if( getD( 0 ) == 0 )
+if( getD( 0 ) == 0 ) // It's an even number.
   return false;
 
 prime2Crt2.setToOne();
 
 const Int32 top = length;
 
-// Count starts at 1, so it's the prime 3.
 for( Int32 count = 1; count < last; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
 
-  Int32 accumD = getAccumD( top, // row
+  Int32 accumD = getAccum( top, // row
                              count, // column
                              prime,
                              crtMath );
@@ -637,9 +703,7 @@ for( Int32 count = 1; count < last; count++ )
   // either one of the small primes in a Crt
   // number, or if it is a composite number
   // with at least one factor that is a small
-  // prime.  So if the biggest prime in a Crt
-  // number is 3691, then the first number
-  // after 1 that it returns true on is 3697.
+  // prime.
 
   if( accumD == 0 )
     return false;
@@ -674,7 +738,7 @@ bool Crt2::setInvDigit( const Int32 where,
                         const CrtMath& crtMath,
                         const MultInv& multInv )
 {
-Int32 accumD = getAccumD( where - 1,
+Int32 accumD = getAccum( where - 1,
                            where,
                            prime,
                            crtMath );
@@ -710,3 +774,13 @@ if( length > maxLen )
 return true;
 }
 
+
+
+Str Crt2::toStr( const CrtMath& crtMath,
+                 IntegerMath& intMath )
+{
+Integer showIt;
+toInteger( crtMath, showIt, intMath );
+Str showS =  intMath.toString10( showIt );
+return showS;
+}

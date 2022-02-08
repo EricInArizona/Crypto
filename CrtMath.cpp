@@ -83,7 +83,7 @@ for( Int32 count = 1; count < last; count++ )
                                    sPrimes );
 
   // Multiply it for the next bigBase.
-  intMath.multiplyInt24( bigBase,
+  intMath.multiplyInt( bigBase,
                     sPrimes.getPrimeAt( count ));
   }
 }

@@ -518,8 +518,13 @@ else
 // left (multiplying by twos) the MaxValue
 // upper limit is more accurate.
 // This is called normalization.
+
+// This is also used in IntegerMath.sqrareRoot().
 Int32 Division::findShiftBy( Int64 toTest )
 {
+if( toTest == 0 )
+  throw "toTest is zero in findShiftBy.";
+
 Int32 shiftBy = 0;
 // If it's not already shifted all the way over
 // to the left, shift it all the way over.

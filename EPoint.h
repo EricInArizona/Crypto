@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021.
+// Copyright Eric Chauvin, 2021 - 2022.
 
 
 
@@ -31,8 +31,8 @@ class EPoint
   // Domain parameters: (p, a, b, G, n, h )
   // The A and B coeffients define the curve.
   // The curve used in Bitcoin: y^2 = x^3 + 7
-  static const Uint32 coefA = 1;
-  static const Uint32 coefB = 7;
+  static const Int32 coefA = 1;
+  static const Int32 coefB = 7;
 
   inline bool getInfin( void ) const
     {

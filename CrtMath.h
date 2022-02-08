@@ -41,13 +41,22 @@ class CrtMath
   inline Int32 getCrtDigit( const Int32 row,
                        const Int32 col ) const
     {
-    RangeC::test( row, 0, last - 1,
-            "CrtMath.getCrtDigit( row range." );
+    // RangeC::test( row, 0, last - 1,
+      //    "CrtMath.getCrtDigit row range." );
 
-    RangeC::test( col, 0, last - 1,
-            "CrtMath.getCrtDigit( col range." );
+    // RangeC::test( col, 0, last - 1,
+      //    "CrtMath.getCrtDigit col range." );
 
     return baseArCrt[row].getD( col );
+    }
+
+  inline Int32 getBaseByte( const Int32 row )
+                                          const
+    {
+    // RangeC::test( row, 0, last - 1,
+      //    "CrtMath.getBaseByte row range." );
+
+    return baseAr[row].getD( 0 ) & 0xFF;
     }
 
   };
