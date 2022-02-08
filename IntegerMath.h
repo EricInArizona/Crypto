@@ -36,7 +36,8 @@ class IntegerMath
   IntegerMath( void );
   IntegerMath( const IntegerMath& in );
   ~IntegerMath( void  );
-  static Int64 findLSqrRoot( const Int64 toMatch );
+  static Int64 find64SqrRoot(
+                          const Int64 toMatch );
   Int32 isDivisibleBySmallPrime(
                         const Integer& toTest,
                         const SPrimes& sPrimes );
@@ -50,8 +51,8 @@ class IntegerMath
   void subtractPositive( Integer& result,
                          const Integer& toSub );
 
-  void multiplyInt24( Integer& result,
-                      const Int64 toMul );
+  void multiplyInt( Integer& result,
+                    const Int64 toMul );
   Int32 multInt24FromCopy( Integer& result,
                          const Integer& from,
                          const Int64 toMul );

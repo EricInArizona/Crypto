@@ -44,3 +44,19 @@ for( Int32 count = 0; count < last; count++ )
     }
   }
 }
+
+
+
+void GoodX::setAllFalse( const SPrimes& sPrimes )
+{
+for( Int32 count = 0; count < last; count++ )
+  {
+  Int32 prime = sPrimes.getPrimeAt( count );
+
+  for( Int32 countF = 0; countF < prime;
+                                    countF++ )
+    {
+    bArrays[count].setVal( countF, false );
+    }
+  }
+}

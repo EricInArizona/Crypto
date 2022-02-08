@@ -41,8 +41,9 @@ class Int32Array
     // This might not be using lastAppend.
     // It might not be using appendVal().
     // So don't test here for that range.
-    RangeC::test( where, 0, arraySize - 1,
-         "Int32Array.getVal arraySize range." );
+
+    // RangeC::test( where, 0, arraySize - 1,
+      //  "Int32Array.getVal arraySize range." );
 
     return iArray[where];
     }
@@ -50,8 +51,8 @@ class Int32Array
   inline void setVal( const Int32 where,
                       const Int32 toSet )
     {
-    RangeC::test( where, 0, arraySize - 1,
-            "Int32Array.setVal where range." );
+    // RangeC::test( where, 0, arraySize - 1,
+       //   "Int32Array.setVal where range." );
 
     iArray[where] = toSet;
     }

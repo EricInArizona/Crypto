@@ -64,9 +64,9 @@ for( Int32 count = 0; count <= last; count++ )
 void Integer::copyUpTo( const Integer& from,
                         const Int32 where )
 {
-RangeC::test( where, 0,
-                  ProjConst::digitArraySize - 1,
-                  "Integer.copyUpTo() range." );
+// RangeC::test( where, 0,
+//               ProjConst::digitArraySize - 1,
+//                "Integer.copyUpTo() range." );
 
 negative = from.negative;
 index = where;
@@ -80,7 +80,7 @@ for( Int32 count = 0; count <= where; count++ )
 bool Integer::isEqualToInt24( const Int32 toTest )
                                            const
 {
-RangeC::test( toTest, 0, 0xFFFFFF,
+RangeC::test2( toTest, 0, 0xFFFFFF,
               "Integer.isEqualToInt24() size." );
 
 if( negative )
@@ -266,7 +266,7 @@ if( carry != 0 )
 
 void Integer::addLong48( Int64 toAdd )
 {
-RangeC::test( toAdd, 0, 0xFFFFFFFFFFFFL,
+RangeC::test2( toAdd, 0, 0xFFFFFFFFFFFFL,
         "Integer.addLong48() toAdd range." );
 
 D[0] += toAdd & 0xFFFFFF;

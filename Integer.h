@@ -86,7 +86,7 @@ class Integer
   inline bool isMoreThanInt24( const Int32 check )
                                            const
     {
-    RangeC::test( check, 0, 0xFFFFFF,
+    RangeC::test2( check, 0, 0xFFFFFF,
             "Integer.isMoreThanInt24() size." );
 
     if( negative )
@@ -125,9 +125,9 @@ class Integer
 
   inline void setIndex( const Int32 setTo )
     {
-    RangeC::test( setTo, 0,
-               ProjConst::digitArraySize - 1,
-                "Integer.setIndex() range." );
+    // RangeC::test( setTo, 0,
+       //        ProjConst::digitArraySize - 1,
+       //         "Integer.setIndex() range." );
 
     index = setTo;
     }
@@ -135,9 +135,9 @@ class Integer
 
   inline Int64 getD( const Int32 where ) const
     {
-    RangeC::test( where, 0,
-               ProjConst::digitArraySize - 1,
-                       "Integer.getD() range." );
+    // RangeC::test( where, 0,
+       //      ProjConst::digitArraySize - 1,
+       //             "Integer.getD() range." );
 
     return D[where];
     }
@@ -148,11 +148,11 @@ class Integer
     // I want to be able to use toSet values
     // that might be a full 48 bits long.
 
-    RangeC::test( where, 0,
-               ProjConst::digitArraySize - 1,
-               "Integer.setD() where range." );
+    // RangeC::test( where, 0,
+    //           ProjConst::digitArraySize - 1,
+    //          "Integer.setD() where range." );
 
-    RangeC::test( toSet, 0, 0xFFFFFFFFFFFFL,
+    RangeC::test2( toSet, 0, 0xFFFFFFFFFFFFL,
                 "Integer.setD() toSet range." );
 
     D[where] = toSet;
@@ -170,7 +170,7 @@ class Integer
 
   inline void setFromInt24( const Int32 toSet )
     {
-    RangeC::test( toSet, 0, 0xFFFFFF,
+    RangeC::test2( toSet, 0, 0xFFFFFF,
               "Integer.setFromInt24() size." );
 
     negative = false;
@@ -180,7 +180,7 @@ class Integer
 
   inline void setFromLong48( const Int64 toSet )
     {
-    RangeC::test( toSet, 0, 0xFFFFFFFFFFFFL,
+    RangeC::test2( toSet, 0, 0xFFFFFFFFFFFFL,
         "Integer.setFromLong48() toSet range." );
 
     negative = false;

@@ -29,11 +29,13 @@ class GoodX
   GoodX( const GoodX& in );
   ~GoodX( void );
   void init( const SPrimes& sPrimes );
+  void setAllFalse( const SPrimes& sPrimes );
+
   inline bool getVal( const Int32 primeAt,
                       const Int32 where ) const
     {
-    RangeC::test( primeAt, 0, last - 1,
-            "GoodX.getVal primeAt range." );
+    // RangeC::test( primeAt, 0, last - 1,
+      //      "GoodX.getVal primeAt range." );
 
     return bArrays[primeAt].getVal( where );
     }
@@ -42,10 +44,10 @@ class GoodX
                       const Int32 where,
                       const bool toSet )
     {
-    RangeC::test( primeAt, 0, last - 1,
-            "GoodX.setVal primeAt range." );
+    // RangeC::test( primeAt, 0, last - 1,
+      //     "GoodX.setVal primeAt range." );
 
-    return bArrays[primeAt].setVal( where, toSet );
+    bArrays[primeAt].setVal( where, toSet );
     }
 
   };

@@ -24,6 +24,14 @@ while( true )
     // return;
     }
 
+  // For testing.
+  if( setToIndex == 1 )
+    {
+    // Make it short
+    result.setD( 1, result.getD( 1 ) & 0xFFFF );
+    }
+
+
   // Make sure that it's the size I think it is.
   if( result.getIndex() < setToIndex )
     throw "Size of random prime is wrong.";

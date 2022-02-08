@@ -36,13 +36,13 @@ delete[] scratch;
 
 
 // static
-Int64 IntegerMath::findLSqrRoot(
+Int64 IntegerMath::find64SqrRoot(
                           const Int64 toMatch )
 {
 // The result has to be a 24 bit number max.
 // So toMatch can't be bigger than this.
-RangeC::test( toMatch, 0, 0xFFFFFFFFFFFFL,
-        "IntegerMath.findLSqrRoot() toMatch." );
+RangeC::test2( toMatch, 0, 0xFFFFFFFFFFFFL,
+      "IntegerMath.find64SqrRoot() toMatch." );
 
 // For 24 bits.
 Int64 oneBit = 0x800000;
@@ -57,15 +57,19 @@ for( Int32 count = 0; count < 24; count++ )
   oneBit >>= 1;
   }
 
-RangeC::test( result, 1, 0xFFFFFFFFFFFFL,
-        "FindLSqrRoot() Result was zero." );
+RangeC::test2( result, 0, 0xFFFFFFFFFFFFL,
+    "intMath Find64SqrRoot() Result range." );
 
-RangeC::test( result * result, 0, toMatch,
-        "FindULSqrRoot() Result is too high." );
+RangeC::test2( result * result, 0, toMatch,
+        "intMath Find64SqrRoot() too high." );
 
-RangeC::test( (result + 1) * (result + 1),
-             toMatch + 1, 0xFFFFFFFFFFFFL,
-        "FindULSqrRoot() Result is too low." );
+// 0xFF FFFFFF FFFFFFL is a lot bigger than
+// this can be.  So it is only checking against
+// the low of toMatch + 1.
+
+RangeC::test2( (result + 1) * (result + 1),
+             toMatch + 1, 0xFFFFFFFFFFFFFFL,
+        "intMath FindL64SqrRoot() too low." );
 
 return result;
 }
@@ -424,11 +428,11 @@ result.setIndex( 0 );
 
 
 
-void IntegerMath::multiplyInt24( Integer& result,
+void IntegerMath::multiplyInt( Integer& result,
                              const Int64 toMul )
 {
-RangeC::test( toMul, 0, 0xFFFFFF,
-   "IntegerMath.multiplyInt24( toMul range." );
+RangeC::test2( toMul, 0, 0xFFFFFF,
+   "IntegerMath.multiplyInt( toMul range." );
 
 if( toMul == 0 )
   {
@@ -477,7 +481,7 @@ Int32 IntegerMath::multInt24FromCopy(
                           const Integer& from,
                           const Int64 toMul )
 {
-RangeC::test( toMul, 0, 0xFFFFFF,
+RangeC::test2( toMul, 0, 0xFFFFFF,
   "IntegerMath.multInt24FromCopy() toMul range." );
 
 const Int32 fromCopyIndex = from.getIndex();
@@ -512,7 +516,7 @@ return result.getIndex();
 void IntegerMath::multiplyLong48( Integer& result,
                             const Int64 toMul )
 {
-RangeC::test( toMul, 0, 0xFFFFFFFFFFFFL,
+RangeC::test2( toMul, 0, 0xFFFFFFFFFFFFL,
   "IntegerMath.multiplyLong48() toMul range." );
 
 if( result.isZero())
@@ -531,7 +535,7 @@ Int64 B0 = toMul & 0xFFFFFF;
 Int64 B1 = toMul >> 24;
 if( B1 == 0 )
   {
-  multiplyInt24( result, B0 );
+  multiplyInt( result, B0 );
   return;
   }
 
@@ -956,7 +960,7 @@ Int64 toMatch;
 if( fromSqr.isLong48() )
   {
   toMatch = fromSqr.getAsLong48();
-  sqrRoot.setD( 0, findLSqrRoot( toMatch ));
+  sqrRoot.setD( 0, find64SqrRoot( toMatch ));
   sqrRoot.setIndex( 0 );
   if( (sqrRoot.getD(0 ) * sqrRoot.getD( 0 )) ==
                                         toMatch )
@@ -980,10 +984,22 @@ else
                       fromSqr.getIndex() - 1 );
   }
 
-sqrRoot.setD( testIndex, findLSqrRoot( toMatch ));
+// It could be setting this to zero.
+sqrRoot.setD( testIndex, find64SqrRoot(
+                                      toMatch ));
 testIndex--;
+Int32 sqrIndex = 0;
+
 while( true )
   {
+  sqrIndex = sqrRoot.getIndex();
+  if( sqrRoot.getD( sqrIndex ) == 0 )
+    {
+    if( sqrIndex != 0 )
+      sqrRoot.setIndex( sqrIndex - 1 );
+
+    }
+
   searchSqrtXPart( testIndex, fromSqr, sqrRoot );
   if( testIndex == 0 )
     break;
@@ -991,9 +1007,19 @@ while( true )
   testIndex--;
   }
 
+
+sqrIndex = sqrRoot.getIndex();
+if( sqrRoot.getD( sqrIndex ) == 0 )
+  {
+  if( sqrIndex != 0 )
+    sqrRoot.setIndex( sqrIndex - 1 );
+
+  }
+
 // Avoid squaring the whole thing to see if
 // it's an exact square root:
-if( ((sqrRoot.getD( 0 ) * sqrRoot.getD( 0 )) &
+Int64 digitB = sqrRoot.getD( 0 );
+if( ((digitB * digitB) &
                0xFFFFFF) != fromSqr.getD( 0 ))
   return false;
 
@@ -1174,10 +1200,10 @@ Int64 IntegerMath::mod48FromTwoLongs( Int64 p1,
                                   Int64 p0,
                                   Int64 divisor )
 {
-RangeC::test( p0, 0, 0xFFFFFFFFFFFFL,
+RangeC::test2( p0, 0, 0xFFFFFFFFFFFFL,
         "IntegerMath.mod48FromTwoLongs() p0." );
 
-RangeC::test( p1, 0, 0xFFFFFFFFFFFFL,
+RangeC::test2( p1, 0, 0xFFFFFFFFFFFFL,
         "IntegerMath.mod48FromTwoLongs() p1." );
 
 if( divisor <= 0xFFFFFF )

@@ -34,16 +34,16 @@ class IntBuf
 
   inline void setIndex( const Int32 setTo )
     {
-    RangeC::test( setTo, 0, last - 1,
-                  "IntBuf.setIndex() range." );
+    // RangeC::test( setTo, 0, last - 1,
+       //        "IntBuf.setIndex() range." );
 
     index = setTo;
     }
 
   inline Int32 getD( const Int32 where ) const
     {
-    RangeC::test( where, 0, last - 1,
-                    "IntBuf.getD() range." );
+    // RangeC::test( where, 0, last - 1,
+       //           "IntBuf.getD() range." );
 
     return D[where];
     }
@@ -52,12 +52,12 @@ class IntBuf
   inline void setD( const Int32 where,
                     const Int32 toSet )
     {
-    RangeC::test( where, 0, last - 1,
-                     "IntBuf.setD() range." );
+    // RangeC::test( where, 0, last - 1,
+       //              "IntBuf.setD() range." );
 
     // 24 bits.
-    RangeC::test( toSet, 0, 0xFFFFFF,
-                 "IntBuf.setD() toSet size." );
+    // RangeC::test( toSet, 0, 0xFFFFFF,
+       //        "IntBuf.setD() toSet size." );
 
     D[where] = toSet;
     }
