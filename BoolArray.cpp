@@ -48,4 +48,3 @@ arraySize = howBig;
 delete[] bArray;
 bArray = new bool[CastE::i32ToU64( arraySize )];
 }
-
