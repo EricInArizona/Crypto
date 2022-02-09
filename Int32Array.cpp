@@ -80,3 +80,15 @@ if( (lastAppend + 2) <= arraySize )
 iArray[lastAppend] = toSet;
 lastAppend++;
 }
+
+
+void Int32Array::copy( const Int32Array& in )
+{
+lastAppend = 0;
+const Int32 max = in.getLastAppend();
+for( Int32 count = 0; count < max; count++ )
+  appendVal( in.getVal( count ));
+
+}
+
+

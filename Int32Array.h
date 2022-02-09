@@ -57,4 +57,6 @@ class Int32Array
     iArray[where] = toSet;
     }
 
+  void copy( const Int32Array& in );
+
   };

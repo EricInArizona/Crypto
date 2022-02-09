@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -11,7 +11,7 @@ intBufAr = new IntBuf[last];
 }
 
 
-// Copy constructor.
+
 Exponents::Exponents( const Exponents& in )
 {
 intBufAr = new IntBuf[last];
@@ -62,7 +62,7 @@ X.copy( currentBase );
 // zero, gets multiplied by 1.
 
 // For each bit of the exponent.
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
   X.copyToIntBuf( intBufAr[count] );
 
@@ -149,7 +149,7 @@ Integer oneBase;
    //     "Top of loop.\n" );
 
 // For each bit.
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; count < last; count++ )
   {
   if( (expCopy.getD( 0 ) & 1) == 1 )
     {

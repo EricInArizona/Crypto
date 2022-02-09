@@ -28,7 +28,7 @@ while( true )
   if( setToIndex == 1 )
     {
     // Make it short
-    result.setD( 1, result.getD( 1 ) & 0xFFFF );
+    result.setD( 1, result.getD( 1 ) & 0x3FF );
     }
 
 

@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin 2021.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -17,7 +17,7 @@ class Exponents
   {
   private:
   Int32 testForCopy = 123;
-  static const Uint32 last =
+  static const Int32 last =
                      ProjConst::exponentsLast;
   Mod mod;
   IntBuf* intBufAr;

@@ -5,6 +5,7 @@
 #include "FindFacCrt.h"
 #include "Division.h"
 #include "QuadRes.h"
+#include "QRTree.h"
 
 
 
@@ -289,6 +290,8 @@ prod.setFromInteger( pubKeyN,
 
 setGoodXQuadRes( prod, goodX, sPrimes, quadRes );
 
+QRTree qRTree;
+
 Crt2 testX;
 
 // Make it start above zero so revInc()
@@ -321,7 +324,7 @@ const Int32 prodByte = pubKeyN.getD( 0 ) & 0xFF;
 Int32 howMany = 0;
 Int64 howManyMissed = 0;
 // while( true )
-for( Int64 count = 0; count < 400000000L;
+for( Int64 count = 0; count < 500000000L;
                                    count++ )
   {
   // testX.revInc1( sPrimes );
@@ -345,19 +348,16 @@ for( Int64 count = 0; count < 400000000L;
   // Int32 accumByte = testX.getAccumByte(
      //                     testXLength, crtMath );
 
-  if( testXLength > 7 )
-    {
-    if( !testX.isGoodXAt( 3, goodX, crtMath,
+  if( !testX.isGoodXAt( 3, goodX, crtMath,
                                   sPrimes ))
-      {
-      howManyMissed++;
-      // testX.resetUpward( sPrimes, goodX,
+    {
+    howManyMissed++;
+    // testX.resetUpward( sPrimes, goodX,
       //                          crtMath );
-      continue;
-      }
+    continue;
     }
 
-  if( testX.isGoodX( testXLength, goodX,
+  if( testX.isGoodX( 0, goodX,
                      crtMath, sPrimes ) <
                     ProjConst::crtDigitArraySize )
     {
