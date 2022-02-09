@@ -7,7 +7,6 @@
 
 // I never use the C preprocessor except to use
 // #include statements.
-// Never ever.  It is antiquated.
 
 
 #include "BasicTypes.h"
@@ -24,7 +23,7 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "2/7/2022";
+    return "2/9/2022";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );
