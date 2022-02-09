@@ -3,16 +3,19 @@
 
 
 // The first few numbers for the base:
-// 1             1
-// 2             2
-// 3             6
-// 5            30
-// 7           210
-// 11        2,310
-// 13       30,030
-// 17      510,510
-// 19    9,699,690
-// 23  223,092,870
+// 1                  1
+// 2                  2
+// 3                  6
+// 5                 30
+// 7                210
+// 11             2,310
+// 13            30,030
+// 17           510,510
+// 19         9,699,690
+// 23       223,092,870
+// 29     6,469,693,230   It is a long at 29.
+// 31   200,560,490,130
+// 37 7,420,738,134,810
 
 
 
@@ -179,17 +182,7 @@ for( Int32 count = top - 1; count >= 0; count-- )
     if( isGoodXAt( count, goodX, crtMath,
                                    sPrimes ))
       {
-      // It only calls resetUpward once every
-      // time it gets down to this level.
-      // (count + 5) < top.  Like for
-      // example goodX would be checked
-      // 11 * 13 * 17 * 19 * 23 times before
-      // it calls this again.  But with bigger
-      // primes than this example.
 
-      if( (count + 5) < top )
-        resetUpward( sPrimes, goodX, crtMath );
- 
       return;
       }
     }
@@ -198,39 +191,6 @@ for( Int32 count = top - 1; count >= 0; count-- )
 // Zero at the top gets checked.
 length = top + 1;
 digitAr[top + 1] = 0;
-
-resetUpward( sPrimes, goodX, crtMath );
-}
-
-
-
-void Crt2::resetUpward( const SPrimes& sPrimes,
-                        const GoodX& goodX,
-                        const CrtMath& crtMath )
-{
-const Int32 top = length;
-
-for( Int32 count = 0; (count + 1) < top;
-                                    count++ )
-  {
-  Int32 prime = sPrimes.getPrimeAt( count );
-
-  // If it wraps to zero, keep going if zero
-  // is not a goodX.
-  const Int32 makeSure = prime + 1;
-  for( Int32 countD = 0; countD <= makeSure;
-                                     countD++ )
-    {
-    if( isGoodXAt( count, goodX, crtMath,
-                                      sPrimes ))
-      break;
-
-    digitAr[count]++;
-    if( digitAr[count] >= prime )
-      digitAr[count] = 0;
-
-    }
-  }
 }
 
 

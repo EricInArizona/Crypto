@@ -9,9 +9,7 @@ recentfile5	C:\Eric\Main\Crypto\Crt2.h
 recentfile6	C:\Eric\Main\Crypto\Crt2.cpp
 recentfile7	C:\Eric\Main\Crypto\Fermat.cpp
 recentfile8	C:\Eric\Main\Crypto\FindFacCrt.h
-recentfile10	C:\Eric\Main\Crypto\Ellip.h
+recentfile10	C:\Eric\Main\Crypto\QRTree.h
 recentfile9	C:\Eric\Main\Crypto\FindFacCrt.cpp
-recentfile11	C:\Eric\Main\Crypto\Ellip.cpp
-recentfile12	C:\Eric\Main\Crypto\EPoint.h
-recentfile13	C:\Eric\Main\Crypto\EPoint.cpp
-recentfile14	C:\Eric\Main\Crypto\Integer.h
+recentfile11	C:\Eric\Main\Crypto\QRTree.cpp
+recentfile12	C:\Eric\Main\Crypto\QRTreeNode.h

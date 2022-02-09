@@ -277,10 +277,6 @@ class Crt2
   Str toStr( const CrtMath& crtMath,
              IntegerMath& intMath );
 
-  void resetUpward( const SPrimes& sPrimes,
-                    const GoodX& goodX,
-                    const CrtMath& crtMath );
-
   bool isGoodXAt( const Int32 where,
                   const GoodX& goodX,
                   const CrtMath& crtMath,

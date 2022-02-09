@@ -13,7 +13,6 @@ pArray = new EPoint[last];
 }
 
 
-// Copy constructor.
 Ellip::Ellip( const Ellip& in )
 {
 pArray = new EPoint[last];
@@ -106,8 +105,9 @@ for( Int32 x = 0; x < prime; x++ )
   right.addLong48( EPoint::coefB );
 
 // =====
-// return a zero on the square root function if it
-// has no square root.
+
+  // Now find the modular square root.
+
 
   // Tonelli Shanks algorithm
   // How does that work?
@@ -129,7 +129,6 @@ for( Int32 x = 0; x < prime; x++ )
   // right = y*2 - z * modulus
   // That's if the square root exists.
   // right has to be congruent to a square,
-  // but that only happens about half the time?
 
 
   // mod.negate( temp, modulus, intMath );
@@ -156,6 +155,7 @@ final int pointArraySize =
     // Add only one point at Infinity.
     EPoint point = new EPoint();
     point.makeInfinite();
+// Set the object in to the array like this?
     pointArray[pointArrayLast] = point;
     pointArrayLast++;
 
