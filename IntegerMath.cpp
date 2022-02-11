@@ -36,13 +36,29 @@ delete[] scratch;
 
 
 // static
-Int64 IntegerMath::find64SqrRoot(
+Int64 IntegerMath::find64SqrRoot2(
                           const Int64 toMatch )
 {
 // The result has to be a 24 bit number max.
 // So toMatch can't be bigger than this.
 RangeC::test2( toMatch, 0, 0xFFFFFFFFFFFFL,
       "IntegerMath.find64SqrRoot() toMatch." );
+
+if( toMatch == 0 )
+  return 0;
+
+// 3 = 0b011
+if( toMatch < 4 )
+  return 1;
+
+if( toMatch < 9 )
+  return 2;
+
+// 4 * 4 = 16
+// 4 =    0b0100
+// 16 = 0b010000
+if( toMatch < 16 )
+  return 3;
 
 // For 24 bits.
 Int64 oneBit = 0x800000;
@@ -946,21 +962,53 @@ result.setIndex( totalIndex );
 // might not increment the index to an odd number.
 // (So if the Index was 5 its square root would
 // have an Index of 5 / 2 = 2.)
-// The SquareRoot1() method uses FindLSqrRoot()
-// either to find the whole answer, if it's a
-// small number, or it uses it to find the top
-// part.  Then from there it goes on to a bit by
-// bit search with TestSqrtBits().
+
+void IntegerMath::setsqrRootTop(
+                          const Integer& fromSqr,
+                          Integer& sqrRoot )
+{
+Int64 toMatch;
+
+// for( Int32 count = 0; count < 3; count++ )
+  // {
+  Int32 testIndex = fromSqr.getIndex() >> 1;
+  sqrRoot.setDigitAndClear( testIndex, 1 );
+  if( (testIndex << 1) >
+                    (fromSqr.getIndex() - 1) )
+    {
+    toMatch = fromSqr.getD( fromSqr.getIndex());
+    }
+  else
+    {
+    toMatch = fromSqr.getD(
+                      fromSqr.getIndex()) << 24;
+    toMatch |= fromSqr.getD(
+                      fromSqr.getIndex() - 1 );
+    }
+
+  // It could be setting this to zero.
+  Int64 topD = find64SqrRoot2( toMatch );
+  if( topD == 0 )
+    throw
+      "This needs work. Need a new squareRoot().";
+
+  sqrRoot.setD( testIndex, topD );
+  // }
+
+}
+
+
 
 bool IntegerMath::squareRoot(
                           const Integer& fromSqr,
                           Integer& sqrRoot )
 {
 Int64 toMatch;
+
 if( fromSqr.isLong48() )
   {
   toMatch = fromSqr.getAsLong48();
-  sqrRoot.setD( 0, find64SqrRoot( toMatch ));
+  sqrRoot.setD( 0, find64SqrRoot2( toMatch ));
   sqrRoot.setIndex( 0 );
   if( (sqrRoot.getD(0 ) * sqrRoot.getD( 0 )) ==
                                         toMatch )
@@ -970,7 +1018,12 @@ if( fromSqr.isLong48() )
 
   }
 
+setsqrRootTop( fromSqr, sqrRoot );
+
+
 Int32 testIndex = fromSqr.getIndex() >> 1;
+
+/*
 sqrRoot.setDigitAndClear( testIndex, 1 );
 if( (testIndex << 1) > (fromSqr.getIndex() - 1) )
   {
@@ -985,8 +1038,14 @@ else
   }
 
 // It could be setting this to zero.
-sqrRoot.setD( testIndex, find64SqrRoot(
-                                      toMatch ));
+Int64 topD = find64SqrRoot2( toMatch );
+if( topD == 0 )
+  throw
+    "This needs work. Need a new squareRoot().";
+
+sqrRoot.setD( testIndex, topD );
+*/
+
 testIndex--;
 Int32 sqrIndex = 0;
 

@@ -36,7 +36,7 @@ class IntegerMath
   IntegerMath( void );
   IntegerMath( const IntegerMath& in );
   ~IntegerMath( void  );
-  static Int64 find64SqrRoot(
+  static Int64 find64SqrRoot2(
                           const Int64 toMatch );
   Int32 isDivisibleBySmallPrime(
                         const Integer& toTest,
@@ -80,6 +80,8 @@ class IntegerMath
   void multiplyTopOne( Integer& result,
                        const Integer& toMul );
   bool squareRoot( const Integer& fromSqr,
-                            Integer& sqrRoot );
+                   Integer& sqrRoot );
+  void setsqrRootTop( const Integer& fromSqr,
+                      Integer& sqrRoot );
 
   };

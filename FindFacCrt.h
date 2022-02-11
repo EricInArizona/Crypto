@@ -49,23 +49,7 @@ class FindFacCrt
                  const CrtMath& crtMath,
                  FileIO& mainIO );
 
-  bool getSmallFactor2(
-                 const Integer& pubKeyN,
-                 Integer& find1,
-                 Integer& find2,
-                 IntegerMath& intMath,
-                 const SPrimes& sPrimes,
-                 const MultInv& multInv,
-                 const CrtMath& crtMath,
-                 // GoodX& goodX,
-                 FileIO& mainIO );
-
-  void setGoodXQuadRes( Crt& prod,
-                   GoodX& goodX,
-                   const SPrimes& sPrimes,
-                   const QuadRes& quadRes );
-
-  bool getFactorsQR1( const Integer& pubKeyN,
+  bool getFactorsQR( const Integer& pubKeyN,
                       Integer& find1,
                       Integer& find2,
                       IntegerMath& intMath,
@@ -76,7 +60,7 @@ class FindFacCrt
                       const MultInv& multInv,
                       FileIO& mainIO );
 
-  bool firstTenSqr( const Integer& prod,
+  bool firstTestSqrRoot( const Integer& prod,
                     IntegerMath& intMath,
                     FileIO& mainIO );
 
@@ -92,12 +76,6 @@ class FindFacCrt
                       const Integer& foundX,
                       IntegerMath& intMath,
                       FileIO& mainIO );
-
-  void getBiggestX( const Integer& pubKeyN,
-                    Integer& bigX,
-                    IntegerMath& intMath,
-                    const SPrimes& sPrimes,
-                    FileIO& mainIO );
 
   bool hasFactors( const Crt2& testX,
                    const Integer& pubKeyN,
