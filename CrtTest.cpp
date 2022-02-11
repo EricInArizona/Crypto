@@ -12,6 +12,10 @@
 
 CrtTest::CrtTest( void )
 {
+// multInv and quadRes could take a while to
+// initialize with a large
+// ProjConst::crtDigitArraySize.
+
 multInv.init( sPrimes );
 crtMath.init( intMath, sPrimes );
 goodX.init( sPrimes );
@@ -32,11 +36,15 @@ throw "Don't use copy constructor for CrtTest.";
 
 void CrtTest::test( FileIO& mainIO )
 {
+// This start time doesn't include the MultInv
+// and QuadRes init times.
+// They happen before this t1 start time.
+
 TimeEC t1;
 
 mainIO.appendChars( "Starting CRT test.\n" );
 
-Int32 primeIndex = 1;
+Int32 primeIndex = 0;
 
 Int32 showBits = (primeIndex + 1) * 24;
 
@@ -47,6 +55,9 @@ mainIO.appendChars( "\n" );
 
 Integer prime1;
 Integer prime2;
+
+
+/*
 MakePrime makePrime;
 
 makePrime.makeIt( prime1,
@@ -62,6 +73,11 @@ makePrime.makeIt( prime2,
                   mod );
 
 testBasics( prime1, mainIO );
+*/
+
+prime1.setFromInt24( 3 );
+prime2.setFromInt24( 5 );
+
 
 mainIO.appendChars( "prime1:\n" );
 Str showP =  intMath.toString10( prime1 );
@@ -100,16 +116,11 @@ findFacCrt.getSmallFactor(
 */
 
 
-findFacCrt.getFactorsQR1( pubKeyN,
-                              find1,
-                              find2,
-                              intMath,
-                              sPrimes,
-                              crtMath,
-                              goodX,
-                              quadRes,
-                              multInv,
-                              mainIO );
+findFacCrt.getFactorsQR( pubKeyN, find1, find2,
+                         intMath, sPrimes,
+                         crtMath, goodX,
+                         quadRes, multInv,
+                         mainIO );
 
 /*
 mainIO.appendChars( "find1:\n" );

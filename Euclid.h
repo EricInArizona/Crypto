@@ -11,16 +11,7 @@
 #include "IntegerMath.h"
 
 
-/*
-Mult inverse is A * x = 1 + Base * y
-So (A * x = 1 + Base * y) mod 3 is one x for
-each y.
-Given a particular A and a particular Base,
-there is a particular set of x and y mod 3.
-
-The mult inverse of A mod Base is X.
-
-*/
+// Mult inverse is A * x = 1 + Base * y
 
 
 
@@ -29,12 +20,17 @@ class Euclid
   private:
 
   public:
+  static Int64 GcdL1( const Int64 x,
+                      const Int64 y );
+
   static void greatestComDiv(
                        const Integer& X,
                        const Integer& Y,
                        Integer& gcd,
                        IntegerMath& intMath );
 
+  static Int64 multInvL( const Int64 knownX,
+                         const Int64 modulus );
 
   static bool multInverse(
                        const Integer& knownX,

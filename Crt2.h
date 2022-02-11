@@ -31,14 +31,6 @@ class Crt2
   Int32* digitAr;
   Int32 length = 0;
 
-  inline void setD( Int32 setTo, Int32 index )
-    {
-    // RangeC::test( index, 0, last - 1,
-      //      "Crt2.setD index range." );
-
-    digitAr[index] = setTo;
-    }
-
   inline Int32 getTestAccum( const Int32 prime,
                          const Int32 accum,
                          const Int32 crtDigit,
@@ -171,15 +163,31 @@ class Crt2
 
   inline Int32 getD( Int32 index ) const
     {
-    // RangeC::test( index, 0, last - 1,
-       //    "Crt2.getD index range." );
+    RangeC::test2( index, 0, last - 1,
+                   "Crt2.getD index range." );
 
     return digitAr[index];
+    }
+
+  inline void setD( Int32 setTo, Int32 index )
+    {
+    RangeC::test2( index, 0, last - 1,
+                  "Crt2.setD index range." );
+
+    digitAr[index] = setTo;
     }
 
   inline Int32 getLength( void ) const
     {
     return length;
+    }
+
+  inline void setLength( Int32 setTo )
+    {
+    RangeC::test2( setTo, 0, last - 1,
+                "Crt2.setLength setTo range." );
+
+    length = setTo;
     }
 
   void toInteger( const CrtMath& crtMath,
@@ -233,12 +241,6 @@ class Crt2
 
   bool incAt( const SPrimes& sPrimes,
               const Int32 where );
-
-  void revInc1( const SPrimes& sPrimes );
-  void revInc2( const Int32 prodByte,
-                const SPrimes& sPrimes,
-                const GoodX& goodX,
-                const CrtMath& crtMath );
 
   inline Int32 getAccum( const Int32 row,
                    const Int32 col,

@@ -5,6 +5,51 @@
 #include "Euclid.h"
 #include "Division.h"
 
+// This hasn't been tested yet.
+Int64 Euclid::GcdL1( const Int64 x,
+                     const Int64 y )
+{
+
+// This is the basic Euclidean Algorithm
+// for GCD.
+
+if( x == 0 )
+  throw "GcdL1 with x that is zero.";
+
+if( y == 0 )
+  throw "GcdL1 with y that is zero.";
+
+if( x == y  )
+  return x;
+
+Int64 gcdX = x;
+Int64 gcdY = y;
+
+// Don't change the original numbers that came
+// in as parameters.
+if( x < y )
+  {
+  gcdX = y;
+  gcdY = x;
+  }
+
+while( true )
+  {
+  // This one doesn't use the quotient, but the
+  // extended algorithm does.
+  // Int64 quotient = gcdX / gcdY;
+
+  Int64 remainder = gcdX % gcdY;
+  if( remainder == 0 )
+    return gcdY; // It's the smaller one.
+
+  gcdX = gcdY;
+  gcdY = remainder;
+  }
+}
+
+
+
 
 void Euclid::greatestComDiv( const Integer& X,
                              const Integer& Y,
@@ -65,29 +110,6 @@ while( true )
 
 
 
-
-// Reciprocity.
-// They have a kind of reciprical relationship.
-
-// The extended Euclidean algorithm gives the
-// multiplicative inverse.
-
-// A*X + B*Y = GCD
-// But GCD has to be 1 or there can't
-// be a multiplicative inverse.
-
-// Either A or B has to be negative here.
-// A*X + B*Y = 1 If there's a multiplicative
-// inverse.
-
-// If B is negative then it is:
-// A*X + -B*Y = 1
-// A*X = 1 + B*Y
-// A is the multiplicative inverse of X mod B.
-// Or mod Y.
-
-// X is known.  X * inverse mod modulus = 1.
-
 bool Euclid::multInverse( const Integer& knownX,
                           const Integer& modulus,
                           Integer& inverse,
@@ -96,8 +118,7 @@ bool Euclid::multInverse( const Integer& knownX,
 // Given knownX find inverse with this modulus.
 
 // This is the standard extended Euclidean
-// Algorithm like you'd find in Wikipedia or
-// any text book.
+// Algorithm like you'd find in any text book.
 
 if( knownX.isOne())
   {
@@ -238,3 +259,113 @@ Not used:
     // any number.  So it has to be solvable
     //   mod PublicKExponent.
 */
+
+
+
+
+
+// The definition of the problem:
+// Mult inverse is A * x = 1 + Base * y
+
+// The extended Euclidean algorithm gives the
+// multiplicative inverse.
+
+// A*X + B*Y = GCD
+// But GCD has to be 1 or there can't
+// be a multiplicative inverse.
+
+// Either A or B has to be negative here.
+// A*X + B*Y = 1 If there's a multiplicative
+// inverse.
+
+// If B is negative then it is:
+// A*X + -B*Y = 1
+// A*X = 1 + B*Y
+// A is the multiplicative inverse of X mod B.
+// A is also the multiplicative inverse of X
+// mod Y.
+
+
+Int64 Euclid::multInvL( const Int64 knownX,
+                        const Int64 modulus )
+{
+// Given knownX find inverse with this modulus.
+
+// This is the standard extended Euclidean
+// Algorithm like you'd find in any text book.
+
+if( knownX == 1 )
+  {
+  // 1 * 1 = 1 mod anything.
+  return 1; // true
+  }
+
+if( knownX == 0 )
+  throw "multInvL knownX is zero.";
+
+if( modulus == 0 )
+  throw "multInvL with modulus that is zero.";
+
+if( modulus <= knownX )
+  throw "multInvL with modulus <= knownX.";
+
+Int64 bottomInverse = 0;
+Int64 starting1 = 1;
+Int64 starting0 = 0;
+Int64 initialModulus = modulus;
+Int64 startingInverse = 1;
+Int64 initialKnownX = knownX;
+Int64 inverse = 0;
+
+while( true )
+  {
+  if( initialModulus < 0 )
+    throw "The initialModulus was negative.";
+
+  if( initialKnownX < 0 )
+    throw "initialKnownX was negative.";
+
+  Int64 quotient = initialModulus /
+                               initialKnownX;
+  Int64 remainder = initialModulus %
+                               initialKnownX;
+
+  // There is no multiplicative inverse if
+  // GCD is more than 1.
+  // Also see Pollard's P - 1 algorithm.
+  if( remainder == 0 )
+    return 0; // false;
+
+  inverse = bottomInverse -
+                  (startingInverse * quotient);
+
+  Int64 holdinitialKnownX = initialModulus -
+                    (initialKnownX * quotient);
+  initialModulus = initialKnownX;
+  initialKnownX = holdinitialKnownX;
+
+  bottomInverse = startingInverse;
+  startingInverse = inverse;
+
+  Int64 holdStarting1 = starting1 -
+                        (starting0 * quotient);
+  starting1 = starting0;
+  starting0 = holdStarting1;
+
+  if( remainder == 1 )
+    break;
+
+  }
+
+if( inverse < 0 )
+  inverse += modulus;
+
+Int64 test1 = inverse * knownX;
+Int64 testMod = test1 % modulus;
+
+// By the definition of Multiplicative inverse:
+if( !(testMod == 1) )
+  throw "Euclid multInvL() is bad.\n";
+
+return inverse; // true;
+}
