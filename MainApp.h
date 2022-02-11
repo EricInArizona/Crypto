@@ -1,4 +1,4 @@
-// Copyright Eric Chauvin, 2021 - 2022.
+// Copyright Eric Chauvin 2021 - 2022.
 
 
 
@@ -23,7 +23,7 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "2/9/2022";
+    return "2/11/2022";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );

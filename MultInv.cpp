@@ -3,6 +3,7 @@
 
 
 #include "MultInv.h"
+#include "Euclid.h"
 #include "CastE.h"
 
 
@@ -37,16 +38,34 @@ delete[] i32Arrays;
 Int32 MultInv::calcMultInv( const Int32 prime,
                             const Int32 test )
 {
+return CastE::i64ToI32(
+            Euclid::multInvL( test, prime ));
+
+/*
+
+Int32 testInv = CastE::i64ToI32(
+             Euclid::multInvL( test, prime ));
+
 for( Int32 count = 1; count < prime; count++ )
   {
   Int32 check = test * count;
   check = check % prime;
   if( check == 1 )
-    return count;
+    {
+    if( testInv != count )
+      throw
+        "MultInv.calcMultInv testInv != count";
 
+    return count;
+    }
   }
 
+if( testInv != 0 )
+  throw "MultInv.calcMultInv testInv != 0";
+
+// Meaning it's false.  No inverse.
 return 0;
+*/
 }
 
 

@@ -8,13 +8,22 @@
 
 
 // This is meant to be used only by QRTree.
+// No nested classes.
+
 
 class QRTreeNode
   {
   private:
   // Int32 testForCopy = 123;
 
-  Int32 accumByte = 0;
+  // This structure is too simple now, but
+  // I want to be able to add things later.
+  // And some new idea I haven't thought
+  // of yet.
+
+  // An optimization for later:
+  // Int32 accumByte = 0;
+  // accumByte up to this node in the tree.
 
   public:
   Int32 digit = 0;
@@ -23,7 +32,7 @@ class QRTreeNode
   // QRTreeNode( const QRTreeNode& in );
   // ~QRTreeNode( void );
 
-
+/*
   inline Int32 getAccumByte( void )
     {
     return accumByte;
@@ -42,6 +51,6 @@ class QRTreeNode
     accumByte = result;
     return result;
     }
-
+*/
 
   };
