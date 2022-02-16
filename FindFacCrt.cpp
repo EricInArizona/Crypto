@@ -83,7 +83,7 @@ prodCrt2.setFromCrt( prod,
                      sPrimes,
                      multInv );
 
-const Int32 prodLength = prodCrt2.getLength();
+const Int32 prodIndex = prodCrt2.getIndex();
 
 Crt2 prime1;
 Crt2 prime2;
@@ -105,7 +105,7 @@ while( true )
     continue;
 
   if( !prime1.setInvCrt( prime2,
-                         prodLength,
+                         prodIndex,
                          prod,
                          sPrimes,
                          multInv,
@@ -148,6 +148,7 @@ return false;
 
 
 
+
 bool FindFacCrt::getFactorsQR(
                          const Integer& pubKeyN,
                          Integer& find1,
@@ -165,16 +166,13 @@ find2.setToOne();
 
 // Test the square root function in check easy.
 
-
-
-/*
 // Make sure it's not some easy factors first.
 // This should not happen for RSA type numbers.
+/*
 if( checkEasyOnes( pubKeyN, intMath, sPrimes,
                                      mainIO ))
   return true;
 */
-
 
 Crt prod;
 prod.setFromInteger( pubKeyN,
@@ -183,23 +181,33 @@ prod.setFromInteger( pubKeyN,
 
 QRTree qRTree;
 qRTree.setStartValues( pubKeyN, goodX, quadRes,
-                       crtMath, intMath,
-                       sPrimes, multInv,
+                       // crtMath,
+                       intMath,
+                       sPrimes,
+                       // multInv,
                        mainIO );
 
-if( qRTree.runIt( goodX, sPrimes, crtMath,
-                  intMath, mainIO ))
+if( qRTree.runIt( goodX,
+                 sPrimes,
+                 crtMath,
+                 multInv,
+                 intMath,
+                 mainIO ))
   {
+  return true;
+
+/*
   Crt2 testX;
   qRTree.setCrt2( testX );
   if( hasFactors( testX, pubKeyN, find1,
                   find2, intMath, crtMath,
                   mainIO ))
-    return true;
 
+    return true;
+*/
   }
 
-mainIO.appendChars( 
+mainIO.appendChars(
           "\nhasFactors returned falss.\n\n" );
 return false;
 }
@@ -287,7 +295,7 @@ bool FindFacCrt::checkEasyOnes(
                          const SPrimes& sPrimes,
                          FileIO& mainIO )
 {
-// RSA numbers wont be found with this.
+// RSA numbers won't be found with this.
 // This is to make sure I have good numbers
 // to check.
 
@@ -317,6 +325,7 @@ if( firstTestSqrRoot( prod, intMath, mainIO ))
 
 return false;
 }
+
 
 
 bool FindFacCrt::firstTestSqrRoot(

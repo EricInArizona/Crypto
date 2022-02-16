@@ -7,10 +7,9 @@
 
 #include "BasicTypes.h"
 #include "ProjConst.h"
-#include "SPrimes.h"
 #include "BoolArray.h"
-
-
+#include "RangeC.h"
+#include "SPrimes.h"
 
 
 
@@ -29,13 +28,17 @@ class GoodX
   GoodX( const GoodX& in );
   ~GoodX( void );
   void init( const SPrimes& sPrimes );
-  void setAllFalse( const SPrimes& sPrimes );
+  void setAllFalse( void );
 
   inline bool getVal( const Int32 primeAt,
                       const Int32 where ) const
     {
-    // RangeC::test( primeAt, 0, last - 1,
-      //      "GoodX.getVal primeAt range." );
+    RangeC::test2( primeAt, 0, last - 1,
+            "GoodX.getVal primeAt range." );
+
+    // BoolArray has its own range check.
+    RangeC::test2( primeAt, 0, last - 1,
+            "GoodX.getVal primeAt range." );
 
     return bArrays[primeAt].getVal( where );
     }
@@ -44,10 +47,19 @@ class GoodX
                       const Int32 where,
                       const bool toSet )
     {
-    // RangeC::test( primeAt, 0, last - 1,
-      //     "GoodX.setVal primeAt range." );
+    RangeC::test2( primeAt, 0, last - 1,
+           "GoodX.setVal primeAt range." );
 
     bArrays[primeAt].setVal( where, toSet );
+    }
+
+  inline Int32 getLengthAt( const Int32 where )
+                                          const
+    {
+    RangeC::test2( where, 0, last - 1,
+            "getLengthAt where range." );
+
+    return bArrays[where].getSize();
     }
 
   };

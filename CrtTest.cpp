@@ -20,7 +20,6 @@ multInv.init( sPrimes );
 crtMath.init( intMath, sPrimes );
 goodX.init( sPrimes );
 quadRes.init( sPrimes );
-
 }
 
 
@@ -57,7 +56,6 @@ Integer prime1;
 Integer prime2;
 
 
-/*
 MakePrime makePrime;
 
 makePrime.makeIt( prime1,
@@ -73,11 +71,14 @@ makePrime.makeIt( prime2,
                   mod );
 
 testBasics( prime1, mainIO );
-*/
 
-prime1.setFromInt24( 3 );
-prime2.setFromInt24( 5 );
+// 31, 37, 41, 43, 47, 53, 59, 61, 67,
+// 71, 73, 79, 83, 89, 97
 
+// 0 + (1 * 2) = 2
+// 1 + (1 * 2) = 3
+prime1.setFromInt24( 5 );
+prime2.setFromInt24( 3 );
 
 mainIO.appendChars( "prime1:\n" );
 Str showP =  intMath.toString10( prime1 );
@@ -118,8 +119,10 @@ findFacCrt.getSmallFactor(
 
 findFacCrt.getFactorsQR( pubKeyN, find1, find2,
                          intMath, sPrimes,
-                         crtMath, goodX,
-                         quadRes, multInv,
+                         crtMath,
+                         goodX,
+                         quadRes,
+                         multInv,
                          mainIO );
 
 /*

@@ -34,25 +34,22 @@ void GoodX::init( const SPrimes& sPrimes )
 {
 for( Int32 count = 0; count < last; count++ )
   {
-  Int32 prime = sPrimes.getPrimeAt( count );
+  const Int32 prime = sPrimes.
+                          getPrimeAt( count );
   bArrays[count].setSize( prime );
-
-  for( Int32 countF = 0; countF < prime;
-                                    countF++ )
-    {
-    bArrays[count].setVal( countF, false );
-    }
   }
+
+setAllFalse();
 }
 
 
 
-void GoodX::setAllFalse( const SPrimes& sPrimes )
+void GoodX::setAllFalse( void )
 {
+
 for( Int32 count = 0; count < last; count++ )
   {
-  Int32 prime = sPrimes.getPrimeAt( count );
-
+  const Int32 prime =  bArrays[count].getSize();
   for( Int32 countF = 0; countF < prime;
                                     countF++ )
     {

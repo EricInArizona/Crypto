@@ -73,7 +73,8 @@ for( Int32 count = 0; count < 24; count++ )
   oneBit >>= 1;
   }
 
-RangeC::test2( result, 0, 0xFFFFFFFFFFFFL,
+// It can't be more than 24 bits.
+RangeC::test2( result, 0, 0xFFFFFFL,
     "intMath Find64SqrRoot() Result range." );
 
 RangeC::test2( result * result, 0, toMatch,
@@ -787,6 +788,7 @@ void IntegerMath::square( Integer& toSquare )
 if( toSquare.isZero())
   return;
 
+// If it's negative x then x^2 is positive.
 toSquare.setNegative( false );
 
 const Int32 sqrIndex = toSquare.getIndex();
@@ -1008,6 +1010,33 @@ Int64 toMatch;
 if( fromSqr.isLong48() )
   {
   toMatch = fromSqr.getAsLong48();
+  if( toMatch == 0 )
+    {
+    sqrRoot.setToZero();
+    return true; // 0 is the square root of zero
+                 // I guess is true.
+    }
+
+  if( toMatch == 1 )
+    {
+    sqrRoot.setToOne();
+    return true;
+    }
+
+  if( toMatch == 2 )
+    {
+    sqrRoot.setToOne();
+    return false;
+    }
+
+  if( toMatch == 3 )
+    {
+    sqrRoot.setToOne();
+    return false;
+    }
+
+  // find64SqrRoot2 would throw an exception if
+  // its result was more than 24 bits.
   sqrRoot.setD( 0, find64SqrRoot2( toMatch ));
   sqrRoot.setIndex( 0 );
   if( (sqrRoot.getD(0 ) * sqrRoot.getD( 0 )) ==

@@ -13,7 +13,7 @@
 // 17           510,510
 // 19         9,699,690
 // 23       223,092,870
-// 29     6,469,693,230   It is a long at 29.
+// 29     6,469,693,230
 // 31   200,560,490,130
 // 37 7,420,738,134,810
 
@@ -54,8 +54,8 @@ delete[] digitAr;
 
 void Crt2::copy( const Crt2& toCopy )
 {
-length = toCopy.length;
-const Int32 endAt = length;
+index = toCopy.index;
+const Int32 endAt = index;
 for( Int32 count = 0; count <= endAt; count++ )
   digitAr[count] = toCopy.digitAr[count];
 
@@ -65,10 +65,10 @@ for( Int32 count = 0; count <= endAt; count++ )
 
 bool Crt2::isEqual( const Crt2& toCheck ) const
 {
-if( length != toCheck.length )
+if( index != toCheck.index )
   return false;
 
-const Int32 endAt = length;
+const Int32 endAt = index;
 for( Int32 count = 0; count <= endAt; count++ )
   {
   if( digitAr[count] != toCheck.digitAr[count] )
@@ -84,8 +84,8 @@ return true;
 bool Crt2::incAt( const SPrimes& sPrimes,
                   const Int32 where )
 {
-// RangeC::test( where, 0, length,
-   //          "Crt2::incAt where range." );
+RangeC::test2( where, 0, index,
+             "Crt2::incAt where range." );
 
 for( Int32 count = where; count < last; count++ )
   {
@@ -115,7 +115,7 @@ toSet.setFromInt24( getD( 0 ));
 
 Integer bigBase;
 
-const Int32 endAt = length;
+const Int32 endAt = index;
 for( Int32 count = 1; count <= endAt; count++ )
   {
   Int32 digit = getD( count );
@@ -206,7 +206,7 @@ for( Int32 count = 1; count < last; count++ )
       {
       if( countP != 0 )
         {
-        length = count;
+        index = count;
         accum.add( bigBase );
         }
 
@@ -282,7 +282,7 @@ for( Int32 count = 1; count < last; count++ )
       {
       if( countP != 0 )
         {
-        length = count;
+        index = count;
         accum.add( bigBase );
         }
 
@@ -333,7 +333,7 @@ for( Int32 count = 1; count < last; count++ )
       {
       if( countP != 0 )
         {
-        length = count;
+        index = count;
         }
 
       setD( countP, count );
@@ -412,7 +412,7 @@ for( Int32 count = 1; count < last; count++ )
 
       if( countP != 0 )
         {
-        length = count;
+        index = count;
         }
 
       setD( countP, count );
@@ -467,7 +467,7 @@ for( Int32 count = 1; count < last; count++ )
 
   if( testInv != 0 )
     {
-    length = count;
+    index = count;
     }
 
   setD( testInv, count );
@@ -482,7 +482,7 @@ void Crt2::setCrt( Crt& toSet,
 {
 toSet.setD( getD( 0 ), 0 );
 
-const Int32 top = length;
+const Int32 top = index;
 
 for( Int32 count = 1; count < last; count++ )
   {
@@ -498,13 +498,13 @@ for( Int32 count = 1; count < last; count++ )
 }
 
 
-
+/*
 bool Crt2::isGoodXAt( const Int32 where,
                   const GoodX& goodX,
                   const CrtMath& crtMath,
                   const SPrimes& sPrimes ) const
 {
-const Int32 top = length;
+const Int32 top = index;
 Int32 row = top;
 if( row > where )
   row = where;
@@ -518,9 +518,10 @@ Int32 accumD = getAccum( row, // row
 
 return goodX.getVal( where, accumD );
 }
+*/
 
 
-
+/*
 Int32 Crt2::isGoodX( const Int32 start,
                 const GoodX& goodX,
                 const CrtMath& crtMath,
@@ -544,7 +545,7 @@ for( Int32 where = start; where < last; where++ )
 
 return last + 1;
 }
-
+*/
 
 
 bool Crt2::setInvCrt( Crt2& prime2Crt2,
@@ -559,7 +560,7 @@ if( getD( 0 ) == 0 ) // It's an even number.
 
 prime2Crt2.setToOne();
 
-const Int32 top = length;
+const Int32 top = index;
 
 for( Int32 count = 1; count < last; count++ )
   {
@@ -637,9 +638,9 @@ Int32 testInv = inv * testD;
 testInv = testInv % prime;
 setD( testInv, where );
 if( testInv != 0 )
-  length = where;
+  index = where;
 
-if( length > maxLen )
+if( index > maxLen )
   return false;
 
 return true;

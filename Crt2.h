@@ -11,7 +11,7 @@
 #include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
-#include "GoodX.h"
+// #include "GoodX.h"
 #include "RangeC.h"
 #include "QuadRes.h"
 
@@ -29,7 +29,7 @@ class Crt2
                    ProjConst::crtDigitArraySize;
 
   Int32* digitAr;
-  Int32 length = 0;
+  Int32 index = 0;
 
   inline Int32 getTestAccum( const Int32 prime,
                          const Int32 accum,
@@ -61,6 +61,8 @@ class Crt2
     return result;
     }
 
+
+/*
   inline bool incNextVal( const Int32 where,
                        const Int32 prime,
                        const Int32 accum,
@@ -107,6 +109,8 @@ class Crt2
 
     return false;
     }
+*/
+
 
   public:
   Crt2( void );
@@ -114,26 +118,26 @@ class Crt2
   ~Crt2( void );
   inline void setToZero()
     {
-    length = 0;
+    index = 0;
     digitAr[0] = 0;
     }
 
   inline void setToOne()
     {
-    length = 0;
+    index = 0;
     digitAr[0] = 1;
     }
 
   inline void setTo3( void )
     {
-    length = 1;
+    index = 1;
     digitAr[0] = 1;  // 1
     digitAr[1] = 1;  // 2
     }
 
   inline bool isZero()
     {
-    if( length != 0 )
+    if( index != 0 )
       return false;
 
     if( digitAr[0] != 0 )
@@ -144,7 +148,7 @@ class Crt2
 
   inline bool isOne()
     {
-    if( length != 0 )
+    if( index != 0 )
       return false;
 
     if( digitAr[0] != 1 )
@@ -152,42 +156,44 @@ class Crt2
 
     return true;
     }
-
+/*
   inline Int32 digitAtTop()
     {
-    return digitAr[length];
-    }
-
-  void copy( const Crt2& toCopy );
-  bool isEqual( const Crt2& toCheck ) const;
-
-  inline Int32 getD( Int32 index ) const
-    {
-    RangeC::test2( index, 0, last - 1,
-                   "Crt2.getD index range." );
-
     return digitAr[index];
     }
+*/
 
-  inline void setD( Int32 setTo, Int32 index )
+  void copy( const Crt2& toCopy );
+
+  bool isEqual( const Crt2& toCheck ) const;
+
+  inline Int32 getD( Int32 where ) const
     {
-    RangeC::test2( index, 0, last - 1,
-                  "Crt2.setD index range." );
+    RangeC::test2( where, 0, last - 1,
+                   "Crt2.getD where range." );
 
-    digitAr[index] = setTo;
+    return digitAr[where];
     }
 
-  inline Int32 getLength( void ) const
+  inline void setD( Int32 setTo, Int32 where )
     {
-    return length;
+    RangeC::test2( where, 0, last - 1,
+                  "Crt2.setD where range." );
+
+    digitAr[where] = setTo;
     }
 
-  inline void setLength( Int32 setTo )
+  inline Int32 getIndex( void ) const
+    {
+    return index;
+    }
+
+  inline void setIndex( Int32 setTo )
     {
     RangeC::test2( setTo, 0, last - 1,
-                "Crt2.setLength setTo range." );
+                "Crt2.setIndex setTo range." );
 
-    length = setTo;
+    index = setTo;
     }
 
   void toInteger( const CrtMath& crtMath,
@@ -248,8 +254,8 @@ class Crt2
                    const CrtMath& crtMath ) const
     {
     Int32 top = row;
-    if( top > length )
-      top = length;
+    if( top > index )
+      top = index;
 
     // The crtDigit is all ones at index 0.
     // So it would be this times 1.
@@ -279,6 +285,7 @@ class Crt2
   Str toStr( const CrtMath& crtMath,
              IntegerMath& intMath );
 
+/*
   bool isGoodXAt( const Int32 where,
                   const GoodX& goodX,
                   const CrtMath& crtMath,
@@ -288,5 +295,6 @@ class Crt2
                  const GoodX& goodX,
                  const CrtMath& crtMath,
                  const SPrimes& sPrimes ) const;
+*/
 
   };
