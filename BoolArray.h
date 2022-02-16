@@ -6,7 +6,7 @@
 
 
 #include "BasicTypes.h"
-// #include "RangeC.h"
+#include "RangeC.h"
 
 
 class BoolArray
@@ -21,11 +21,15 @@ class BoolArray
   BoolArray( const BoolArray& in );
   ~BoolArray( void );
   void setSize( const Int32 howBig );
+  inline Int32 getSize( void ) const
+    {
+    return arraySize;
+    }
 
   inline bool getVal( const Int32 where ) const
     {
-    // RangeC::test( where, 0, arraySize - 1,
-       //   "BoolArray.getVal() where range." );
+    RangeC::test2( where, 0, arraySize - 1,
+           "BoolArray.getVal() where range." );
 
     return bArray[where];
     }
@@ -33,8 +37,8 @@ class BoolArray
   inline void setVal( const Int32 where,
                       const bool toSet )
     {
-    // RangeC::test( where, 0, arraySize - 1,
-       //   "BoolArray.setVal() where range." );
+    RangeC::test2( where, 0, arraySize - 1,
+             "BoolArray.setVal() where range." );
 
     bArray[where] = toSet;
     }
