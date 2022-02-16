@@ -1,5 +1,10 @@
-// Copyright Eric Chauvin 2021 - 2022.
+// Written by Eric Chauvin 2022
 
+// This is licensed under the same license
+// that Linux has.  That is the GNU General
+// Public License (GPL), version 2.
+// Except that the name of the original author,
+// Eric Chauvin, has to stay at the top.
 
 
 #pragma once

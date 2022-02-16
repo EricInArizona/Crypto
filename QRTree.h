@@ -7,12 +7,29 @@
 
 
 #include "BasicTypes.h"
-#include "QRTreeNode.h"
 #include "GoodX.h"
+#include "CrtTree.h"
 #include "SPrimes.h"
 #include "Crt2.h"
 #include "CrtMath.h"
 #include "QuadRes.h"
+
+
+// The first few numbers for the base:
+// 1                  1
+// 2                  2
+// 3                  6
+// 5                 30
+// 7                210
+// 11             2,310
+// 13            30,030
+// 17           510,510
+// 19         9,699,690
+// 23       223,092,870
+// 29     6,469,693,230
+// 31   200,560,490,130
+// 37 7,420,738,134,810
+
 
 
 class QRTree
@@ -20,28 +37,42 @@ class QRTree
   private:
   Int32 testForCopy = 123;
 
-  QRTreeNode* nodesAr;
+  CrtTree crtTree;
+
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
-  Int32 length = 0;
+  // Int32 index = 0;
   Int32 prodByte = 0;
   Integer pubKeyN;
   Crt2 bigXCrt2;
 
+  void setFromCrtTree( Crt2& toSet,
+                   const CrtMath& crtMath,
+                   const SPrimes& sPrimes,
+                   const MultInv& multInv );
+
+/*
   inline Int32 getAccum( const Int32 row,
                    const Int32 col,
                    const Int32 prime,
                    const CrtMath& crtMath ) const
     {
+    // Calling it with count - 1 when count
+    // is zero.
+    RangeC::test2( row, 0, last - 1,
+              "getAccum  where range." );
+
     Int32 top = row;
-    if( top > length )
-      top = length;
+    if( top > index )
+      top = index;
 
     // The crtDigit is all ones at index 0.
     // So it would be this times 1.
     // This is either one or zero.
     Int32 result = nodesAr[0].digit;
+    if( row == 0 )
+      return result;
 
     for( Int32 count = 1; count <= top; count++ )
       {
@@ -55,11 +86,17 @@ class QRTree
 
     return result;
     }
+*/
 
+
+/*
   inline Int32 getAccumByte( const Int32 row,
                  const CrtMath& crtMath ) const
 
     {
+    if( row < 0 )
+      return 0;
+
     // It is either zero or one.
     Int32 result = nodesAr[0].digit;
 
@@ -77,9 +114,9 @@ class QRTree
   inline bool isGoodTopAccumByte(
                      const CrtMath& crtMath )
     {
-    Int32 testBits = getAccumByte( length,
+    Int32 testBits = getAccumByte( index,
                                    crtMath );
-    // nodesAr[length].getAccumByte();
+    // nodesAr[index].getAccumByte();
 
     testBits = testBits * testBits;
     testBits += prodByte;
@@ -91,6 +128,7 @@ class QRTree
 
     return false;
     }
+*/
 
 
   void setupGoodXQuadRes( Crt& prod,
@@ -98,45 +136,29 @@ class QRTree
                        const SPrimes& sPrimes,
                        const QuadRes& quadRes );
 
-  bool isTheAnswer( const GoodX& goodX,
+  bool isAnswerSlow( // const GoodX& goodX,
                     const SPrimes& sPrimes,
                     const CrtMath& crtMath,
-                    IntegerMath& intMath );
+                    const MultInv& multInv,
+                    IntegerMath& intMath,
+                    FileIO& mainIO );
 
-  void setAllZeros( const Int32 start );
+
+  bool testTopRow( const Int32 where,
+                   const SPrimes& sPrimes,
+                   const MultInv& multInv,
+                   const GoodX& goodX,
+                   const CrtMath& crtMath,
+                   IntegerMath& intMath,
+                   FileIO& mainIO );
 
 /*
-  void setFirstGoodXUpTo(
-                   const Int32 start,
-                   const Int32 end,
-                   const SPrimes& sPrimes,
-                   const GoodX& goodX,
-                   const CrtMath& crtMath );
-*/
+  bool isGoodXAt( const Int32 where,
+               const GoodX& goodX,
+               const CrtMath& crtMath,
+               const SPrimes& sPrimes ) const;
 
-  void setFirstGoodXAt( const Int32 where,
-                 const SPrimes& sPrimes,
-                 const GoodX& goodX,
-                 const CrtMath& crtMath );
-
-  void setFirstGoodXDepth(
-                      Int32 depth,
-                      const SPrimes& sPrimes,
-                      const GoodX& goodX,
-                      const CrtMath& crtMath );
-
-  bool setNextGoodXAt( const Int32 where,
-                 const SPrimes& sPrimes,
-                 const GoodX& goodX,
-                 const CrtMath& crtMath );
-
-  bool testTopRowGoodX( const Int32 where,
-                     const SPrimes& sPrimes,
-                     const GoodX& goodX,
-                     const CrtMath& crtMath,
-                     IntegerMath& intMath );
-
-  bool isFullGoodX( const GoodX& goodX,
+  bool isFullGoodX2( const GoodX& goodX,
                 const CrtMath& crtMath,
                 const SPrimes& sPrimes ) const;
 
@@ -146,6 +168,7 @@ class QRTree
                     const MultInv& multInv,
                     const CrtMath& crtMath,
                     FileIO& mainIO );
+*/
 
   public:
   QRTree( void );
@@ -156,18 +179,19 @@ class QRTree
                    const Integer& setpubKeyN,
                    GoodX& goodX,
                    QuadRes& quadRes,
-                   const CrtMath& crtMath,
+                   // const CrtMath& crtMath,
                    IntegerMath& intMath,
                    const SPrimes& sPrimes,
-                   const MultInv& multInv,
+                   // const MultInv& multInv,
                    FileIO& mainIO );
 
   bool runIt( const GoodX& goodX,
               const SPrimes& sPrimes,
               const CrtMath& crtMath,
+              const MultInv& multInv,
               IntegerMath& intMath,
               FileIO& mainIO );
 
-  void setCrt2( Crt2& toSet );
+  // void setCrt2( Crt2& toSet );
 
   };

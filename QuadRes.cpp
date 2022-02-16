@@ -37,7 +37,7 @@ for( Int32 count = 0; count < last; count++ )
   Int32 prime = sPrimes.getPrimeAt( count );
   bArrays[count].setSize( prime );
 
-
+  // zero squared is zero.
   bArrays[count].setVal( 0, true );
 
   for( Int32 countF = 1; countF < prime;

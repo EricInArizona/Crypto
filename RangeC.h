@@ -18,28 +18,16 @@ class RangeC
 
   public:
 
-
-  // I never use the C preprocessor except to
-  // use #include statements.
-  // Changing the name of test() to something like
-  // test2() would make the compiler show where
-  // all of the range checks are.
-  // Same for testNothing().
-  // So I can check the code that I am testing.
-  // It would be crazy to just change a macro
-  // definition without checking the code where
-  // the macro is used.
-
-  inline static void testNothing( void )
-    {
-    // Do nothing.
-    // This should be optimized away.
-    }
-
   inline static void test2( Int64 toTest,
                            Int64 min, Int64 max,
                            const char* showIt )
     {
+    // Comment out these lines to make an
+    // empty function that does nothing.
+    // This is marked as an inline function.
+    // An empty inlined function ought to
+    // be optimized away completely.
+
     if( toTest < min )
       throw showIt;
 
