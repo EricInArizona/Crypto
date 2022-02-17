@@ -44,6 +44,22 @@ class Crt2
     return test;
     }
 
+  public:
+  Crt2( void );
+  Crt2( const Crt2& in );
+  ~Crt2( void );
+  inline void setToZero()
+    {
+    index = 0;
+    digitAr[0] = 0;
+    }
+
+  inline void setToOne()
+    {
+    index = 0;
+    digitAr[0] = 1;
+    }
+
   inline Int32 getAccumByte( const Int32 row,
                  const CrtMath& crtMath ) const
 
@@ -62,21 +78,6 @@ class Crt2
     return result;
     }
 
-  public:
-  Crt2( void );
-  Crt2( const Crt2& in );
-  ~Crt2( void );
-  inline void setToZero()
-    {
-    index = 0;
-    digitAr[0] = 0;
-    }
-
-  inline void setToOne()
-    {
-    index = 0;
-    digitAr[0] = 1;
-    }
 
 /*
   inline void setTo3( void )

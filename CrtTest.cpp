@@ -44,7 +44,7 @@ Timing t1;
 
 mainIO.appendChars( "Starting CRT test.\n" );
 
-Int32 primeIndex = 0;
+Int32 primeIndex = 1;
 
 Int32 showBits = (primeIndex + 1) * 24;
 
@@ -80,7 +80,7 @@ testBasics( prime1, mainIO );
 // 1 + (1 * 2) = 3
 // prime1.setFromInt24( 43 );
 // prime2.setFromInt24( 19 );
- 
+
 
 mainIO.appendChars( "prime1:\n" );
 Str showP =  intMath.toString10( prime1 );
