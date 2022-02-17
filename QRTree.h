@@ -6,7 +6,8 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+
 #include "GoodX.h"
 #include "CrtTree.h"
 #include "SPrimes.h"
@@ -47,10 +48,6 @@ class QRTree
   Integer pubKeyN;
   Crt2 bigXCrt2;
 
-  void setFromCrtTree( Crt2& toSet,
-                   const CrtMath& crtMath,
-                   const SPrimes& sPrimes,
-                   const MultInv& multInv );
 
 /*
   inline Int32 getAccum( const Int32 row,
@@ -143,7 +140,6 @@ class QRTree
                     IntegerMath& intMath,
                     FileIO& mainIO );
 
-
   bool testTopRow( const Int32 where,
                    const SPrimes& sPrimes,
                    const MultInv& multInv,
@@ -151,6 +147,8 @@ class QRTree
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
                    FileIO& mainIO );
+
+
 
 /*
   bool isGoodXAt( const Int32 where,
@@ -192,6 +190,9 @@ class QRTree
               IntegerMath& intMath,
               FileIO& mainIO );
 
-  // void setCrt2( Crt2& toSet );
+  void setFromCrtTree( Crt2& toSet,
+                   const CrtMath& crtMath,
+                   const SPrimes& sPrimes,
+                   const MultInv& multInv );
 
   };

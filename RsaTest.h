@@ -6,12 +6,14 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\FileIO.h"
+
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "Mod.h"
 #include "Rsa.h"
-#include "FileIO.h"
+
 
 
 

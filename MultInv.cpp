@@ -2,22 +2,23 @@
 
 
 
+#include "..\\LinuxApi\\Casting.h"
+
 #include "MultInv.h"
 #include "Euclid.h"
-#include "CastE.h"
 
 
 
 MultInv::MultInv( void )
 {
-i32Arrays = new Int32Array[CastE::i32ToU64(
+i32Arrays = new Int32Array[Casting::i32ToU64(
                                       last )];
 }
 
 
 MultInv::MultInv( const MultInv& in )
 {
-i32Arrays = new Int32Array[CastE::i32ToU64(
+i32Arrays = new Int32Array[Casting::i32ToU64(
                                       last )];
 
 // Make the compiler think in is being used.
@@ -38,7 +39,7 @@ delete[] i32Arrays;
 Int32 MultInv::calcMultInv( const Int32 prime,
                             const Int32 test )
 {
-return CastE::i64ToI32(
+return Casting::i64ToI32(
             Euclid::multInvL( test, prime ));
 
 /*

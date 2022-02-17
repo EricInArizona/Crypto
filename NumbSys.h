@@ -14,7 +14,7 @@
        //     blob/master/ModularReduction.cs
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "ProjConst.h"

@@ -8,7 +8,7 @@
 // For project-wide constants.
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
 
 
 class ProjConst

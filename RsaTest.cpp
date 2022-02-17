@@ -2,8 +2,9 @@
 
 
 
+#include "..\\LinuxApi\\Timing.h"
+
 #include "RsaTest.h"
-#include "TimeEC.h"
 #include "MakePrime.h"
 
 
@@ -27,7 +28,7 @@ void RsaTest::test( FileIO& mainIO )
 {
 mainIO.appendChars( "Starting RSA test.\n" );
 
-TimeEC t1;
+Timing t1;
 
 Int32 showBits = (PrimeIndex + 1) * 24;
 
@@ -63,7 +64,7 @@ for( Int32 count = 0; count < 10; count++ )
   break;
   }
 
-TimeEC t2;
+Timing t2;
 
 Int64 diff = t2.diffSec( t1 );
 

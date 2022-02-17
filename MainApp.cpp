@@ -2,13 +2,14 @@
 
 
 
+#include "..\\LinuxApi\\StIO.h"
+#include "..\\LinuxApi\\Str.h"
+#include "..\\LinuxApi\\Threads.h"
+
 #include "MainApp.h"
-#include "StIO.h"
-#include "Str.h"
 #include "RsaTest.h"
 #include "CrtTest.h"
 // #include "Ellip.h"
-#include "ThreadEC.h"
 
 
 
@@ -57,7 +58,7 @@ mainIO.appendChars( "End of main app.\n" );
 // mainIO.readAll( fileName );
 mainIO.writeAll( outFile );
 
-ThreadEC::sleep( delay );
+Threads::sleep( delay );
 
 return 0;
 }
@@ -68,7 +69,7 @@ catch( const char* in )
   mainIO.appendChars( "\n" );
   mainIO.writeAll( outFile );
 
-  ThreadEC::sleep( delay );
+  Threads::sleep( delay );
   return 1;
   }
 
@@ -80,7 +81,7 @@ catch( ... )
   mainIO.appendChars( in );
   mainIO.writeAll( outFile );
 
-  ThreadEC::sleep( delay );
+  Threads::sleep( delay );
   return 1;
   }
 }

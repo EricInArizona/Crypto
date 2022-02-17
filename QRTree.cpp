@@ -2,15 +2,16 @@
 
 
 
+#include "..\\LinuxApi\\Casting.h"
+
 #include "QRTree.h"
-#include "CastE.h"
 #include "Division.h"
 
 
 QRTree::QRTree( void )
 {
 // nodesAr = new QRTreeNode[
-  //              CastE::i32ToU64( last )];
+  //              Casting::i32ToU64( last )];
 // setAllZeros( 0 );
 }
 
@@ -18,7 +19,7 @@ QRTree::QRTree( void )
 QRTree::QRTree( const QRTree& in )
 {
 // nodesAr = new QRTreeNode[
-   //                CastE::i32ToU64( last )];
+   //                Casting::i32ToU64( last )];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -199,6 +200,7 @@ toSet.setIndex( index );
 */
 
 
+
 bool QRTree::runIt( const GoodX& goodX,
                     const SPrimes& sPrimes,
                     const CrtMath& crtMath,
@@ -215,22 +217,46 @@ mainIO.appendChars( "QRTree.runIt() started.\n" );
 crtTree.setIndex( 0 );
 crtTree.setFirstGoodXAt( 0, goodX );
 
-
 if( isAnswerSlow( sPrimes, crtMath, multInv,
                   intMath, mainIO ))
   throw
      "pubKeyN sqr root. Checked with checkEasy.";
   // pubKeyN can't have a square root.
 
+
+
 crtTree.setNextGoodXAt( 0, goodX );
 
 if( isAnswerSlow( sPrimes, crtMath, multInv,
                   intMath, mainIO ))
+  {
   mainIO.appendChars( "Found at x = 1.\n" );
+  return true;
+  }
 
+mainIO.appendChars( "\nTop of loop.\n" );
 
-for( Int32 branchIndex = 1; branchIndex < 15;
-                               branchIndex++ )
+// See the comments in isAnswerSlow() about the
+// highest branchIndex this can go to in a
+// reasonable time with just iterating through
+// it alone.  The number of loops goes like:
+// branchIndex is: 1
+// topTests: 2
+// ...
+// branchIndex is: 6
+// topTests: 2700
+// branchIndex is: 7
+// topTests: 24300
+// branchIndex is: 8
+// topTests: 243000
+// branchIndex is: 9
+// topTests: 2916000
+// branchIndex is: 10
+// topTests: 40824000
+
+const Int32 maxBrachIndex = 8;
+for( Int32 branchIndex = 1; branchIndex < 
+                   maxBrachIndex; branchIndex++ )
   {
   crtTree.setIndex( branchIndex );
   Int32 prime = sPrimes.getPrimeAt(
@@ -247,23 +273,26 @@ for( Int32 branchIndex = 1; branchIndex < 15;
   mainIO.appendChars(  "\n" );
 
   // Start all new at zero.
-  // This goes up to length.
+  // This goes up to index.
   crtTree.setFirstGoodXToDepth( 0, goodX );
 
-  Int64 howManyLoops = 0;
-  // while( true )
-  for( Int32 allBranches = 0;
-        allBranches < 10000000; allBranches++ )
-    {
-    // This loops a whole lot of times.
-    howManyLoops++;
+  Int64 topTests = 0;
+  // for( Int32 allBranches = 0;
+    //    allBranches < 10000; allBranches++ )
 
+  while( true )
+    {
+    // How many times does testTopRow() get
+    // called for each branchIndex?
+    topTests++;
+ 
     if( testTopRow( branchIndex, sPrimes, multInv,
                     goodX, crtMath, intMath,
                     mainIO ))
       {
-      mainIO.appendChars(  "\nhowManyLoops: " );
-      Str showS( howManyLoops );
+      mainIO.appendChars(  "\nFound it.\n" );
+      mainIO.appendChars(  "topTests: " );
+      Str showS( topTests );
       mainIO.appendStr( showS );
       mainIO.appendChars(  "\n" );
 
@@ -271,7 +300,6 @@ for( Int32 branchIndex = 1; branchIndex < 15;
       return true;
       }
 
-/*
     bool foundDepth = false;
 
     for( Int32 depth = branchIndex - 1;
@@ -289,8 +317,13 @@ for( Int32 branchIndex = 1; branchIndex < 15;
 
     if( !foundDepth )
       break;
-*/
+
     }
+
+  mainIO.appendChars(  "topTests: " );
+  Str showS( topTests );
+  mainIO.appendStr( showS );
+  mainIO.appendChars(  "\n\n" );
 
   // If it never found one at the whole depth
   // then it goes around for a new branch
@@ -300,13 +333,9 @@ for( Int32 branchIndex = 1; branchIndex < 15;
 mainIO.appendChars(
           "\nWent past the longest branch.\n" );
 
-
-// I could also keep the accum - 1 value
-// for the top row, which is at a particular
-// column.
-
 return false;
 }
+
 
 
 bool QRTree::testTopRow( const Int32 where,
@@ -319,7 +348,7 @@ bool QRTree::testTopRow( const Int32 where,
 {
 // Don't run this at length 0.
 RangeC::test2( where, 1, last - 1,
-              "testTopRowGoodX where range." );
+              "testTopRow where range." );
 
 Int32 prime = sPrimes.getPrimeAt( where );
 // Int32 crtDigit = crtMath.getCrtDigit( where,
@@ -331,10 +360,10 @@ if( isAnswerSlow( sPrimes, crtMath, multInv,
                          intMath, mainIO ))
   return true;
 
-/*
+// The most it could possibly count through.
 for( Int32 count = 0; count < prime; count++ )
   {
-  if( !crtTree.setNextGoodXAt( count, goodX ))
+  if( !crtTree.setNextGoodXAt( where, goodX ))
     {
     // No more on this row.
     return false;
@@ -345,7 +374,7 @@ for( Int32 count = 0; count < prime; count++ )
     return true;
 
   }
-*/
+
 return false;
 }
 
@@ -353,7 +382,6 @@ return false;
 
 // See Crt2::setFromCrtV5().
 // And earlier versions like V1, V2, etc.
-
 
 void QRTree::setFromCrtTree( Crt2& toSet,
                      const CrtMath& crtMath,
@@ -380,7 +408,7 @@ const Int32 max = crtTree.getIndex();
 
 // Int32 keepAccum =
 // Count starts at 1, so it's the prime 3.
-for( Int32 count = 1; count < max; count++ )
+for( Int32 count = 1; count <= max; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
   Int32 accumD = toSet.getAccum( count - 1,
@@ -438,23 +466,63 @@ bool QRTree::isAnswerSlow( // const GoodX& goodX,
                        IntegerMath& intMath,
                        FileIO& mainIO )
 {
-mainIO.appendChars( "isTheAnswer.\n" );
+// Comment out this whole function except for
+// returning false, and see how long it takes to
+// just iterate through the CrtTree.
+// return false;
 
 Crt2 toCheck;
 setFromCrtTree( toCheck, crtMath, sPrimes,
                 multInv );
 
-// Pretend I'm using the intMath parameter
-// for now.
+// if( 0 == toCheck.digitAtTop()
+// toCheck.getIndex() < 
+
+// The index on toSet can be lower than the
+// index on the CrtTree because the digits
+// above a certain point can be zero, but
+// the accum value makes it the right Crt
+// value.
+
+// The crudest way to test this.
 Integer x;
-intMath.square( x );
+Integer y;
+Integer ySquared;
 
-return false;
+toCheck.toInteger( crtMath, x, intMath );
+ySquared.copy( x );
+intMath.square( ySquared );
+ySquared.add( pubKeyN );
 
+if( !intMath.squareRoot( ySquared, y ))
+  {
+  // mainIO.appendChars(
+  //                 "False on square root.\n" );
+  return false;
+  }
 
+mainIO.appendChars( "True on square root.\n" );
+
+Integer prime1;
+prime1.copy( y );
+prime1.add( x );
+
+Integer prime2;
+prime2.copy( y );
+intMath.subtract( prime2, x );
+if( prime2.isOne())
+  {
+  mainIO.appendChars(
+                   "Answer prime2 is 1.\n" );
+
+  return false;
+  }
+
+return true;
 
 
 /*
+
 if( !isFullGoodX2( goodX, crtMath, sPrimes ))
   return false;
 

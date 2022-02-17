@@ -2,9 +2,10 @@
 
 
 
+#include "..\\LinuxApi\\Casting.h"
+
 #include "SPrimes.h"
 #include "IntegerMath.h"
-#include "CastE.h"
 
 
 SPrimes::SPrimes( void )
@@ -45,7 +46,7 @@ if( toTest == 2 )
 if( toTest == 3 )
   return 3;
 
-const Int32 max = CastE::i64ToI32(
+const Int32 max = Casting::i64ToI32(
          IntegerMath::find64SqrRoot2( toTest ));
 
 RangeC::test2( max, 1, 0xFFFFFFFFFFFFL,
