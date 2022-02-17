@@ -194,17 +194,18 @@ if( qRTree.runIt( goodX,
                  intMath,
                  mainIO ))
   {
-  return true;
-
-/*
   Crt2 testX;
-  qRTree.setCrt2( testX );
+  qRTree.setFromCrtTree( testX,
+                         crtMath,
+                         sPrimes,
+                         multInv );
+
   if( hasFactors( testX, pubKeyN, find1,
                   find2, intMath, crtMath,
                   mainIO ))
 
     return true;
-*/
+
   }
 
 mainIO.appendChars(

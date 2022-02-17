@@ -2,8 +2,9 @@
 
 
 
+#include "..\\LinuxApi\\Timing.h"
+
 #include "Ellip.h"
-#include "TimeEC.h"
 
 
 
@@ -36,11 +37,11 @@ void Ellip::test( FileIO& mainIO )
 {
 mainIO.appendChars( "Starting ellip test.\n" );
 
-TimeEC t1;
+Timing t1;
 
 mainTest( mainIO );
 
-TimeEC t2;
+Timing t2;
 
 Int64 diff = t2.diffSec( t1 );
 

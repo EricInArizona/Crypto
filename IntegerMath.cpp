@@ -2,11 +2,12 @@
 
 
 
+#include "..\\LinuxApi\\Casting.h"
+#include "..\\LinuxApi\\CharBuf.h"
+
 #include "IntegerMath.h"
 #include "Base10Number.h"
-#include "CharBuf.h"
 #include "Division.h"
-#include "CastE.h"
 
 
 
@@ -765,11 +766,11 @@ Integer quotient;
 CharBuf cBuf;
 while( !toDivide.isZero())
   {
-  Int32 digit = CastE::i64ToI32( Division::
+  Int32 digit = Casting::i64ToI32( Division::
        shortDivideRem( toDivide, 10, quotient ));
   toDivide.copy( quotient );
   // Ascii values go from '0' up to '9'.
-  cBuf.appendChar( CastE::i32ToChar(
+  cBuf.appendChar( Casting::i32ToChar(
                               '0' + digit ));
   }
 
@@ -1235,7 +1236,7 @@ if( (divisor >> 24) != 0 )
 
 if( in.getIndex() == 0 )
   {
-  Int32 result = CastE::i64ToI32(
+  Int32 result = Casting::i64ToI32(
                       in.getD( 0 ) % divisor );
   return result;
   }
@@ -1279,7 +1280,7 @@ for( Int32 count = last; count >= 1; count-- )
   scratch[count - 1] = remainder;
   }
 
-return CastE::i64ToI32( remainder );
+return Casting::i64ToI32( remainder );
 }
 
 

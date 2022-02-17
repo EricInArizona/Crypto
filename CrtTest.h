@@ -6,7 +6,9 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\FileIO.h"
+
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "SPrimes.h"
@@ -15,7 +17,6 @@
 #include "CrtMath.h"
 #include "GoodX.h"
 #include "QuadRes.h"
-#include "FileIO.h"
 
 
 

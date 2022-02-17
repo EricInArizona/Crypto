@@ -6,11 +6,11 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\Str.h"
+#include "..\\LinuxApi\\FileIO.h"
 #include "Integer.h"
 #include "SPrimes.h"
-#include "Str.h"
-#include "FileIO.h"
 #include "TwoDInt64.h"
 
 

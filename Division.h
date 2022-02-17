@@ -6,7 +6,7 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
 

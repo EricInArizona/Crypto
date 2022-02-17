@@ -5,10 +5,11 @@
 #pragma once
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\BoolArray.h"
+#include "..\\LinuxApi\\RangeC.h"
+
 #include "ProjConst.h"
-#include "BoolArray.h"
-#include "RangeC.h"
 #include "SPrimes.h"
 
 
@@ -37,8 +38,10 @@ class GoodX
             "GoodX.getVal primeAt range." );
 
     // BoolArray has its own range check.
-    RangeC::test2( primeAt, 0, last - 1,
-            "GoodX.getVal primeAt range." );
+    // But check it here for testing.
+    RangeC::test2( where, 0,
+                 bArrays[primeAt].getSize() - 1,
+                 "GoodX.getVal where range." );
 
     return bArrays[primeAt].getVal( where );
     }
@@ -49,6 +52,12 @@ class GoodX
     {
     RangeC::test2( primeAt, 0, last - 1,
            "GoodX.setVal primeAt range." );
+
+    // BoolArray has its own range check.
+    // But check it here for testing.
+    RangeC::test2( where, 0,
+                 bArrays[primeAt].getSize() - 1,
+                 "GoodX.getVal where range." );
 
     bArrays[primeAt].setVal( where, toSet );
     }

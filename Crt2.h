@@ -5,14 +5,15 @@
 #pragma once
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\RangeC.h"
+
 #include "ProjConst.h"
 #include "SPrimes.h"
 #include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
 // #include "GoodX.h"
-#include "RangeC.h"
 #include "QuadRes.h"
 
 
@@ -61,57 +62,6 @@ class Crt2
     return result;
     }
 
-
-/*
-  inline bool incNextVal( const Int32 where,
-                       const Int32 prime,
-                       const Int32 accum,
-                       const Int32 accumByte,
-                       const Int32 prodByte,
-                       const GoodX& goodX,
-                       const CrtMath& crtMath )
-    {
-    // digitAr[where] starts at an unknown value.
-
-    const Int32 crtDigit = crtMath.getCrtDigit(
-                                  where, where );
-
-    const Int32 baseByte = crtMath.
-                            getBaseByte( where );
-
-    // This has to be very optimized.
-    for( Int32 count = 0; count < prime; count++ )
-      {
-      digitAr[where]++;
-      Int32 digit = digitAr[where];
-
-      if( digit >= prime )
-        return false;
-
-      Int32 test = getTestAccum( prime,
-                                 accum,
-                                 crtDigit,
-                                 digit );
-
-      if( goodX.getVal( where, test ))
-        {
-        // accumByte is up to row - 1.
-        Int32 testBits = baseByte * digit;
-        testBits += accumByte;
-        testBits = testBits * testBits;
-        testBits += prodByte;
-        testBits = testBits & 0xFF;
-        if( QuadRes::bytesQR( testBits ))
-          return true;
-
-        }
-      }
-
-    return false;
-    }
-*/
-
-
   public:
   Crt2( void );
   Crt2( const Crt2& in );
@@ -128,12 +78,14 @@ class Crt2
     digitAr[0] = 1;
     }
 
+/*
   inline void setTo3( void )
     {
     index = 1;
     digitAr[0] = 1;  // 1
     digitAr[1] = 1;  // 2
     }
+*/
 
   inline bool isZero()
     {
@@ -156,12 +108,12 @@ class Crt2
 
     return true;
     }
-/*
+
   inline Int32 digitAtTop()
     {
     return digitAr[index];
     }
-*/
+
 
   void copy( const Crt2& toCopy );
 

@@ -6,11 +6,12 @@
 
 
 
-#include "BasicTypes.h"
-#include "Str.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\Str.h"
+#include "..\\LinuxApi\\RangeC.h"
+
 #include "ProjConst.h"
 #include "IntBuf.h"
-#include "RangeC.h"
 
 
 

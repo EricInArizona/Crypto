@@ -1,11 +1,11 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+#include "..\\LinuxApi\\Casting.h"
+#include "..\\LinuxApi\\CharBuf.h"
+#include "..\\LinuxApi\\Randomish.h"
 
 #include "Integer.h"
-#include "CharBuf.h"
-#include "RandomCrypto.h"
-#include "CastE.h"
 
 
 Integer::Integer( void )
@@ -656,7 +656,7 @@ if( setToIndex > (ProjConst::digitArraySize - 3))
 Int32 howManyBytes = (setToIndex * 3) + 3;
 
 UTF16Buf cBuf;
-RandomCrypto::makeRandomBytes( cBuf,
+Randomish::makeRandomBytes( cBuf,
                                howManyBytes );
 
 index = setToIndex;
@@ -664,7 +664,7 @@ Int32 where = 0;
 for( Int32 count = 0; count <= setToIndex;
                                         count++ )
   {
-  Int64 digit = CastE::UTF16ToI32(
+  Int64 digit = Casting::UTF16ToI32(
                            cBuf.valAt( where ));
   // Test that it is getting that top bit
   // in the byte in some of them.
@@ -672,10 +672,10 @@ for( Int32 count = 0; count <= setToIndex;
     // throw "Yes, it got the bit.";
 
   digit <<= 8;
-  digit |= CastE::UTF16ToI32(
+  digit |= Casting::UTF16ToI32(
                      cBuf.valAt( where + 1 ));
   digit <<= 8;
-  digit |= CastE::UTF16ToI32(
+  digit |= Casting::UTF16ToI32(
                      cBuf.valAt( where + 2 ));
 
   D[count] = digit;
@@ -986,7 +986,7 @@ void Integer::copyToIntBuf( IntBuf& intBuf ) const
 {
 intBuf.setIndex( index );
 for( Int32 count = 0; count <= index; count++ )
-  intBuf.setD( count, CastE::i64ToI32(
+  intBuf.setD( count, Casting::i64ToI32(
                                    D[count] ));
 
 }

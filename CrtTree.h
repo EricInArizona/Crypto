@@ -6,10 +6,12 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\RangeC.h"
+#include "..\\LinuxApi\\Int32Array.h"
+
 #include "ProjConst.h"
 #include "GoodX.h"
-#include "RangeC.h"
 
 
 // The first few numbers for the base:
@@ -36,10 +38,12 @@ class CrtTree
 
   // This doesn't keep its own GoodX because
   // that depends on what the calling object
-  // needs it for.  This uses _any_ GoodX
+  // needs it for.  This uses any GoodX
   // that was set up elsewhere.
 
-  Int32* nodesAr;
+  Int32Array digitsAr; // Call setSize() in the
+                       // constructor.
+
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
@@ -58,7 +62,7 @@ class CrtTree
     RangeC::test2( where, 0, index,
             "CrtTree.getD index where range." );
 
-    return nodesAr[where];
+    return digitsAr.getVal( where );
     }
 
   inline Int32 getIndex( void  ) const
@@ -83,8 +87,13 @@ class CrtTree
     RangeC::test2( where, 0, last - 1,
              "setFirstGoodXAt  where range." );
 
-    index = where;
-    nodesAr[index] = 0;
+    // When this is incrementing it can set
+    // lower digits to the start that are
+    // lower than the index.
+    if( index < where )
+      index = where;
+
+    digitsAr.setVal( where, 0 );
 
 // Making this into a list would avoid this
 // loop all together.
@@ -98,18 +107,21 @@ class CrtTree
                                        where );
     for( int count = 0; count < prime; count++ )
       {
-      if( goodX.getVal( where, nodesAr[where] ))
-        return;
+      Int32 test = digitsAr.getVal( where );
+      if( goodX.getVal( where, test ))
+        return; // It found the first one.
 
-      nodesAr[where]++;
+      test++;
+      if( test >= prime )
+        throw
+        "setFirstGoodXAt never found goodX.";
 
-      if( nodesAr[where] >= prime )
-        throw "This can't happen. setFirstGoodAt";
-
+      digitsAr.setVal( where, test );
       }
 
-    throw "This can't either. setFirstGoodAt";
+    throw "This can't happen. setFirstGoodAt";
     }
+
 
   inline bool setNextGoodXAt(
                    const Int32 where,
@@ -121,11 +133,10 @@ class CrtTree
     // It would have had to call setFirstGoodXAt
     // before calling this.
     RangeC::test2( where, 0, index,
-         "setNextGoodXAt  where index range." );
+    "setNextGoodXAt where not set first range." );
 
     // It starts from where ever it left off
     // from last time.
-    // nodesAr[index] = 0;
 
     // This is the most you could possibly
     // count through.
@@ -134,16 +145,18 @@ class CrtTree
 
     for( int count = 0; count < prime; count++ )
       {
-      nodesAr[where]++;
-      if( nodesAr[where] >= prime )
+      Int32 test = digitsAr.getVal( where );
+      test++;
+      if( test >= prime )
         return false;
 
-      if( goodX.getVal( where, nodesAr[where] ))
+      digitsAr.setVal( where, test );
+      if( goodX.getVal( where, test ))
         return true;
 
       }
 
-    throw "This can't either. setNextGoodAt";
+    throw "Can't get here. setNextGoodAt";
     return false;
     }
 

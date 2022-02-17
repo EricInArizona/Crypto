@@ -3,19 +3,17 @@
 
 
 #include "CrtTree.h"
-#include "CastE.h"
-// #include "Division.h" Do Division with Crt2.
 
 
 CrtTree::CrtTree( void )
 {
-nodesAr = new Int32[CastE::i32ToU64( last )];
+digitsAr.setSize( last );
 }
 
 
 CrtTree::CrtTree( const CrtTree& in )
 {
-nodesAr = new Int32[CastE::i32ToU64( last )];
+// digitsAr.setSize( last );
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -27,7 +25,7 @@ throw "Don't use copy constr for CrtTree.";
 
 CrtTree::~CrtTree( void )
 {
-delete[] nodesAr;
+// digitsAr
 }
 
 

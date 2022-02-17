@@ -8,10 +8,11 @@
 // Elliptic Curve Crypto Systems
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\FileIO.h"
+
 #include "Integer.h"
 #include "Mod.h"
-#include "FileIO.h"
 #include "EPoint.h"
 
 

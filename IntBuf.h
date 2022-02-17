@@ -9,9 +9,10 @@
 // but it has a dynamically allocated array.
 // As opposed to the array being on the stack.
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\RangeC.h"
+
 #include "ProjConst.h"
-#include "RangeC.h"
 
 
 class IntBuf

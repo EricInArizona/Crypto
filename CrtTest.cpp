@@ -2,9 +2,10 @@
 
 
 
+#include "..\\LinuxApi\\Timing.h"
+
 #include "CrtTest.h"
 #include "Crt2.h"
-#include "TimeEC.h"
 #include "MakePrime.h"
 #include "FindFacCrt.h"
 
@@ -39,7 +40,7 @@ void CrtTest::test( FileIO& mainIO )
 // and QuadRes init times.
 // They happen before this t1 start time.
 
-TimeEC t1;
+Timing t1;
 
 mainIO.appendChars( "Starting CRT test.\n" );
 
@@ -77,8 +78,9 @@ testBasics( prime1, mainIO );
 
 // 0 + (1 * 2) = 2
 // 1 + (1 * 2) = 3
-prime1.setFromInt24( 5 );
-prime2.setFromInt24( 3 );
+// prime1.setFromInt24( 43 );
+// prime2.setFromInt24( 19 );
+ 
 
 mainIO.appendChars( "prime1:\n" );
 Str showP =  intMath.toString10( prime1 );
@@ -137,7 +139,7 @@ mainIO.appendStr( showFind2 );
 mainIO.appendChars( "\n" );
 */
 
-TimeEC t2;
+Timing t2;
 
 Int64 diff = t2.diffSec( t1 );
 

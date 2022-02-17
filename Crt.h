@@ -6,12 +6,12 @@
 
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\RangeC.h"
 #include "ProjConst.h"
 #include "SPrimes.h"
 #include "Integer.h"
 #include "IntegerMath.h"
-#include "RangeC.h"
 
 
 class Crt
@@ -51,8 +51,8 @@ class Crt
 
   inline Int32 getD( const Int32 index ) const
     {
-    // RangeC::test( index, 0, last - 1,
-     //       "Crt.getD() index range." );
+    RangeC::test2( index, 0, last - 1,
+            "Crt.getD() index range." );
 
     return digitAr[index];
     }
@@ -60,8 +60,8 @@ class Crt
   inline void setD( const Int32 setTo,
                     const Int32 index )
     {
-    // RangeC::test( index, 0, last - 1,
-      //      "Crt.setD() index range." );
+    RangeC::test2( index, 0, last - 1,
+            "Crt.setD() index range." );
 
     RangeC::test2( setTo, 0, 0xFFFFFF,
             "Crt.setD() setTo range." );

@@ -1,0 +1,58 @@
+Programming by Eric Chauvin.
+Version date: 2/17/2022
+
+Starting CRT test.
+
+Bits size is: 24
+
+
+Last CRT prime is: 5279
+Biggest prime is: 386093
+
+prime1:
+1627309
+prime2:
+1842811
+pubKeyN:
+2998822925599
+setStartValues.
+QRTree.runIt() started.
+
+Top of loop.
+branchIndex is: 1
+Branch prime is: 3
+topTests: 2
+
+branchIndex is: 2
+Branch prime is: 5
+topTests: 2
+
+branchIndex is: 3
+Branch prime is: 7
+topTests: 6
+
+branchIndex is: 4
+Branch prime is: 11
+topTests: 18
+
+branchIndex is: 5
+Branch prime is: 13
+topTests: 108
+
+branchIndex is: 6
+Branch prime is: 17
+True on square root.
+
+Found it.
+topTests: 454
+
+Found it.
+X:      107751
+Prime1: 1842811
+Prime2: 1627309
+
+
+Seconds: 0
+
+Finished test.
+End of main app.

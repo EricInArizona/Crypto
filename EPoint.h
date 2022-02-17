@@ -5,11 +5,12 @@
 #pragma once
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+// #include "..\\LinuxApi\\FileIO.h"
+
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "Mod.h"
-// #include "FileIO.h"
 
 
 // A point on an elliptic curve.

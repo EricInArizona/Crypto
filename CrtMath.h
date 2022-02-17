@@ -5,13 +5,14 @@
 #pragma once
 
 
-#include "BasicTypes.h"
+#include "..\\LinuxApi\\BasicTypes.h"
+#include "..\\LinuxApi\\RangeC.h"
+
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "IntBuf.h"
 #include "SPrimes.h"
 #include "Crt.h"
-#include "RangeC.h"
 
 
 

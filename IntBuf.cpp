@@ -2,19 +2,20 @@
 
 
 
+#include "..\\LinuxApi\\Casting.h"
+
 #include "IntBuf.h"
-#include "CastE.h"
 
 
 IntBuf::IntBuf( void )
 {
-D = new Int32[CastE::i32ToU64( last )];
+D = new Int32[Casting::i32ToU64( last )];
 }
 
 
 IntBuf::IntBuf( const IntBuf& in )
 {
-D = new Int32[CastE::i32ToU64( last )];
+D = new Int32[Casting::i32ToU64( last )];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
