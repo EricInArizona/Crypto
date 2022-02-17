@@ -254,8 +254,8 @@ mainIO.appendChars( "\nTop of loop.\n" );
 // branchIndex is: 10
 // topTests: 40824000
 
-const Int32 maxBrachIndex = 8;
-for( Int32 branchIndex = 1; branchIndex < 
+const Int32 maxBrachIndex = 10;
+for( Int32 branchIndex = 1; branchIndex <
                    maxBrachIndex; branchIndex++ )
   {
   crtTree.setIndex( branchIndex );
@@ -285,7 +285,7 @@ for( Int32 branchIndex = 1; branchIndex <
     // How many times does testTopRow() get
     // called for each branchIndex?
     topTests++;
- 
+
     if( testTopRow( branchIndex, sPrimes, multInv,
                     goodX, crtMath, intMath,
                     mainIO ))
@@ -475,8 +475,21 @@ Crt2 toCheck;
 setFromCrtTree( toCheck, crtMath, sPrimes,
                 multInv );
 
-// if( 0 == toCheck.digitAtTop()
-// toCheck.getIndex() < 
+Int32 testIndex = toCheck.getIndex();
+
+// This happens.
+// if( testIndex < crtTree.getIndex())
+  // throw "This should have already been found.";
+
+Int32 theByte = toCheck.getAccumByte( testIndex,
+                                      crtMath );
+
+Int32 testX = theByte * theByte;
+testX += pubKeyN.getD( 0 ) & 0xFF;
+testX = testX & 0xFF;
+if( !QuadRes::bytesQR( testX ))
+  return false;
+
 
 // The index on toSet can be lower than the
 // index on the CrtTree because the digits
