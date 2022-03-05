@@ -1,15 +1,33 @@
-buildfile	C:\Eric\Main\Crypto\BuildProj.bat
-executablefile	C:\Eric\Main\Crypto\RunMain.bat
-projectdirectory	C:\Eric\Main\Crypto
-recentfile1	C:\Eric\Main\Crypto\MainApp.h
-recentfile2	C:\Eric\Main\Docs\Notes.txt
-recentfile3	C:\Eric\Main\Crypto\QRTree.h
-recentfile4	C:\Eric\Main\Crypto\QRTree.cpp
-recentfile5	C:\Eric\Main\Crypto\CrtTree.h
-recentfile10	C:\Eric\Main\Crypto\FindFacCrt.cpp
-recentfile6	C:\Eric\Main\Crypto\CrtTree.cpp
-recentfile11	C:\Eric\Main\Crypto\GoodX.h
-recentfile7	C:\Eric\Main\Crypto\CrtTest.cpp
-recentfile8	C:\Eric\Main\Crypto\Crt2.h
-recentfile9	C:\Eric\Main\Crypto\FindFacCrt.h
-recentfile12	C:\Eric\Main\Crypto\Fermat.cpp
+buildfile	/home/Eric/Crypto/BuildProj.sh
+executablefile	/home/Eric/Crypto/cryptoMain
+projectdirectory	/home/Eric/Crypto
+recentfile1	/home/Eric/Crypto/BuildProj.sh
+recentfile2	/home/Eric/Crypto/main.cpp
+recentfile3	/home/Eric/Crypto/MainApp.cpp
+recentfile4	/home/Eric/Crypto/MainApp.h
+recentfile5	
+recentfile6	
+recentfile7	
+recentfile8	
+recentfile9	
+recentfile10	
+recentfile11	
+recentfile12	
+recentfile13	
+recentfile14	
+recentfile15	
+recentfile16	
+recentfile17	
+recentfile18	
+recentfile19	
+recentfile20	
+recentfile21	
+recentfile22	
+recentfile23	
+recentfile24	
+recentfile25	
+recentfile26	
+recentfile27	
+recentfile28	
+recentfile29	
+recentfile30	

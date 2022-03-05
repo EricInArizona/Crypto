@@ -9,8 +9,8 @@
 // #include statements.
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\FileIO.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/FileIO.h"
 
 
 
@@ -23,7 +23,7 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "2/17/2022";
+    return "3/5/2022";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );

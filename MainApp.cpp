@@ -2,13 +2,18 @@
 
 
 
-#include "..\\LinuxApi\\StIO.h"
-#include "..\\LinuxApi\\Str.h"
-#include "..\\LinuxApi\\Threads.h"
+#include "../LinuxApi/StIO.h"
+#include "../LinuxApi/Str.h"
+#include "../LinuxApi/SetStack.h"
+#include "../LinuxApi/Casting.h"
+
+
+// #include "../LinuxApi/Threads.h"
+
 
 #include "MainApp.h"
-#include "RsaTest.h"
-#include "CrtTest.h"
+// #include "RsaTest.h"
+// #include "CrtTest.h"
 // #include "Ellip.h"
 
 
@@ -16,22 +21,21 @@
 // int MainApp::mainLoop( int argc, char* argv[] )
 int MainApp::mainLoop( void )
 {
-Int32 delay = 200; // milliseconds.
+// Int32 delay = 200; // milliseconds.
 const char* outFile =
-             "\\Eric\\Main\\Crypto\\ExeOut.txt";
+             "/home/Eric/Crypto/ExeOut.txt";
 
 try
 {
-StIO::printFS( "See output at:\n" );
-StIO::printFS( outFile );
-StIO::printFS( "\n" );
+StIO::cPuts( "See output at:\n" );
+StIO::cPuts( outFile );
+StIO::cPuts( "\n" );
 
 
 if( !basicThingsAreRight())
   {
-  // StIO::printFS()
   mainIO.appendChars(
-   "basicThingsAreRight() returned false.\n" );
+          "basicThingsAreRight() returned false.\n" );
 
   mainIO.writeAll( outFile );
   return 1; // Some error code.
@@ -44,21 +48,29 @@ mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
 mainIO.appendChars( "\n\n" );
 
+Int32 stackSize = SetStack::getSize();
+Str showS( stackSize );
+
+mainIO.appendChars( "Stack size: " );
+mainIO.appendStr( showS );
+mainIO.appendChars( "\n\n" );
+
+
 // RsaTest rsaTest;
 // rsaTest.test( mainIO );
 
-CrtTest crtTest;
-crtTest.test( mainIO );
+// CrtTest crtTest;
+// crtTest.test( mainIO );
 
 // Ellip ellip;
 // ellip.test( mainIO );
 
 mainIO.appendChars( "End of main app.\n" );
 
-// mainIO.readAll( fileName );
+//             mainIO.readAll( fileName );
 mainIO.writeAll( outFile );
 
-Threads::sleep( delay );
+// Threads::sleep( delay );
 
 return 0;
 }
@@ -69,7 +81,7 @@ catch( const char* in )
   mainIO.appendChars( "\n" );
   mainIO.writeAll( outFile );
 
-  Threads::sleep( delay );
+  // Threads::sleep( delay );
   return 1;
   }
 
@@ -81,7 +93,7 @@ catch( ... )
   mainIO.appendChars( in );
   mainIO.writeAll( outFile );
 
-  Threads::sleep( delay );
+  // Threads::sleep( delay );
   return 1;
   }
 }
