@@ -5,8 +5,8 @@
 #pragma once
 
 
-#include "BasicTypes.h"
-#include "Str.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/Str.h"
 
 
 class Base10Number
