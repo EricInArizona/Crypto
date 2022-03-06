@@ -3,7 +3,7 @@
 
 cd /home/Eric/Crypto
 
-pwd
+# pwd
 
 
 # The warning about -Wpadded means it's aligning a struct
@@ -13,4 +13,4 @@ pwd
 # Can't do -Wl,--stack in Linux.
 # See SetStack.cpp for that.
 
-clang++ *.cpp /home/Eric/LinuxApi/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -Ofast -Wl,-MAP -L/home/Eric/LinuxApi 2> Build.log
+clang++ *.cpp /home/Eric/LinuxApi/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -Ofast -L/home/Eric/LinuxApi 2> Build.log

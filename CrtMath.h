@@ -5,8 +5,8 @@
 #pragma once
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\RangeC.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/RangeC.h"
 
 #include "Integer.h"
 #include "IntegerMath.h"

@@ -3,7 +3,7 @@
 
 
 #include "Crt.h"
-#include "..\\LinuxApi\\Casting.h"
+#include "../LinuxApi/Casting.h"
 
 
 // A lot of these things could be very fast if
