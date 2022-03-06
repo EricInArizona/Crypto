@@ -1,9 +1,9 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
-#include "..\\LinuxApi\\Casting.h"
-#include "..\\LinuxApi\\CharBuf.h"
-#include "..\\LinuxApi\\Randomish.h"
+#include "../LinuxApi/Casting.h"
+#include "../LinuxApi/CharBuf.h"
+#include "../LinuxApi/Randomish.h"
 
 #include "Integer.h"
 

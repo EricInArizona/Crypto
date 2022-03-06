@@ -2,16 +2,16 @@ buildfile	/home/Eric/Crypto/BuildProj.sh
 executablefile	/home/Eric/Crypto/cryptoMain
 projectdirectory	/home/Eric/Crypto
 recentfile1	/home/Eric/Crypto/BuildProj.sh
-recentfile2	/home/Eric/Crypto/main.cpp
-recentfile3	/home/Eric/Crypto/MainApp.cpp
-recentfile4	/home/Eric/Crypto/MainApp.h
-recentfile5	
+recentfile2	/home/Eric/Crypto/MainApp.cpp
+recentfile3	/home/Eric/Crypto/MainApp.h
+recentfile4	/home/Eric/Docs/Notes.txt
+recentfile5	/home/Eric/Docs/Sockets.txt
 recentfile6	
+recentfile10	
 recentfile7	
+recentfile11	
 recentfile8	
 recentfile9	
-recentfile10	
-recentfile11	
 recentfile12	
 recentfile13	
 recentfile14	

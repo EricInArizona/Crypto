@@ -6,7 +6,7 @@
 
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
+#include "../LinuxApi/BasicTypes.h"
 
 #include "GoodX.h"
 #include "CrtTree.h"

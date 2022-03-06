@@ -6,14 +6,12 @@
 #include "../LinuxApi/Str.h"
 #include "../LinuxApi/SetStack.h"
 #include "../LinuxApi/Casting.h"
-
-
-// #include "../LinuxApi/Threads.h"
+#include "../LinuxApi/Threads.h"
 
 
 #include "MainApp.h"
 // #include "RsaTest.h"
-// #include "CrtTest.h"
+#include "CrtTest.h"
 // #include "Ellip.h"
 
 
@@ -21,7 +19,7 @@
 // int MainApp::mainLoop( int argc, char* argv[] )
 int MainApp::mainLoop( void )
 {
-// Int32 delay = 200; // milliseconds.
+Int32 delay = 200; // milliseconds.
 const char* outFile =
              "/home/Eric/Crypto/ExeOut.txt";
 
@@ -59,8 +57,8 @@ mainIO.appendChars( "\n\n" );
 // RsaTest rsaTest;
 // rsaTest.test( mainIO );
 
-// CrtTest crtTest;
-// crtTest.test( mainIO );
+CrtTest crtTest;
+crtTest.test( mainIO );
 
 // Ellip ellip;
 // ellip.test( mainIO );
@@ -70,7 +68,7 @@ mainIO.appendChars( "End of main app.\n" );
 //             mainIO.readAll( fileName );
 mainIO.writeAll( outFile );
 
-// Threads::sleep( delay );
+Threads::sleep( delay );
 
 return 0;
 }
@@ -81,7 +79,7 @@ catch( const char* in )
   mainIO.appendChars( "\n" );
   mainIO.writeAll( outFile );
 
-  // Threads::sleep( delay );
+  Threads::sleep( delay );
   return 1;
   }
 
@@ -93,7 +91,7 @@ catch( ... )
   mainIO.appendChars( in );
   mainIO.writeAll( outFile );
 
-  // Threads::sleep( delay );
+  Threads::sleep( delay );
   return 1;
   }
 }

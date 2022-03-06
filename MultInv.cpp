@@ -2,7 +2,7 @@
 
 
 
-#include "..\\LinuxApi\\Casting.h"
+#include "../LinuxApi/Casting.h"
 
 #include "MultInv.h"
 #include "Euclid.h"

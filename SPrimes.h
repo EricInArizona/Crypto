@@ -11,7 +11,7 @@
 
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
+#include "../LinuxApi/BasicTypes.h"
 #include "ProjConst.h"
 // #include "RangeC.h"
 

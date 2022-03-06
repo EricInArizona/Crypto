@@ -18,7 +18,7 @@ class MainApp
   {
   private:
   bool basicThingsAreRight();
-  FileIO mainIO; // Sort of like Standard Out.
+  FileIO mainIO;
 
   public:
   inline static const char* getVersionStr( void )

@@ -6,9 +6,9 @@
 
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\BoolArray.h"
-#include "..\\LinuxApi\\RangeC.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/BoolArray.h"
+#include "../LinuxApi/RangeC.h"
 
 #include "ProjConst.h"
 #include "SPrimes.h"

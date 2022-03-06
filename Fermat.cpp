@@ -32,7 +32,7 @@ while( true )
     // This could hang up making primes
     // if it's too small.
     result.setD( setToIndex,
-         result.getD( setToIndex ) & 0x03F );
+         result.getD( setToIndex ) & 0x07F );
     }
 
 

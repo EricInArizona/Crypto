@@ -6,8 +6,8 @@
 
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\FileIO.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/FileIO.h"
 
 // #include "ProjConst.h"
 #include "SPrimes.h"

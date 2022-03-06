@@ -2,8 +2,8 @@
 
 
 
-#include "..\\LinuxApi\\Casting.h"
-#include "..\\LinuxApi\\CharBuf.h"
+#include "../LinuxApi/Casting.h"
+#include "../LinuxApi/CharBuf.h"
 
 #include "IntegerMath.h"
 #include "Base10Number.h"

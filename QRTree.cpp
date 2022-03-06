@@ -2,7 +2,7 @@
 
 
 
-#include "..\\LinuxApi\\Casting.h"
+#include "../LinuxApi/Casting.h"
 
 #include "QRTree.h"
 #include "Division.h"
@@ -254,7 +254,7 @@ mainIO.appendChars( "\nTop of loop.\n" );
 // branchIndex is: 10
 // topTests: 40824000
 
-const Int32 maxBrachIndex = 10;
+const Int32 maxBrachIndex = 13;
 for( Int32 branchIndex = 1; branchIndex <
                    maxBrachIndex; branchIndex++ )
   {
@@ -477,9 +477,9 @@ setFromCrtTree( toCheck, crtMath, sPrimes,
 
 Int32 testIndex = toCheck.getIndex();
 
-// This happens.
-// if( testIndex < crtTree.getIndex())
-  // throw "This should have already been found.";
+// This should have already been found.
+if( testIndex < crtTree.getIndex())
+  return false;
 
 Int32 theByte = toCheck.getAccumByte( testIndex,
                                       crtMath );

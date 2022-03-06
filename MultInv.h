@@ -5,9 +5,9 @@
 #pragma once
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\RangeC.h"
-#include "..\\LinuxApi\\Int32Array.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/RangeC.h"
+#include "../LinuxApi/Int32Array.h"
 
 #include "ProjConst.h"
 #include "SPrimes.h"
