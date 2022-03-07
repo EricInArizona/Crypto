@@ -1,6 +1,8 @@
 // Copyright Eric Chauvin 2022.
 
 
+/*
+
 
 #include "CrtTree.h"
 
@@ -30,6 +32,25 @@ CrtTree::~CrtTree( void )
 
 
 
+
+bool CrtTree::isSameAsTreeL( CrtTreeL& tree )
+{
+if( index != tree.getIndex())
+  return false;
+
+for( Int32 count = 0; count <= index; count++ )
+  {
+  if( getD( count ) != tree.getD( count ))
+    return false;
+
+  }
+
+return true;
+}
+
+
+
+
 void CrtTree::setFirstGoodXToDepth(
                       Int32 depth,
                       const GoodX& goodX )
@@ -43,3 +64,7 @@ for( Int32 count = depth; count <= max; count++ )
   setFirstGoodXAt( count, goodX );
   }
 }
+
+*/
+
+

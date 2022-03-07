@@ -2,6 +2,8 @@
 
 
 
+/*
+
 #pragma once
 
 
@@ -12,6 +14,7 @@
 
 #include "ProjConst.h"
 #include "GoodX.h"
+#include "CrtTreeL.h"
 
 
 // The first few numbers for the base:
@@ -95,14 +98,6 @@ class CrtTree
 
     digitsAr.setVal( where, 0 );
 
-// Making this into a list would avoid this
-// loop all together.
-// Make a list object that is separate from this.
-// Only a list of possible values.
-// Making a list would be unknown to the calling
-// function because it behaves the same on the
-// outside.
-
     const Int32 prime = goodX.getLengthAt(
                                        where );
     for( int count = 0; count < prime; count++ )
@@ -164,5 +159,9 @@ class CrtTree
                       Int32 depth,
                       const GoodX& goodX );
 
+  bool isSameAsTreeL( CrtTreeL& tree );
+
 
   };
+
+*/

@@ -1,6 +1,8 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+/*
+
 
 // The first few numbers for the base:
 // 1                  1
@@ -499,7 +501,7 @@ for( Int32 count = 1; count < last; count++ )
 }
 
 
-/*
+
 bool Crt2::isGoodXAt( const Int32 where,
                   const GoodX& goodX,
                   const CrtMath& crtMath,
@@ -519,10 +521,10 @@ Int32 accumD = getAccum( row, // row
 
 return goodX.getVal( where, accumD );
 }
-*/
 
 
-/*
+
+
 Int32 Crt2::isGoodX( const Int32 start,
                 const GoodX& goodX,
                 const CrtMath& crtMath,
@@ -546,7 +548,7 @@ for( Int32 where = start; where < last; where++ )
 
 return last + 1;
 }
-*/
+
 
 
 bool Crt2::setInvCrt( Crt2& prime2Crt2,
@@ -657,3 +659,7 @@ toInteger( crtMath, showIt, intMath );
 Str showS =  intMath.toString10( showIt );
 return showS;
 }
+
+*/
+
+

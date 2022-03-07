@@ -1,9 +1,6 @@
 // Copyright Eric Chauvin, 2021 - 2022.
 
 
-/*
-Crt3 has made this obsolete.
-
 
 #pragma once
 
@@ -13,16 +10,21 @@ Crt3 has made this obsolete.
 
 #include "ProjConst.h"
 #include "SPrimes.h"
-#include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
-// #include "GoodX.h"
 #include "QuadRes.h"
 
 
+// Version 3 of the CRT numbers.
 
 
-class Crt2
+// A lot of these things could be very fast if
+// they are done on a GPU.  A lot of things
+// could be done independently for each Crt digit
+// on a GPU.
+
+
+class Crt3
   {
   private:
   Int32 testForCopy = 123;
@@ -32,10 +34,11 @@ class Crt2
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
+  Int32* crtDigitAr;
   Int32* digitAr;
   Int32 index = 0;
 
-  inline Int32 getTestAccum( const Int32 prime,
+  inline static Int32 getTestAccum( const Int32 prime,
                          const Int32 accum,
                          const Int32 crtDigit,
                          const Int32 digit )
@@ -48,9 +51,10 @@ class Crt2
     }
 
   public:
-  Crt2( void );
-  Crt2( const Crt2& in );
-  ~Crt2( void );
+  Crt3( void );
+  Crt3( const Crt3& in );
+  ~Crt3( void );
+
   inline void setToZero()
     {
     index = 0;
@@ -64,7 +68,7 @@ class Crt2
     }
 
   inline Int32 getAccumByte( const Int32 row,
-                 const CrtMath& crtMath ) const
+                             const CrtMath& crtMath ) const
 
     {
     // It is either zero or one.
@@ -82,7 +86,7 @@ class Crt2
     }
 
 
-  inline bool isZero()
+  inline bool isZero() const
     {
     if( index != 0 )
       return false;
@@ -93,7 +97,7 @@ class Crt2
     return true;
     }
 
-  inline bool isOne()
+  inline bool isOne() const
     {
     if( index != 0 )
       return false;
@@ -104,22 +108,31 @@ class Crt2
     return true;
     }
 
-  inline Int32 digitAtTop()
+  inline Int32 digitAtTop() const
     {
     return digitAr[index];
     }
 
 
-  void copy( const Crt2& toCopy );
+  void copy( const Crt3& toCopy );
+  void copyToCrtBuf( CrtBuf& copyTo );
 
-  bool isEqual( const Crt2& toCheck ) const;
+  bool isEqual( const Crt3& toCheck ) const;
 
   inline Int32 getD( Int32 where ) const
     {
     RangeC::test2( where, 0, last - 1,
-                   "Crt2.getD where range." );
+                   "Crt3.getD where range." );
 
     return digitAr[where];
+    }
+
+  inline Int32 getCrtD( Int32 where ) const
+    {
+    RangeC::test2( where, 0, last - 1,
+                   "Crt3.getD where range." );
+
+    return crtDigitAr[where];
     }
 
   inline void setD( Int32 setTo, Int32 where )
@@ -129,6 +142,15 @@ class Crt2
 
     digitAr[where] = setTo;
     }
+
+  inline void setCrtD( Int32 setTo, Int32 where )
+    {
+    RangeC::test2( where, 0, last - 1,
+                  "Crt2.setD where range." );
+
+    crtDigitAr[where] = setTo;
+    }
+
 
   inline Int32 getIndex( void ) const
     {
@@ -147,53 +169,31 @@ class Crt2
                   Integer& toSet,
                   IntegerMath& intMath ) const;
 
-  void setFromCrt( const Crt& from,
-                   // Integer& accum,
-                   const CrtMath& crtMath,
-                   const SPrimes& sPrimes,
-                   // IntegerMath& intMath
-                   const MultInv& multInv
-                   );
-
-  void setFromCrtV1( const Crt& from,
-                     Integer& accum,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes,
-                     IntegerMath& intMath );
-
-  void setFromCrtV2( const Crt& from,
-                     Integer& accum,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes,
-                     IntegerMath& intMath );
-
-  void setFromCrtV3( const Crt& from,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes );
-
-  void setFromCrtV4( const Crt& from,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes,
-                     const MultInv& multInv );
-
-  void setFromCrtV5( const Crt& from,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes,
-                     const MultInv& multInv );
-
-  void setCrt( Crt& toSet,
-               const CrtMath& crtMath,
+  void setCrt( const CrtMath& crtMath,
                const SPrimes& sPrimes );
 
-  bool setInvCrt( Crt2& prime2Crt2,
+  void setFromCrt( const CrtMath& crtMath,
+                   const SPrimes& sPrimes,
+                   const MultInv& multInv );
+
+  void setFromCrtV5( const CrtMath& crtMath,
+                     const SPrimes& sPrimes,
+                     const MultInv& multInv );
+
+
+/*
+  bool setInvCrt( Crt3& prime2Crt3,
                   const Int32 maxLen,
-                  const Crt& prod,
+                  const Crt3& prod,
                   const SPrimes& sPrimes,
                   const MultInv& multInv,
                   const CrtMath& crtMath );
+*/
 
-  bool incAt( const SPrimes& sPrimes,
-              const Int32 where );
+
+  // bool incAt( const SPrimes& sPrimes,
+    //           const Int32 where );
+
 
   inline Int32 getAccum( const Int32 row,
                    const Int32 col,
@@ -222,17 +222,21 @@ class Crt2
     return result;
     }
 
+/*
   bool setInvDigit( const Int32 where,
                     const Int32 prime,
                     const Int32 fromDigit,
                     const Int32 maxLen,
                     const CrtMath& crtMath,
                     const MultInv& multInv );
+*/
+
 
   Str toStr( const CrtMath& crtMath,
              IntegerMath& intMath );
 
 
+/*
   bool isGoodXAt( const Int32 where,
                   const GoodX& goodX,
                   const CrtMath& crtMath,
@@ -242,10 +246,34 @@ class Crt2
                  const GoodX& goodX,
                  const CrtMath& crtMath,
                  const SPrimes& sPrimes ) const;
+*/
 
 
-  };
+/*
+  void add( const Crt& toAdd,
+            const SPrimes& sPrimes );
+  void subtract( const Crt& toSub,
+                 const SPrimes& sPrimes );
+  void decrement( const SPrimes& sPrimes );
+  void subtractInt( const Int32 toSub,
+                     const SPrimes& sPrimes );
+  void multiply( const Crt& toMul,
+                 const SPrimes& sPrimes );
 
 */
 
 
+  void setFromInteger( const Integer& setFrom,
+                       IntegerMath& intMath,
+                       const SPrimes& sPrimes,
+                       const MultInv& multInv,
+                       const CrtMath& crtMath );
+
+
+/*
+  void setFromInt( const Int32 setFrom,
+                    const SPrimes& sPrimes );
+*/
+
+
+  };

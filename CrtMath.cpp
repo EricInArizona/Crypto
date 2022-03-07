@@ -9,7 +9,7 @@
 CrtMath::CrtMath( void )
 {
 baseAr = new IntBuf[last];
-baseArCrt = new Crt[last];
+baseArCrt = new CrtBuf[last];
 }
 
 
@@ -17,7 +17,7 @@ baseArCrt = new Crt[last];
 CrtMath::CrtMath( const CrtMath& in )
 {
 baseAr = new IntBuf[last];
-baseArCrt = new Crt[last];
+baseArCrt = new CrtBuf[last];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -46,18 +46,6 @@ setupBaseArray( intMath, sPrimes );
 void CrtMath::setupBaseArray( IntegerMath& intMath,
                     const SPrimes& sPrimes )
 {
-// The first few numbers for the base:
-// 1             1
-// 2             2
-// 3             6
-// 5            30
-// 7           210
-// 11        2,310
-// 13       30,030
-// 17      510,510
-// 19    9,699,690
-// 23  223,092,870
-
 Integer bigBase;
 
 bigBase.setToOne();
@@ -75,12 +63,11 @@ bigBase.setFromInt24( 2 );
 // BaseAr[3] = 30;
 // And so on...
 
+
 for( Int32 count = 1; count < last; count++ )
   {
   bigBase.copyToIntBuf( baseAr[count] );
-  baseArCrt[count].setFromInteger( bigBase,
-                                   intMath,
-                                   sPrimes );
+  baseArCrt[count].setFromInteger( bigBase, intMath, sPrimes );
 
   // Multiply it for the next bigBase.
   intMath.multiplyInt( bigBase,
@@ -94,3 +81,5 @@ void CrtMath::copyFromIntBuf( Integer& copyTo,
 {
 copyTo.copyFromIntBuf( baseAr[where] );
 }
+
+

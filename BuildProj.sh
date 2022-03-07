@@ -5,6 +5,8 @@ cd /home/Eric/Crypto
 
 # pwd
 
+# chmod +x aprogram.sh
+
 
 # The warning about -Wpadded means it's aligning a struct
 # or object on a boundary, like an 8 byte boundary.  Which

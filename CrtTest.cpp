@@ -5,7 +5,7 @@
 #include "../LinuxApi/Timing.h"
 
 #include "CrtTest.h"
-#include "Crt2.h"
+#include "Crt3.h"
 #include "MakePrime.h"
 #include "FindFacCrt.h"
 
@@ -32,6 +32,8 @@ if( in.testForCopy == 7 )
 
 throw "Don't use copy constructor for CrtTest.";
 }
+
+
 
 
 void CrtTest::test( FileIO& mainIO )
@@ -152,6 +154,7 @@ mainIO.appendChars( "Finished test.\n" );
 
 
 
+
 bool CrtTest::testBasics( const Integer& t1,
                           FileIO& mainIO )
 {
@@ -170,32 +173,13 @@ mainIO.appendStr( showIt2 );
 mainIO.appendChars( "\n\n" );
 
 
-Crt test1;
-test1.setFromInteger( t1, intMath, sPrimes );
+Crt3 test1;
+test1.setFromInteger( t1, intMath, sPrimes, multInv, crtMath );
 
-// Integer accum;
-
-Crt2 test2;
-test2.setFromCrt( test1,
-                  // accum,
-                  crtMath,
-                  sPrimes,
-                  // intMath
-                  multInv
-                  );
-
-Crt test3;
-test2.setCrt( test3, crtMath, sPrimes );
-
-if( !test3.isEqual( test1 ))
-  throw "!test3.isEqual( test1 )";
-
-// if( !accum.isEqual( t1 ))
-  // return false;
 
 Integer result;
 
-test2.toInteger( crtMath, result, intMath );
+test1.toInteger( crtMath, result, intMath );
 
 // If ProjConst::crtDigitArraySize is too
 // small then toInteger() will come out too
@@ -203,6 +187,7 @@ test2.toInteger( crtMath, result, intMath );
 
 if( !result.isEqual( t1 ))
   return false;
+
 
 return true;
 }
