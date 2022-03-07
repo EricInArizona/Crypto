@@ -1,33 +1,21 @@
 buildfile	/home/Eric/Crypto/BuildProj.sh
 executablefile	/home/Eric/Crypto/cryptoMain
 projectdirectory	/home/Eric/Crypto
-recentfile1	/home/Eric/Crypto/BuildProj.sh
-recentfile2	/home/Eric/Crypto/MainApp.cpp
-recentfile3	/home/Eric/Crypto/MainApp.h
-recentfile4	/home/Eric/Docs/Notes.txt
-recentfile5	/home/Eric/Docs/Sockets.txt
-recentfile6	
-recentfile10	
-recentfile7	
-recentfile11	
-recentfile8	
-recentfile9	
-recentfile12	
-recentfile13	
-recentfile14	
-recentfile15	
-recentfile16	
-recentfile17	
-recentfile18	
-recentfile19	
-recentfile20	
-recentfile21	
-recentfile22	
-recentfile23	
-recentfile24	
-recentfile25	
-recentfile26	
-recentfile27	
-recentfile28	
-recentfile29	
-recentfile30	
+recentfile1	/home/Eric/Crypto/MainApp.cpp
+recentfile2	/home/Eric/Crypto/MainApp.h
+recentfile3	/home/Eric/Docs/Notes.txt
+recentfile4	/home/Eric/Crypto/CrtTest.h
+recentfile5	/home/Eric/Crypto/CrtTest.cpp
+recentfile6	/home/Eric/Crypto/QRTree.h
+recentfile7	/home/Eric/Crypto/QRTree.cpp
+recentfile8	/home/Eric/Crypto/CrtTreeL.h
+recentfile9	/home/Eric/Crypto/CrtTreeL.cpp
+recentfile10	/home/Eric/Crypto/Fermat.cpp
+recentfile11	/home/Eric/Crypto/Crt3.h
+recentfile12	/home/Eric/Crypto/Crt3.cpp
+recentfile13	/home/Eric/Crypto/FindFacCrt.h
+recentfile14	/home/Eric/Crypto/FindFacCrt.cpp
+recentfile15	/home/Eric/Crypto/CrtMath.h
+recentfile16	/home/Eric/Crypto/CrtMath.cpp
+recentfile17	/home/Eric/Crypto/CrtBuf.h
+recentfile18	/home/Eric/Crypto/CrtBuf.cpp
