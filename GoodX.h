@@ -62,8 +62,7 @@ class GoodX
     bArrays[primeAt].setVal( where, toSet );
     }
 
-  inline Int32 getLengthAt( const Int32 where )
-                                          const
+  inline Int32 getLengthAt( const Int32 where ) const
     {
     RangeC::test2( where, 0, last - 1,
             "getLengthAt where range." );

@@ -16,8 +16,9 @@
 #include "MultInv.h"
 #include "CrtMath.h"
 #include "GoodX.h"
-#include "Crt2.h"
+#include "Crt3.h"
 #include "QuadRes.h"
+
 
 
 class FindFacCrt
@@ -29,6 +30,8 @@ class FindFacCrt
   FindFacCrt( void );
   FindFacCrt( const FindFacCrt& in );
   ~FindFacCrt( void );
+
+/*
   bool getSmallFactor(
                  const Integer& pubKeyN,
                  Integer& find1,
@@ -49,6 +52,8 @@ class FindFacCrt
                  const MultInv& multInv,
                  const CrtMath& crtMath,
                  FileIO& mainIO );
+*/
+
 
   bool getFactorsQR( const Integer& pubKeyN,
                       Integer& find1,
@@ -78,7 +83,7 @@ class FindFacCrt
                       IntegerMath& intMath,
                       FileIO& mainIO );
 
-  bool hasFactors( const Crt2& testX,
+  bool hasFactors( const Crt3& testX,
                    const Integer& pubKeyN,
                   Integer& find1,
                   Integer& find2,

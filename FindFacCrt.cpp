@@ -29,6 +29,8 @@ FindFacCrt::~FindFacCrt( void )
 }
 
 
+
+/*
 bool FindFacCrt::getSmallFactor(
                          const Integer& pubKeyN,
                          Integer& find1,
@@ -49,9 +51,11 @@ return getSmallFactor1( pubKeyN,
                         mainIO );
 
 }
+*/
 
 
 
+/*
 // Very basic version that just increments
 // through possible factors.
 bool FindFacCrt::getSmallFactor1(
@@ -77,18 +81,10 @@ prod.setFromInteger( pubKeyN,
                      intMath,
                      sPrimes );
 
-Crt2 prodCrt2;
-prodCrt2.setFromCrt( prod,
-                     crtMath,
-                     sPrimes,
-                     multInv );
+const Int32 prodIndex = prod.getIndex();
 
-const Int32 prodIndex = prodCrt2.getIndex();
-
-Crt2 prime1;
-Crt2 prime2;
-Crt prime1Crt;
-// Crt testProd;
+Crt3 prime1;
+Crt3 prime2;
 
 prime1.setToOne();
 
@@ -145,6 +141,7 @@ mainIO.appendChars( "\nWent to end.\n\n" );
 
 return false;
 }
+*/
 
 
 
@@ -174,27 +171,30 @@ if( checkEasyOnes( pubKeyN, intMath, sPrimes,
   return true;
 */
 
-Crt prod;
+Crt3 prod;
 prod.setFromInteger( pubKeyN,
                      intMath,
-                     sPrimes );
+                     sPrimes,
+                     multInv,
+                     crtMath );
+
 
 QRTree qRTree;
 qRTree.setStartValues( pubKeyN, goodX, quadRes,
-                       // crtMath,
+                       crtMath,
                        intMath,
                        sPrimes,
-                       // multInv,
+                       multInv,
                        mainIO );
 
-if( qRTree.runIt( goodX,
+if( qRTree.runIt( // goodX,
                  sPrimes,
                  crtMath,
                  multInv,
                  intMath,
                  mainIO ))
   {
-  Crt2 testX;
+  Crt3 testX;
   qRTree.setFromCrtTree( testX,
                          crtMath,
                          sPrimes,
@@ -216,7 +216,7 @@ return false;
 
 
 bool FindFacCrt::hasFactors(
-                         const Crt2& testX,
+                         const Crt3& testX,
                          const Integer& pubKeyN,
                          Integer& find1,
                          Integer& find2,

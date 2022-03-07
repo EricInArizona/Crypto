@@ -2,6 +2,7 @@
 
 
 
+
 #pragma once
 
 
@@ -9,11 +10,12 @@
 #include "../LinuxApi/BasicTypes.h"
 
 #include "GoodX.h"
-#include "CrtTree.h"
+#include "CrtTreeL.h"
 #include "SPrimes.h"
-#include "Crt2.h"
+#include "Crt3.h"
 #include "CrtMath.h"
 #include "QuadRes.h"
+
 
 
 // The first few numbers for the base:
@@ -38,15 +40,14 @@ class QRTree
   private:
   Int32 testForCopy = 123;
 
-  CrtTree crtTree;
+  CrtTreeL crtTreeL;
 
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
-  // Int32 index = 0;
   Int32 prodByte = 0;
   Integer pubKeyN;
-  Crt2 bigXCrt2;
+  Crt3 bigXCrt;
 
 
 /*
@@ -128,10 +129,10 @@ class QRTree
 */
 
 
-  void setupGoodXQuadRes( Crt& prod,
-                       GoodX& goodX,
-                       const SPrimes& sPrimes,
-                       const QuadRes& quadRes );
+  void setupGoodXQuadRes( Crt3& prod,
+                          GoodX& goodX,
+                          const SPrimes& sPrimes,
+                          const QuadRes& quadRes );
 
   bool isAnswerSlow( // const GoodX& goodX,
                     const SPrimes& sPrimes,
@@ -140,10 +141,14 @@ class QRTree
                     IntegerMath& intMath,
                     FileIO& mainIO );
 
+  // bool testBaseByte( const Int32 where,
+     //                const Int32 baseAccum,
+     //                const Int32 baseByte );
+
   bool testTopRow( const Int32 where,
                    const SPrimes& sPrimes,
                    const MultInv& multInv,
-                   const GoodX& goodX,
+                   Crt3& toCheck,
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
                    FileIO& mainIO );
@@ -173,24 +178,23 @@ class QRTree
   QRTree( const QRTree& in );
   ~QRTree( void );
 
-  void setStartValues(
-                   const Integer& setpubKeyN,
-                   GoodX& goodX,
-                   QuadRes& quadRes,
-                   // const CrtMath& crtMath,
-                   IntegerMath& intMath,
-                   const SPrimes& sPrimes,
-                   // const MultInv& multInv,
-                   FileIO& mainIO );
+  void setStartValues( const Integer& setpubKeyN,
+                       GoodX& goodX,
+                       QuadRes& quadRes,
+                       const CrtMath& crtMath,
+                       IntegerMath& intMath,
+                       const SPrimes& sPrimes,
+                       const MultInv& multInv,
+                       FileIO& mainIO );
 
-  bool runIt( const GoodX& goodX,
+  bool runIt( // const GoodX& goodX,
               const SPrimes& sPrimes,
               const CrtMath& crtMath,
               const MultInv& multInv,
               IntegerMath& intMath,
               FileIO& mainIO );
 
-  void setFromCrtTree( Crt2& toSet,
+  void setFromCrtTree( Crt3& toSet,
                    const CrtMath& crtMath,
                    const SPrimes& sPrimes,
                    const MultInv& multInv );
