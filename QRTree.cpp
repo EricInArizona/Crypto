@@ -82,6 +82,7 @@ void QRTree::setStartValues(
                     IntegerMath& intMath,
                     const SPrimes& sPrimes,
                     const MultInv& multInv,
+                    CrtTreeL& crtTree,
                     FileIO& mainIO )
 {
 mainIO.appendChars( "setStartValues.\n" );
@@ -109,7 +110,7 @@ prod.setFromInteger( pubKeyN,
 setupGoodXQuadRes( prod, goodX, sPrimes,
                                    quadRes );
 
-crtTreeL.init( sPrimes, goodX );
+crtTree.init( sPrimes, goodX );
 }
 
 
@@ -175,7 +176,7 @@ for( Int32 row = 0; row <
             ProjConst::crtDigitArraySize; row++ )
   {
   Int32 prime = sPrimes.getPrimeAt( row );
-  Int32 prodDigit = prod.getD( row );
+  Int32 prodDigit = prod.crt.getD( row );
   for( Int32 col = 0; col < prime; col++ )
     {
     Int32 x = (col * col) + prodDigit;
@@ -210,6 +211,7 @@ bool QRTree::runIt( // const GoodX& goodX,
                     const CrtMath& crtMath,
                     const MultInv& multInv,
                     IntegerMath& intMath,
+                    CrtTreeL& crtTree,
                     FileIO& mainIO )
 {
 // Things like goodX are set up in
@@ -218,24 +220,21 @@ bool QRTree::runIt( // const GoodX& goodX,
 mainIO.appendChars( "QRTree.runIt() started.\n" );
 
 // See if x can be zero or one.
-// crtTree.setIndex( 0 );
-crtTreeL.setIndex( 0 );
-// crtTree.setFirstGoodXAt( 0, goodX );
-crtTreeL.setFirstGoodXAt( 0 );
+crtTree.setIndex( 0 );
+crtTree.setFirstGoodXAt( 0 );
 
 if( isAnswerSlow( sPrimes, crtMath, multInv,
-                  intMath, mainIO ))
+                  intMath, crtTree, mainIO ))
   throw
      "pubKeyN sqr root. Checked with checkEasy.";
   // pubKeyN can't have a square root.
 
 
 
-// crtTree.setNextGoodXAt( 0, goodX );
-crtTreeL.setNextGoodXAt( 0 );
+crtTree.setNextGoodXAt( 0 );
 
 if( isAnswerSlow( sPrimes, crtMath, multInv,
-                  intMath, mainIO ))
+                  intMath, crtTree, mainIO ))
   {
   mainIO.appendChars( "Found at x = 1.\n" );
   return true;
@@ -269,8 +268,7 @@ const Int32 maxBrachIndex = 13;
 for( Int32 branchIndex = 1; branchIndex <
                    maxBrachIndex; branchIndex++ )
   {
-  // crtTree.setIndex( branchIndex );
-  crtTreeL.setIndex( branchIndex );
+  crtTree.setIndex( branchIndex );
   Int32 prime = sPrimes.getPrimeAt( branchIndex );
 
   mainIO.appendChars(  "branchIndex is: " );
@@ -286,7 +284,7 @@ for( Int32 branchIndex = 1; branchIndex <
   // Start all new at zero.
   // This goes up to index.
   // crtTree.setFirstGoodXToDepth( 0, goodX );
-  crtTreeL.setFirstGoodXToDepth( 0 );
+  crtTree.setFirstGoodXToDepth( 0 );
 
   Int64 topTests = 0;
   // for( Int32 allBranches = 0;
@@ -299,8 +297,7 @@ for( Int32 branchIndex = 1; branchIndex <
     topTests++;
 
     if( testTopRow( branchIndex, sPrimes, multInv,
-                    toCheck,
-                    crtMath, intMath, mainIO ))
+                    toCheck, crtMath, intMath, crtTree, mainIO ))
       {
       mainIO.appendChars(  "\nFound it.\n" );
       mainIO.appendChars(  "topTests: " );
@@ -317,9 +314,9 @@ for( Int32 branchIndex = 1; branchIndex <
     for( Int32 depth = branchIndex - 1;
                            depth >= 0; depth-- )
       {
-      if( crtTreeL.setNextGoodXAt( depth ))
+      if( crtTree.setNextGoodXAt( depth ))
         {
-        crtTreeL.setFirstGoodXToDepth( depth + 1 );
+        crtTree.setFirstGoodXToDepth( depth + 1 );
 
         foundDepth = true;
         break;
@@ -378,6 +375,7 @@ bool QRTree::testTopRow( const Int32 where,
                    Crt3& toCheck,
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
+                   CrtTreeL& crtTree,
                    FileIO& mainIO )
 {
 // Don't run this at length 0.
@@ -388,9 +386,10 @@ Int32 prime = sPrimes.getPrimeAt( where );
 // Int32 crtDigit = crtMath.getCrtDigit( where,
    //                                   where );
 
-crtTreeL.setFirstGoodXAt( where );
+crtTree.setFirstGoodXAt( where );
 
-setFromCrtTree( toCheck, crtMath, sPrimes, multInv );
+// =============
+// setFromCrtTree( toCheck, crtMath, sPrimes, multInv );
 
 // Int32 baseByte = crtMath.getBaseByte( where );
 // Int32 baseAccum = toCheck.getAccumByte( where - 1, crtMath );
@@ -400,7 +399,7 @@ setFromCrtTree( toCheck, crtMath, sPrimes, multInv );
   // if( testBaseByte( where, baseAccum, baseByte ))
     // {
     if( isAnswerSlow( sPrimes, crtMath, multInv,
-                               intMath, mainIO ))
+                               intMath, crtTree, mainIO ))
       return true;
 
     // }
@@ -409,14 +408,14 @@ setFromCrtTree( toCheck, crtMath, sPrimes, multInv );
 // The most it could possibly count through.
 for( Int32 count = 0; count < prime; count++ )
   {
-  if( !crtTreeL.setNextGoodXAt( where ))
+  if( !crtTree.setNextGoodXAt( where ))
     {
     // No more on this row.
     return false;
     }
 
   if( isAnswerSlow( sPrimes, crtMath, multInv,
-                             intMath, mainIO ))
+                             intMath, crtTree, mainIO ))
     return true;
 
   }
@@ -426,91 +425,13 @@ return false;
 
 
 
-// See Crt2::setFromCrtV5().
-// And earlier versions like V1, V2, etc.
-
-void QRTree::setFromCrtTree( Crt3& toSet,
-                     const CrtMath& crtMath,
-                     const SPrimes& sPrimes,
-                     const MultInv& multInv )
-{
-// Int32 keepAccum =
-// Crt2::setFromCrtV5() has the old reduncancy.
-// Make a V6.
-// Make a separate V6 of this too.
-
-
-if( crtTreeL.getD( 0 ) == 1 )
-  {
-  // Int32 keepAccum =
-  toSet.setToOne();
-  }
-else
-  {
-  // Int32 keepAccum =
-  toSet.setToZero();
-  }
-
-const Int32 max = crtTreeL.getIndex();
-
-// Int32 keepAccum =
-// Count starts at 1, so it's the prime 3.
-for( Int32 count = 1; count <= max; count++ )
-  {
-  Int32 prime = sPrimes.getPrimeAt( count );
-  Int32 accumD = toSet.getAccum( count - 1,
-                             count,
-                             prime,
-                             crtMath );
-
-  // Int32 keepAccum = keep the last one it got.
-
-  Int32 testD = crtTreeL.getD( count );
-
-  if( testD < accumD )
-    testD += prime;
-
-  testD = testD - accumD;
-
-  Int32 baseD = crtMath.getCrtDigit( count,
-                                      count );
-  if( baseD == 0 )
-    throw "baseD == 0";
-
-  Int32 inv = multInv.getInv( count, baseD );
-  if( inv == 0 )
-    throw "inv == 0";
-
-  // baseD * inv = 1
-  // baseD * (inv * testD) = testD
-
-  Int32 testInv = inv * testD;
-  testInv = testInv % prime;
-
-  if( testInv != 0 )
-    {
-    // The toSet.index can't go higher than
-    // count.  But it can be lower.
-
-    // It is likely not quad res at higher
-    // index values.  So doing isFullGoodX()
-    // would be doing accum only up to the
-    // index.  getAccum() has a top at index.
-
-    toSet.setIndex( count );
-    }
-
-  toSet.setD( testInv, count );
-  }
-}
-
-
 
 bool QRTree::isAnswerSlow( // const GoodX& goodX,
                        const SPrimes& sPrimes,
                        const CrtMath& crtMath,
                        const MultInv& multInv,
                        IntegerMath& intMath,
+                       CrtTreeL& crtTree,
                        FileIO& mainIO )
 {
 // Comment out this whole function except for
@@ -519,13 +440,12 @@ bool QRTree::isAnswerSlow( // const GoodX& goodX,
 // return false;
 
 Crt3 toCheck;
-setFromCrtTree( toCheck, crtMath, sPrimes,
-                multInv );
+toCheck.setFromCrtTree( crtTree, crtMath, sPrimes, multInv );
 
 Int32 testIndex = toCheck.getIndex();
 
 // This should have already been found.
-if( testIndex < crtTreeL.getIndex())
+if( testIndex < crtTree.getIndex())
   return false;
 
 Int32 theByte = toCheck.getAccumByte( testIndex,

@@ -18,6 +18,7 @@
 #include "GoodX.h"
 #include "Crt3.h"
 #include "QuadRes.h"
+#include "CrtTreeL.h"
 
 
 
@@ -25,6 +26,7 @@ class FindFacCrt
   {
   private:
   Int32 testForCopy = 123;
+  CrtTreeL crtTree;
 
   public:
   FindFacCrt( void );

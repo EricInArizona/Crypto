@@ -185,6 +185,7 @@ qRTree.setStartValues( pubKeyN, goodX, quadRes,
                        intMath,
                        sPrimes,
                        multInv,
+                       crtTree,
                        mainIO );
 
 if( qRTree.runIt( // goodX,
@@ -192,13 +193,12 @@ if( qRTree.runIt( // goodX,
                  crtMath,
                  multInv,
                  intMath,
+                 crtTree,
                  mainIO ))
   {
   Crt3 testX;
-  qRTree.setFromCrtTree( testX,
-                         crtMath,
-                         sPrimes,
-                         multInv );
+  testX.setFromCrtTree( crtTree, crtMath, sPrimes, multInv );
+
 
   if( hasFactors( testX, pubKeyN, find1,
                   find2, intMath, crtMath,

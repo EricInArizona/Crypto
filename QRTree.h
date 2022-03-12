@@ -40,7 +40,6 @@ class QRTree
   private:
   Int32 testForCopy = 123;
 
-  CrtTreeL crtTreeL;
 
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
@@ -139,6 +138,7 @@ class QRTree
                     const CrtMath& crtMath,
                     const MultInv& multInv,
                     IntegerMath& intMath,
+                    CrtTreeL& crtTree,
                     FileIO& mainIO );
 
   // bool testBaseByte( const Int32 where,
@@ -151,6 +151,7 @@ class QRTree
                    Crt3& toCheck,
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
+                   CrtTreeL& crtTree,
                    FileIO& mainIO );
 
 
@@ -185,6 +186,7 @@ class QRTree
                        IntegerMath& intMath,
                        const SPrimes& sPrimes,
                        const MultInv& multInv,
+                       CrtTreeL& crtTree,
                        FileIO& mainIO );
 
   bool runIt( // const GoodX& goodX,
@@ -192,11 +194,8 @@ class QRTree
               const CrtMath& crtMath,
               const MultInv& multInv,
               IntegerMath& intMath,
+              CrtTreeL& crtTree,
               FileIO& mainIO );
 
-  void setFromCrtTree( Crt3& toSet,
-                   const CrtMath& crtMath,
-                   const SPrimes& sPrimes,
-                   const MultInv& multInv );
 
   };
