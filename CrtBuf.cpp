@@ -67,5 +67,3 @@ for( Int32 count = 0; count < last; count++ )
                  sPrimes.getPrimeAt( count ));
   }
 }
-
-

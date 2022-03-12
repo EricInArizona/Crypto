@@ -6,12 +6,6 @@
 #include "../LinuxApi/Casting.h"
 
 
-// A lot of these things could be very fast if
-// they are done on a GPU.  A loop like this:
-// for( Uint32 count = 0; count < last; count++ )
-//  digitAr[count] = 0;
-// Could be done independently for each value
-// on a GPU.
 
 
 Crt::Crt( void )

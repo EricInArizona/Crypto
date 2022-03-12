@@ -10,12 +10,12 @@
 
 #include "ProjConst.h"
 #include "SPrimes.h"
+#include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
 #include "QuadRes.h"
+#include "CrtTreeL.h"
 
-
-// Version 3 of the CRT numbers.
 
 
 // A lot of these things could be very fast if
@@ -34,8 +34,7 @@ class Crt3
   static const Int32 last =
                    ProjConst::crtDigitArraySize;
 
-  Int32* crtDigitAr;
-  Int32* digitAr;
+  Int32* digitMAr;
   Int32 index = 0;
 
   inline static Int32 getTestAccum( const Int32 prime,
@@ -51,6 +50,8 @@ class Crt3
     }
 
   public:
+  Crt crt;
+
   Crt3( void );
   Crt3( const Crt3& in );
   ~Crt3( void );
@@ -58,13 +59,13 @@ class Crt3
   inline void setToZero()
     {
     index = 0;
-    digitAr[0] = 0;
+    digitMAr[0] = 0;
     }
 
   inline void setToOne()
     {
     index = 0;
-    digitAr[0] = 1;
+    digitMAr[0] = 1;
     }
 
   inline Int32 getAccumByte( const Int32 row,
@@ -72,12 +73,12 @@ class Crt3
 
     {
     // It is either zero or one.
-    Int32 result = digitAr[0];
+    Int32 result = digitMAr[0];
 
     for( Int32 count = 1; count <= row; count++ )
       {
       Int32 accumB = crtMath.getBaseByte( count );
-      accumB = accumB * digitAr[count];
+      accumB = accumB * digitMAr[count];
       result += accumB;
       result = result & 0xFF;
       }
@@ -91,7 +92,7 @@ class Crt3
     if( index != 0 )
       return false;
 
-    if( digitAr[0] != 0 )
+    if( digitMAr[0] != 0 )
       return false;
 
     return true;
@@ -102,53 +103,40 @@ class Crt3
     if( index != 0 )
       return false;
 
-    if( digitAr[0] != 1 )
+    if( digitMAr[0] != 1 )
       return false;
 
     return true;
     }
 
-  inline Int32 digitAtTop() const
+  inline Int32 digitMAtTop() const
     {
-    return digitAr[index];
+    return digitMAr[index];
     }
 
 
   void copy( const Crt3& toCopy );
-  void copyToCrtBuf( CrtBuf& copyTo );
+
+  // void copyToCrtBuf( CrtBuf& copyTo );
 
   bool isEqual( const Crt3& toCheck ) const;
 
-  inline Int32 getD( Int32 where ) const
+  // M for Magnitude digit.
+  inline Int32 getMD( Int32 where ) const
     {
     RangeC::test2( where, 0, last - 1,
-                   "Crt3.getD where range." );
+                   "Crt3.getMD where range." );
 
-    return digitAr[where];
+    return digitMAr[where];
     }
 
-  inline Int32 getCrtD( Int32 where ) const
+
+  inline void setMD( Int32 setTo, Int32 where )
     {
     RangeC::test2( where, 0, last - 1,
-                   "Crt3.getD where range." );
+                  "Crt2.setMD where range." );
 
-    return crtDigitAr[where];
-    }
-
-  inline void setD( Int32 setTo, Int32 where )
-    {
-    RangeC::test2( where, 0, last - 1,
-                  "Crt2.setD where range." );
-
-    digitAr[where] = setTo;
-    }
-
-  inline void setCrtD( Int32 setTo, Int32 where )
-    {
-    RangeC::test2( where, 0, last - 1,
-                  "Crt2.setD where range." );
-
-    crtDigitAr[where] = setTo;
+    digitMAr[where] = setTo;
     }
 
 
@@ -171,10 +159,6 @@ class Crt3
 
   void setCrt( const CrtMath& crtMath,
                const SPrimes& sPrimes );
-
-  void setFromCrt( const CrtMath& crtMath,
-                   const SPrimes& sPrimes,
-                   const MultInv& multInv );
 
   void setFromCrtV5( const CrtMath& crtMath,
                      const SPrimes& sPrimes,
@@ -207,14 +191,14 @@ class Crt3
     // The crtDigit is all ones at index 0.
     // So it would be this times 1.
     // This is either one or zero.
-    Int32 result = digitAr[0];
+    Int32 result = digitMAr[0];
 
     for( Int32 count = 1; count <= top; count++ )
       {
       Int32 accum = crtMath.getCrtDigit(
                                    count, col );
 
-      accum = accum * digitAr[count];
+      accum = accum * digitMAr[count];
       result += accum;
       result = result % prime;
       }
@@ -236,33 +220,6 @@ class Crt3
              IntegerMath& intMath );
 
 
-/*
-  bool isGoodXAt( const Int32 where,
-                  const GoodX& goodX,
-                  const CrtMath& crtMath,
-                  const SPrimes& sPrimes ) const;
-
-  Int32 isGoodX( const Int32 start,
-                 const GoodX& goodX,
-                 const CrtMath& crtMath,
-                 const SPrimes& sPrimes ) const;
-*/
-
-
-/*
-  void add( const Crt& toAdd,
-            const SPrimes& sPrimes );
-  void subtract( const Crt& toSub,
-                 const SPrimes& sPrimes );
-  void decrement( const SPrimes& sPrimes );
-  void subtractInt( const Int32 toSub,
-                     const SPrimes& sPrimes );
-  void multiply( const Crt& toMul,
-                 const SPrimes& sPrimes );
-
-*/
-
-
   void setFromInteger( const Integer& setFrom,
                        IntegerMath& intMath,
                        const SPrimes& sPrimes,
@@ -270,10 +227,10 @@ class Crt3
                        const CrtMath& crtMath );
 
 
-/*
-  void setFromInt( const Int32 setFrom,
-                    const SPrimes& sPrimes );
-*/
+  void setFromCrtTree( const CrtTreeL& crtTree,
+                       const CrtMath& crtMath,
+                       const SPrimes& sPrimes,
+                       const MultInv& multInv );
 
 
   };

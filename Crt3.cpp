@@ -27,16 +27,14 @@
 
 Crt3::Crt3( void )
 {
-digitAr = new Int32[last];
-crtDigitAr = new Int32[last];
+digitMAr = new Int32[last];
 setToZero();
 }
 
 
 Crt3::Crt3( const Crt3& in )
 {
-digitAr = new Int32[last];
-crtDigitAr = new Int32[last];
+digitMAr = new Int32[last];
 
 // setToZero();
 
@@ -50,8 +48,7 @@ throw "Don't use copy constructor for Crt3.\n";
 
 Crt3::~Crt3( void )
 {
-delete[] digitAr;
-delete[] crtDigitAr;
+delete[] digitMAr;
 }
 
 
@@ -62,21 +59,21 @@ index = toCopy.index;
 const Int32 endAt = index;
 for( Int32 count = 0; count <= endAt; count++ )
   {
-  digitAr[count] = toCopy.digitAr[count];
-  crtDigitAr[count] = toCopy.crtDigitAr[count];
+  digitMAr[count] = toCopy.digitMAr[count];
   }
 }
 
 
 
+/*
 void Crt3::copyToCrtBuf( CrtBuf& copyTo )
 {
 for( Int32 count = 0; count < last; count++ )
   {
-  copyTo.setD( crtDigitAr[count], count );
+  copyTo.setD( crt.getD( count ), count );
   }
 }
-
+*/
 
 
 
@@ -88,7 +85,7 @@ if( index != toCheck.index )
 const Int32 endAt = index;
 for( Int32 count = 0; count <= endAt; count++ )
   {
-  if( digitAr[count] != toCheck.digitAr[count] )
+  if( digitMAr[count] != toCheck.digitMAr[count] )
     return false;
 
   }
@@ -130,14 +127,14 @@ void Crt3::toInteger( const CrtMath& crtMath,
                       IntegerMath& intMath ) const
 {
 // Set it to one or zero to start.
-toSet.setFromInt24( getD( 0 ));
+toSet.setFromInt24( getMD( 0 ));
 
 Integer bigBase;
 
 const Int32 endAt = index;
 for( Int32 count = 1; count <= endAt; count++ )
   {
-  Int32 digit = getD( count );
+  Int32 digit = getMD( count );
   if( digit == 0 )
     continue;
 
@@ -157,14 +154,6 @@ for( Int32 count = 1; count <= endAt; count++ )
 
 
 
-void Crt3::setFromCrt( const CrtMath& crtMath,
-                       const SPrimes& sPrimes,
-                       const MultInv& multInv
-                       )
-{
-setFromCrtV5( crtMath, sPrimes, multInv );
-}
-
 
 
 // See Crt2 for versions 1 through 4.
@@ -176,7 +165,7 @@ void Crt3::setFromCrtV5( const CrtMath& crtMath,
                          const SPrimes& sPrimes,
                          const MultInv& multInv )
 {
-if( getCrtD( 0 ) == 1 )
+if( crt.getD( 0 ) == 1 )
   setToOne();
 else
   setToZero();
@@ -188,7 +177,7 @@ for( Int32 count = 1; count < last; count++ )
   Int32 accumD = getAccum( count - 1, count,
                            prime, crtMath );
 
-  Int32 testD = getCrtD( count );
+  Int32 testD = crt.getD( count );
 
   if( testD < accumD )
     testD += prime;
@@ -214,7 +203,7 @@ for( Int32 count = 1; count < last; count++ )
     index = count;
     }
 
-  setD( testInv, count );
+  setMD( testInv, count );
   }
 }
 
@@ -224,7 +213,7 @@ for( Int32 count = 1; count < last; count++ )
 void Crt3::setCrt( const CrtMath& crtMath,
                    const SPrimes& sPrimes )
 {
-setCrtD( getD( 0 ), 0 );
+crt.setD( getMD( 0 ), 0 );
 
 const Int32 top = index;
 
@@ -237,62 +226,10 @@ for( Int32 count = 1; count < last; count++ )
                              prime,
                              crtMath );
 
-  setCrtD( accumD, count );
+  crt.setD( accumD, count );
   }
 }
 
-
-
-
-/*
-bool Crt3::isGoodXAt( const Int32 where,
-                  const GoodX& goodX,
-                  const CrtMath& crtMath,
-                  const SPrimes& sPrimes ) const
-{
-const Int32 top = index;
-Int32 row = top;
-if( row > where )
-  row = where;
-
-Int32 prime = sPrimes.getPrimeAt( where );
-
-Int32 accumD = getAccum( row, // row
-                         where, // column
-                         prime,
-                         crtMath );
-
-return goodX.getVal( where, accumD );
-}
-*/
-
-
-
-/*
-Int32 Crt2::isGoodX( const Int32 start,
-                const GoodX& goodX,
-                const CrtMath& crtMath,
-                const SPrimes& sPrimes ) const
-{
-// const Int32 top = length;
-
-for( Int32 where = start; where < last; where++ )
-  {
-  Int32 prime = sPrimes.getPrimeAt( where );
-
-  Int32 accumD = getAccum( where, // row
-                           where, // column
-                           prime,
-                           crtMath );
-
-  if( !goodX.getVal( where, accumD ))
-    return where;
-
-  }
-
-return last + 1;
-}
-*/
 
 
 
@@ -412,87 +349,6 @@ return showS;
 
 
 
-/*
-
-
-void Crt::add( const Crt& toAdd,
-               const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  // Operations like this could be very fast if
-  // they were done on a GPU in parallel.
-  digitAr[count] += toAdd.digitAr[count];
-  Int32 prime = sPrimes.getPrimeAt( count );
-  digitAr[count] = digitAr[count] % prime;
-  }
-}
-
-
-
-void Crt::subtract( const Crt& toSub,
-                    const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  digitAr[count] -= toSub.digitAr[count];
-  Int32 prime = sPrimes.getPrimeAt( count );
-
-  if( digitAr[count] < 0 )
-    digitAr[count] += prime;
-
-  }
-}
-
-
-
-void Crt::decrement( const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  digitAr[count] -= 1;
-  Int32 prime = sPrimes.getPrimeAt( count );
-  if( digitAr[count] < 0 )
-    digitAr[count] += prime;
-
-  }
-}
-
-
-
-void Crt::subtractInt( const Int32 toSub,
-                        const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  Int32 sub = toSub;
-  Int32 prime = sPrimes.getPrimeAt( count );
-  sub = sub % prime;
-  digitAr[count] -= sub;
-  if( digitAr[count] < 0 )
-    digitAr[count] += prime;
-
-  }
-}
-
-
-
-void Crt::multiply( const Crt& toMul,
-                    const SPrimes& sPrimes )
-{
-for( Int32 count = 0; count < last; count++ )
-  {
-  // This beats the Karatsuba Multiplication
-  // algorithm easily.  It can be done on a GPU
-  // too.
-
-  digitAr[count] *= toMul.digitAr[count];
-  digitAr[count] %= sPrimes.getPrimeAt( count );
-  }
-}
-*/
-
-
 
 void Crt3::setFromInteger( const Integer& setFrom,
                            IntegerMath& intMath,
@@ -500,13 +356,9 @@ void Crt3::setFromInteger( const Integer& setFrom,
                            const MultInv& multInv,
                            const CrtMath& crtMath )
 {
-for( Int32 count = 0; count < last; count++ )
-  {
-  crtDigitAr[count] = intMath.getMod24( setFrom,
-                      sPrimes.getPrimeAt( count ));
-  }
+crt.setFromInteger( setFrom, intMath, sPrimes );
 
-setFromCrt( crtMath, sPrimes, multInv );
+setFromCrtV5( crtMath, sPrimes, multInv );
 }
 
 
@@ -524,3 +376,22 @@ for( Int32 count = 0; count < last; count++ )
 }
 
 */
+
+
+
+
+void Crt3::setFromCrtTree( const CrtTreeL& crtTree,
+                           const CrtMath& crtMath,
+                           const SPrimes& sPrimes,
+                           const MultInv& multInv )
+{
+const Int32 max = crtTree.getIndex();
+index = max;
+
+for( Int32 count = 0; count <= max; count++ )
+  {
+  crt.setD( crtTree.getD( count ), count );
+  }
+
+setFromCrtV5( crtMath, sPrimes, multInv );
+}

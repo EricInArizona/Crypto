@@ -81,5 +81,3 @@ void CrtMath::copyFromIntBuf( Integer& copyTo,
 {
 copyTo.copyFromIntBuf( baseAr[where] );
 }
-
-
