@@ -161,7 +161,8 @@ for( Int32 count = 1; count <= endAt; count++ )
 // straight-forward version.
 
 
-void Crt3::setFromCrtV5( const CrtMath& crtMath,
+void Crt3::setFromCrtV6( const Int32 maxIndex,
+                         const CrtMath& crtMath,
                          const SPrimes& sPrimes,
                          const MultInv& multInv )
 {
@@ -171,7 +172,7 @@ else
   setToZero();
 
 // Count starts at 1, so it's the prime 3.
-for( Int32 count = 1; count < last; count++ )
+for( Int32 count = 1; count <= maxIndex; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
   Int32 accumD = getAccum( count - 1, count,
@@ -358,7 +359,7 @@ void Crt3::setFromInteger( const Integer& setFrom,
 {
 crt.setFromInteger( setFrom, intMath, sPrimes );
 
-setFromCrtV5( crtMath, sPrimes, multInv );
+setFromCrtV6( last - 1, crtMath, sPrimes, multInv );
 }
 
 
@@ -393,5 +394,7 @@ for( Int32 count = 0; count <= max; count++ )
   crt.setD( crtTree.getD( count ), count );
   }
 
-setFromCrtV5( crtMath, sPrimes, multInv );
+setFromCrtV6( max, crtMath, sPrimes, multInv );
 }
+
+

@@ -18,11 +18,6 @@
 
 
 
-// A lot of these things could be very fast if
-// they are done on a GPU.  A lot of things
-// could be done independently for each Crt digit
-// on a GPU.
-
 
 class Crt3
   {
@@ -109,10 +104,12 @@ class Crt3
     return true;
     }
 
+/*
   inline Int32 digitMAtTop() const
     {
     return digitMAr[index];
     }
+*/
 
 
   void copy( const Crt3& toCopy );
@@ -160,7 +157,8 @@ class Crt3
   void setCrt( const CrtMath& crtMath,
                const SPrimes& sPrimes );
 
-  void setFromCrtV5( const CrtMath& crtMath,
+  void setFromCrtV6( const Int32 maxIndex,
+                     const CrtMath& crtMath,
                      const SPrimes& sPrimes,
                      const MultInv& multInv );
 
@@ -195,8 +193,7 @@ class Crt3
 
     for( Int32 count = 1; count <= top; count++ )
       {
-      Int32 accum = crtMath.getCrtDigit(
-                                   count, col );
+      Int32 accum = crtMath.getCrtDigit( count, col );
 
       accum = accum * digitMAr[count];
       result += accum;
