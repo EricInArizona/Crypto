@@ -7,12 +7,26 @@
 #include "../LinuxApi/SetStack.h"
 #include "../LinuxApi/Casting.h"
 #include "../LinuxApi/Threads.h"
+#include "../LinuxApi/Signals.h"
 
 
 #include "MainApp.h"
-// #include "RsaTest.h"
+#include "RsaTest.h"
 #include "CrtTest.h"
-// #include "Ellip.h"
+#include "Ellip.h"
+
+
+/*
+extern volatile Int32 gotSigFpe;
+
+
+void MainApp::checkSignals( void )
+{
+if( gotSigFpe > 0 )
+  throw "gotSigFpe > 0";
+
+}
+*/
 
 
 
@@ -20,24 +34,16 @@
 int MainApp::mainLoop( void )
 {
 Int32 delay = 200; // milliseconds.
-const char* outFile =
-             "/home/Eric/Crypto/ExeOut.txt";
+const char* outFile = "/home/Eric/Crypto/ExeOut.txt";
 
 try
 {
-StIO::cPuts( "See output at:\n" );
-StIO::cPuts( outFile );
-StIO::cPuts( "\n" );
+StIO::putS( "See output at:" );
+StIO::putS( outFile );
 
+// Throws an exception if things are not right.
+BasicTypes::thingsAreRight();
 
-if( !basicThingsAreRight())
-  {
-  mainIO.appendChars(
-          "basicThingsAreRight() returned false.\n" );
-
-  mainIO.writeAll( outFile );
-  return 1; // Some error code.
-  }
 
 mainIO.appendChars(
             "Programming by Eric Chauvin.\n" );
@@ -52,6 +58,11 @@ Str showS( stackSize );
 mainIO.appendChars( "Stack size: " );
 mainIO.appendStr( showS );
 mainIO.appendChars( "\n\n" );
+
+Signals::setupControlCSignal();
+Signals::setupFpeSignal();
+Signals::setupIllegalOpSignal();
+Signals::setupBadMemSignal();
 
 
 // RsaTest rsaTest;
@@ -86,7 +97,7 @@ catch( const char* in )
 catch( ... )
   {
   const char* in = "An unknown exception"
-         " happened in the main loop.\n";
+                   " happened in the main loop.\n";
 
   mainIO.appendChars( in );
   mainIO.writeAll( outFile );
@@ -94,69 +105,4 @@ catch( ... )
   Threads::sleep( delay );
   return 1;
   }
-}
-
-
-
-bool MainApp::basicThingsAreRight()
-{
-/*
-  printf( "Int8 size: %d\n", (int)sizeof( Int8 ) );
-  printf( "Char8 size: %d\n",
-                         (int)sizeof( Char8 ) );
-  printf( "Char16 size: %d\n",
-                         (int)sizeof( Char16 ) );
-  printf( "Int16 size: %d\n",
-                         (int)sizeof( Int16 ) );
-  printf( "Uint16 size: %d\n",
-                         (int)sizeof( Uint16 ) );
-  printf( "Int32 size: %d\n",
-                         (int)sizeof( Int32 ) );
-  printf( "Uint32 size: %d\n",
-                         (int)sizeof( Uint32 ) );
-  printf( "Int64 size: %d\n",
-                         (int)sizeof( Int64 ) );
-  printf( "Uint64 size: %d\n",
-                         (int)sizeof( Uint64 ) );
-  printf( "Float32 size: %d\n",
-                         (int)sizeof( Float32 ) );
-  printf( "Float64 size: %d\n",
-                         (int)sizeof( Float64 ) );
-  // Float128
-*/
-
-// if( sizeof( Int8 ) != 1 )
-  // return false;
-
-// if( sizeof( Char8 ) != 1 )
-  // return false;
-
-// if( sizeof( Char16 ) != 2 )
-  // return false;
-
-// if( sizeof( Int16 ) != 2 )
-  // return false;
-
-if( sizeof( UTF16 ) != 2 )
-  return false;
-
-if( sizeof( Int32 ) != 4 )
-  return false;
-
-// if( sizeof( Uint32 ) != 4 )
-  // return false;
-
-if( sizeof( Int64 ) != 8 )
-  return false;
-
-if( sizeof( ArrayU64 ) != 8 )
-  return false;
-
-if( sizeof( Float32 ) != 4 )
-  return false;
-
-if( sizeof( Float64 ) != 8 )
-  return false;
-
-return true;
 }

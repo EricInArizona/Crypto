@@ -49,85 +49,6 @@ class QRTree
   Crt3 bigXCrt;
 
 
-/*
-  inline Int32 getAccum( const Int32 row,
-                   const Int32 col,
-                   const Int32 prime,
-                   const CrtMath& crtMath ) const
-    {
-    // Calling it with count - 1 when count
-    // is zero.
-    RangeC::test2( row, 0, last - 1,
-              "getAccum  where range." );
-
-    Int32 top = row;
-    if( top > index )
-      top = index;
-
-    // The crtDigit is all ones at index 0.
-    // So it would be this times 1.
-    // This is either one or zero.
-    Int32 result = nodesAr[0].digit;
-    if( row == 0 )
-      return result;
-
-    for( Int32 count = 1; count <= top; count++ )
-      {
-      Int32 accum = crtMath.getCrtDigit(
-                                   count, col );
-
-      accum = accum * nodesAr[count].digit;
-      result += accum;
-      result = result % prime;
-      }
-
-    return result;
-    }
-*/
-
-
-/*
-  inline Int32 getAccumByte( const Int32 row,
-                 const CrtMath& crtMath ) const
-
-    {
-    if( row < 0 )
-      return 0;
-
-    // It is either zero or one.
-    Int32 result = nodesAr[0].digit;
-
-    for( Int32 count = 1; count <= row; count++ )
-      {
-      Int32 accumB = crtMath.getBaseByte( count );
-      accumB = accumB * nodesAr[count].digit;
-      result += accumB;
-      result = result & 0xFF;
-      }
-
-    return result;
-    }
-
-  inline bool isGoodTopAccumByte(
-                     const CrtMath& crtMath )
-    {
-    Int32 testBits = getAccumByte( index,
-                                   crtMath );
-    // nodesAr[index].getAccumByte();
-
-    testBits = testBits * testBits;
-    testBits += prodByte;
-    testBits = testBits & 0xFF;
-
-    // 44 out of 256 possible bytes are true.
-    if( QuadRes::bytesQR( testBits ))
-      return true;
-
-    return false;
-    }
-*/
-
-
   void setupGoodXQuadRes( Crt3& prod,
                           GoodX& goodX,
                           const SPrimes& sPrimes,
@@ -141,10 +62,6 @@ class QRTree
                     CrtTreeL& crtTree,
                     FileIO& mainIO );
 
-  // bool testBaseByte( const Int32 where,
-     //                const Int32 baseAccum,
-     //                const Int32 baseByte );
-
   bool testTopRow( const Int32 where,
                    const SPrimes& sPrimes,
                    const MultInv& multInv,
@@ -152,19 +69,21 @@ class QRTree
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
                    CrtTreeL& crtTree,
+                   const GoodX& goodX,
                    FileIO& mainIO );
 
+  bool testBaseByte( Crt3& toCheck,
+                     const Int32 accum,
+                     const Int32 where,
+                     const Int32 baseAccum,
+                     const Int32 baseByte,
+                     CrtTreeL& crtTree,
+                     const Int32 prime,
+                     const CrtMath& crtMath,
+                     const MultInv& multInv );
 
 
 /*
-  bool isGoodXAt( const Int32 where,
-               const GoodX& goodX,
-               const CrtMath& crtMath,
-               const SPrimes& sPrimes ) const;
-
-  bool isFullGoodX2( const GoodX& goodX,
-                const CrtMath& crtMath,
-                const SPrimes& sPrimes ) const;
 
   void getBiggestX( Integer& bigX,
                     IntegerMath& intMath,
@@ -189,7 +108,7 @@ class QRTree
                        CrtTreeL& crtTree,
                        FileIO& mainIO );
 
-  bool runIt( // const GoodX& goodX,
+  bool runIt( const GoodX& goodX,
               const SPrimes& sPrimes,
               const CrtMath& crtMath,
               const MultInv& multInv,

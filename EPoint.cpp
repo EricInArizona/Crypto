@@ -93,6 +93,16 @@ Y.copy( setY );
 
 
 
+void EPoint::setValues( const Integer& setX,
+                        const Integer& setY )
+{
+infin = false;
+X.copy( setX );
+Y.copy( setY );
+}
+
+
+
 void EPoint::copy( const EPoint& p )
 {
 // This might be copying itself, so
@@ -173,10 +183,12 @@ bool EPoint::isOnCurve( const Integer& modulus,
 if( infin )
   return true;
 
+// The curve E: y^2 = x^3 + ax + b
 // The curve used in Bitcoin: y^2 = x^3 + 7
 
-// y^2 = (A * x^3) + B mod prime.
-// (A * x^3) + B has to be congruent to a square.
+
+// If the prime is 71 and x = 4 then that is 64 + 7 = 71
+// so y is zero.
 
 Integer left;
 left.copy( Y );
@@ -189,10 +201,10 @@ mod.multiply( right, X, modulus, intMath );
 
 // Now right is x cubed.
 
-if( coefA != 1 )
-  mod.multiplyL( right, coefA, modulus, intMath );
+// if( coefA != 0 )
+  // then add that ax part.
 
-right.addLong48( coefB );
+mod.addL( right, coefB, modulus, intMath );
 
 if( left.isEqual( right ))
   return true;
@@ -271,13 +283,15 @@ qY.copy( q.Y );
 // q.y?  Yes.
 // y^2 = x^3 + ax + b is
 
+
+
 // p.y - q.y
 Integer numerator;
 numerator.copy( pY );
 mod.subtract( numerator, qY, modulus, intMath );
 
-if( numerator.isZero())
-  throw "Yes, the numerator can be zero.";
+// if( numerator.isZero())
+  // throw "EPoint. Yes, the numerator can be zero.";
 
 Integer denom;
 denom.copy( pX );
@@ -330,6 +344,7 @@ Y.copy( tempY );
 
 
 
+
 void EPoint::doubleP( const EPoint& p,
                       const Integer& modulus,
                       Mod& mod,
@@ -337,18 +352,9 @@ void EPoint::doubleP( const EPoint& p,
 {
 // coefA and coefB are the coefficients in
 // this equation:
-// y^2 = x^3 + ax + b
-// For Bitcoin a = 0 and b = 7.
+// y^2 = a*(x^3) + b
+// For Bitcoin a = 1 and b = 7.
 // The curve used in Bitcoin: y^2 = x^3 + 7
-
-// if( modulus.isEqualToUI( 2 ))
-  // throw "modulus can't be 2.";
-
-// if( modulus.isEqualToUI( 3 ))
-  // throw "modulus can't be 3.";
-
-// if( modulus.isEqualToUI( coefB ))
-  // throw "modulus can't be coefB.";
 
 // This might be doubling itself, so
 // this.x would be the same as p.x.
@@ -391,13 +397,13 @@ Integer numerator;
 if( pX.isZero())
   {
   numerator.setFromLong48( coefA );
+  mod.makeExact( numerator, modulus, intMath );
   }
 else
   {
   numerator.copy( pX );
   mod.square( numerator, modulus, intMath );
-  mod.multiplyL( numerator, 3,
-                         modulus, intMath );
+  mod.multiplyL( numerator, 3, modulus, intMath );
 
   mod.addL( numerator, coefA, modulus, intMath );
   }
@@ -410,8 +416,7 @@ denom.copy( pY );
 mod.multiplyL( denom, 2, modulus, intMath );
 
 Integer slope;
-mod.divide( slope, numerator, denom,
-            modulus, intMath );
+mod.divide( slope, numerator, denom, modulus, intMath );
 
 Integer slopeSqr;
 slopeSqr.copy( slope );
@@ -425,8 +430,7 @@ mod.multiplyL( rightSide, 2, modulus, intMath );
 
 Integer tempX;
 tempX.copy( slopeSqr );
-mod.subtract( tempX, rightSide, modulus,
-                                      intMath );
+mod.subtract( tempX, rightSide, modulus, intMath );
 X.copy( tempX );
 
 // p.x minus the new x.

@@ -37,6 +37,7 @@ numbSys.reduce( result,
 }
 
 
+
 void Mod::makeExact( Integer& exact,
                      const Integer& modulus,
                      IntegerMath& intMath )
@@ -224,8 +225,6 @@ void Mod::addL( Integer& result,
 if( toAdd == 0 )
   return;
 
-if( (toAdd >> 24) != 0 )
-  throw "Mod::addL() (toAdd >> 24) != 0";
 
 verifyInBaseRange( result, modulus );
 // verifyInBaseRange( toAdd, modulus );
@@ -273,9 +272,13 @@ void Mod::subtract( Integer& result,
 verifyInBaseRange( result, modulus );
 verifyInBaseRange( toSub, modulus );
 
+
 intMath.subtract( result, toSub );
 if( result.getNegative())
-  result.add( modulus );
+  intMath.add( result, modulus );
+
+// This add() can't add a negative number.
+//  result.add( modulus );
 
 verifyInBaseRange( result, modulus );
 

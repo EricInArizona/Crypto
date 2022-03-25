@@ -1,19 +1,19 @@
 buildfile	/home/Eric/Crypto/BuildProj.sh
 executablefile	/home/Eric/Crypto/cryptoMain
 projectdirectory	/home/Eric/Crypto
-recentfile1	/home/Eric/Crypto/MainApp.cpp
-recentfile2	/home/Eric/Crypto/MainApp.h
-recentfile3	/home/Eric/Docs/Notes.txt
-recentfile4	/home/Eric/Crypto/Fermat.cpp
-recentfile5	/home/Eric/Crypto/Crt3.h
-recentfile6	/home/Eric/Crypto/Crt3.cpp
-recentfile7	/home/Eric/Crypto/Crt.h
-recentfile8	/home/Eric/Crypto/Crt.cpp
-recentfile9	
-recentfile10	
-recentfile11	
-recentfile12	
-recentfile13	
+recentfile1	/home/Eric/Crypto/MainApp.h
+recentfile2	/home/Eric/Docs/Notes.txt
+recentfile3	/home/Eric/Crypto/MainApp.cpp
+recentfile4	/home/Eric/LinuxApi/Sockets.h
+recentfile5	/home/Eric/LinuxApi/Sockets.cpp
+recentfile6	/home/Eric/Website/Servers.htm
+recentfile7	/home/Eric/Crypto/Fermat.cpp
+recentfile8	/home/Eric/LinuxApi/Signals.cpp
+recentfile9	/home/Eric/LinuxApi/BasicTypes.h
+recentfile10	/home/Eric/Crypto/BuildProj.sh
+recentfile11	/home/Eric/Crypto/Integer.h
+recentfile12	/home/Eric/Crypto/Integer.cpp
+recentfile13	/home/Eric/LinuxApi/Casting.h
 recentfile14	
 recentfile15	
 recentfile16	

@@ -8,8 +8,8 @@
 // Elliptic Curve Crypto Systems
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\FileIO.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/FileIO.h"
 
 #include "Integer.h"
 #include "Mod.h"
@@ -25,8 +25,11 @@ class Ellip
   SPrimes sPrimes;
   Mod mod;
   EPoint* pArray;
-  static const Int32 last  =
-                          ProjConst::ellipseLast;
+  EPoint* baseArray;
+  static const Int32 arraySize = ProjConst::ellipseLast;
+  Int32 last  = 0;
+  Integer modulus;
+
 
   public:
   Ellip( void );
@@ -37,23 +40,10 @@ class Ellip
   void makeCurvePoints(  FileIO& mainIO,
                          const Int32 prime );
 
-/*
-  void scalarMultByAdd( const Uint32 k,
-                        const Integer& modulus,
-                        Mod& mod,
-                        IntegerMath& intMath );
+  void testAddPoints( FileIO& mainIO );
+  void testDoublePoints( FileIO& mainIO );
 
-  void twoPowerByAdd( const EPoint& p,
-                      const Uint32 twoPower,
-                      const Integer& modulus,
-                      Mod& mod,
-                      IntegerMath& intMath );
-
-  void twoPowerDoubleP( const Uint32 twoPower,
-                        const EPoint p,
-                        const Integer& modulus,
-                        Mod& mod,
-                        IntegerMath& intMath );
-*/
+  bool crudeModRoot( Integer& result, Integer& right );
+  void setupBases( const EPoint p );
 
   };

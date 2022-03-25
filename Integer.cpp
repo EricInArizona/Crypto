@@ -1,6 +1,7 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+
 #include "../LinuxApi/Casting.h"
 #include "../LinuxApi/CharBuf.h"
 #include "../LinuxApi/Randomish.h"
@@ -655,7 +656,7 @@ if( setToIndex > (ProjConst::digitArraySize - 3))
 
 Int32 howManyBytes = (setToIndex * 3) + 3;
 
-UTF16Buf cBuf;
+Uint16Buf cBuf;
 Randomish::makeRandomBytes( cBuf,
                                howManyBytes );
 
@@ -664,7 +665,7 @@ Int32 where = 0;
 for( Int32 count = 0; count <= setToIndex;
                                         count++ )
   {
-  Int64 digit = Casting::UTF16ToI32(
+  Int64 digit = Casting::U16ToI32(
                            cBuf.valAt( where ));
   // Test that it is getting that top bit
   // in the byte in some of them.
@@ -672,10 +673,10 @@ for( Int32 count = 0; count <= setToIndex;
     // throw "Yes, it got the bit.";
 
   digit <<= 8;
-  digit |= Casting::UTF16ToI32(
+  digit |= Casting::U16ToI32(
                      cBuf.valAt( where + 1 ));
   digit <<= 8;
-  digit |= Casting::UTF16ToI32(
+  digit |= Casting::U16ToI32(
                      cBuf.valAt( where + 2 ));
 
   D[count] = digit;

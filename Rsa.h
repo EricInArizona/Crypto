@@ -6,12 +6,13 @@
 
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-#include "..\\LinuxApi\\FileIO.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/FileIO.h"
 
 #include "Integer.h"
 #include "IntegerMath.h"
 #include "Mod.h"
+#include "Exponents.h"
 
 
 
@@ -30,6 +31,7 @@ class Rsa
   Integer privKInverseExponentDQ;
   Integer qInv;
   Integer phiN;
+  Exponents expTest;
 
   public:
   // 65537 is a prime.

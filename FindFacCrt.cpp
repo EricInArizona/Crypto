@@ -188,7 +188,7 @@ qRTree.setStartValues( pubKeyN, goodX, quadRes,
                        crtTree,
                        mainIO );
 
-if( qRTree.runIt( // goodX,
+if( qRTree.runIt( goodX,
                  sPrimes,
                  crtMath,
                  multInv,

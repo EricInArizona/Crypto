@@ -17,6 +17,7 @@
 
 
 
+
 Rsa::Rsa( void )
 {
 
@@ -222,8 +223,19 @@ if( !toEncrypt.makeRandomOdd( testIndex ))
 Integer plainTextNumber;
 plainTextNumber.copy( toEncrypt );
 
+Integer toEncryptTest;
+toEncryptTest.copy( toEncrypt );
+
+expTest.toPower( toEncryptTest,
+                 pubKeyExponent,
+                 pubKeyN,
+                 intMath );
+
 mod.toPower( toEncrypt, pubKeyExponent,
                         pubKeyN, intMath );
+
+if( !toEncrypt.isEqual( toEncryptTest ))
+  throw "expTest.toPower didn't work.";
 
 Integer cipherTextNumber;
 cipherTextNumber.copy( toEncrypt );

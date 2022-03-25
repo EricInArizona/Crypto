@@ -2,7 +2,7 @@
 
 
 
-#include "..\\LinuxApi\\Timing.h"
+#include "../LinuxApi/Timing.h"
 
 #include "Ellip.h"
 
@@ -10,13 +10,15 @@
 
 Ellip::Ellip( void )
 {
-pArray = new EPoint[last];
+pArray = new EPoint[arraySize];
+baseArray = new EPoint[arraySize];
 }
 
 
 Ellip::Ellip( const Ellip& in )
 {
-pArray = new EPoint[last];
+pArray = new EPoint[arraySize];
+baseArray = new EPoint[arraySize];
 
 // Make the compiler think in is being used.
 if( in.testForCopy == 7 )
@@ -26,9 +28,11 @@ throw "Don't copy Ellip in copy constructor.";
 }
 
 
+
 Ellip::~Ellip( void )
 {
 delete[] pArray;
+delete[] baseArray;
 }
 
 
@@ -54,6 +58,7 @@ mainIO.appendChars( "Finished test.\n" );
 
 
 
+
 void Ellip::mainTest( FileIO& mainIO )
 {
 // Primes have to not be 2 or 3.
@@ -61,7 +66,7 @@ void Ellip::mainTest( FileIO& mainIO )
 // pArray[1] = 3;
 // pArray[2] = 5;
 // The prime 5 is at index 2.
-for( Int32 count = 2; count < 5; count++ )
+for( Int32 count = 2; count < 20; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
   if( prime == EPoint::coefA )
@@ -76,42 +81,16 @@ for( Int32 count = 2; count < 5; count++ )
   mainIO.appendChars( "\n" );
 
   makeCurvePoints( mainIO, prime );
+  testAddPoints( mainIO );
+  testDoublePoints( mainIO );
   }
 }
 
 
 
-void Ellip::makeCurvePoints( FileIO& mainIO,
-                             const Int32 prime )
-{
-// The curve used in Bitcoin: y^2 = x^3 + 7
 
-mainIO.appendChars( "Making curve points.\n" );
-
-Integer right;
-Integer modulus;
-modulus.setFromInt24( prime );
-
-for( Int32 x = 0; x < prime; x++ )
-  {
-  right.setFromInt24( x );
-  mod.square( right, modulus, intMath );
-  mod.multiplyL( right, x, modulus, intMath );
-  // Now right is x cubed.
-
-  if( EPoint::coefA != 1 )
-    mod.multiplyL( right, EPoint::coefA,
-                             modulus, intMath );
-
-  right.addLong48( EPoint::coefB );
-
-// =====
-
-  // Now find the modular square root.
-
-
-  // Tonelli Shanks algorithm
-  // How does that work?
+// Tonelli Shanks algorithm
+// How does that work?
 
 // Euler's Criterion:
 // https://en.wikipedia.org/wiki/Euler%27s_criterion
@@ -124,340 +103,230 @@ for( Int32 x = 0; x < prime; x++ )
 
 
 
-  // right is now equal to y squared.
-  // What is the square root of right?
-  // y^2 = right
-  // right = y*2 - z * modulus
+
+bool Ellip::crudeModRoot( Integer& result, Integer& right )
+{
+result.setToZero();
+
+if( right.isZero())
+  return true;
+
+Integer z;
+Integer sum;
+Integer sqrRoot;
+
+z.setToZero();
+for( Int32 count = 0; count < 100000; count++ )
+  {
+  // right + (z * modulus) = y*2
+  sum.copy( z );
+  intMath.multiply( sum, modulus );
+  sum.add( right );
+  if( intMath.squareRoot( sum, sqrRoot ))
+    {
+    Integer test;
+    test.copy( sqrRoot );
+    mod.square( test, modulus, intMath );
+    if( !test.isEqual( right ))
+      throw "crudeModRoot is not right.";
+
+    result.copy( sqrRoot );
+    return true;
+    }
+
+
+  z.increment();
+  if( modulus.paramIsGreaterOrEq( z ))
+    return false;
+
+  }
+
+return false;
+}
+
+
+
+
+void Ellip::makeCurvePoints( FileIO& mainIO,
+                             const Int32 prime )
+{
+last = 0;
+
+// The curve used in Bitcoin: y^2 = x^3 + 7
+
+// If the prime made it so that x^3 + 7 = prime, which is
+// zero, then y^2 would equal zero.  So y == 0 could be
+// on the curve.
+
+
+mainIO.appendChars( "Making curve points.\n" );
+
+Integer right;
+
+modulus.setFromInt24( prime );
+
+Integer y;
+Integer y2;
+Integer xVal;
+
+for( Int32 x = 0; x < prime; x++ )
+  {
+  right.setFromInt24( x );
+
+  mod.square( right, modulus, intMath );
+
+  mod.multiplyL( right, x, modulus, intMath );
+  // Now right is x cubed.
+
+  // if( EPoint::coefA != 0 )
+  //   then add that ax part.
+
+  mod.addL( right, EPoint::coefB, modulus, intMath );
+
+  // right + (z * modulus) = = y^2
+
   // That's if the square root exists.
-  // right has to be congruent to a square,
 
-
-  // mod.negate( temp, modulus, intMath );
-
-  mainIO.appendChars( "X: " );
-  Str showP( x );
-  mainIO.appendStr( showP );
-  mainIO.appendChars( "\n" );
-
-  // Square root is:
-  // Str showP =  intMath.toString10( primeP );
-  // mainIO.appendStr( showP );
-  // mainIO.appendChars( "\n" );
-
-  }
-
-
-/*
-final int pointArraySize =
-                            (int)((base * 2) + 1);
-    pointArray = new EPoint[pointArraySize];
-    pointArrayLast = 0;
-
-    // Add only one point at Infinity.
-    EPoint point = new EPoint();
-    point.makeInfinite();
-// Set the object in to the array like this?
-    pointArray[pointArrayLast] = point;
-    pointArrayLast++;
-
-    EPoint accumPoint = new EPoint();
-    EPoint dPoint = new EPoint();
-
-    // This is the definition of the phrase
-    // "all of the points on a curve".
-    // Everything that goes in to pointArray
-    // is a point on the curve.
-    // Notice that the point at 0,0 might or
-    // might not be on the curve, if it works
-    // with the equation.  If isOnCurve()
-    // returns true.
-
-    for( int x = 0; x < base; x++ )
-      {
-      long xPart = (x * x * x) + 7;
-      xPart = xPart % base;
-
-      for( int y = 0; y < base; y++ )
-        {
-        point = new EPoint( x, y );
-        if( !point.isOnCurve( base ))
-          continue;
-
-        if( pointArrayLast >= pointArraySize )
-          throw new Exception(
-                    "pointArraySize too small." );
-
-        pointArray[pointArrayLast] = point;
-        pointArrayLast++;
-
-        if( !accumPoint.isConjugate( base, point ))
-          {
-          // But it can have a different X value,
-          // with y values that might or might not
-          // add up to zero.
-          // if( accumPoint.y !=
-          //   ModNumber.negate( base, point.y ))
-
-          accumPoint.add( base, accumPoint,
-                                         point );
-          }
-
-        dPoint.copy( point );
-        // testDouble( base, dPoint );
-        testScalarMult( base, dPoint );
-
-        if( !accumPoint.isOnCurve( base ))
-          {
-          throw new Exception(
-                  "!accumPoint.isOnCurve(). x:" +
-                    accumPoint.x + " y: " +
-                    accumPoint.y );
-          }
-
-        mApp.showStatusAsync( "x: " + x +
-                                    " y: " + y );
-
-        mApp.showStatusAsync( "accumPoint.x: " +
-            accumPoint.x + " y: " + accumPoint.y );
-
-        mApp.showStatusAsync( "dPoint.x: " +
-          dPoint.x + " y: " + dPoint.y );
-
-        }
-      }
-
-    // The number of points that are actually
-    // on the curve.
-    mApp.showStatusAsync( "pointArrayLast: " +
-                               pointArrayLast );
-
-*/
-}
-
-
-
-
-/*
-  public void testDouble( long base,
-                                  EPoint dPoint )
-                                  throws Exception
+  if( crudeModRoot( y, right ))
     {
-    long twoPower = 1; // Two to the 0.
-    // twoPower = 2;      Two to the 1.
+    xVal.setFromInt24( x );
+    pArray[last].setValues( xVal, y );
 
-    for( int count = 0; count < 16; count++ )
+    if( !pArray[last].isOnCurve( modulus, mod, intMath ))
+      throw "This point is not on the curve.";
+
+    last++;
+
+    if( last >= arraySize )
+      throw "The ellip array is too small.";
+
+    if( !y.isZero())
       {
-      EPoint pTest = new EPoint( dPoint );
-      EPoint pTestByAdd = new EPoint( dPoint );
+      y2.copy( y );
+      mod.negate( y2, modulus, intMath );
 
-      mApp.showStatusAsync( "twoPower: " +
-                                       twoPower );
+      pArray[last].setValues( xVal, y2 );
+      if( !pArray[last].isOnCurve( modulus, mod, intMath ))
+        throw "This second point is not on the curve.";
 
-This twoPower needs to be like 1024 or 2048
-or something like that.
-twoPowerDoubleP(
-Like 2 to the 1024 or something.
-
-      pTest.repeatDoubleP( base, twoPower,
-                                      pTest );
-      pTestByAdd.repeatDoublePByAdd( base,
-                         twoPower, pTestByAdd );
-
-      if( !pTest.isOnCurve( base ))
-        {
-        throw new Exception(
-                "repeatDouble() not on curve." );
-        }
-
-      if( !pTestByAdd.isOnCurve( base ))
-        {
-        throw new Exception(
-            "repeatDoubleByAdd() not on curve." );
-        }
-
-      if( !pTest.isEqual( pTestByAdd ))
-        throw new Exception(
-              "!pTest.isEqual( pTestByAdd )" );
-
-      twoPower <<= 1;
-      if( twoPower > 0x80 )
-        return;
-
+      last++;
       }
+
+    mainIO.appendChars( "X: " );
+    Str showP( x );
+    mainIO.appendStr( showP );
+    mainIO.appendChars( "\n" );
+
+    // Square root is:
+    mainIO.appendChars( "Y: " );
+    Str showY =  intMath.toString10( y );
+    mainIO.appendStr( showY );
+    mainIO.appendChars( "\n\n" );
     }
-*/
-
-
-
-/*
-  public void testScalarMult( long base,
-                                  EPoint point )
-                                  throws Exception
-    {
-    EPoint pTest = new EPoint();
-    EPoint pTestByAdd = new EPoint();
-
-    for( int count = 0; count < 50; count++ )
-      {
-      // mApp.showStatusAsync(
-                         // "Count K: " + count );
-      pTest.copy( point );
-      pTestByAdd.copy( point );
-
-      pTest.scalarMult( base, count );
-      pTestByAdd.scalarMultByAdd( base, count );
-
-      if( !pTest.isOnCurve( base ))
-        {
-        throw new Exception(
-                "scalarMult() not on curve." );
-        }
-
-      if( !pTestByAdd.isOnCurve( base ))
-        {
-        throw new Exception(
-            "scalarMultByAdd() not on curve." );
-        }
-
-      if( !pTest.isEqual( pTestByAdd ))
-        throw new Exception(
-          "scalar !pTest.isEqual( pTestByAdd )" );
-
-      }
-    }
-*/
-
-
-
-/*
-
-
-void EPoint::twoPowerDoubleP(
-                        const Uint32 twoPower,
-                        const EPoint p,
-                        const Integer& modulus,
-                        Mod& mod,
-                        IntegerMath& intMath )
-{
-// twoPower is how many times this has to
-// be doubled.  If something got doubled
-// 32 times it's about 4 billion.
-// This has to be doubled like 1024 or 2048
-// times or something like that.
-
-if( twoPower == 0 )
-  throw "twoPower is zero.";
-
-// It might be copying itself here.
-copy( p );
-
-// If point becomes infinite, or if y becomes
-// zero, then it stays infinite.
-
-// How many times it has to be doubled.
-for( Uint32 count = 0; count < twoPower; count++ )
-  {
-  EPoint tempThis( X, Y );
-  doubleP( tempThis, modulus, mod, intMath );
-  X = tempThis.X;
-  Y = tempThis.Y;
   }
 }
 
 
 
-void EPoint::twoPowerByAdd( const EPoint& p,
-                      const Uint32 twoPower,
-                      const Integer& modulus,
-                      Mod& mod,
-                      IntegerMath& intMath )
+void Ellip::testAddPoints( FileIO& mainIO )
 {
-EPoint originalP( p );
+mainIO.appendChars( "testAddPoints()\n" );
 
-if( twoPower == 0 )
-  throw "twoPower is zero.";
+EPoint testP;
 
-// It might be copying itself here.
-copy( p );
-
-if( twoPower == 1 )
-  return; // It's 2^0 times P = P.
-
-const Uint32 last = twoPower - 1;
-for( Uint32 count = 0; count < last; count++ )
+for( Int32 count = 0; (count + 1) < last; count++ )
   {
-  EPoint tempThis( X, Y );
-  add( tempThis, originalP, modulus, mod,
-                                     intMath  );
+  testP.add( pArray[count], pArray[count + 1], modulus,
+                                           mod, intMath  );
 
-  X = tempThis.X;
-  Y = tempThis.Y;
+  if( !testP.isOnCurve( modulus, mod, intMath ))
+        throw "The added points don't add up.";
+
   }
 }
 
 
 
-void EPoint::scalarMult( Integer& k,
-                         const Integer& modulus )
+
+void Ellip::testDoublePoints( FileIO& mainIO )
+{
+mainIO.appendChars( "testDoublePoints()\n" );
+
+EPoint testP;
+
+for( Int32 count = 0; count < last; count++ )
+  {
+  testP.doubleP( pArray[count], modulus, mod, intMath  );
+
+  if( !testP.isOnCurve( modulus, mod, intMath ))
+        throw "The doubled points aren't right.";
+
+  }
+}
+
+
+
+
+
+/*
+void EPoint::scalarMult( Integer& k,  const Integer& modulus )
 {
 // If k = 23
-// 23 = 16 + 7 = 10111.
+// 23 = 16 + 7 = 0b10111.
 // 23 = 2^4 + 2^2 + 2 + 1
 // 23 times P = (2^4 + 2^2 + 2 + 1)P
 // 23 times P = 2^4P + 2^2P + 2P + P
 
 EPoint accumP;
 accumP.setInfin( true ); // Additive Identiry.
-EPoint doubleP( X, Y );
+EPoint toDouble( X, Y );
 
 Integer kShift;
 kShift.copy( k );
 
-UInt32 bitsize = (k.getIndex() + 1) * 32;
+Int32 bitsize = (k.getIndex() + 1) * 24;
 
-Uint32 oneBit = 1;
+Int32 oneBit = 1;
 while( true )
   {
   if( (k.getD( 0 ) & 1) != 0 )
     {
 
-
-    doubleP.repeatDoubleP( base, oneBit, this );
+    toDouble.repeatDoubleP( base, oneBit, this );
   void repeatDoubleP( Integer& twoPower,
                       EPoint p,
                       Integer& modulus,
                       Mod& mod,
                       IntegerMath& intMath );
 
-   accumP.add( base, doubleP, accumP );
+    accumP.add( base, toDouble, accumP );
 
     }
 
   }
 
-copy( accumP );
-}
-
-
-
-void EPoint::scalarMultByAdd(
-                      const Uint32 k,
-                      const Integer& modulus,
-                      Mod& mod,
-                      IntegerMath& intMath )
-{
-EPoint original( X, Y );
-EPoint accumP;
-// Make it the Additive Identiry.
-accumP.setInfin( true );
-
-for( Uint32 count = 0; count < k; count++ )
-  {
-  accumP.add( accumP, original, modulus, mod,
-                                      intMath  );
-  }
 
 copy( accumP );
 }
 
 */
+
+
+
+// Set up the bases just like in Exponents.cpp.
+
+
+void Ellip::setupBases( const EPoint p )
+{
+EPoint toDouble;
+toDouble.copy( p );
+
+// If point becomes infinite, or if y becomes
+// zero, then it stays infinite.
+
+for( Int32 count = 0; count < arraySize; count++ )
+  {
+  toDouble.doubleP( toDouble, modulus, mod, intMath );
+  baseArray[count].copy( toDouble );
+  }
+}

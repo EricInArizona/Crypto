@@ -5,8 +5,8 @@
 #pragma once
 
 
-#include "..\\LinuxApi\\BasicTypes.h"
-// #include "..\\LinuxApi\\FileIO.h"
+#include "../LinuxApi/BasicTypes.h"
+// #include "../LinuxApi/FileIO.h"
 
 #include "Integer.h"
 #include "IntegerMath.h"
@@ -31,9 +31,13 @@ class EPoint
 
   // Domain parameters: (p, a, b, G, n, h )
   // The A and B coeffients define the curve.
+  // The curve E: y^2 = x^3 + ax + b
+  // a = 0
+  // b = 7
   // The curve used in Bitcoin: y^2 = x^3 + 7
-  static const Int32 coefA = 1;
+  static const Int32 coefA = 0;
   static const Int32 coefB = 7;
+
 
   inline bool getInfin( void ) const
     {
@@ -44,6 +48,9 @@ class EPoint
     {
     infin = setTo;
     }
+
+  void setValues( const Integer& setX,
+                  const Integer& setY );
 
   void copy( const EPoint& p );
   bool isEqual( const EPoint& in ) const;
@@ -61,5 +68,6 @@ class EPoint
                 const Integer& modulus,
                 Mod& mod,
                 IntegerMath& intMath );
+
 
   };
