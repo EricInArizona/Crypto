@@ -175,36 +175,14 @@ else
 for( Int32 count = 1; count <= maxIndex; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
-  Int32 accumD = getAccum( count - 1, count,
-                           prime, crtMath );
+  Int32 accum = getAccum( count - 1, count, prime, crtMath );
 
-  Int32 testD = crt.getD( count );
+  setFromCrtAt( count, accum, crtMath, prime, multInv );
 
-  if( testD < accumD )
-    testD += prime;
-
-  testD = testD - accumD;
-
-  Int32 baseD = crtMath.getCrtDigit( count, count );
-  if( baseD == 0 )
-    throw "baseD == 0";
-
-  Int32 inv = multInv.getInv( count, baseD );
-  if( inv == 0 )
-    throw "setFromCrtV5 inv == 0";
-
-  // baseD * inv = 1
-  // baseD * inv * testD = testD
-
-  Int32 testInv = inv * testD;
-  testInv = testInv % prime;
-
-  if( testInv != 0 )
+  if( digitMAr[count] != 0 )
     {
     index = count;
     }
-
-  setMD( testInv, count );
   }
 }
 
@@ -398,3 +376,26 @@ setFromCrtV6( max, crtMath, sPrimes, multInv );
 }
 
 
+
+
+bool Crt3::isFullGoodX( const GoodX& goodX,
+                        const CrtMath& crtMath,
+                        const SPrimes& sPrimes ) const
+{
+const Int32 startAt = index + 1;
+for( Int32 where = startAt; where < last; where++ )
+  {
+  Int32 prime = sPrimes.getPrimeAt( where );
+
+  Int32 accumD = getAccum( where, // row
+                           where, // column
+                           prime,
+                           crtMath );
+
+  if( !goodX.getVal( where, accumD ))
+    return false;
+
+  }
+
+return true;
+}

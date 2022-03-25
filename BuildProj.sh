@@ -15,4 +15,16 @@ cd /home/Eric/Crypto
 # Can't do -Wl,--stack in Linux.
 # See SetStack.cpp for that.
 
-clang++ *.cpp /home/Eric/LinuxApi/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -Ofast -L/home/Eric/LinuxApi 2> Build.log
+# -H, --trace-includes
+# Show header includes and nesting depth
+
+# clang predefined macros all start with two underscores
+# except for these two:
+# linux 1
+# unix 1
+
+# List all clang predefined macros:
+# clang++ -x c /dev/null -dM -E > Build.log
+
+
+clang++ *.cpp /home/Eric/LinuxApi/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -ftrapv -Ofast 2> Build.log

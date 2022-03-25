@@ -104,13 +104,6 @@ class Crt3
     return true;
     }
 
-/*
-  inline Int32 digitMAtTop() const
-    {
-    return digitMAr[index];
-    }
-*/
-
 
   void copy( const Crt3& toCopy );
 
@@ -156,6 +149,41 @@ class Crt3
 
   void setCrt( const CrtMath& crtMath,
                const SPrimes& sPrimes );
+
+
+  inline void setFromCrtAt( const Int32 where,
+                            const Int32 accum,
+                            const CrtMath& crtMath,
+                            const Int32 prime,
+                            const MultInv& multInv )
+    {
+    // RangeC::test2( where, 1, last - 1,
+       //           "Crt3::setFromCrtAt where range." );
+
+    // Int32 prime = sPrimes.getPrimeAt( where );
+    Int32 testD = crt.getD( where );
+
+    if( testD < accum )
+      testD += prime;
+
+    testD = testD - accum;
+
+    Int32 baseD = crtMath.getCrtDigit( where, where );
+    // if( baseD == 0 )
+      // throw "Crt3::setFromCrtAt  baseD == 0";
+
+    Int32 inv = multInv.getInv( where, baseD );
+    // if( inv == 0 )
+      // throw "setFromCrtV6 inv == 0";
+
+    // baseD * inv = 1
+    // baseD * inv * testD = testD
+
+    Int32 testInv = inv * testD;
+    testInv = testInv % prime;
+    digitMAr[where] = testInv;
+    }
+
 
   void setFromCrtV6( const Int32 maxIndex,
                      const CrtMath& crtMath,
@@ -229,5 +257,8 @@ class Crt3
                        const SPrimes& sPrimes,
                        const MultInv& multInv );
 
+  bool isFullGoodX( const GoodX& goodX,
+                    const CrtMath& crtMath,
+                    const SPrimes& sPrimes ) const;
 
   };
