@@ -201,7 +201,7 @@ mainIO.appendChars( "\nTop of loop.\n" );
 Crt3 toCheck;
 
 const Int32 maxBrachIndex = 12;
-for( Int32 branchIndex = 1; branchIndex <
+for( Int32 branchIndex = 1; branchIndex <=
                    maxBrachIndex; branchIndex++ )
   {
   crtTree.setIndex( branchIndex );
@@ -304,6 +304,8 @@ toCheck.crt.setD( topDigit, where );
 
 toCheck.setFromCrtAt( where, accum, crtMath, prime, multInv );
 Int32 mDigit = toCheck.getMD( where );
+if( mDigit == 0 )
+  return false;
 
 Int32 testX = baseByte * mDigit;
 testX += baseAccum;
@@ -333,6 +335,10 @@ bool QRTree::testTopRow( const Int32 where,
 RangeC::test2( where, 1, last - 1,
               "testTopRow where range." );
 
+if( where != crtTree.getIndex())
+  throw "where != crtTree.getIndex()";
+
+
 Int32 prime = sPrimes.getPrimeAt( where );
 // Int32 crtDigit = crtMath.getCrtDigit( where,
    //                                   where );
@@ -341,23 +347,25 @@ crtTree.setFirstGoodXAt( where );
 
 toCheck.setFromCrtTree( crtTree, crtMath, sPrimes, multInv );
 
+// It might have been set to a smaller index in
+// setFromCrtTree, but the upper digits would still be zero.
+
+toCheck.setIndex( where );
+
 Int32 baseByte = crtMath.getBaseByte( where );
 Int32 baseAccum = toCheck.getAccumByte( where - 1, crtMath );
 
 Int32 accumD = toCheck.getAccum( where - 1, where, prime, crtMath );
 
-if( where == crtTree.getIndex())
+if( testBaseByte( toCheck, accumD, where, baseAccum, baseByte,
+    crtTree, prime, crtMath, multInv ))
   {
-  if( testBaseByte( toCheck, accumD, where, baseAccum, baseByte,
-      crtTree, prime, crtMath, multInv ))
+  if( toCheck.isFullGoodX( goodX, crtMath, sPrimes ))
     {
-    if( toCheck.isFullGoodX( goodX, crtMath, sPrimes ))
-      {
-      if( isAnswerSlow( sPrimes, crtMath, multInv,
+    if( isAnswerSlow( sPrimes, crtMath, multInv,
                                intMath, crtTree, mainIO ))
-        return true;
+      return true;
 
-      }
     }
   }
 

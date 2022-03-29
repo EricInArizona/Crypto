@@ -24,16 +24,19 @@ while( true )
     // return;
     }
 
+/*
 
   // For testing.
-  if( setToIndex == 1 )
+  if( setToIndex == 2 )
     {
     // Make it short
     // This could hang up making primes
     // if it's too small.
     result.setD( setToIndex,
-         result.getD( setToIndex ) & 0x0FFF );
+         result.getD( setToIndex ) & 0x3F );
+
     }
+*/
 
 
   // Make sure that it's the size I think it is.

@@ -1,5 +1,5 @@
 Programming by Eric Chauvin.
-Version date: 3/22/2022
+Version date: 3/27/2022
 
 Stack size: 67108864
 
@@ -12,11 +12,11 @@ Last CRT prime is: 5279
 Biggest prime is: 386093
 
 prime1:
-17344715813
+72851907512009
 prime2:
-55241990017
+133991892699053
 pubKeyN:
-958156617789448038821
+9761564974270443133020427477
 setStartValues.
 QRTree.runIt() started.
 
@@ -27,50 +27,58 @@ topTests: 2
 
 branchIndex is: 2
 Branch prime is: 5
-topTests: 4
+topTests: 2
 
 branchIndex is: 3
 Branch prime is: 7
-topTests: 12
+topTests: 4
 
 branchIndex is: 4
 Branch prime is: 11
-topTests: 48
+topTests: 16
 
 branchIndex is: 5
 Branch prime is: 13
-topTests: 288
+topTests: 96
 
 branchIndex is: 6
 Branch prime is: 17
-topTests: 1728
+topTests: 576
 
 branchIndex is: 7
 Branch prime is: 19
-topTests: 15552
+topTests: 4608
 
 branchIndex is: 8
 Branch prime is: 23
-topTests: 139968
+topTests: 41472
 
 branchIndex is: 9
 Branch prime is: 29
-topTests: 1539648
+topTests: 497664
 
 branchIndex is: 10
 Branch prime is: 31
+topTests: 6967296
+
+branchIndex is: 11
+Branch prime is: 37
+topTests: 104509440
+
+branchIndex is: 12
+Branch prime is: 41
 True on square root.
 
 Found it.
-topTests: 2831257
+topTests: 321506661
 
 Found it.
-X:      18948637102
-Prime1: 55241990017
-Prime2: 17344715813
+X:      30569992593522
+Prime1: 133991892699053
+Prime2: 72851907512009
 
 
-Seconds: 5
+Seconds: 760
 
 Finished test.
 End of main app.
