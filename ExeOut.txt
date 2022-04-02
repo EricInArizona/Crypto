@@ -1,84 +1,35 @@
 Programming by Eric Chauvin.
-Version date: 3/27/2022
+Version date: 4/1/2022
 
 Stack size: 67108864
 
-Starting CRT test.
+Starting RSA test.
 
 Bits size is: 48
+primeP:
+2622129444719
+primeQ:
+13798848840167
+Good pair.
 
 
-Last CRT prime is: 5279
-Biggest prime is: 386093
+FindFacSm started findIt().
+Max 31 is: 200560490130
+End of FindFacSm.findIt().
 
-prime1:
-72851907512009
-prime2:
-133991892699053
-pubKeyN:
-9761564974270443133020427477
-setStartValues.
-QRTree.runIt() started.
+FindFacQr started findIt().
+QuarRed.init().
+makeSmallAr17
+howMany for 17 is: 5184
+makeBigAr23
+howMany for 23 is: 622080
+Top of findQr29
 
-Top of loop.
-branchIndex is: 1
-Branch prime is: 3
-topTests: 2
-
-branchIndex is: 2
-Branch prime is: 5
-topTests: 2
-
-branchIndex is: 3
-Branch prime is: 7
-topTests: 4
-
-branchIndex is: 4
-Branch prime is: 11
-topTests: 16
-
-branchIndex is: 5
-Branch prime is: 13
-topTests: 96
-
-branchIndex is: 6
-Branch prime is: 17
-topTests: 576
-
-branchIndex is: 7
-Branch prime is: 19
-topTests: 4608
-
-branchIndex is: 8
-Branch prime is: 23
-topTests: 41472
-
-branchIndex is: 9
-Branch prime is: 29
-topTests: 497664
-
-branchIndex is: 10
-Branch prime is: 31
-topTests: 6967296
-
-branchIndex is: 11
-Branch prime is: 37
-topTests: 104509440
-
-branchIndex is: 12
-Branch prime is: 41
-True on square root.
-
+prime1: 2622129444719
+prime2: 13798848840167
 Found it.
-topTests: 321506661
 
-Found it.
-X:      30569992593522
-Prime1: 133991892699053
-Prime2: 72851907512009
-
-
-Seconds: 760
+Seconds: 277
 
 Finished test.
 End of main app.

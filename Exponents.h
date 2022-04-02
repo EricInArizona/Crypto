@@ -7,10 +7,10 @@
 
 #include "../LinuxApi/BasicTypes.h"
 
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 #include "Mod.h"
-#include "IntBuf.h"
+#include "../CryptoBase/IntBuf.h"
 
 
 

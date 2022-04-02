@@ -6,7 +6,7 @@
 #include "../LinuxApi/StIO.h"
 
 #include "QRTree.h"
-#include "Division.h"
+#include "../CryptoBase/Division.h"
 
 
 QRTree::QRTree( void )

@@ -7,8 +7,8 @@
 
 
 #include "../LinuxApi/BasicTypes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 
 
 // Mult inverse is A * x = 1 + Base * y

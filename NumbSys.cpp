@@ -6,7 +6,7 @@
 
 
 #include "NumbSys.h"
-#include "Division.h"
+#include "../CryptoBase/Division.h"
 
 
 NumbSys::NumbSys( void )

@@ -9,8 +9,8 @@
 
 
 #include "../LinuxApi/BasicTypes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 #include "NumbSys.h"
 
 

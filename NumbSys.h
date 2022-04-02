@@ -15,10 +15,10 @@
 
 
 #include "../LinuxApi/BasicTypes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
-#include "ProjConst.h"
-#include "IntBuf.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
+// #include "../CryptoBase/ProjConst.h"
+#include "../CryptoBase/IntBuf.h"
 
 
 

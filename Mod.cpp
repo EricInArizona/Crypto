@@ -3,7 +3,7 @@
 
 
 #include "Mod.h"
-#include "Division.h"
+#include "../CryptoBase/Division.h"
 #include "Euclid.h"
 
 

@@ -11,10 +11,10 @@
 
 #include "GoodX.h"
 #include "CrtTreeL.h"
-#include "SPrimes.h"
+#include "../CryptoBase/SPrimes.h"
 #include "Crt3.h"
 #include "CrtMath.h"
-#include "QuadRes.h"
+#include "../CryptoBase/QuadRes.h"
 
 
 

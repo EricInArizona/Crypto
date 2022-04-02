@@ -3,8 +3,7 @@
 
 
 #include "FindFacCrt.h"
-#include "Division.h"
-#include "QuadRes.h"
+#include "../CryptoBase/Division.h"
 #include "QRTree.h"
 
 

@@ -3,7 +3,7 @@
 
 
 #include "Euclid.h"
-#include "Division.h"
+#include "../CryptoBase/Division.h"
 
 // This hasn't been tested yet.
 Int64 Euclid::GcdL1( const Int64 x,

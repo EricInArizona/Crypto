@@ -11,7 +11,7 @@
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/FileIO.h"
 
-#include "Integer.h"
+#include "../CryptoBase/Integer.h"
 #include "Mod.h"
 #include "EPoint.h"
 

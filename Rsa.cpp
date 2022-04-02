@@ -13,7 +13,9 @@
 
 #include "Rsa.h"
 #include "Euclid.h"
-#include "Division.h"
+#include "../CryptoBase/Division.h"
+#include "FindFacSm.h"
+#include "FindFacQr.h"
 
 
 
@@ -39,7 +41,8 @@ bool Rsa::makeKeys( FileIO& mainIO,
                     const Integer& prime1,
                     const Integer& prime2,
                     IntegerMath& intMath,
-                    Mod& mod )
+                    Mod& mod,
+                    SPrimes& sPrimes )
 {
 pubKeyExponent.setFromLong48( PubKeyExponentL );
 
@@ -83,6 +86,38 @@ if( !testEncryption( mod, intMath ))
   // return false;
 
 mainIO.appendChars( "Good pair.\n\n" );
+
+
+FindFacSm findFacSm;
+Int64 testFac = findFacSm.findIt( pubKeyN, 1, intMath,
+                                  sPrimes, mainIO );
+
+if( testFac != 0 )
+  {
+  mainIO.appendChars( "FindFacSm found testFac: " );
+  Str showTest( testFac );
+  mainIO.appendStr( showTest );
+  mainIO.appendChars( "\n" );
+  }
+
+Integer prime1Result;
+Integer prime2Result;
+FindFacQr findFacQr;
+
+if( findFacQr.findIt( pubKeyN, prime1Result, prime2Result,
+                      intMath, sPrimes, mainIO ))
+  {
+  mainIO.appendChars( "Found it.\n" );
+  // Str showQr =  intMath.toString10( qrResult );
+  // mainIO.appendStr( showQr );
+  // mainIO.appendChars( "\n" );
+
+  return true;
+  }
+
+
+mainIO.appendChars( "\nDidn't find a factor.\n" );
+
 return true;
 }
 

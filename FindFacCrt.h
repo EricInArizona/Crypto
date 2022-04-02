@@ -10,14 +10,14 @@
 #include "../LinuxApi/FileIO.h"
 
 // #include "ProjConst.h"
-#include "SPrimes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/SPrimes.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 #include "MultInv.h"
 #include "CrtMath.h"
 #include "GoodX.h"
 #include "Crt3.h"
-#include "QuadRes.h"
+#include "../CryptoBase/QuadRes.h"
 #include "CrtTreeL.h"
 
 

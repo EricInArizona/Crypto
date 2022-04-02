@@ -9,8 +9,8 @@
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/FileIO.h"
 
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 #include "Mod.h"
 #include "Rsa.h"
 
@@ -30,7 +30,7 @@ class RsaTest
 
   // The index, which makes the size of the prime.
   // static const Int32 PrimeIndex = 0; // 24-bit
-  // static const Int32 PrimeIndex = 1; // 48-bit
+  static const Int32 PrimeIndex = 1; // 48-bit
   // static const Int32 PrimeIndex = 2; // 72-bit
   // static const Int32 PrimeIndex = 3; // 96-bit
   // static const Int32 PrimeIndex = 4; // 120-bit
@@ -39,7 +39,7 @@ class RsaTest
   // static const Int32 PrimeIndex = 7; // 192-bit
   // static const Int32 PrimeIndex = 9; // 240
   // static const Int32 PrimeIndex = 19; // 480
-  static const Int32 PrimeIndex = 29; // 720
+  // static const Int32 PrimeIndex = 29; // 720
   // static const Int32 PrimeIndex = 39; // 960
   // static const Int32 PrimeIndex = 49; // 1,200
 

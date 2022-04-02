@@ -61,7 +61,8 @@ for( Int32 count = 0; count < 10; count++ )
                     prime1,
                     prime2,
                     intMath,
-                    mod ))
+                    mod,
+                    sPrimes ))
   break;
   }
 
