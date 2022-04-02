@@ -9,8 +9,8 @@
 #include "../LinuxApi/RangeC.h"
 #include "../LinuxApi/Int32Array.h"
 
-#include "ProjConst.h"
-#include "SPrimes.h"
+#include "../CryptoBase/ProjConst.h"
+#include "../CryptoBase/SPrimes.h"
 #include "GoodX.h"
 
 

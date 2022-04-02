@@ -8,10 +8,10 @@
 
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/RangeC.h"
-#include "ProjConst.h"
-#include "SPrimes.h"
-#include "Integer.h"
-#include "IntegerMath.h"
+#include "../CryptoBase/ProjConst.h"
+#include "../CryptoBase/SPrimes.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
 
 
 class Crt

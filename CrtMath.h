@@ -8,10 +8,10 @@
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/RangeC.h"
 
-#include "Integer.h"
-#include "IntegerMath.h"
-#include "IntBuf.h"
-#include "SPrimes.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
+#include "../CryptoBase/IntBuf.h"
+#include "../CryptoBase/SPrimes.h"
 #include "CrtBuf.h"
 
 

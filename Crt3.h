@@ -8,12 +8,12 @@
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/RangeC.h"
 
-#include "ProjConst.h"
-#include "SPrimes.h"
+#include "../CryptoBase/ProjConst.h"
+#include "../CryptoBase/SPrimes.h"
 #include "Crt.h"
 #include "CrtMath.h"
 #include "MultInv.h"
-#include "QuadRes.h"
+#include "../CryptoBase/QuadRes.h"
 #include "CrtTreeL.h"
 
 

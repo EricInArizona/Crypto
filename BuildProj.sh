@@ -20,11 +20,11 @@ cd /home/Eric/Crypto
 
 # clang predefined macros all start with two underscores
 # except for these two:
-# linux 1
+# linux
 # unix 1
 
 # List all clang predefined macros:
 # clang++ -x c /dev/null -dM -E > Build.log
 
 
-clang++ *.cpp /home/Eric/LinuxApi/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -ftrapv -Ofast 2> Build.log
+clang++ *.cpp /home/Eric/LinuxApi/*.cpp /home/Eric/CryptoBase/*.cpp -o  cryptoMain -Weverything -Wno-padded -Wno-c++98-compat-pedantic -ftrapv -Ofast 2> Build.log

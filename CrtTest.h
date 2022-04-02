@@ -9,14 +9,14 @@
 #include "../LinuxApi/BasicTypes.h"
 #include "../LinuxApi/FileIO.h"
 
-#include "Integer.h"
-#include "IntegerMath.h"
-#include "SPrimes.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/IntegerMath.h"
+#include "../CryptoBase/SPrimes.h"
 #include "Mod.h"
 #include "MultInv.h"
 #include "CrtMath.h"
 #include "GoodX.h"
-#include "QuadRes.h"
+#include "../CryptoBase/QuadRes.h"
 
 
 

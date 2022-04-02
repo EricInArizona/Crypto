@@ -20,7 +20,7 @@ CrtTest::CrtTest( void )
 multInv.init( sPrimes );
 crtMath.init( intMath, sPrimes );
 goodX.init( sPrimes );
-quadRes.init( sPrimes );
+// quadRes.init( sPrimes, mainIO );
 }
 
 
@@ -39,12 +39,14 @@ throw "Don't use copy constructor for CrtTest.";
 void CrtTest::test( FileIO& mainIO )
 {
 // This start time doesn't include the MultInv
-// and QuadRes init times.
+// init time.
 // They happen before this t1 start time.
 
 Timing t1;
 
 mainIO.appendChars( "Starting CRT test.\n" );
+
+quadRes.init( sPrimes, mainIO );
 
 Int32 primeIndex = 1;
 
