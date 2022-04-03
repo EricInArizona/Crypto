@@ -18,7 +18,8 @@
 #include "../CryptoBase/SPrimes.h"
 #include "../CryptoBase/IntegerMath.h"
 #include "../CryptoBase/QuadRes.h"
-
+#include "MultInv.h"
+#include "CrtMath.h"
 
 
 
@@ -27,8 +28,12 @@ class FindFacQr
   private:
   Int32 testForCopy = 123;
   Int32Array smallAr17;
-  Int64Array bigAr23;
+  Int32Array bigAr23;
+  Int64Array bigAr29;
   QuadRes quadRes;
+  MultInv multInv;
+  CrtMath crtMath;
+  Int32Array qrCounts;
 
   public:
   FindFacQr( void );
@@ -71,6 +76,10 @@ class FindFacQr
                     IntegerMath& intMath,
                     FileIO& mainIO );
 
+  void makeBigAr29( const Integer& pubKey,
+                    IntegerMath& intMath,
+                    FileIO& mainIO );
+
   bool findIt( const Integer& pubKey,
                Integer& prime1,
                Integer& prime2,
@@ -78,7 +87,7 @@ class FindFacQr
                SPrimes& sPrimes,
                FileIO& mainIO );
 
-  bool findQr29( const Integer& pubKey,
+  bool findQr31( const Integer& pubKey,
                  Integer& prime1,
                  Integer& prime2,
                  IntegerMath& intMath,
@@ -89,6 +98,11 @@ class FindFacQr
                    Integer& prime1,
                    Integer& prime2,
                    IntegerMath& intMath );
+
+  void makeQrCounts( const Integer& pubKey,
+                     IntegerMath& intMath,
+                     const SPrimes& sPrimes,
+                     FileIO& mainIO );
 
 
   };
