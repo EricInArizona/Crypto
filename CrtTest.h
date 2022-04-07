@@ -13,9 +13,9 @@
 #include "../CryptoBase/IntegerMath.h"
 #include "../CryptoBase/SPrimes.h"
 #include "Mod.h"
-#include "MultInv.h"
+#include "../CryptoBase/MultInv.h"
 #include "CrtMath.h"
-#include "GoodX.h"
+#include "../CryptoBase/GoodX.h"
 #include "../CryptoBase/QuadRes.h"
 
 

@@ -11,7 +11,7 @@
 
 #include "../CryptoBase/ProjConst.h"
 #include "../CryptoBase/SPrimes.h"
-#include "GoodX.h"
+#include "../CryptoBase/GoodX.h"
 
 
 

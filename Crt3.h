@@ -12,7 +12,7 @@
 #include "../CryptoBase/SPrimes.h"
 #include "Crt.h"
 #include "CrtMath.h"
-#include "MultInv.h"
+#include "../CryptoBase/MultInv.h"
 #include "../CryptoBase/QuadRes.h"
 #include "CrtTreeL.h"
 
