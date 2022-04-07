@@ -9,7 +9,7 @@
 
 #include "../LinuxApi/BasicTypes.h"
 
-#include "GoodX.h"
+#include "../CryptoBase/GoodX.h"
 #include "CrtTreeL.h"
 #include "../CryptoBase/SPrimes.h"
 #include "Crt3.h"

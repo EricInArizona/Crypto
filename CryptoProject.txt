@@ -9,5 +9,25 @@ recentfile5	/home/Eric/Crypto/Rsa.cpp
 recentfile6	/home/Eric/Crypto/Fermat.cpp
 recentfile7	/home/Eric/Crypto/FindFacQr.h
 recentfile8	/home/Eric/Crypto/FindFacQr.cpp
-recentfile9	/home/Eric/CryptoBase/QuadRes.h
-recentfile10	/home/Eric/CryptoBase/QuadRes.cpp
+recentfile9	/home/Eric/CryptoBase/GoodX.h
+recentfile10	/home/Eric/LinuxApi/Casting.h
+recentfile11	
+recentfile12	
+recentfile13	
+recentfile14	
+recentfile15	
+recentfile16	
+recentfile17	
+recentfile18	
+recentfile19	
+recentfile20	
+recentfile21	
+recentfile22	
+recentfile23	
+recentfile24	
+recentfile25	
+recentfile26	
+recentfile27	
+recentfile28	
+recentfile29	
+recentfile30	

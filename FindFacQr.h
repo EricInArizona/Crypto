@@ -18,7 +18,8 @@
 #include "../CryptoBase/SPrimes.h"
 #include "../CryptoBase/IntegerMath.h"
 #include "../CryptoBase/QuadRes.h"
-#include "MultInv.h"
+#include "../CryptoBase/MultInv.h"
+#include "../CryptoBase/GoodX.h"
 #include "CrtMath.h"
 
 
@@ -34,6 +35,7 @@ class FindFacQr
   MultInv multInv;
   CrtMath crtMath;
   Int32Array qrCounts;
+  GoodX goodX;
 
   public:
   FindFacQr( void );
@@ -52,6 +54,11 @@ class FindFacQr
     return QuadRes::bytesQR( allBytes );
     }
 
+  void setupGoodXQuadRes( const Integer& pubKey,
+                          IntegerMath& intMath,
+                          const SPrimes& sPrimes );
+
+/*
   inline bool isGoodX( const Int64 x,
                        const Int32 pKeyMod,
                        const Int32 prime,
@@ -66,19 +73,14 @@ class FindFacQr
     //                                   0x 0FFF FFFF
     return quadRes.getVal( primeAt, test & 0x0FFFFFFF );
     }
+*/
 
 
-  void makeSmallAr17( const Integer& pubKey,
-                      IntegerMath& intMath,
-                      FileIO& mainIO );
+  void makeSmallAr17( FileIO& mainIO );
 
-  void makeBigAr23( const Integer& pubKey,
-                    IntegerMath& intMath,
-                    FileIO& mainIO );
+  void makeBigAr23( FileIO& mainIO );
 
-  void makeBigAr29( const Integer& pubKey,
-                    IntegerMath& intMath,
-                    FileIO& mainIO );
+  void makeBigAr29( FileIO& mainIO );
 
   bool findIt( const Integer& pubKey,
                Integer& prime1,

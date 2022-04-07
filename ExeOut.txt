@@ -7,9 +7,9 @@ Starting RSA test.
 
 Bits size is: 48
 primeP:
-2622129444719
+1040965383473
 primeQ:
-13798848840167
+287547901649
 Good pair.
 
 
@@ -19,17 +19,63 @@ End of FindFacSm.findIt().
 
 FindFacQr started findIt().
 QuarRed.init().
+makeQrCounts
+2) howMany: 2
+3) howMany: 1
+5) howMany: 2
+7) howMany: 3
+11) howMany: 6
+13) howMany: 7
+17) howMany: 8
+19) howMany: 9
+23) howMany: 12
+29) howMany: 15
+31) howMany: 16
+37) howMany: 19
+41) howMany: 20
+43) howMany: 21
+47) howMany: 24
+53) howMany: 27
+59) howMany: 29
+61) howMany: 30
+67) howMany: 34
+71) howMany: 35
+73) howMany: 37
+79) howMany: 40
+83) howMany: 42
+89) howMany: 45
+97) howMany: 49
+101) howMany: 50
+103) howMany: 52
+107) howMany: 54
+109) howMany: 55
+113) howMany: 56
+127) howMany: 64
+131) howMany: 65
+137) howMany: 68
+139) howMany: 70
+149) howMany: 75
+151) howMany: 75
+157) howMany: 78
+163) howMany: 81
+167) howMany: 84
+173) howMany: 86
 makeSmallAr17
-howMany for 17 is: 5184
+arSize for 17 is: 4032
+howMany for 17 is: 4032
 makeBigAr23
-howMany for 23 is: 622080
-Top of findQr29
+arSize for 23 is: 435456
+howMany for 23 is: 435456
+Top of makeBigAr29
+arSize for 29 is: 6531840
+howMany for 29 is: 6531840
+Top of findQr31
 
-prime1: 2622129444719
-prime2: 13798848840167
+prime1: 287547901649
+prime2: 1040965383473
 Found it.
 
-Seconds: 277
+Seconds: 5
 
 Finished test.
 End of main app.
