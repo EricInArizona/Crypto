@@ -4,7 +4,7 @@
 
 
 #include "FindFacQr.h"
-#include "../LinuxApi/Casting.h"
+#include "..\LinuxApi\Casting.h"
 #include "Crt3.h"
 
 
@@ -81,7 +81,6 @@ if( !findQr31( pubKey, prime1, prime2, intMath, mainIO ))
   mainIO.appendChars( "\nFindQr returned false.\n" );
   return false;
   }
-
 
 mainIO.appendChars( "prime1: " );
 Str showP1 = intMath.toString10( prime1 );
@@ -438,8 +437,17 @@ Int64 howMany = 0;
 Int32 prodByte = pubKey.getD( 0 ) & 0xFF;
 
 
-Int64 base = 2L * 3L * 5L * 7L * 11L * 13L * 17L
-                               * 19L * 23L * 29L;
+// 6,469,693,230
+const Int64 base = 2LL * 3LL * 5LL * 7LL *
+       11LL * 13LL * 17LL * 19LL * 23LL * 29LL;
+
+// If countBase goes up to 1,000,000
+
+// How big can this go without having to use
+// a full Integer?  10,000.
+// const Int64 testSize = base * 10000LL;
+// if( testSize > 0xFFFFFFFFFFFFL )
+  // throw "testSize is too big for an Int64.";
 
 Integer bigBase;
 bigBase.setFromLong48( base );
@@ -566,7 +574,7 @@ for( Int32 countBase = 0; countBase < 1000000; countBase++ )
     }
   }
 
-mainIO.appendChars( "\nWent past loops in findQr29.\n" );
+mainIO.appendChars( "\nWent past loops in findQr.\n" );
 return false;
 }
 

@@ -1,16 +1,16 @@
-buildfile	/home/Eric/Crypto/BuildProj.sh
-executablefile	/home/Eric/Crypto/cryptoMain
-projectdirectory	/home/Eric/Crypto
-recentfile1	/home/Eric/Crypto/MainApp.h
-recentfile2	/home/Eric/Docs/Notes.txt
-recentfile3	/home/Eric/Crypto/RsaTest.h
-recentfile4	/home/Eric/Crypto/Rsa.h
-recentfile5	/home/Eric/Crypto/Rsa.cpp
-recentfile6	/home/Eric/Crypto/Fermat.cpp
-recentfile7	/home/Eric/Crypto/FindFacQr.h
-recentfile8	/home/Eric/Crypto/FindFacQr.cpp
-recentfile9	/home/Eric/CryptoBase/GoodX.h
-recentfile10	/home/Eric/LinuxApi/Casting.h
+buildfile	\Eric\Main\Crypto\BuildProj.bat
+executablefile	\Eric\Main\Crypto\main.exe
+projectdirectory	\Eric\Main\Crypto
+recentfile1	\Eric\Main\Crypto\MainApp.h
+recentfile2	\Eric\Main\Crypto\FindFacQr.h
+recentfile3	\Eric\Main\Crypto\FindFacQr.cpp
+recentfile4	\Eric\Main\Crypto\Rsa.h
+recentfile5	\Eric\Main\Crypto\Rsa.cpp
+recentfile6	\Eric\Main\Crypto\RsaTest.h
+recentfile7	\Eric\Main\Crypto\RsaTest.cpp
+recentfile8	\Eric\Main\Crypto\Fermat.cpp
+recentfile10	
+recentfile9	\Eric\Main\Docs\Notes.txt
 recentfile11	
 recentfile12	
 recentfile13	

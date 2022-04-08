@@ -25,7 +25,10 @@ rem -Wno-old-style-cast
 
 rem -Ofast
 
-C:\LLVM\bin\clang++ *.cpp \Eric\Main\LinuxApi\*.cpp -o main.exe -Weverything -Wno-c++98-compat-pedantic -Ofast -Wl,-MAP -Wl,-STACK:100000000 -L\Eric\Main\LinuxApi 2> Build.log
+rem Check MainApp.cpp to see where the exeout
+rem file it going to.
+
+C:\LLVM\bin\clang++ *.cpp \Eric\Main\CryptoBase\*.cpp \Eric\Main\LinuxApi\*.cpp -o main.exe -Weverything -Wno-c++98-compat-pedantic -ftrapv -Ofast -Wl,-MAP -Wl,-STACK:100000000 2> Build.log
 
 rem https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations?view=msvc-160
 rem Tell the linker to use this max stack size.
