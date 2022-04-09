@@ -3,7 +3,7 @@
 
 
 
-#include "../LinuxApi/Timing.h"
+#include "..\LinuxApi\Timing.h"
 
 #include "RsaTest.h"
 #include "MakePrime.h"

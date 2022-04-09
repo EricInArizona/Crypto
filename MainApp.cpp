@@ -4,10 +4,15 @@
 
 #include "../LinuxApi/StIO.h"
 #include "../LinuxApi/Str.h"
-#include "../LinuxApi/SetStack.h"
+
+// This is only for Linux.
+// #include "../LinuxApi/SetStack.h"
+
 #include "../LinuxApi/Casting.h"
 #include "../LinuxApi/Threads.h"
-#include "../LinuxApi/Signals.h"
+
+// For Linux:
+// #include "../LinuxApi/Signals.h"
 
 
 #include "MainApp.h"
@@ -34,7 +39,12 @@ if( gotSigFpe > 0 )
 int MainApp::mainLoop( void )
 {
 Int32 delay = 200; // milliseconds.
-const char* outFile = "/home/Eric/Crypto/ExeOut.txt";
+
+// For Linux.
+// const char* outFile = "/home/Eric/Crypto/ExeOut.txt";
+
+const char* outFile =
+             "\\Eric\\Main\\Crypto\\ExeOut.txt";
 
 try
 {
@@ -52,17 +62,21 @@ mainIO.appendChars( "Version date: " );
 mainIO.appendChars( getVersionStr() );
 mainIO.appendChars( "\n\n" );
 
-Int32 stackSize = SetStack::getSize();
-Str showS( stackSize );
+// For Linux:
+// Int32 stackSize = SetStack::getSize();
+// Str showS( stackSize );
+// mainIO.appendChars( "Stack size: " );
+// mainIO.appendStr( showS );
+// mainIO.appendChars( "\n\n" );
 
-mainIO.appendChars( "Stack size: " );
-mainIO.appendStr( showS );
-mainIO.appendChars( "\n\n" );
 
+/*
+For Linux:
 Signals::setupControlCSignal();
 Signals::setupFpeSignal();
 Signals::setupIllegalOpSignal();
 Signals::setupBadMemSignal();
+*/
 
 
 RsaTest rsaTest;

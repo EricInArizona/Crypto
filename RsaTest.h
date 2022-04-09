@@ -6,11 +6,11 @@
 
 
 
-#include "../LinuxApi/BasicTypes.h"
-#include "../LinuxApi/FileIO.h"
+#include "..\LinuxApi\BasicTypes.h"
+#include "..\LinuxApi\FileIO.h"
 
-#include "../CryptoBase/Integer.h"
-#include "../CryptoBase/IntegerMath.h"
+#include "..\CryptoBase\Integer.h"
+#include "..\CryptoBase\IntegerMath.h"
 #include "Mod.h"
 #include "Rsa.h"
 

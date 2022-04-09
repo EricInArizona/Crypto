@@ -2,6 +2,17 @@
 
 
 
+// I had to put the Cryptography code back
+// under Windows for now until I write my code
+// editor for Linux.  Fortunately it
+// recognizes a path with the slash
+// character used iin the #include
+// statements.
+
+// I have given up on Java on Linux.
+// Actually the OpenJDK JRE on Linux.
+
+
 #pragma once
 
 
@@ -22,7 +33,7 @@ class MainApp
   public:
   inline static const char* getVersionStr( void )
     {
-    return "4/1/2022";
+    return "4/8/2022";
     }
 
   // Int32 mainLoop( Int32 argc, char* argv[] );
