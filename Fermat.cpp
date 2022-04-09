@@ -25,7 +25,6 @@ while( true )
     }
 
 
-
   // For testing.
   if( setToIndex == 1 )
     {

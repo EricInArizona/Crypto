@@ -8,12 +8,12 @@
 // Find small factors.
 
 
-#include "../LinuxApi/BasicTypes.h"
-#include "../LinuxApi/FileIO.h"
-#include "../LinuxApi/Int32Array.h"
-#include "../CryptoBase/Integer.h"
-#include "../CryptoBase/SPrimes.h"
-#include "../CryptoBase/IntegerMath.h"
+#include "..\LinuxApi\BasicTypes.h"
+#include "..\LinuxApi\FileIO.h"
+#include "..\LinuxApi\Int32Array.h"
+#include "..\CryptoBase\Integer.h"
+#include "..\CryptoBase\SPrimes.h"
+#include "..\CryptoBase\IntegerMath.h"
 
 
 

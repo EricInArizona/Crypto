@@ -1,15 +1,13 @@
 Programming by Eric Chauvin.
-Version date: 4/1/2022
-
-Stack size: 67108864
+Version date: 4/8/2022
 
 Starting RSA test.
 
 Bits size is: 48
 primeP:
-1040965383473
+463785327377
 primeQ:
-287547901649
+726625350403
 Good pair.
 
 
@@ -21,61 +19,61 @@ FindFacQr started findIt().
 QuarRed.init().
 makeQrCounts
 2) howMany: 2
-3) howMany: 1
-5) howMany: 2
+3) howMany: 2
+5) howMany: 3
 7) howMany: 3
 11) howMany: 6
-13) howMany: 7
+13) howMany: 6
 17) howMany: 8
 19) howMany: 9
-23) howMany: 12
-29) howMany: 15
+23) howMany: 11
+29) howMany: 14
 31) howMany: 16
-37) howMany: 19
-41) howMany: 20
-43) howMany: 21
+37) howMany: 18
+41) howMany: 21
+43) howMany: 22
 47) howMany: 24
 53) howMany: 27
 59) howMany: 29
 61) howMany: 30
 67) howMany: 34
-71) howMany: 35
-73) howMany: 37
-79) howMany: 40
+71) howMany: 36
+73) howMany: 36
+79) howMany: 39
 83) howMany: 42
 89) howMany: 45
-97) howMany: 49
+97) howMany: 48
 101) howMany: 50
-103) howMany: 52
+103) howMany: 51
 107) howMany: 54
 109) howMany: 55
 113) howMany: 56
 127) howMany: 64
-131) howMany: 65
+131) howMany: 66
 137) howMany: 68
-139) howMany: 70
+139) howMany: 69
 149) howMany: 75
 151) howMany: 75
 157) howMany: 78
 163) howMany: 81
-167) howMany: 84
+167) howMany: 83
 173) howMany: 86
 makeSmallAr17
-arSize for 17 is: 4032
-howMany for 17 is: 4032
+arSize for 17 is: 10368
+howMany for 17 is: 10368
 makeBigAr23
-arSize for 23 is: 435456
-howMany for 23 is: 435456
+arSize for 23 is: 1026432
+howMany for 23 is: 1026432
 Top of makeBigAr29
-arSize for 29 is: 6531840
-howMany for 29 is: 6531840
+arSize for 29 is: 14370048
+howMany for 29 is: 14370048
 Top of findQr31
 
-prime1: 287547901649
-prime2: 1040965383473
+prime1: 463785327377
+prime2: 726625350403
 Found it.
 
-Seconds: 5
+Seconds: 3
 
 Finished test.
 End of main app.

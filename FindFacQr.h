@@ -10,17 +10,17 @@
 
 
 
-#include "..\LinuxApi\BasicTypes.h"
-#include "..\LinuxApi\FileIO.h"
-#include "..\LinuxApi\Int32Array.h"
-#include "..\LinuxApi\Int64Array.h"
+#include "../LinuxApi/BasicTypes.h"
+#include "../LinuxApi/FileIO.h"
+#include "../LinuxApi/Int32Array.h"
+#include "../LinuxApi/Int64Array.h"
 
-#include "..\CryptoBase\Integer.h"
-#include "..\CryptoBase\SPrimes.h"
-#include "..\CryptoBase\IntegerMath.h"
-#include "..\CryptoBase\QuadRes.h"
-#include "..\CryptoBase\MultInv.h"
-#include "..\CryptoBase\GoodX.h"
+#include "../CryptoBase/Integer.h"
+#include "../CryptoBase/SPrimes.h"
+#include "../CryptoBase/IntegerMath.h"
+#include "../CryptoBase/QuadRes.h"
+#include "../CryptoBase/MultInv.h"
+#include "../CryptoBase/GoodX.h"
 #include "CrtMath.h"
 
 

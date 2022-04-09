@@ -1,10 +1,18 @@
 // Copyright Eric Chauvin 2022.
 
 
+// ==== Make it show StIO stuff for progress.
+
+// 79 megs is nothing.
+// I need to see how this is useful in other
+// things like the prime - 1.  Does it have all
+// small factors?
+// Ellipse finding the modular square root.
+
 
 
 #include "FindFacQr.h"
-#include "..\LinuxApi\Casting.h"
+#include "../LinuxApi/Casting.h"
 #include "Crt3.h"
 
 

@@ -178,8 +178,9 @@ Int64 FindFacSm::findSmall31( const Integer& pubKey,
                               IntegerMath& intMath,
                               FileIO& mainIO )
 {
-const Int64 max = 2L * 3L * 5L * 7L * 11L * 13L *
-                   17L * 19L * 23L * 29L * 31L;
+const Int64 max = 2LL * 3LL * 5LL * 7LL *
+       11LL * 13LL * 17LL * 19LL * 23LL *
+       29LL * 31LL;
 
 // Max 29 is:   6,469,693,230
 // Max 31 is: 200,560,490,130

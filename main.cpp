@@ -2,8 +2,11 @@
 
 
 
-#include "../LinuxApi/BasicTypes.h"
-#include "../LinuxApi/SetStack.h"
+#include "..\LinuxApi\BasicTypes.h"
+
+// This is only for Linux.
+// #include "../LinuxApi/SetStack.h"
+
 #include "MainApp.h"
 
 
@@ -11,8 +14,9 @@
 // Int32 main( Int32 argc, char* argv[] )
 Int32 main( void )
 {
-if( !SetStack::setit( 64 * 1024 * 1024 ))
-  return 1;
+// This is only for Linux.
+// if( !SetStack::setit( 64 * 1024 * 1024 ))
+  // return 1;
 
 
 MainApp mApp;
