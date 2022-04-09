@@ -2,7 +2,7 @@
 
 
 
-#include "../LinuxApi/Timing.h"
+#include "..\LinuxApi\Timing.h"
 
 #include "CrtTest.h"
 #include "Crt3.h"
