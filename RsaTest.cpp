@@ -3,10 +3,10 @@
 
 
 
-#include "..\LinuxApi\Timing.h"
+#include "../LinuxApi/Timing.h"
 
 #include "RsaTest.h"
-#include "MakePrime.h"
+#include "../CryptoBase/MakePrime.h"
 
 
 RsaTest::RsaTest( void )
