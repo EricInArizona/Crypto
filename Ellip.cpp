@@ -1,10 +1,17 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+// This is licensed under the GNU General
+// Public License (GPL).  It is the
+// same license that Linux has.
+// https://www.gnu.org/licenses/gpl-3.0.html
+
+
 
 #include "../LinuxApi/Timing.h"
 
 #include "Ellip.h"
+#include "../CryptoBase/TonelliShanks.h"
 
 
 
@@ -66,7 +73,7 @@ void Ellip::mainTest( FileIO& mainIO )
 // pArray[1] = 3;
 // pArray[2] = 5;
 // The prime 5 is at index 2.
-for( Int32 count = 2; count < 20; count++ )
+for( Int32 count = 2; count < 50; count++ )
   {
   Int32 prime = sPrimes.getPrimeAt( count );
   if( prime == EPoint::coefA )
@@ -89,22 +96,8 @@ for( Int32 count = 2; count < 20; count++ )
 
 
 
-// Tonelli Shanks algorithm
-// How does that work?
-
-// Euler's Criterion:
-// https://en.wikipedia.org/wiki/Euler%27s_criterion
-
-
-// "TonelliShanks cannot be used for composite
-// moduli: finding square roots modulo composite
-// numbers is a computational problem equivalent
-// to integer factorization."
-
-
-
-
-bool Ellip::crudeModRoot( Integer& result, Integer& right )
+bool Ellip::crudeModRoot( Integer& result,
+                          Integer& right )
 {
 result.setToZero();
 
@@ -187,42 +180,65 @@ for( Int32 x = 0; x < prime; x++ )
 
   // That's if the square root exists.
 
-  if( crudeModRoot( y, right ))
-    {
-    xVal.setFromInt24( x );
-    pArray[last].setValues( xVal, y );
+  mainIO.appendChars( "Right: " );
+  Str showR( right.getD( 0 ) );
+  mainIO.appendStr( showR );
+  mainIO.appendChars( "\n" );
 
+  Integer rootTonelli;
+
+  bool TonelliOK = TonelliShanks::modRoot( right,
+                        rootTonelli,
+                        modulus, intMath, mod );
+
+  if( !crudeModRoot( y, right ))
+    {
+    if( TonelliOK )
+      throw "Tonelli disagrees.";
+
+    continue;
+    }
+
+  if( !TonelliOK )
+    throw "Tonelli disagrees on second one.";
+
+  xVal.setFromInt24( x );
+  pArray[last].setValues( xVal, y );
+
+  if( !pArray[last].isOnCurve( modulus, mod, intMath ))
+    throw "This point is not on the curve.";
+
+  last++;
+
+  if( last >= arraySize )
+    throw "The ellip array is too small.";
+
+  if( !y.isZero())
+    {
+    y2.copy( y );
+    mod.negate( y2, modulus, intMath );
+
+    if( !( y.isEqual( rootTonelli ) ||
+           y2.isEqual( rootTonelli )))
+      throw "Tonelli disagrees on value.";
+
+    pArray[last].setValues( xVal, y2 );
     if( !pArray[last].isOnCurve( modulus, mod, intMath ))
-      throw "This point is not on the curve.";
+      throw "This second point is not on the curve.";
 
     last++;
-
-    if( last >= arraySize )
-      throw "The ellip array is too small.";
-
-    if( !y.isZero())
-      {
-      y2.copy( y );
-      mod.negate( y2, modulus, intMath );
-
-      pArray[last].setValues( xVal, y2 );
-      if( !pArray[last].isOnCurve( modulus, mod, intMath ))
-        throw "This second point is not on the curve.";
-
-      last++;
-      }
-
-    mainIO.appendChars( "X: " );
-    Str showP( x );
-    mainIO.appendStr( showP );
-    mainIO.appendChars( "\n" );
-
-    // Square root is:
-    mainIO.appendChars( "Y: " );
-    Str showY =  intMath.toString10( y );
-    mainIO.appendStr( showY );
-    mainIO.appendChars( "\n\n" );
     }
+
+  mainIO.appendChars( "X: " );
+  Str showP( x );
+  mainIO.appendStr( showP );
+  mainIO.appendChars( "\n" );
+
+  // Square root is:
+  mainIO.appendChars( "Y: " );
+  Str showY =  intMath.toString10( y );
+  mainIO.appendStr( showY );
+  mainIO.appendChars( "\n\n" );
   }
 }
 
