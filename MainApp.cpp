@@ -79,14 +79,14 @@ Signals::setupBadMemSignal();
 */
 
 
-RsaTest rsaTest;
-rsaTest.test( mainIO );
+// RsaTest rsaTest;
+// rsaTest.test( mainIO );
 
 // CrtTest crtTest;
 // crtTest.test( mainIO );
 
-// Ellip ellip;
-// ellip.test( mainIO );
+Ellip ellip;
+ellip.test( mainIO );
 
 mainIO.appendChars( "End of main app.\n" );
 
