@@ -19,7 +19,7 @@
 
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/Mod.h"
-#include "EPoint.h"
+#include "../CryptoBase/EPoint.h"
 
 
 

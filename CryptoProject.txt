@@ -2,32 +2,10 @@ buildfile	\Eric\Main\Crypto\BuildProj.bat
 executablefile	\Eric\Main\Crypto\main.exe
 projectdirectory	\Eric\Main\Crypto
 recentfile1	\Eric\Main\Crypto\MainApp.h
-recentfile2	\Eric\Main\Crypto\FindFacQr.h
-recentfile3	\Eric\Main\Crypto\FindFacQr.cpp
-recentfile4	\Eric\Main\Crypto\Rsa.h
-recentfile5	\Eric\Main\Crypto\Rsa.cpp
-recentfile6	\Eric\Main\Crypto\RsaTest.h
-recentfile7	\Eric\Main\Crypto\RsaTest.cpp
-recentfile8	\Eric\Main\Crypto\Fermat.cpp
-recentfile10	
-recentfile9	\Eric\Main\Docs\Notes.txt
-recentfile11	
-recentfile12	
-recentfile13	
-recentfile14	
-recentfile15	
-recentfile16	
-recentfile17	
-recentfile18	
-recentfile19	
-recentfile20	
-recentfile21	
-recentfile22	
-recentfile23	
-recentfile24	
-recentfile25	
-recentfile26	
-recentfile27	
-recentfile28	
-recentfile29	
-recentfile30	
+recentfile2	\Eric\Main\Docs\Notes.txt
+recentfile3	\Eric\Main\CryptoBase\TonelliShanks.h
+recentfile4	\Eric\Main\CryptoBase\TonelliShanks.cpp
+recentfile5	\Eric\Main\Crypto\Ellip.h
+recentfile6	\Eric\Main\Crypto\Ellip.cpp
+recentfile7	\Eric\Main\CryptoBase\EPoint.h
+recentfile8	\Eric\Main\CryptoBase\EPoint.cpp

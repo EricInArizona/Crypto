@@ -2,11 +2,11 @@
 
 
 
-#include "..\LinuxApi\Timing.h"
+#include "../LinuxApi/Timing.h"
 
 #include "CrtTest.h"
 #include "Crt3.h"
-#include "MakePrime.h"
+#include "../CryptoBase/MakePrime.h"
 #include "FindFacCrt.h"
 
 

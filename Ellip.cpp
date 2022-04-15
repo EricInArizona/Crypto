@@ -190,7 +190,7 @@ for( Int32 x = 0; x < prime; x++ )
   bool TonelliOK = TonelliShanks::modRoot( right,
                         rootTonelli,
                         modulus, intMath, mod );
-
+/*
   if( !crudeModRoot( y, right ))
     {
     if( TonelliOK )
@@ -198,9 +198,13 @@ for( Int32 x = 0; x < prime; x++ )
 
     continue;
     }
+*/
 
   if( !TonelliOK )
-    throw "Tonelli disagrees on second one.";
+    continue; // Square root doesn't exist.
+    // throw "Tonelli disagrees on second one.";
+
+  y.copy( rootTonelli );
 
   xVal.setFromInt24( x );
   pArray[last].setValues( xVal, y );
