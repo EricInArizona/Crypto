@@ -3,9 +3,8 @@ executablefile	\Eric\Main\Crypto\main.exe
 projectdirectory	\Eric\Main\Crypto
 recentfile1	\Eric\Main\Crypto\MainApp.h
 recentfile2	\Eric\Main\Docs\Notes.txt
-recentfile3	\Eric\Main\CryptoBase\TonelliShanks.h
-recentfile4	\Eric\Main\CryptoBase\TonelliShanks.cpp
-recentfile5	\Eric\Main\Crypto\Ellip.h
-recentfile6	\Eric\Main\Crypto\Ellip.cpp
-recentfile7	\Eric\Main\CryptoBase\EPoint.h
-recentfile8	\Eric\Main\CryptoBase\EPoint.cpp
+recentfile3	\Eric\Main\CppBase\BasicTypes.h
+recentfile4	\Eric\Main\CryptoBase\Integer.cpp
+recentfile5	\Eric\Main\CryptoBase\IntegerMath.cpp
+recentfile6	\Eric\Main\CryptoBase\MultInv.cpp
+recentfile7	\Eric\Main\CryptoBase\SPrimes.cpp

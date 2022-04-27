@@ -6,8 +6,8 @@
 
 
 
-#include "..\LinuxApi\BasicTypes.h"
-#include "..\LinuxApi\RangeC.h"
+#include "..\CppBase\BasicTypes.h"
+#include "..\CppBase\RangeC.h"
 #include "..\CryptoBase\ProjConst.h"
 #include "..\CryptoBase\SPrimes.h"
 #include "..\CryptoBase\Integer.h"
