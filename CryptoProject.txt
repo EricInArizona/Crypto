@@ -3,8 +3,31 @@ executablefile	\Eric\Main\Crypto\main.exe
 projectdirectory	\Eric\Main\Crypto
 recentfile1	\Eric\Main\Crypto\MainApp.h
 recentfile2	\Eric\Main\Docs\Notes.txt
-recentfile3	\Eric\Main\CppBase\BasicTypes.h
-recentfile4	\Eric\Main\CryptoBase\Integer.cpp
-recentfile5	\Eric\Main\CryptoBase\IntegerMath.cpp
-recentfile6	\Eric\Main\CryptoBase\MultInv.cpp
-recentfile7	\Eric\Main\CryptoBase\SPrimes.cpp
+recentfile3	\Eric\Main\Crypto\MainApp.cpp
+recentfile4	
+recentfile5	
+recentfile6	
+recentfile7	
+recentfile8	
+recentfile9	
+recentfile10	
+recentfile11	
+recentfile12	
+recentfile13	
+recentfile14	
+recentfile15	
+recentfile16	
+recentfile17	
+recentfile18	
+recentfile19	
+recentfile20	
+recentfile21	
+recentfile22	
+recentfile23	
+recentfile24	
+recentfile25	
+recentfile26	
+recentfile27	
+recentfile28	
+recentfile29	
+recentfile30	

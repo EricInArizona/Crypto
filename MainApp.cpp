@@ -16,9 +16,7 @@
 
 #include "../CppBase/Casting.h"
 #include "../CppBase/Threads.h"
-
-// For Linux:
-// #include "../LinuxApi/Signals.h"
+#include "../WinApi/Signals.h"
 
 
 #include "MainApp.h"
@@ -27,10 +25,10 @@
 #include "Ellip.h"
 
 
+
+// extern volatile Int32 gotSigFpe;
+
 /*
-extern volatile Int32 gotSigFpe;
-
-
 void MainApp::checkSignals( void )
 {
 if( gotSigFpe > 0 )
@@ -76,23 +74,21 @@ mainIO.appendChars( "\n\n" );
 // mainIO.appendChars( "\n\n" );
 
 
-/*
-For Linux:
 Signals::setupControlCSignal();
 Signals::setupFpeSignal();
 Signals::setupIllegalOpSignal();
 Signals::setupBadMemSignal();
-*/
 
 
-// RsaTest rsaTest;
-// rsaTest.test( mainIO );
+
+RsaTest rsaTest;
+rsaTest.test( mainIO );
 
 // CrtTest crtTest;
 // crtTest.test( mainIO );
 
-Ellip ellip;
-ellip.test( mainIO );
+// Ellip ellip;
+// ellip.test( mainIO );
 
 mainIO.appendChars( "End of main app.\n" );
 

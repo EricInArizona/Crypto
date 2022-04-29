@@ -8,7 +8,7 @@
 
 
 
-#include "../CppBase/Timing.h"
+#include "../WinApi/Timing.h"
 
 #include "Ellip.h"
 #include "../CryptoBase/TonelliShanks.h"
