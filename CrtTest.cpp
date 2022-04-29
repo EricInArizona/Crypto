@@ -7,7 +7,8 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
-#include "../CppBase/Timing.h"
+#include "../WinApi/Timing.h"
+// #include "../LinuxApi/Timing.h"
 
 #include "CrtTest.h"
 #include "Crt3.h"
