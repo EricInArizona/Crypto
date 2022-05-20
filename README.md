@@ -1,2 +1,4 @@
-# Cryptographic code for C++
-Code for cryptography, like RSA, Bitcoin, elliptic curve algorithm in C++.
+# Cryptography code for C++
+
+See https://ericinarizona.github.io/
+For more information.
