@@ -7,6 +7,9 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+
+/*
+
 #include "../CppBase/Casting.h"
 
 #include "CrtTreeL.h"
@@ -73,3 +76,5 @@ for( Int32 count = depth; count <= max; count++ )
   setFirstGoodXAt( count );
   }
 }
+
+*/

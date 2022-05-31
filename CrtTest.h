@@ -7,12 +7,14 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
+
 #pragma once
 
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
+// #include "../CppBase/FileIO.h"
 
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/IntegerMath.h"
@@ -40,8 +42,8 @@ class CrtTest
   public:
   CrtTest( void );
   CrtTest( const CrtTest& in );
-  void test( FileIO& mainIO );
-  bool testBasics( const Integer& t1,
-                   FileIO& mainIO );
+  void test( void );
+  bool testBasics( const Integer& t1 );
 
   };
+*/

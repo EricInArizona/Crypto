@@ -1,6 +1,8 @@
 // Copyright Eric Chauvin 2021 - 2022.
 
 
+/*
+
 
 // The first few numbers for the base:
 // 1                  1
@@ -65,7 +67,7 @@ for( Int32 count = 0; count <= endAt; count++ )
 
 
 
-/*
+/////////
 void Crt3::copyToCrtBuf( CrtBuf& copyTo )
 {
 for( Int32 count = 0; count < last; count++ )
@@ -73,7 +75,7 @@ for( Int32 count = 0; count < last; count++ )
   copyTo.setD( crt.getD( count ), count );
   }
 }
-*/
+//////
 
 
 
@@ -95,7 +97,7 @@ return true;
 
 
 
-/*
+/////////
 bool Crt3::incAt( const SPrimes& sPrimes,
                   const Int32 where )
 {
@@ -117,7 +119,7 @@ for( Int32 count = where; count < last; count++ )
 // It would never get this far.
 return false;
 }
-*/
+/////
 
 
 
@@ -212,7 +214,7 @@ for( Int32 count = 1; count < last; count++ )
 
 
 
-/*
+////
 bool Crt3::setInvCrt( Crt3& prime2Crt3,
                       const Int32 maxLen,
                       const Crt& prod,
@@ -265,11 +267,11 @@ for( Int32 count = 1; count < last; count++ )
 
 return true;
 }
-*/
+///////
 
 
 
-/*
+////
 bool Crt3::setInvDigit( const Int32 where,
                         const Int32 prime,
                         const Int32 fromDigit,
@@ -312,7 +314,7 @@ if( index > maxLen )
 
 return true;
 }
-*/
+//////
 
 
 
@@ -343,7 +345,7 @@ setFromCrtV6( last - 1, crtMath, sPrimes, multInv );
 
 
 
-/*
+////
 void Crt::setFromInt( const Int32 setFrom,
                       const SPrimes& sPrimes )
 {
@@ -354,11 +356,11 @@ for( Int32 count = 0; count < last; count++ )
   }
 }
 
-*/
+/////
 
 
 
-
+/////
 void Crt3::setFromCrtTree( const CrtTreeL& crtTree,
                            const CrtMath& crtMath,
                            const SPrimes& sPrimes,
@@ -374,7 +376,7 @@ for( Int32 count = 0; count <= max; count++ )
 
 setFromCrtV6( max, crtMath, sPrimes, multInv );
 }
-
+/////
 
 
 
@@ -399,3 +401,5 @@ for( Int32 where = startAt; where < last; where++ )
 
 return true;
 }
+
+*/

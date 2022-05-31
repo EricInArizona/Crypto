@@ -7,8 +7,9 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
-#include "../WinApi/Timing.h"
-// #include "../LinuxApi/Timing.h"
+/*
+
+#include "../CppBase/TimeApi.h"
 
 #include "CrtTest.h"
 #include "Crt3.h"
@@ -42,26 +43,26 @@ throw "Don't use copy constructor for CrtTest.";
 
 
 
-void CrtTest::test( FileIO& mainIO )
+void CrtTest::test( void )
 {
 // This start time doesn't include the MultInv
 // init time.
 // They happen before this t1 start time.
 
-Timing t1;
+TimeApi t1;
 
-mainIO.appendChars( "Starting CRT test.\n" );
+// mainIO.appendChars( "Starting CRT test.\n" );
 
-quadRes.init( sPrimes, mainIO );
+quadRes.init( sPrimes );
 
 Int32 primeIndex = 1;
 
-Int32 showBits = (primeIndex + 1) * 24;
+// Int32 showBits = (primeIndex + 1) * 24;
 
-mainIO.appendChars( "\nBits size is: " );
-Str bits( showBits );
-mainIO.appendStr( bits );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "\nBits size is: " );
+// Str bits( showBits );
+// mainIO.appendStr( bits );
+// mainIO.appendChars( "\n" );
 
 Integer prime1;
 Integer prime2;
@@ -81,7 +82,7 @@ makePrime.makeIt( prime2,
                   intMath,
                   mod );
 
-testBasics( prime1, mainIO );
+testBasics( prime1 );
 
 // 31, 37, 41, 43, 47, 53, 59, 61, 67,
 // 71, 73, 79, 83, 89, 97
@@ -92,31 +93,31 @@ testBasics( prime1, mainIO );
 // prime2.setFromInt24( 19 );
 
 
-mainIO.appendChars( "prime1:\n" );
-Str showP =  intMath.toString10( prime1 );
-mainIO.appendStr( showP );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "prime1:\n" );
+// Str showP =  intMath.toString10( prime1 );
+// mainIO.appendStr( showP );
+// mainIO.appendChars( "\n" );
 
-mainIO.appendChars( "prime2:\n" );
-Str showQ =  intMath.toString10( prime2 );
-mainIO.appendStr( showQ );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "prime2:\n" );
+// Str showQ =  intMath.toString10( prime2 );
+// mainIO.appendStr( showQ );
+// mainIO.appendChars( "\n" );
 
 Integer pubKeyN;
 pubKeyN.copy( prime1 );
 intMath.multiply( pubKeyN, prime2 );
 
-mainIO.appendChars( "pubKeyN:\n" );
-Str showPub =  intMath.toString10( pubKeyN );
-mainIO.appendStr( showPub );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "pubKeyN:\n" );
+// Str showPub =  intMath.toString10( pubKeyN );
+// mainIO.appendStr( showPub );
+// mainIO.appendChars( "\n" );
 
 
 Integer find1;
 Integer find2;
-FindFacCrt findFacCrt;
+// FindFacCrt findFacCrt;
 
-/*
+//////
 findFacCrt.getSmallFactor(
                          pubKeyN,
                          find1,
@@ -126,16 +127,16 @@ findFacCrt.getSmallFactor(
                          multInv,
                          crtMath,
                          mainIO );
-*/
+///////
 
-
+///////
 findFacCrt.getFactorsQR( pubKeyN, find1, find2,
                          intMath, sPrimes,
                          crtMath,
                          goodX,
                          quadRes,
-                         multInv,
-                         mainIO );
+                         multInv );
+*/
 
 /*
 mainIO.appendChars( "find1:\n" );
@@ -147,38 +148,37 @@ mainIO.appendChars( "find2:\n" );
 Str showFind2 =  intMath.toString10( find2 );
 mainIO.appendStr( showFind2 );
 mainIO.appendChars( "\n" );
-*/
+//////
 
-Timing t2;
+TimeApi t2;
 
 Int64 diff = t2.diffSec( t1 );
 
 Str showTime( diff );
-mainIO.appendChars( "\nSeconds: " );
-mainIO.appendStr( showTime );
-mainIO.appendChars( "\n\n" );
-mainIO.appendChars( "Finished test.\n" );
+// mainIO.appendChars( "\nSeconds: " );
+// mainIO.appendStr( showTime );
+// mainIO.appendChars( "\n\n" );
+// mainIO.appendChars( "Finished test.\n" );
 }
 
 
 
 
-bool CrtTest::testBasics( const Integer& t1,
-                          FileIO& mainIO )
+bool CrtTest::testBasics( const Integer& t1 )
 {
-Int32 prime = sPrimes.getPrimeAt(
-           ProjConst::crtDigitArraySize - 1 );
+// Int32 prime = sPrimes.getPrimeAt(
+   //        ProjConst::crtDigitArraySize - 1 );
 
-mainIO.appendChars( "\n\nLast CRT prime is: " );
-Str showIt( prime );
-mainIO.appendStr( showIt );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "\n\nLast CRT prime is: " );
+// Str showIt( prime );
+// mainIO.appendStr( showIt );
+// mainIO.appendChars( "\n" );
 
-Int32 bigPrime = sPrimes.getBiggestPrime();
-mainIO.appendChars( "Biggest prime is: " );
-Str showIt2( bigPrime );
-mainIO.appendStr( showIt2 );
-mainIO.appendChars( "\n\n" );
+// Int32 bigPrime = sPrimes.getBiggestPrime();
+// mainIO.appendChars( "Biggest prime is: " );
+// Str showIt2( bigPrime );
+// mainIO.appendStr( showIt2 );
+// mainIO.appendChars( "\n\n" );
 
 
 Crt3 test1;
@@ -199,3 +199,6 @@ if( !result.isEqual( t1 ))
 
 return true;
 }
+
+*/
+

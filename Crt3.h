@@ -1,7 +1,7 @@
 // Copyright Eric Chauvin, 2021 - 2022.
 
 
-
+/*
 // This is licensed under the GNU General
 // Public License (GPL).  It is the
 // same license that Linux has.
@@ -21,7 +21,8 @@
 #include "CrtMath.h"
 #include "../CryptoBase/MultInv.h"
 #include "../CryptoBase/QuadRes.h"
-#include "CrtTreeL.h"
+// #include "CrtTreeL.h"
+#include "../CryptoBase/GoodX.h"
 
 
 
@@ -258,14 +259,17 @@ class Crt3
                        const MultInv& multInv,
                        const CrtMath& crtMath );
 
-
+/*
   void setFromCrtTree( const CrtTreeL& crtTree,
                        const CrtMath& crtMath,
                        const SPrimes& sPrimes,
                        const MultInv& multInv );
+*/
 
   bool isFullGoodX( const GoodX& goodX,
                     const CrtMath& crtMath,
                     const SPrimes& sPrimes ) const;
 
   };
+
+*/
