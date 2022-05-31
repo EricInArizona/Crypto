@@ -15,7 +15,7 @@
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
+// #include "../CppBase/FileIO.h"
 
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/Mod.h"
@@ -42,13 +42,12 @@ class Ellip
   Ellip( void );
   Ellip( const Ellip& in );
   ~Ellip( void );
-  void test( FileIO& mainIO );
-  void mainTest( FileIO& mainIO );
-  void makeCurvePoints(  FileIO& mainIO,
-                         const Int32 prime );
+  void test( void );
+  void mainTest( void );
+  void makeCurvePoints( const Int32 prime );
 
-  void testAddPoints( FileIO& mainIO );
-  void testDoublePoints( FileIO& mainIO );
+  void testAddPoints( void );
+  void testDoublePoints( void );
 
   bool crudeModRoot( Integer& result, Integer& right );
   void setupBases( const EPoint p );

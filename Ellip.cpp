@@ -8,7 +8,7 @@
 
 
 
-#include "../WinApi/Timing.h"
+#include "../CppBase/TimeApi.h"
 
 #include "Ellip.h"
 #include "../CryptoBase/TonelliShanks.h"
@@ -44,29 +44,29 @@ delete[] baseArray;
 
 
 
-void Ellip::test( FileIO& mainIO )
+void Ellip::test( void )
 {
-mainIO.appendChars( "Starting ellip test.\n" );
+// mainIO.appendChars( "Starting ellip test.\n" );
 
-Timing t1;
+// TimeApi t1;
 
-mainTest( mainIO );
+mainTest();
 
-Timing t2;
+// TimeApi t2;
 
-Int64 diff = t2.diffSec( t1 );
+// Int64 diff = t2.diffSec( t1 );
 
-Str showTime( diff );
-mainIO.appendChars( "\nSeconds: " );
-mainIO.appendStr( showTime );
-mainIO.appendChars( "\n\n" );
-mainIO.appendChars( "Finished test.\n" );
+// Str showTime( diff );
+// mainIO.appendChars( "\nSeconds: " );
+// mainIO.appendStr( showTime );
+// mainIO.appendChars( "\n\n" );
+// mainIO.appendChars( "Finished test.\n" );
 }
 
 
 
 
-void Ellip::mainTest( FileIO& mainIO )
+void Ellip::mainTest( void )
 {
 // Primes have to not be 2 or 3.
 // pArray[0] = 2;
@@ -82,14 +82,14 @@ for( Int32 count = 2; count < 50; count++ )
   if( prime == EPoint::coefB )
     continue;
 
-  mainIO.appendChars( "\n\nPrime is: " );
-  Str showP( prime );
-  mainIO.appendStr( showP );
-  mainIO.appendChars( "\n" );
+  // mainIO.appendChars( "\n\nPrime is: " );
+  // Str showP( prime );
+  // mainIO.appendStr( showP );
+  // mainIO.appendChars( "\n" );
 
-  makeCurvePoints( mainIO, prime );
-  testAddPoints( mainIO );
-  testDoublePoints( mainIO );
+  makeCurvePoints( prime );
+  testAddPoints();
+  testDoublePoints();
   }
 }
 
@@ -140,8 +140,7 @@ return false;
 
 
 
-void Ellip::makeCurvePoints( FileIO& mainIO,
-                             const Int32 prime )
+void Ellip::makeCurvePoints( const Int32 prime )
 {
 last = 0;
 
@@ -152,7 +151,7 @@ last = 0;
 // on the curve.
 
 
-mainIO.appendChars( "Making curve points.\n" );
+// mainIO.appendChars( "Making curve points.\n" );
 
 Integer right;
 
@@ -180,10 +179,10 @@ for( Int32 x = 0; x < prime; x++ )
 
   // That's if the square root exists.
 
-  mainIO.appendChars( "Right: " );
-  Str showR( right.getD( 0 ) );
-  mainIO.appendStr( showR );
-  mainIO.appendChars( "\n" );
+  // mainIO.appendChars( "Right: " );
+  // Str showR( right.getD( 0 ) );
+  // mainIO.appendStr( showR );
+  // mainIO.appendChars( "\n" );
 
   Integer rootTonelli;
 
@@ -233,24 +232,24 @@ for( Int32 x = 0; x < prime; x++ )
     last++;
     }
 
-  mainIO.appendChars( "X: " );
-  Str showP( x );
-  mainIO.appendStr( showP );
-  mainIO.appendChars( "\n" );
+  // mainIO.appendChars( "X: " );
+  // Str showP( x );
+  // mainIO.appendStr( showP );
+  // mainIO.appendChars( "\n" );
 
   // Square root is:
-  mainIO.appendChars( "Y: " );
-  Str showY =  intMath.toString10( y );
-  mainIO.appendStr( showY );
-  mainIO.appendChars( "\n\n" );
+  // mainIO.appendChars( "Y: " );
+  // Str showY =  intMath.toString10( y );
+  // mainIO.appendStr( showY );
+  // mainIO.appendChars( "\n\n" );
   }
 }
 
 
 
-void Ellip::testAddPoints( FileIO& mainIO )
+void Ellip::testAddPoints( void )
 {
-mainIO.appendChars( "testAddPoints()\n" );
+// mainIO.appendChars( "testAddPoints()\n" );
 
 EPoint testP;
 
@@ -268,9 +267,9 @@ for( Int32 count = 0; (count + 1) < last; count++ )
 
 
 
-void Ellip::testDoublePoints( FileIO& mainIO )
+void Ellip::testDoublePoints( void )
 {
-mainIO.appendChars( "testDoublePoints()\n" );
+// mainIO.appendChars( "testDoublePoints()\n" );
 
 EPoint testP;
 

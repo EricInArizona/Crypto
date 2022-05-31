@@ -2,7 +2,6 @@
 
 
 
-
 #include "FindFacSm.h"
 
 
@@ -38,13 +37,12 @@ FindFacSm::~FindFacSm( void )
 Int64 FindFacSm::findIt( const Integer& pubKey,
                          const Int64 maxBase,
                          IntegerMath& intMath,
-                         const SPrimes& sPrimes,
-                         FileIO& mainIO )
+                         const SPrimes& sPrimes )
 {
-mainIO.appendChars( "\nFindFacSm started findIt().\n" );
+// mainIO.appendChars( "\nFindFacSm started findIt().\n" );
 
 Int32 smallP = intMath.isDivisibleBySmallPrime(
-                                        pubKey, sPrimes );
+                                pubKey, sPrimes );
 if( smallP != 0 )
   return smallP;
 
@@ -55,17 +53,19 @@ if( intMath.squareRoot( pubKey, sqrRoot ))
   throw "FindFacSm: It actually has a square root.";
 
 
-Int64 result = findSmall31( pubKey, maxBase, intMath, mainIO );
+Int64 result = 
+        findSmall31( pubKey, maxBase, intMath );
 
-mainIO.appendChars( "End of FindFacSm.findIt().\n" );
+// mainIO.appendChars( "End of FindFacSm.findIt().\n" );
 
 return result;
 }
 
 
 
-void FindFacSm::makeSmallAr13( void ) // FileIO& mainIO )
+void FindFacSm::makeSmallAr13( void )
 {
+/*
 // Euler's Phi function.
 const Int32 phi = (3 - 1) * (5 - 1) * (7 - 1) *
                           (11 - 1) * (13 - 1);
@@ -108,13 +108,14 @@ for( Int32 count = 1; count < max; count += 2 )
 
 if( howMany != phi )
   throw "howMany != phi for 13";
-
+*/
 }
 
 
 
 void FindFacSm::makeBigAr19( void ) // FileIO& mainIO )
 {
+/*
 // Euler's Phi function.
 const Int32 phi = (3 - 1) * (5 - 1) * (7 - 1) *
                           (11 - 1) * (13 - 1) *
@@ -169,15 +170,16 @@ for( Int32 countBase = 0; countBase < 17 * 19; countBase++ )
 if( howMany != phi )
   throw "howMany != phi for big 19";
 
+*/
 }
 
 
 
 Int64 FindFacSm::findSmall31( const Integer& pubKey,
                               const Int64 maxBase,
-                              IntegerMath& intMath,
-                              FileIO& mainIO )
+                              IntegerMath& intMath )
 {
+/*
 const Int64 max = 2LL * 3LL * 5LL * 7LL *
        11LL * 13LL * 17LL * 19LL * 23LL *
        29LL * 31LL;
@@ -230,6 +232,8 @@ for( Int32 countBase = 0; countBase < 23 * 29 * 31;
 
     }
   }
-
+*/
 return 0;
 }
+
+

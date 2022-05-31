@@ -7,6 +7,7 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
 #include "../CppBase/Casting.h"
 #include "../CppBase/StIO.h"
 
@@ -82,15 +83,14 @@ void QRTree::setStartValues(
                     IntegerMath& intMath,
                     const SPrimes& sPrimes,
                     const MultInv& multInv,
-                    CrtTreeL& crtTree,
-                    FileIO& mainIO )
+                    CrtTreeL& crtTree )
 {
-mainIO.appendChars( "setStartValues.\n" );
+// mainIO.appendChars( "setStartValues.\n" );
 
 pubKeyN.copy( setpubKeyN );
 prodByte = pubKeyN.getD( 0 ) & 0xFF;
 
-/*
+//////
   // Do a Crt2.paramIsGreater() for bigX.
   // And lots of other Crt2 math functions.
   // Like multiply and divide and add.
@@ -98,7 +98,7 @@ prodByte = pubKeyN.getD( 0 ) & 0xFF;
 Integer bigX;
 getBiggestX( bigX, intMath, sPrimes,
              multInv, crtMath, mainIO );
-*/
+////////
 
 Crt3 prod;
 prod.setFromInteger( pubKeyN,
@@ -152,8 +152,7 @@ bool QRTree::runIt( const GoodX& goodX,
                     const CrtMath& crtMath,
                     const MultInv& multInv,
                     IntegerMath& intMath,
-                    CrtTreeL& crtTree,
-                    FileIO& mainIO )
+                    CrtTreeL& crtTree )
 {
 // Things like goodX are set up in
 // setStartValues().
@@ -462,7 +461,7 @@ if( prime2.isOne())
 return true;
 
 
-/*
+/////
 
 if( !isFullGoodX2( goodX, crtMath, sPrimes ))
   return false;
@@ -512,13 +511,13 @@ if( prime2.isOne())
   }
 
 return true;
-*/
+///////
 }
 
 
 
 
-/*
+///////
 void QRTree::getBiggestX( Integer& bigX,
                         IntegerMath& intMath,
                         const SPrimes& sPrimes,
@@ -560,4 +559,5 @@ Str showX = intMath.toString10( bigX );
 mainIO.appendStr( showX );
 mainIO.appendChars( "\n" );
 }
+
 */

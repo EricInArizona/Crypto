@@ -7,12 +7,14 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
+
 #pragma once
 
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
+// #include "../CppBase/FileIO.h"
 
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/IntegerMath.h"
@@ -58,6 +60,8 @@ class RsaTest
 
   RsaTest( void );
   RsaTest( const RsaTest& in );
-  void test( FileIO& mainIO );
+  void test( void );
 
   };
+*/
+

@@ -1,6 +1,8 @@
 // Copyright Eric Chauvin 2022.
 
 
+/*
+
 
 #include "FindFacCrt.h"
 #include "../CryptoBase/Division.h"
@@ -29,7 +31,7 @@ FindFacCrt::~FindFacCrt( void )
 
 
 
-/*
+/////
 bool FindFacCrt::getSmallFactor(
                          const Integer& pubKeyN,
                          Integer& find1,
@@ -37,8 +39,7 @@ bool FindFacCrt::getSmallFactor(
                          IntegerMath& intMath,
                          const SPrimes& sPrimes,
                          const MultInv& multInv,
-                         const CrtMath& crtMath,
-                         FileIO& mainIO )
+                         const CrtMath& crtMath )
 {
 return getSmallFactor1( pubKeyN,
                         find1,
@@ -64,8 +65,7 @@ bool FindFacCrt::getSmallFactor1(
                          IntegerMath& intMath,
                          const SPrimes& sPrimes,
                          const MultInv& multInv,
-                         const CrtMath& crtMath,
-                         FileIO& mainIO )
+                         const CrtMath& crtMath )
 {
 Integer sqrRoot;
 intMath.squareRoot( pubKeyN, sqrRoot );
@@ -140,7 +140,7 @@ mainIO.appendChars( "\nWent to end.\n\n" );
 
 return false;
 }
-*/
+////
 
 
 
@@ -154,8 +154,7 @@ bool FindFacCrt::getFactorsQR(
                          const CrtMath& crtMath,
                          GoodX& goodX,
                          QuadRes& quadRes,
-                         const MultInv& multInv,
-                         FileIO& mainIO )
+                         const MultInv& multInv )
 {
 find1.setToOne();
 find2.setToOne();
@@ -164,11 +163,11 @@ find2.setToOne();
 
 // Make sure it's not some easy factors first.
 // This should not happen for RSA type numbers.
-/*
+/////
 if( checkEasyOnes( pubKeyN, intMath, sPrimes,
                                      mainIO ))
   return true;
-*/
+//////
 
 Crt3 prod;
 prod.setFromInteger( pubKeyN,
@@ -221,10 +220,10 @@ bool FindFacCrt::hasFactors(
                          Integer& find2,
                          IntegerMath& intMath,
                          // const SPrimes& sPrimes,
-                         const CrtMath& crtMath,
+                         const CrtMath& crtMath
                          // GoodX& goodX,
                          // const MultInv& multInv,
-                         FileIO& mainIO )
+                          )
 {
 Integer x;
 Integer y;
@@ -257,8 +256,7 @@ void FindFacCrt::showFoundFactors(
                          const Integer& find1,
                          const Integer& find2,
                          const Integer& foundX,
-                         IntegerMath& intMath,
-                         FileIO& mainIO )
+                         IntegerMath& intMath )
 {
 mainIO.appendChars( "\nFound it.\n" );
 
@@ -292,8 +290,7 @@ bool FindFacCrt::checkEasyOnes(
                          // Integer& find1
                          // Integer& find2
                          IntegerMath& intMath,
-                         const SPrimes& sPrimes,
-                         FileIO& mainIO )
+                         const SPrimes& sPrimes )
 {
 // RSA numbers won't be found with this.
 // This is to make sure I have good numbers
@@ -361,3 +358,5 @@ for( Int32 count = 1; count < 51; count++ )
 
 return false;
 }
+
+*/

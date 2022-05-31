@@ -15,7 +15,6 @@
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
 #include "../CppBase/Int32Array.h"
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/SPrimes.h"
@@ -41,13 +40,11 @@ class FindFacSm
   Int64 findIt( const Integer& pubKey,
                 const Int64 maxBase,
                 IntegerMath& intMath,
-                const SPrimes& sPrimes,
-                FileIO& mainIO );
+                const SPrimes& sPrimes );
 
   Int64 findSmall31( const Integer& pubKey,
                      const Int64 maxBase,
-                     IntegerMath& intMath,
-                     FileIO& mainIO );
+                     IntegerMath& intMath );
 
 
   };

@@ -7,6 +7,8 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
+
 #pragma once
 
 
@@ -63,8 +65,7 @@ class QRTree
                     const CrtMath& crtMath,
                     const MultInv& multInv,
                     IntegerMath& intMath,
-                    CrtTreeL& crtTree,
-                    FileIO& mainIO );
+                    CrtTreeL& crtTree );
 
   bool testTopRow( const Int32 where,
                    const SPrimes& sPrimes,
@@ -73,8 +74,7 @@ class QRTree
                    const CrtMath& crtMath,
                    IntegerMath& intMath,
                    CrtTreeL& crtTree,
-                   const GoodX& goodX,
-                   FileIO& mainIO );
+                   const GoodX& goodX );
 
   bool testBaseByte( Crt3& toCheck,
                      const Int32 accum,
@@ -87,7 +87,7 @@ class QRTree
                      const MultInv& multInv );
 
 
-/*
+
 
   void getBiggestX( Integer& bigX,
                     IntegerMath& intMath,
@@ -95,7 +95,7 @@ class QRTree
                     const MultInv& multInv,
                     const CrtMath& crtMath,
                     FileIO& mainIO );
-*/
+
 
   public:
   QRTree( void );
@@ -109,16 +109,16 @@ class QRTree
                        IntegerMath& intMath,
                        const SPrimes& sPrimes,
                        const MultInv& multInv,
-                       CrtTreeL& crtTree,
-                       FileIO& mainIO );
+                       CrtTreeL& crtTree );
 
   bool runIt( const GoodX& goodX,
               const SPrimes& sPrimes,
               const CrtMath& crtMath,
               const MultInv& multInv,
               IntegerMath& intMath,
-              CrtTreeL& crtTree,
-              FileIO& mainIO );
+              CrtTreeL& crtTree );
 
 
   };
+
+*/

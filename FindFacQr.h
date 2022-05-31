@@ -7,6 +7,7 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
 #pragma once
 
 
@@ -64,7 +65,7 @@ class FindFacQr
                           IntegerMath& intMath,
                           const SPrimes& sPrimes );
 
-/*
+////////
   inline bool isGoodX( const Int64 x,
                        const Int32 pKeyMod,
                        const Int32 prime,
@@ -79,7 +80,7 @@ class FindFacQr
     //                                   0x 0FFF FFFF
     return quadRes.getVal( primeAt, test & 0x0FFFFFFF );
     }
-*/
+/////
 
 
   void makeSmallAr17( FileIO& mainIO );
@@ -114,3 +115,5 @@ class FindFacQr
 
 
   };
+
+*/

@@ -43,8 +43,7 @@ throw "Don't use copy constructor for Rsa.";
 
 
 
-bool Rsa::makeKeys( FileIO& mainIO,
-                    const Integer& prime1,
+bool Rsa::makeKeys( const Integer& prime1,
                     const Integer& prime2,
                     IntegerMath& intMath,
                     Mod& mod,
@@ -55,17 +54,17 @@ pubKeyExponent.setFromLong48( PubKeyExponentL );
 primeP.copy( prime1 );
 primeQ.copy( prime2 );
 
-mainIO.appendChars( "primeP:\n" );
-Str showP =  intMath.toString10( primeP );
-mainIO.appendStr( showP );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "primeP:\n" );
+// Str showP =  intMath.toString10( primeP );
+// mainIO.appendStr( showP );
+// mainIO.appendChars( "\n" );
 
-mainIO.appendChars( "primeQ:\n" );
-Str showQ =  intMath.toString10( primeQ );
-mainIO.appendStr( showQ );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "primeQ:\n" );
+// Str showQ =  intMath.toString10( primeQ );
+// mainIO.appendStr( showQ );
+// mainIO.appendChars( "\n" );
 
-if( !isGoodPair( mainIO, intMath ))
+if( !isGoodPair( intMath ))
   return false;
 
 primePMinus1.copy( primeP );
@@ -91,46 +90,47 @@ if( !testEncryption( mod, intMath ))
   throw "!testEncryption().\n";
   // return false;
 
-mainIO.appendChars( "Good pair.\n\n" );
+// mainIO.appendChars( "Good pair.\n\n" );
 
 
 FindFacSm findFacSm;
 Int64 testFac = findFacSm.findIt( pubKeyN, 1, intMath,
-                                  sPrimes, mainIO );
+                                  sPrimes );
 
 if( testFac != 0 )
   {
-  mainIO.appendChars( "FindFacSm found testFac: " );
-  Str showTest( testFac );
-  mainIO.appendStr( showTest );
-  mainIO.appendChars( "\n" );
+  // mainIO.appendChars( "FindFacSm found testFac: " );
+  // Str showTest( testFac );
+  // mainIO.appendStr( showTest );
+  // mainIO.appendChars( "\n" );
   }
 
 Integer prime1Result;
 Integer prime2Result;
+
+/*
 FindFacQr findFacQr;
 
 if( findFacQr.findIt( pubKeyN, prime1Result, prime2Result,
                       intMath, sPrimes, mainIO ))
   {
-  mainIO.appendChars( "Found it.\n" );
+  // mainIO.appendChars( "Found it.\n" );
   // Str showQr =  intMath.toString10( qrResult );
   // mainIO.appendStr( showQr );
   // mainIO.appendChars( "\n" );
 
   return true;
   }
+*/
 
-
-mainIO.appendChars( "\nDidn't find a factor.\n" );
+// mainIO.appendChars( "\nDidn't find a factor.\n" );
 
 return true;
 }
 
 
 
-bool Rsa::isGoodPair( FileIO& mainIO,
-                      IntegerMath& intMath )
+bool Rsa::isGoodPair( IntegerMath& intMath )
 {
 // This is extremely unlikely since they are
 // supposed to be primes, and have passed some
@@ -140,7 +140,7 @@ Euclid::greatestComDiv( primeP, primeQ,
                                  gcd, intMath );
 if( !gcd.isOne())
   {
-  mainIO.appendChars( "Bad pair had a GCD.\n" );
+  // mainIO.appendChars( "Bad pair had a GCD.\n" );
   return false;
   }
 
@@ -148,8 +148,8 @@ Euclid::greatestComDiv( primeP, pubKeyExponent,
                               gcd, intMath );
 if( !gcd.isOne())
   {
-  mainIO.appendChars(
-       "primeP had a GCD with pubKeyExponent.\n" );
+  // mainIO.appendChars(
+     //  "primeP had a GCD with pubKeyExponent.\n" );
   return false;
   }
 
@@ -157,8 +157,8 @@ Euclid::greatestComDiv( primeQ, pubKeyExponent,
                                  gcd, intMath );
 if( !gcd.isOne())
   {
-  mainIO.appendChars(
-      "primeQ had a GCD with pubKeyExponent.\n" );
+  // mainIO.appendChars(
+   // "primeQ had a GCD with pubKeyExponent.\n" );
   return false;
   }
 
@@ -169,7 +169,6 @@ return true;
 
 
 bool Rsa::setPrivateKeys( IntegerMath& intMath )
-                           // FileIO& mainIO )
 {
 // In RFC 2437 there are commonly used
 // letters/symbols to represent

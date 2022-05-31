@@ -7,10 +7,10 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
-
-#include "../WinApi/Timing.h"
+/*
 
 #include "RsaTest.h"
+#include "../CppBase/TimeApi.h"
 #include "../CryptoBase/MakePrime.h"
 
 
@@ -30,18 +30,18 @@ throw "Don't use copy constructor for RsaTest.";
 }
 
 
-void RsaTest::test( FileIO& mainIO )
+void RsaTest::test( void )
 {
-mainIO.appendChars( "Starting RSA test.\n" );
+// mainIO.appendChars( "Starting RSA test.\n" );
 
-Timing t1;
+// TimeApi t1;
 
-Int32 showBits = (PrimeIndex + 1) * 24;
+// Int32 showBits = (PrimeIndex + 1) * 24;
 
-mainIO.appendChars( "\nBits size is: " );
-Str bits( showBits );
-mainIO.appendStr( bits );
-mainIO.appendChars( "\n" );
+// mainIO.appendChars( "\nBits size is: " );
+// Str bits( showBits );
+// mainIO.appendStr( bits );
+// mainIO.appendChars( "\n" );
 
 
 Integer prime1;
@@ -71,13 +71,16 @@ for( Int32 count = 0; count < 10; count++ )
   break;
   }
 
-Timing t2;
+// TimeApi t2;
 
-Int64 diff = t2.diffSec( t1 );
+// Int64 diff = t2.diffSec( t1 );
 
-Str showTime( diff );
-mainIO.appendChars( "\nSeconds: " );
-mainIO.appendStr( showTime );
-mainIO.appendChars( "\n\n" );
-mainIO.appendChars( "Finished test.\n" );
+// Str showTime( diff );
+// mainIO.appendChars( "\nSeconds: " );
+// mainIO.appendStr( showTime );
+// mainIO.appendChars( "\n\n" );
+// mainIO.appendChars( "Finished test.\n" );
 }
+
+*/
+

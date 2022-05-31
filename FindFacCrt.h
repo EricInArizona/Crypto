@@ -7,12 +7,14 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
+
 #pragma once
 
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
+// #include "../CppBase/FileIO.h"
 
 // #include "ProjConst.h"
 #include "../CryptoBase/SPrimes.h"
@@ -31,14 +33,14 @@ class FindFacCrt
   {
   private:
   Int32 testForCopy = 123;
-  CrtTreeL crtTree;
+  // CrtTreeL crtTree;
 
   public:
   FindFacCrt( void );
   FindFacCrt( const FindFacCrt& in );
   ~FindFacCrt( void );
 
-/*
+///////
   bool getSmallFactor(
                  const Integer& pubKeyN,
                  Integer& find1,
@@ -46,9 +48,9 @@ class FindFacCrt
                  IntegerMath& intMath,
                  const SPrimes& sPrimes,
                  const MultInv& multInv,
-                 const CrtMath& crtMath,
+                 const CrtMath& crtMath
                  // GoodX& goodX,
-                 FileIO& mainIO );
+                  );
 
   bool getSmallFactor1(
                  const Integer& pubKeyN,
@@ -57,9 +59,8 @@ class FindFacCrt
                  IntegerMath& intMath,
                  const SPrimes& sPrimes,
                  const MultInv& multInv,
-                 const CrtMath& crtMath,
-                 FileIO& mainIO );
-*/
+                 const CrtMath& crtMath );
+/////
 
 
   bool getFactorsQR( const Integer& pubKeyN,
@@ -70,25 +71,21 @@ class FindFacCrt
                       const CrtMath& crtMath,
                       GoodX& goodX,
                       QuadRes& quadRes,
-                      const MultInv& multInv,
-                      FileIO& mainIO );
+                      const MultInv& multInv );
 
   bool firstTestSqrRoot( const Integer& prod,
-                    IntegerMath& intMath,
-                    FileIO& mainIO );
+                    IntegerMath& intMath );
 
   bool checkEasyOnes( const Integer& prod,
                       IntegerMath& intMath,
-                      const SPrimes& sPrimes,
-                      FileIO& mainIO );
+                      const SPrimes& sPrimes );
 
   void showFoundFactors(
                       const Integer& pubKeyN,
                       const Integer& find1,
                       const Integer& find2,
                       const Integer& foundX,
-                      IntegerMath& intMath,
-                      FileIO& mainIO );
+                      IntegerMath& intMath );
 
   bool hasFactors( const Crt3& testX,
                    const Integer& pubKeyN,
@@ -96,9 +93,11 @@ class FindFacCrt
                   Integer& find2,
                   IntegerMath& intMath,
                   // const SPrimes& sPrimes,
-                  const CrtMath& crtMath,
+                  const CrtMath& crtMath
                   // GoodX& goodX,
-                  // const MultInv& multInv,
-                  FileIO& mainIO );
+                  // const MultInv& multInv
+                  );
 
   };
+
+*/

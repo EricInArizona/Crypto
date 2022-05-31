@@ -7,6 +7,8 @@
 // https://www.gnu.org/licenses/gpl-3.0.html
 
 
+/*
+
 // ==== Make it show StIO stuff for progress.
 
 // 79 megs is nothing.
@@ -242,7 +244,7 @@ mainIO.appendChars( "\n" );
 
 
 
-/*
+/////
 Change QuadRes.init() to show the first N primes.
 2
 3
@@ -344,7 +346,7 @@ Change QuadRes.init() to show the first N primes.
 521
 523
 541
-*/
+/////
 
 
 // The next level would be an Int64ArOfAt.
@@ -706,3 +708,5 @@ for( Int32 row = 0; row <
     }
   }
 }
+
+*/

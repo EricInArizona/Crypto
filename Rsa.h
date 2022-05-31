@@ -13,7 +13,6 @@
 
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
 
 #include "../CryptoBase/Integer.h"
 #include "../CryptoBase/IntegerMath.h"
@@ -47,18 +46,17 @@ class Rsa
 
   Rsa( void );
   Rsa( const Rsa& in );
-  bool makeKeys( FileIO& mainIO,
-                 const Integer& prime1,
+  bool makeKeys( const Integer& prime1,
                  const Integer& prime2,
                  IntegerMath& intMath,
                  Mod& mod,
                  SPrimes& sPrimes );
 
-  bool isGoodPair( FileIO& mainIO,
-                   IntegerMath& intMath );
+  bool isGoodPair( IntegerMath& intMath );
 
   bool setPrivateKeys( IntegerMath& intMath );
-  bool testEncryption( Mod& mod, IntegerMath& intMath );
+  bool testEncryption( Mod& mod,
+                           IntegerMath& intMath );
   bool decryptWithQInverse(
                  const Integer& encryptedNumber,
                  Integer& decryptedNumber,

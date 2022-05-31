@@ -10,19 +10,15 @@
 #pragma once
 
 
-// I never use the C preprocessor except to use
-// #include statements.
-
 
 #include "../CppBase/BasicTypes.h"
-#include "../CppBase/FileIO.h"
+#include "../CppBase/CharBuf.h"
 
 
 
 class MainApp
   {
   private:
-  FileIO mainIO;
 
   public:
   inline static const char* getVersionStr( void )
